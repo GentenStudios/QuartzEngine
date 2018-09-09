@@ -10,7 +10,7 @@ set(sources
 )
 
 set(headers
-    ${header_dir}/client.hpp
+    ${header_dir}/server.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
