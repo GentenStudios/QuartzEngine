@@ -1,2 +1,2 @@
-# Pheonix Engine
-This is the Engine for the Pheonix Project.
+# Pheonix Client
+This is the Client for the Pheonix Project.
