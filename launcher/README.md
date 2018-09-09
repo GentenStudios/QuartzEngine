@@ -1,2 +1,2 @@
-# Pheonix Engine
-This is the Engine for the Pheonix Project.
+# Pheonix Launcher
+This is the Launcher for the Pheonix Project.
