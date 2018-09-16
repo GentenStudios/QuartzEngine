@@ -7,3 +7,5 @@ project( Pheonix-Dependencies )
 # Add the subdirectories for all our dependencies
 # add_subdirectory( directory_name_here )
 # for example: add_subdirectory( glew )
+
+add_subdirectory( wren )
