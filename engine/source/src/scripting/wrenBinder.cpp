@@ -1,26 +1,10 @@
 #include "scripting/wrenBinder.hpp"
 
-struct wrenBinder::wrenBindingInfo
-{
-	WrenVM* vm;
-	const char* module;
-	const char* className;
-	bool isStatic;
-	const char* signature;
 
-	bool operator<(const wrenBindingInfo other) const
-	{
-		return	vm									< other.vm									&&
-				std::hash<std::string>{}(module)	< std::hash<std::string>{}(other.module)	&&
-				std::hash<std::string>{}(className) < std::hash<std::string>{}(other.className) &&
-				isStatic							< other.isStatic							&&
-				std::hash<std::string>{}(signature) < std::hash<std::string>{}(other.signature);
-	}
-};
 
 void wrenBinder::setupBindings()
 {
-	// TODO: Load basic function binds in here. Maybe do it in an external file?
+	/// @todo Load basic function binds in here. Maybe do it in an external file?
 }
 
 void wrenBinder::addBinding( wrenBindingInfo bindInfo, void* callback )
