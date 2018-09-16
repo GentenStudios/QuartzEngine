@@ -35,7 +35,7 @@
 **/build/
 **/COMPILE/bin
 **/COMPILE/lib
-
+**/docs/html
 
 # QtCreator
 *.autosave
