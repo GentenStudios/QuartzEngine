@@ -5,18 +5,11 @@
 class wrenBinder
 {
 public:
-	struct wrenBindingInfo
-	{
-		WrenVM* vm;
-		const char* module;
-		const char* className;
-		bool isStatic;
-		const char* signature;
-	};
+	struct wrenBindingInfo;
 
 	void setupBindings();
 	void addBinding( wrenBindingInfo bindInfo, void* callback );
-	void returnBinding( wrenBindingInfo );
+	void* returnBinding( wrenBindingInfo );
 
 	WrenForeignMethodFn handleBinds( WrenVM* vm, const char* module, const char* className, bool isStatic, const char* signature );
 
