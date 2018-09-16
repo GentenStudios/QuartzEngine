@@ -7,21 +7,24 @@ set(header_dir ${PROJECT_SOURCE_DIR}/source/include)
 
 set(sources
     ${source_dir}/engine.cpp
+    ${source_dir}/scripting/wrenBinder.cpp
 )
 
 set(headers
     ${header_dir}/engine.hpp
+    ${header_dir}/scripting/wrenBinder.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
 set(include_dirs
-    ${libdeps}/glm
+    ${dependencies}/glm
     ${source_dir}/../include
+    ${dependencies}/wren/src/include
 )
 
 set(libraries
-
+    WrenVM
 )
 
 # Link the library
