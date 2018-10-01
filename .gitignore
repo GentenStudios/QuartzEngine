@@ -36,6 +36,10 @@
 **/COMPILE/bin
 **/COMPILE/lib
 **/docs/html
+**/cmake-build-debug
+
+# CLion
+**/.idea/
 
 # QtCreator
 *.autosave
