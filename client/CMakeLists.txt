@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project(Pheonix_Client)
 
-set(source_dir ${PROJECT_SOURCE_DIR}/source/src)
-set(header_dir ${PROJECT_SOURCE_DIR}/source/include)
+set(source_dir ${PROJECT_SOURCE_DIR}/src)
+set(header_dir ${PROJECT_SOURCE_DIR}/include/client)
 
 set(sources
     ${source_dir}/main.cpp
@@ -17,8 +17,8 @@ set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
 set(include_dirs
     ${dependencies}/glm
-    ${source_dir}/../include
-    ${CMAKE_CURRENT_LIST_DIR}/../engine/source/include
+    ${header_dir}/../
+    ${CMAKE_CURRENT_LIST_DIR}/../engine/include
 )
 
 set(libraries
