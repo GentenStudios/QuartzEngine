@@ -1,6 +1,7 @@
-//
-// Created by austin on 10/5/18.
-//
+/**
+ *  @file logging.cpp
+ *  @brief Function definitions for logging.hpp
+ */
 
 #include "util/logging.hpp"
 #include <cstdio>
@@ -14,12 +15,12 @@ std::ofstream Logger::m_logFileHandle;
 LogVerbosity Logger::m_vbLevel = LogVerbosity::INFO;
 
 
-/* ENUM Lookup Table for the LogVerbosity enum class
- * For example, LogVerbosity::INFO is equal to 2,
- * as it is defined in the enum class. If that value
- * is used as an array index, it will return the "string"
- * version. This can then be printed, reducing the need for
- * an unnecessary switch-case statement.
+/** @details ENUM Lookup Table for the LogVerbosity enum class
+ *  For example, LogVerbosity::INFO is equal to 2,
+ *  as it is defined in the enum class. If that value
+ *  is used as an array index, it will return the "string"
+ *  version. This can then be printed, reducing the need for
+ *  an unnecessary switch-case statement.
  */
 const char* Logger::LogVerbosityLookup[] = {
         "ERROR",
