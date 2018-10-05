@@ -36,7 +36,7 @@ void Logger::init( std::string logFile = "logs/pheonix.log", LogVerbosity verbos
     Logger::m_vbLevel = verbosityLevel;
 
     // Creating the files
-    Logger::m_logFileHandle.open( Logger::m_logFile );
+    Logger::m_logFileHandle.open( Logger::m_logFile, std::ios::app );
 }
 
 void Logger::destroy()
@@ -48,13 +48,14 @@ void Logger::logMessage( std::string errorFile, int lineNumber, std::string mess
 {
     if (verbosity <= Logger::m_vbLevel ) // Make sure the logging call has a verbosity level below the defined level set at initialisation.
     {
-        std::cout << "[" << Logger::LogVerbosityLookup[static_cast<int>(verbosity)] << "] "; // Add the [INFO]/etc... at the beginning, via the use of a lookup table.
+        std::stringstream logMessage;
+        logMessage << "[" << Logger::LogVerbosityLookup[static_cast<int>(verbosity)] << "] "; // Add the [INFO]/etc... at the beginning, via the use of a lookup table.
 
         // Add time stamp to line
         std::time_t t = std::time(0);   // get time now
         std::tm* now = std::localtime(&t);
 
-        std::cout << "["
+        logMessage << "["
                   << (now->tm_year + 1900)  << '-'
                   << (now->tm_mon + 1)      << '-'
                   <<  now->tm_mday          << " "
@@ -65,9 +66,12 @@ void Logger::logMessage( std::string errorFile, int lineNumber, std::string mess
 
         if (verbosity != LogVerbosity::INFO) // Print the erroring file and line number if the message is not classed as INFO
         {
-            std::cout<< errorFile << ":" << lineNumber << " ";
+            logMessage << errorFile << ":" << lineNumber << " ";
         }
 
-        std::cout << message << std::endl;
+        logMessage << message << std::endl;
+
+        m_logFileHandle << logMessage.str();
+        std::cout << logMessage.str() << std::endl;
     }
 }

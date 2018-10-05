@@ -6,6 +6,11 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <sstream>
+
+#define INITLOGGER( logFile, vbLevel ) pheonix::Logger::init( logFile, vbLevel )
+#define DESTROYLOGGER() pheonix::Logger::destroy()
 
 #define ERROR( message )    pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::ERROR )
 #define WARNING( message )  pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::WARNING )
@@ -33,8 +38,6 @@ namespace pheonix
     class Logger
     {
     public:
-        Logger() {}
-        ~Logger() {}
 
         // Initialization of logging object
         static void init( std::string logFile, LogVerbosity vbLevel );
@@ -46,6 +49,9 @@ namespace pheonix
         static void logMessage( std::string errorFile, int lineNumber, std::string message, LogVerbosity verbosity);
 
     private:
+        Logger() {}
+        ~Logger() {}
+
         static std::string m_logFile;
         static std::ofstream m_logFileHandle;
         static LogVerbosity m_vbLevel;
