@@ -11,6 +11,8 @@ set(sources
 
 set(headers
     ${header_dir}/engine.hpp
+    ${header_dir}/common.hpp
+    ${header_dir}/os.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
@@ -28,6 +30,7 @@ set(libraries
 set(LIBRARY_OUTPUT_PATH ../../COMPILE/lib)
 
 add_library(${PROJECT_NAME} STATIC ${sources} ${headers})
+#add_executable(${PROJECT_NAME} ${sources} ${headers})
 target_link_libraries(${PROJECT_NAME} ${libraries})
 include_directories(${include_dirs})
 
