@@ -6,7 +6,7 @@
 #include <cstdio>
 #include <ctime>
 
-using namespace phoenix;
+using namespace pheonix;
 
 // Declarations to get rid of compiler errors
 std::string Logger::m_logFile;
@@ -28,7 +28,7 @@ const char* Logger::LogVerbosityLookup[] = {
         "DEBUG"
 };
 
-void Logger::init( std::string logFile, LogVerbosity verbosityLevel = LogVerbosity::INFO)
+void Logger::init( std::string logFile = "logs/pheonix.log", LogVerbosity verbosityLevel = LogVerbosity::INFO)
 {
     // Setting the file names
     Logger::m_logFile = logFile;
@@ -55,13 +55,13 @@ void Logger::logMessage( std::string errorFile, int lineNumber, std::string mess
         std::tm* now = std::localtime(&t);
 
         std::cout << "["
-                  << (now->tm_year + 1900) << '-'
-                  << (now->tm_mon + 1) << '-'
-                  <<  now->tm_mday
-                  <<  now->tm_hour
-                  <<  now->tm_min
+                  << (now->tm_year + 1900)  << '-'
+                  << (now->tm_mon + 1)      << '-'
+                  <<  now->tm_mday          << " "
+                  <<  now->tm_hour          << ":"
+                  <<  now->tm_min           << ":"
                   <<  now->tm_sec
-                  << "]";
+                  << "] ";
 
         if (verbosity != LogVerbosity::INFO) // Print the erroring file and line number if the message is not classed as INFO
         {

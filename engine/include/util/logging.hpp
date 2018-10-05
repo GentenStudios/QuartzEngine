@@ -7,12 +7,17 @@
 #include <iostream>
 #include <fstream>
 
-namespace phoenix
+#define ERROR( message )    pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::ERROR )
+#define WARNING( message )  pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::WARNING )
+#define INFO( message )     pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::INFO )
+#define DEBUG( message )    pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::DEBUG )
+
+namespace pheonix
 {
     /* ENUM CLASS for the Logging Verbosity
      * This is what will define whether certain messages are outputted or not.
      *
-     * ERROR -> Is for critical messages that result in FAILURES"
+     * ERROR -> Is for critical messages that result in FAILURES
      * WARNING-> More verbose logging, for errors that are not FATAL, but are errors none-the-less
      * INFO -> For important information which can aid finding problems quickly
      * DEBUG-> For absolutely everything, like entering a function to exiting the function.
@@ -39,7 +44,6 @@ namespace phoenix
 
         // Output the message, while keeping in mind the verbosity level
         static void logMessage( std::string errorFile, int lineNumber, std::string message, LogVerbosity verbosity);
-
 
     private:
         static std::string m_logFile;

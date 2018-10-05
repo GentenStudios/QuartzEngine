@@ -1,5 +1,8 @@
 #include "client/client.hpp"
 
+#include "util/logging.hpp"
+
+
 int main()
 {
 	Client* helloworld;
@@ -8,9 +11,8 @@ int main()
 
 	helloworld->fillerFunction();
 
-    phoenix::Logger::logMessage( "main.cpp", 11, "Testing the logger", 0);
-    phoenix::Logger::logMessage( "main.cpp", 12, "Testing the logger", "INFO");
-    phoenix::Logger::logMessage( "main.cpp", 13, "Testing the logger", "DEBUG");
-
+    ERROR("Yo, something went really wrong!");
+    WARNING("Yo, something went really wrong!");
+    INFO("Yo, something went really wrong!");
+    DEBUG("Yo, something went really wrong!");
 }
-Also

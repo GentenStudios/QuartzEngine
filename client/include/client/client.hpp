@@ -1,5 +1,4 @@
 #include <iostream>
-#include "util/logging.hpp"
 
 class Client
 {
