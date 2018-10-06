@@ -2,7 +2,7 @@
 
 #include "client/client.hpp"
 
-#include "util/logging.hpp"
+#include "engine/utils/logging.hpp"
 
 int main()
 {

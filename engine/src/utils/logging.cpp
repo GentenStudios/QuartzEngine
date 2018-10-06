@@ -3,7 +3,9 @@
  *  @brief Function definitions for logging.hpp
  */
 
-#include "util/logging.hpp"
+#include "engine/common.hpp"
+
+#include "engine/utils/logging.hpp"
 #include <cstdio>
 #include <ctime>
 
