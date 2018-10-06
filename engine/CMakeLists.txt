@@ -7,7 +7,7 @@ set(header_dir ${PROJECT_SOURCE_DIR}/include)
 
 set(sources
     ${source_dir}/engine.cpp
-    ${source_dir}/util/logging.cpp
+    ${source_dir}/utils/logging.cpp
 )
 
 set(headers
@@ -16,7 +16,7 @@ set(headers
     
     ${header_dir}/engine/engine.hpp
     
-    ${header_dir}/util/logging.hpp
+    ${header_dir}/engine/utils/logging.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
