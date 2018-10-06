@@ -1,7 +1,13 @@
 #include <iostream>
 
-class Engine
-{
-public:
-	void fillerFunction();
-};
+/// @namespace pheonix
+/// @brief The main namespace for most Pheonix related things.
+namespace pheonix {
+
+    class Engine
+    {
+    public:
+        void fillerFunction();
+    };
+
+}
