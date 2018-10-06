@@ -3,23 +3,27 @@ cmake_minimum_required(VERSION 3.0)
 project(Pheonix_Engine)
 
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
-set(header_dir ${PROJECT_SOURCE_DIR}/include/engine)
+set(header_dir ${PROJECT_SOURCE_DIR}/include)
 
 set(sources
     ${source_dir}/engine.cpp
+    ${source_dir}/util/logging.cpp
 )
 
 set(headers
-    ${header_dir}/engine.hpp
-    ${header_dir}/common.hpp
-    ${header_dir}/os.hpp
+    ${header_dir}/engine/common.hpp
+    ${header_dir}/engine/os.hpp
+    
+    ${header_dir}/engine/engine.hpp
+    
+    ${header_dir}/util/logging.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
 set(include_dirs
     ${dependencies}/glm
-    ${header_dir}/../
+    ${header_dir}
 )
 
 set(libraries
