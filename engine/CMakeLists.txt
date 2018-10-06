@@ -17,12 +17,16 @@ set(headers
     ${header_dir}/engine/engine.hpp
     
     ${header_dir}/engine/utils/logging.hpp
+
+    ${header_dir}/engine/graphics/window.hpp
+    ${header_dir}/engine/graphics/eventReturnTypes.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
 set(include_dirs
     ${dependencies}/glm
+    ${dependencies}/glfw/include
     ${header_dir}
 )
 
