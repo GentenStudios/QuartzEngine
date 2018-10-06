@@ -9,3 +9,4 @@ project( Pheonix-Dependencies )
 # for example: add_subdirectory( glew )
 
 add_subdirectory( wren )
+add_subdirectory( glfw )

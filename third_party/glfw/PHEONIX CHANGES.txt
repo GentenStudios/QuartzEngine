@@ -1,0 +1,5 @@
+Remove CI config files.
+Remove "if (GLFW_INSTALL)" stuff at the bottom of the CMakeLists.txt
+Remove the extra add_subdirectories that we don't want from the bottom of the root CMakeLists.txt
+Comment out Vulkan related things, until we ever write Vulkan stuff.
+Remove settings for anything to do with tests/examples/docs
