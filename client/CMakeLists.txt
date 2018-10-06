@@ -17,13 +17,29 @@ set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
 set(include_dirs
     ${dependencies}/glm
+    ${dependencies}/glfw/include
     ${header_dir}/../
     ${source_dir}/../../engine/include
 )
 
 set(libraries
     Pheonix_Engine
+    glew_s
 )
+
+if(WIN32)
+    set(libraries
+        ${libraries}
+        OpenGL32.lib
+    )
+endif()
+
+if(UNIX AND NOT APPLE)
+    set(libraries
+        ${libraries}
+        GL
+        )
+endif()
 
 # Link the executable
 set(EXECUTABLE_OUTPUT_PATH ../../COMPILE/bin)

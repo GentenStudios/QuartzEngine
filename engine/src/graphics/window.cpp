@@ -1,0 +1,75 @@
+#include "engine/common.hpp"
+#include "engine/graphics/window.hpp"
+
+using namespace pheonix::graphics;
+
+Window::Window( int width, int height, std::string title )
+{
+    glfwInit();
+
+    m_window = glfwCreateWindow( width, height, title.c_str(), nullptr, nullptr );
+
+    glfwMakeContextCurrent( m_window );
+}
+
+Window::~Window()
+{
+    glfwDestroyWindow( m_window );
+}
+
+XyData Window::getCursorPos() const
+{
+    double x, y;
+    glfwGetCursorPos( m_window, &x, &y );
+    return XyData{ static_cast<int>(x), static_cast<int>(y) };
+}
+
+void Window::setCursorPos( XyData pos )
+{
+    glfwSetCursorPos( m_window, pos.x, pos.y );
+}
+
+void Window::defaultHints()
+{
+    glfwDefaultWindowHints();
+}
+
+void Window::hint(int target, int hint)
+{
+    glfwWindowHint( target, hint );
+}
+
+void Window::initialiseSystems()
+{
+    glfwInit();
+}
+
+void Window::swapInterval(int interval)
+{
+    glfwSwapInterval( interval );
+}
+
+bool Window::shouldClose() const
+{
+    return glfwWindowShouldClose( m_window );
+}
+
+void Window::setShouldClose( bool close )
+{
+    glfwSetWindowShouldClose( m_window, close );
+}
+
+void Window::swapBuffers()
+{
+    glfwSwapBuffers( m_window );
+}
+
+void Window::pollEvents()
+{
+    glfwPollEvents();
+
+    if ( glfwGetKey( m_window, GLFW_KEY_ESCAPE ) == GLFW_PRESS )
+    {
+        setShouldClose( true );
+    }
+}

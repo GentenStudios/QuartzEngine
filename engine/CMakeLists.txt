@@ -8,6 +8,8 @@ set(header_dir ${PROJECT_SOURCE_DIR}/include)
 set(sources
     ${source_dir}/engine.cpp
     ${source_dir}/utils/logging.cpp
+
+    ${source_dir}/graphics/window.cpp
 )
 
 set(headers
@@ -31,8 +33,23 @@ set(include_dirs
 )
 
 set(libraries
-    
+    glfw
+    glew_s
 )
+
+if(WIN32)
+    set(libraries
+        ${libraries}
+        OpenGL32.lib
+    )
+endif()
+
+if(UNIX AND NOT APPLE)
+    set(libraries
+        ${libraries}
+        GL
+        )
+endif()
 
 # Link the library
 set(LIBRARY_OUTPUT_PATH ../../COMPILE/lib)

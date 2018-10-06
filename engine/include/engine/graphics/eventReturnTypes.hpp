@@ -5,8 +5,8 @@ namespace pheonix {
 
         struct XyData
         {
-            double x;
-            double y;
+            int x;
+            int y;
         };
 
     }
