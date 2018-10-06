@@ -11,7 +11,11 @@ set(sources
 )
 
 set(headers
+    ${header_dir}/engine/common.hpp
+    ${header_dir}/engine/os.hpp
+    
     ${header_dir}/engine/engine.hpp
+    
     ${header_dir}/util/logging.hpp
 )
 
@@ -30,6 +34,7 @@ set(libraries
 set(LIBRARY_OUTPUT_PATH ../../COMPILE/lib)
 
 add_library(${PROJECT_NAME} STATIC ${sources} ${headers})
+#add_executable(${PROJECT_NAME} ${sources} ${headers})
 target_link_libraries(${PROJECT_NAME} ${libraries})
 include_directories(${include_dirs})
 
