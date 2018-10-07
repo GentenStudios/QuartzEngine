@@ -12,7 +12,7 @@ set(sources
     ${source_dir}/graphics/window.cpp
 
     ${source_dir}/voxels/block.cpp
-    ${soruce_dir}/voxels/chunk.cpp
+    ${source_dir}/voxels/chunk.cpp
 )
 
 set(headers

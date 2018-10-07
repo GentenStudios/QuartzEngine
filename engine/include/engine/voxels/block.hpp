@@ -1,7 +1,3 @@
-//
-// Created by austin on 10/7/18.
-//
-
 #pragma once
 
 #include <string>
@@ -10,30 +6,16 @@ namespace pheonix {
 
     namespace voxels{
 
-        /** @brief This defines what state of matter the block is
-         */
+        /// @brief This defines what state of matter the block is
         enum class BlockType
         {
-            GAS,
-            LIQUID,
-            SOLID,
+            GAS,    ///< Gas Blocks are, for example, Air, or Oxygen if implemented.
+            LIQUID, ///< Fluid Liquid Dynamics are applied to these blocks.
+            SOLID,  ///< Generic Stable Block, used for most things.
         };
 
-        class Block{
-
-        private:
-            /// @breif Unique id using the convention mod:name
-            std::string id;
-            /// @breif Name that will display to the user
-            std::string name;
-            /// @breif Short description of the block
-            std::string description;
-            /// @breif Direction block is facing
-            int rotation;
-            /// @breif What type of block are we dealing with?
-            BlockType blockType;
-            //??????? textures; //String? Array of strings? Array of file pointers? Image class?
-
+        class Block
+        {
         public:
             /**
              * @brief Initialise a block
@@ -43,31 +25,52 @@ namespace pheonix {
              * @param[in] The state of block rotation
              * @param[in] The block type (SOLID, LIQUID, GAS)
              */
-            static void init(std::string id, std::string name, std::string description, int rotation, BlockType type);
+            Block( std::string id, std::string name, std::string description, int rotation, BlockType type );
+            ~Block();
 
-            /// @breif[in] Getter, returns the unique id of the block
+            /**
+             * @brief getID - getID of Block
+             * @return Return a string for the ID of the block
+             */
             std::string getID();
 
-            /// @breif[in] Getter, returns the player friendly name of the block
+            /**
+             * @brief getName - Get name of block
+             * @return Return a string of the name of the block
+             */
             std::string getName();
 
-            /// @breif[in] Getter, returns the breif block description
+            /// @brief[in] Getter, returns the breif block description
+            /**
+            * @brief getDescription - Get description of the block
+            * @return
+            */
             std::string getDescription();
 
-            /// @breif[in] Getter, Returns the block type (Solid, Liquid, Gas)
+            /// @brief[in] Getter, Returns the block type (Solid, Liquid, Gas)
             BlockType getBlockType();
 
-            /// @breif[in] Getter, Returns the rotation value of the block
+            /// @brief[in] Getter, Returns the rotation value of the block
             int getRotation();
-            /// @breif[in] Setter, Sets the rotation value of the block
-            void setRotation(int rotation);
+            /// @brief[in] Setter, Sets the rotation value of the block
+            void setRotation( int rotation );
 
             //??????? getTextures();
+
+        private:
+            /// @brief Unique id using the convention mod:name
+            std::string m_id;
+            /// @brief Name that will display to the user
+            std::string m_name;
+            /// @brief Short description of the block
+            std::string m_description;
+            /// @brief Direction block is facing
+            int m_rotation;
+            /// @brief What type of block are we dealing with?
+            BlockType m_blockType;
+            //??????? textures; //String? Array of strings? Array of file pointers? Image class?
         };
 
-
-        /// @breif[in] Getter, Returns a block object from its unique id
-        Block getBlockByID(std::string id);
     }
 
 }

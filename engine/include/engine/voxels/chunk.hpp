@@ -1,7 +1,3 @@
-//
-// Created by austin on 10/7/18.
-//
-
 #pragma once
 
 #include <string>
@@ -9,18 +5,32 @@
 
 namespace pheonix {
     namespace voxels{
-        class chunk{
 
-        private:
-            Block blocks[16][16][256];
-
+        class Chunk
+        {
         public:
-            static void init();
+            Chunk();
+            ~Chunk();
 
-            /// @brief[in] Getter, Gets a block based off a set of coordinates in the chunk
+            /**
+             * @brief getBlock
+             * @param x
+             * @param y
+             * @param z
+             * @return
+             */
             Block getBlock(int x, int y, int z);
-            /// @breif[in] Setter, Sets the value of a block in a chunk
+
+            /**
+             * @brief setBlock
+             * @param x
+             * @param y
+             * @param z
+             * @param block
+             */
             void setBlock(int x, int y, int z, Block block);
+        private:
+            Block m_blocks[16][16][256];
         };
     }
 }

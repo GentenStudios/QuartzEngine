@@ -1,20 +1,24 @@
-//
-// Created by austin on 10/7/18.
-//
-
 #include "engine/common.hpp"
 
 #include "engine/voxels/chunk.hpp"
 
-using namespace pheonix;
+using namespace pheonix::voxels;
 
-void Chunk::init(){
+Chunk::Chunk()
+{
 
 }
 
-Block Chunk::getBlock(int x, int y, int z){
-    return blocks[x][y][z];
+Chunk::~Chunk()
+{
+
 }
-void Chunk::setBlock(int x, int y, int z, Block block){
-    blocks[x][y][z] = block;
+
+Block Chunk::getBlock( int x, int y, int z )
+{
+    return m_blocks[x][y][z];
+}
+void Chunk::setBlock( int x, int y, int z, Block block )
+{
+    m_blocks[x][y][z] = block;
 }

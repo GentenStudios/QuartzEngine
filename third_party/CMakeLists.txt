@@ -10,4 +10,4 @@ project( Pheonix-Dependencies )
 
 add_subdirectory( wren )
 add_subdirectory( glfw )
-add_subdirectory( glew/build/cmake )
+#add_subdirectory( glew/build/cmake )
