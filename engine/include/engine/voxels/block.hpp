@@ -10,6 +10,13 @@ namespace pheonix {
 
     namespace voxels{
 
+        enum class BlockType
+        {
+            GAS,
+            LIQUID,
+            SOLID,
+        };
+
         class Block{
 
         private:
@@ -18,20 +25,19 @@ namespace pheonix {
             std::string description; //Short description of the block
             int rotation; //Direction block is facing
             BlockType blockType; //What type of block are we dealing with?
-            ??????? textures; //String? Array of strings? Array of file pointers? Image class?
+            //??????? textures; //String? Array of strings? Array of file pointers? Image class?
 
         public:
             Block(std::string id, std::string name, std::string description,
-                  int rotation, int state, ???? textures){
+                  int rotation, BlockType type);
 
-            };
             std::string getID();
             std::string getName();
             std::string getDescription();
             BlockType getBlockType();
             int getRotation();
             void setRotation(int rotation);
-            ??????? getTextures();
+            //??????? getTextures();
         };
 
         Block getBlockByID(std::string id);

@@ -24,7 +24,7 @@ set(headers
         src/voxels/block.cpp include/engine/voxels/block.hpp
 
     ${header_dir}/engine/graphics/opengl/renderer.hpp
-)
+        src/voxels/chunk.cpp include/engine/voxels/chunk.hpp)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
