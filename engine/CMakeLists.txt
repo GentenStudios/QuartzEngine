@@ -22,7 +22,7 @@ set(headers
 
     ${header_dir}/engine/graphics/window.hpp
     ${header_dir}/engine/graphics/eventReturnTypes.hpp
-)
+        src/voxels/block.cpp include/engine/voxels/block.hpp)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
