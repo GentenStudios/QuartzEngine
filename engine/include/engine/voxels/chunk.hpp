@@ -15,8 +15,12 @@ namespace pheonix {
             Block blocks[16][16][256];
 
         public:
+            static void init();
+
+            /// @brief[in] Getter, Gets a block based off a set of coordinates in the chunk
             Block getBlock(int x, int y, int z);
-            Block setBlock(int x, int y, int z, Block block);
+            /// @breif[in] Setter, Sets the value of a block in a chunk
+            void setBlock(int x, int y, int z, Block block);
         };
     }
 }
