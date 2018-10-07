@@ -32,6 +32,8 @@ namespace pheonix {
             int getRotation;
             ??????? getTextures;
         };
+
+        Block getBlockByID(std::string id);
     }
 
 }
