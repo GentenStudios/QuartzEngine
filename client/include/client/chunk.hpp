@@ -1,5 +1,7 @@
 #pragma once
 
+#include <engine/common.hpp>
+
 #include <vector>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -21,7 +23,6 @@ namespace pheonix {
         {
             EMPTY,
             SOLID,
-            FLUID
         };
 
         class Chunk
@@ -34,6 +35,7 @@ namespace pheonix {
             inline unsigned int getVBO() const { return m_vertBufferObject; }
 
             void populateChunk( unsigned int chunkSize );
+            void build();
             void draw();
 
             void blockPlaceAt( int x, int y, int z );
@@ -43,12 +45,12 @@ namespace pheonix {
         private:
             void clearOpenGL();
             void setChunkSize( unsigned int chunkSize );
-            void build();
 
             void blockAddFace(glm::vec3* vertices, int x, int y, int z, BlockFace face);
             void blockRemoveFace(glm::vec3* vertices, int x, int y, int z, BlockFace face);
 
             unsigned int m_vertArrayObject, m_vertBufferObject, m_uvBufferObject;
+            unsigned int m_shaderProgram;
 
             int m_chunkSize, m_vertsInChunk, m_uvsInChunk;
 
