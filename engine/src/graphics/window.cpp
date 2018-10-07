@@ -7,6 +7,10 @@ Window::Window( int width, int height, std::string title )
 {
     glfwInit();
 
+//    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+//    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     m_window = glfwCreateWindow( width, height, title.c_str(), nullptr, nullptr );
 
     glfwMakeContextCurrent( m_window );

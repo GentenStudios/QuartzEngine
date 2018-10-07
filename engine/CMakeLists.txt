@@ -15,13 +15,14 @@ set(sources
 set(headers
     ${header_dir}/engine/common.hpp
     ${header_dir}/engine/os.hpp
-    
     ${header_dir}/engine/engine.hpp
     
     ${header_dir}/engine/utils/logging.hpp
 
     ${header_dir}/engine/graphics/window.hpp
     ${header_dir}/engine/graphics/eventReturnTypes.hpp
+
+    ${header_dir}/engine/graphics/opengl/renderer.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
@@ -29,6 +30,7 @@ set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 set(include_dirs
     ${dependencies}/glm
     ${dependencies}/glfw/include
+    ${dependencies}/glew/include
     ${header_dir}
 )
 

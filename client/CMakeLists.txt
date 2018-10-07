@@ -4,23 +4,29 @@ project(Pheonix_Client)
 
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(header_dir ${PROJECT_SOURCE_DIR}/include/client)
+set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
 set(sources
     ${source_dir}/main.cpp
     ${source_dir}/chunk.cpp
+    ${source_dir}/textures.cpp
+
 )
 
 set(headers
     ${header_dir}/client.hpp
     ${header_dir}/chunk.hpp
+    ${header_dir}/textures.hpp
+
+    ${dependencies}/stb_image/stb_image/stb_image.h
 )
 
-set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
 set(include_dirs
     ${dependencies}/glm
     ${dependencies}/glfw/include
     ${dependencies}/glew/include
+    ${dependencies}/stb_image/
     ${header_dir}/../
     ${source_dir}/../../engine/include
 )
