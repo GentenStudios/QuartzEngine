@@ -7,10 +7,12 @@ set(header_dir ${PROJECT_SOURCE_DIR}/include/client)
 
 set(sources
     ${source_dir}/main.cpp
+    ${source_dir}/chunk.cpp
 )
 
 set(headers
     ${header_dir}/client.hpp
+    ${header_dir}/chunk.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
@@ -18,6 +20,7 @@ set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 set(include_dirs
     ${dependencies}/glm
     ${dependencies}/glfw/include
+    ${dependencies}/glew/include
     ${header_dir}/../
     ${source_dir}/../../engine/include
 )
