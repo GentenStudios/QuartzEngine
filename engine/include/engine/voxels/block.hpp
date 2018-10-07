@@ -17,7 +17,7 @@ namespace pheonix {
             std::string name; //Name that will display to the user
             std::string description; //Short description of the block
             int rotation; //Direction block is facing
-            int state; //State of the block???
+            BlockType blockType; //What type of block are we dealing with?
             ??????? textures; //String? Array of strings? Array of file pointers? Image class?
 
         public:
@@ -25,12 +25,13 @@ namespace pheonix {
                   int rotation, int state, ???? textures){
 
             };
-            std::string getID;
-            std::string getName;
-            std::string getDescription;
-            int getState;
-            int getRotation;
-            ??????? getTextures;
+            std::string getID();
+            std::string getName();
+            std::string getDescription();
+            BlockType getBlockType();
+            int getRotation();
+            void setRotation(int rotation);
+            ??????? getTextures();
         };
 
         Block getBlockByID(std::string id);
