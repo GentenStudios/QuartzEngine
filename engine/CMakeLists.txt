@@ -10,6 +10,9 @@ set(sources
     ${source_dir}/utils/logging.cpp
 
     ${source_dir}/graphics/window.cpp
+
+    ${source_dir}/voxels/block.cpp
+    ${soruce_dir}/voxels/chunk.cpp
 )
 
 set(headers
@@ -21,10 +24,13 @@ set(headers
 
     ${header_dir}/engine/graphics/window.hpp
     ${header_dir}/engine/graphics/eventReturnTypes.hpp
-        src/voxels/block.cpp include/engine/voxels/block.hpp
 
     ${header_dir}/engine/graphics/opengl/renderer.hpp
-        src/voxels/chunk.cpp include/engine/voxels/chunk.hpp)
+
+    ${header_dir}/engine/voxels/chunk.hpp
+    ${header_dir}/engine/voxels/block.hpp
+)
+
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
