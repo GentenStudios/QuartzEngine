@@ -1,7 +1,5 @@
 #pragma once
 
-#include "engine/graphics/eventReturnTypes.hpp"
-
 #include <string>
 #include <vector>
 
@@ -9,6 +7,12 @@
 
 namespace pheonix {
     namespace graphics {
+
+        struct XyData
+        {
+            int x;
+            int y;
+        };
 
         enum class glfwCallbacks
         {
