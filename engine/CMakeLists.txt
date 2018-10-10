@@ -10,6 +10,8 @@ set(sources
     ${source_dir}/utils/logging.cpp
 
     ${source_dir}/graphics/window.cpp
+
+    ${source_dir}/graphics/opengl/vertexArray.cpp
     ${source_dir}/graphics/opengl/buffer.cpp
 )
 
@@ -21,6 +23,8 @@ set(headers
     ${header_dir}/engine/utils/logging.hpp
 
     ${header_dir}/engine/graphics/window.hpp
+
+    ${header_dir}/engine/graphics/opengl/vertexArray.hpp
     ${header_dir}/engine/graphics/opengl/buffer.hpp
 )
 

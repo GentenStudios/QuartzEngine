@@ -12,7 +12,7 @@ Buffer::Buffer(Target target, Usage usage)
 
 Buffer::~Buffer()
 {
-    glDeleteBuffers(1, &m_bufferID);
+    glDeleteBuffers( 1, &m_bufferID );
 }
 
 void Buffer::bind()

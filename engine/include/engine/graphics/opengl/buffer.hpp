@@ -61,7 +61,7 @@ namespace pheonix
                  * @param buffer The buffer itself.
                  * @param size The size of the buffer.
                  */
-                void setData(void* buffer, int size);
+                void setData( void* buffer, int size );
 
                 /**
                  * @brief Sub in Buffer data, wraps glBufferSubData
@@ -69,7 +69,7 @@ namespace pheonix
                  * @param offset The offset of the data being subbed.
                  * @param size The size of the data being subbed.
                  */
-                void subData(void* buffer, int offset, int size);
+                void subData( void* buffer, int offset, int size );
 
                 /**
                  * @brief Returns the ID of the buffer.
