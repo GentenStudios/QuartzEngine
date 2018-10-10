@@ -24,6 +24,7 @@ set(headers
 
     ${header_dir}/engine/graphics/window.hpp
 
+    ${header_dir}/engine/graphics/opengl/glTypes.hpp
     ${header_dir}/engine/graphics/opengl/vertexArray.hpp
     ${header_dir}/engine/graphics/opengl/buffer.hpp
 )
