@@ -1,5 +1,3 @@
-#include <engine/common.hpp>
-
 #include "client/textures.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION

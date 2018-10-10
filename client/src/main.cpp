@@ -1,7 +1,6 @@
 #include <engine/common.hpp>
 
 #include <engine/graphics/window.hpp>
-#include <engine/utils/logging.hpp>
 
 #include "client/chunk.hpp"
 #include "client/textures.hpp"

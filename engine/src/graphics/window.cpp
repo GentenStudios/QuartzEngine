@@ -6,10 +6,11 @@ using namespace pheonix::graphics;
 Window::Window( int width, int height, std::string title )
 {
     glfwInit();
+    DEBUG("INITIALISED GLFW!");
 
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-//    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     m_window = glfwCreateWindow( width, height, title.c_str(), nullptr, nullptr );
 
@@ -31,6 +32,11 @@ XyData Window::getCursorPos() const
 void Window::setCursorPos( XyData pos )
 {
     glfwSetCursorPos( m_window, pos.x, pos.y );
+}
+
+void Window::setCursorPos( int x, int y )
+{
+    glfwSetCursorPos( m_window, x, y );
 }
 
 void Window::defaultHints()

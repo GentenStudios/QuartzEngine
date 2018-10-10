@@ -1,5 +1,7 @@
 #pragma once
 
+#include <engine/common.hpp>
+
 #include <GL/glew.h>
 
 #include <string>
