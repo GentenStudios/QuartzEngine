@@ -12,21 +12,26 @@ using namespace pheonix::graphics;
 extern const char* vertexShaderSource;
 const char* vertexShaderSource = "#version 330 core \n"
                                  "layout (location = 0) in vec3 aPos; \n"
+                                 "layout (location = 1) in vec2 aUV; \n"
                                  "uniform mat4 model; \n"
                                  "uniform mat4 view; \n"
                                  "uniform mat4 projection; \n"
+                                 "out vec2 UV; \n"
                                  "void main() \n"
                                  "{ \n"
                                      "gl_Position = projection * view * model * vec4(aPos, 1.0); \n"
+                                     "UV = aUV; \n"
                                  "}";
 
 extern const char* fragmentShaderSource;
 const char* fragmentShaderSource = "#version 330 core \n"
                                    "out vec4 FragColor; \n"
-                                   //"uniform sampler2D texture"
+                                   "in vec2 UV; \n"
+                                   "uniform sampler2D theTexture; \n"
                                    "void main() \n"
                                    "{ \n"
-                                       "FragColor = vec4(0.3f, 0.6f, 0.9f, 1.0f);"
+                                       "vec4 tex = texture(theTexture, UV);"
+                                       "FragColor = tex;"
                                    "}";
 
 static const glm::vec3 CubeVerts[] = {
@@ -94,6 +99,57 @@ static const glm::vec3 CubeVertEmpty[] = {
     glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f)
 };
 
+static const glm::vec2 CubeUV[] = {
+    // front
+    glm::vec2(0.f, 0.f),
+    glm::vec2(1.f, 0.f),
+    glm::vec2(1.f, 1.f),
+    glm::vec2(1.f, 1.f),
+    glm::vec2(0.f, 1.f),
+    glm::vec2(0.f, 0.f),
+
+    // back
+    glm::vec2(0.f, 0.f),
+    glm::vec2(1.f, 0.f),
+    glm::vec2(1.f, 1.f),
+    glm::vec2(1.f, 1.f),
+    glm::vec2(0.f, 1.f),
+    glm::vec2(0.f, 0.f),
+
+    // left
+    glm::vec2(1.f, 0.f),
+    glm::vec2(1.f, 1.f),
+    glm::vec2(0.f, 1.f),
+    glm::vec2(0.f, 1.f),
+    glm::vec2(0.f, 0.f),
+    glm::vec2(1.f, 0.f),
+
+    // right
+    glm::vec2(1.f, 0.f),
+    glm::vec2(1.f, 1.f),
+    glm::vec2(0.f, 1.f),
+    glm::vec2(0.f, 1.f),
+    glm::vec2(0.f, 0.f),
+    glm::vec2(1.f, 0.f),
+
+    // bottom
+    glm::vec2(0.f, 1.f),
+    glm::vec2(1.f, 1.f),
+    glm::vec2(1.f, 0.f),
+    glm::vec2(1.f, 0.f),
+    glm::vec2(0.f, 0.f),
+    glm::vec2(0.f, 1.f),
+
+    // top
+    glm::vec2(0.f, 1.f),
+    glm::vec2(1.f, 1.f),
+    glm::vec2(1.f, 0.f),
+    glm::vec2(1.f, 0.f),
+    glm::vec2(0.f, 0.f),
+    glm::vec2(0.f, 1.f)
+};
+
+
 Chunk::Chunk() : m_vertArrayObject(0), m_vertBufferObject(0), m_uvBufferObject(0)
 {
     // empty
@@ -104,6 +160,7 @@ void Chunk::populateChunk( unsigned int chunkSize ) {
 
     m_chunkSize = chunkSize;
     m_vertsInChunk = sizeCubed * vertInCube;
+    m_uvsInChunk = uvInCube * sizeCubed;
 
     // Set whole array to have, for example, 16 parts inside the vector.
     m_chunkBlocks.resize( chunkSize );
@@ -123,9 +180,58 @@ void Chunk::populateChunk( unsigned int chunkSize ) {
             }
         }
     }
+}
+
+void Chunk::build() {
+
+//    if ( m_populated )
+//        this->clearOpenGL();
+
+    m_chunkVertices = new glm::vec3[ m_vertsInChunk ];
+    glm::vec2*   chunkUVs = new glm::vec2[ m_uvsInChunk ];
+
+    for (int z = 0; z < m_chunkSize; z++)
+    {
+        for (int y = 0; y < m_chunkSize; y++)
+        {
+            for (int x = 0; x < m_chunkSize; x++)
+            {
+                int memOffset = ( x * vertInCube ) + (m_chunkSize * ((y * vertInCube) + m_chunkSize * (z * vertInCube)));
+
+                std::memcpy( m_chunkVertices + memOffset, CubeVerts, sizeof( CubeVerts ) );
+                std::memcpy( chunkUVs + memOffset, CubeUV, sizeof( CubeUV ) );
+
+                for (int face = 0; face < 6; face++)
+                {
+                    int memOffsetOffest = static_cast<int>( face ) * 6;
+
+                    for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
+                    {
+                        m_chunkVertices[q].x += x * 2;
+                        m_chunkVertices[q].y += y * 2;
+                        m_chunkVertices[q].z += z * 2;
+                    }
+                }
+            }
+        }
+    }
 
     glGenVertexArrays(1, &m_vertArrayObject);
     glBindVertexArray(m_vertArrayObject);
+
+    glGenBuffers(1, &m_vertBufferObject);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertBufferObject);
+    glBufferData(GL_ARRAY_BUFFER, m_vertsInChunk * sizeof(glm::vec3), m_chunkVertices, GL_DYNAMIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glGenBuffers(1, &m_uvBufferObject);
+    glBindBuffer(GL_ARRAY_BUFFER, m_uvBufferObject);
+    glBufferData(GL_ARRAY_BUFFER, m_uvsInChunk * sizeof(glm::vec2), chunkUVs, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void*)0);
+    glEnableVertexAttribArray(1);
 
     unsigned int vertexShader;
     vertexShader = glCreateShader( GL_VERTEX_SHADER );
@@ -146,11 +252,13 @@ void Chunk::populateChunk( unsigned int chunkSize ) {
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
-    glGetShaderiv( fragmentShader, GL_COMPILE_STATUS, &success );
+    int success2;
+    char infoLog2[512];
+    glGetShaderiv( fragmentShader, GL_COMPILE_STATUS, &success2 );
 
-    if ( !success ) {
-        glGetShaderInfoLog( fragmentShader, 512, nullptr, infoLog );
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    if ( !success2 ) {
+        glGetShaderInfoLog( fragmentShader, 512, nullptr, infoLog2 );
+        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog2 << std::endl;
     }
 
     m_shaderProgram = glCreateProgram();
@@ -161,55 +269,19 @@ void Chunk::populateChunk( unsigned int chunkSize ) {
 
     glDeleteShader( vertexShader );
     glDeleteShader( fragmentShader );
+
 }
 
-void Chunk::build() {
-
-    if ( m_populated )
-        this->clearOpenGL();
-
-    glm::vec3* chunkVertices = new glm::vec3[ m_vertsInChunk ];
-
-    for (int z = 0; z < m_chunkSize; z++)
-    {
-        for (int y = 0; y < m_chunkSize; y++)
-        {
-            for (int x = 0; x < m_chunkSize; x++)
-            {
-                int memOffset = ( x * vertInCube ) + (m_chunkSize * ((y * vertInCube) + m_chunkSize * (z * vertInCube)));
-
-                std::memcpy( chunkVertices + memOffset, CubeVerts, sizeof( CubeVerts ) );
-
-                for (int face = 0; face < 6; face++)
-                {
-                    int memOffsetOffest = static_cast<int>( face ) * 6;
-
-                    for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
-                    {
-                        chunkVertices[q].x += x * 2;
-                        chunkVertices[q].y += y * 2;
-                        chunkVertices[q].z += z * 2;
-                    }
-                }
-            }
-        }
-    }
-
-
-
-    glGenBuffers(1, &m_vertBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, m_vertsInChunk * sizeof(glm::vec3), chunkVertices, GL_DYNAMIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
-    glEnableVertexAttribArray(0);
+void Chunk::draw()
+{
+    glBindVertexArray(m_vertArrayObject);
 
     glm::mat4 projection = glm::mat4( 1.0f );
     projection = glm::perspective( glm::radians( 45.0f ), 1280.f / 720.f, 0.1f, 100.0f );
 
     glm::mat4 view = glm::lookAt(
-        glm::vec3(-50,50,3), // Camera is at (4,3,3), in World Space
-        glm::vec3(3,10,3), // and looks at the origin
+        glm::vec3(-25,50,3), // Camera is at (4,3,3), in World Space
+        glm::vec3(10,13,5), // and looks at the origin
         glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
         );
 
@@ -221,16 +293,12 @@ void Chunk::build() {
     int viewLoc = glGetUniformLocation( m_shaderProgram, "view" );
     glUniformMatrix4fv( viewLoc, 1, GL_FALSE, glm::value_ptr( view ) );
 
-    glUniformMatrix4fv( glGetUniformLocation( m_shaderProgram, "projection" ), 1, GL_FALSE, glm::value_ptr( projection ) );
+    int projectionLoc = glGetUniformLocation( m_shaderProgram, "projection" );
+    glUniformMatrix4fv( projectionLoc, 1, GL_FALSE, glm::value_ptr( projection ) );
 
-    glUseProgram( m_shaderProgram ) ;
-}
-
-void Chunk::draw()
-{
+    glUseProgram( m_shaderProgram );
     glBindVertexArray(m_vertArrayObject);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertBufferObject);
-
     glDrawArrays(GL_TRIANGLES, 0, m_vertsInChunk);
 }
 
@@ -241,5 +309,3 @@ void Chunk::clearOpenGL()
 
     m_populated = true;
 }
-
-

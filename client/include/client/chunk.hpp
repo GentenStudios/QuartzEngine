@@ -3,6 +3,7 @@
 #include <engine/common.hpp>
 
 #include <vector>
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
@@ -53,6 +54,8 @@ namespace pheonix {
             unsigned int m_shaderProgram;
 
             int m_chunkSize, m_vertsInChunk, m_uvsInChunk;
+
+            glm::vec3* m_chunkVertices;
 
             bool m_populated;
 

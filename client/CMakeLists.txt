@@ -14,11 +14,10 @@ set(sources
 )
 
 set(headers
-    ${header_dir}/client.hpp
     ${header_dir}/chunk.hpp
     ${header_dir}/textures.hpp
 
-    ${dependencies}/stb_image/stb_image/stb_image.h
+    #${dependencies}/stb_image/stb_image/stb_image.h
 )
 
 
