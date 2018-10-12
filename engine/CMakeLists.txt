@@ -27,6 +27,7 @@ set(headers
     ${header_dir}/engine/graphics/opengl/glTypes.hpp
     ${header_dir}/engine/graphics/opengl/vertexArray.hpp
     ${header_dir}/engine/graphics/opengl/buffer.hpp
+    ${header_dir}/engine/graphics/opengl/vertexAttrib.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
