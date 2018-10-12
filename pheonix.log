@@ -1,8 +1,0 @@
-[INFO] [2018-10-12 23:25:14] CLIENT STARTING...
-[DEBUG] [2018-10-12 23:25:14] i:\dev\project-pheonix\engine\src\graphics\window.cpp:9 INITIALISED GLFW!
-[DEBUG] [2018-10-12 23:25:15] i:\dev\project-pheonix\client\src\main.cpp:20 LOADING TEXTURE
-[DEBUG] [2018-10-12 23:25:15] i:\dev\project-pheonix\client\src\main.cpp:22 TEXTURE LOADED
-[DEBUG] [2018-10-12 23:25:15] i:\dev\project-pheonix\client\src\main.cpp:26 POPULATING CHUNK!
-[DEBUG] [2018-10-12 23:25:15] i:\dev\project-pheonix\client\src\main.cpp:28 CHUNK POPULATED
-[DEBUG] [2018-10-12 23:25:15] i:\dev\project-pheonix\client\src\main.cpp:31 CHUNK HAS BEEN BUILT!
-[INFO] [2018-10-12 23:25:23] CLIENT QUITTING
