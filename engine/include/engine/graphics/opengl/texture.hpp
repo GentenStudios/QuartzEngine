@@ -63,6 +63,7 @@ namespace pheonix {
 					T4 = GL_TEXTURE4,
 					T5 = GL_TEXTURE5,
 					T6 = GL_TEXTURE6,
+					NONE
 				};
 
 				/// Holds UV coordinates
@@ -78,10 +79,9 @@ namespace pheonix {
 				Texture( Target target, int width, int height, Format format );
 				~Texture();
 
-				void setData( char* pixelData );
-				void setData( Target target, char* pixelData );
+				void setData( unsigned char* pixelData );
 
-				void setCompressedData( char* pixels, unsigned int levels, unsigned int blockSize );
+				void setCompressedData( unsigned char* pixels, unsigned int levels, unsigned int blockSize );
 
 				void bind( Unit unit );
 
@@ -101,7 +101,6 @@ namespace pheonix {
 				Unit m_currentUnit;
 				int m_width;
 				int m_height;
-				DataFormat m_dataFormat;
 				Format m_format;
 				GLType m_pixelDataType;
 				bool m_isBound;
