@@ -46,3 +46,6 @@ build/*
 
 # QtCreator CMake
 CMakeLists.txt.user*
+
+# Visual Studio
+.vs**/
