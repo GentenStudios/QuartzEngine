@@ -6,7 +6,9 @@
 using namespace pheonix::voxels;
 
 MapBlock::MapBlock( std::string id, int rotation ) : m_id( id ), m_rotation( rotation ), m_damage( 0 )
-{}
+{
+    // empty
+}
 
 MapBlock::~MapBlock()
 {
