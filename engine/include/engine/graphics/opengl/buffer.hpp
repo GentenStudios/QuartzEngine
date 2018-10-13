@@ -77,7 +77,7 @@ namespace pheonix
 				 */
 				unsigned int getID() const;
 
-			private:
+			private: 
 				unsigned int m_bufferID;
 
 				Target m_target;

@@ -29,19 +29,8 @@ namespace pheonix {
 				/// Texture formats
 				enum class Format
 				{
-					RED       = GL_RED,
-					RG        = GL_RG,
 					RGB       = GL_RGB,
-					BGR       = GL_BGR,
 					RGBA      = GL_RGBA,
-					BGRA      = GL_BGRA,
-				};
-
-				/// Texture data layouts
-				enum class DataFormat
-				{
-					RGB     = GL_RGB,
-					RGBA    = GL_RGBA,
 				};
 
 				/// Parameter Names
@@ -86,7 +75,7 @@ namespace pheonix {
 				};
 
 				// Constructor and Destructor
-				Texture( Target target, int width, int height, DataFormat dataFormat, Format format );
+				Texture( Target target, int width, int height, Format format );
 				~Texture();
 
 				void setData( char* pixelData );
