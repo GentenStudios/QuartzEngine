@@ -33,6 +33,29 @@ namespace phoenix {
 		 * @param a The new value for x, y and z
 		 */
 		void set(const float& a);
+
+		/**
+		 * @brief Calculates the cross product of `a` and `b`
+		 * @param a Left hand side of the calculation
+		 * @param b Right hand side of the calculation
+		 * @return The cross product of `a` and `b`
+		 */
+		static Vector3 cross(const Vector3& a, const Vector3& b);
+
+		/**
+		 * @brief Calculates the normal vector of vector `a`
+		 * @param a The vector to normalize
+		 * @return The normal vector of `a`
+		 */
+		static Vector3 normalize(const Vector3& a);
+
+		/**
+		 * @brief Calculates the dot product of vectors `a` and `b`
+		 * @param a Left hand side of the calculation
+		 * @param b Right hand side of the calculation
+		 * @return The dot product of `a` and `b`
+		 */
+		static float   dot(const Vector3& a, const Vector3& b);
 	};
 
 	/**
