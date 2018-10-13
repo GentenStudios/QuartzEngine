@@ -17,7 +17,14 @@ Vector3::Vector3() :
 {
 }
 
-Vector3 operator+(const Vector3& left, const Vector3& right)
+void Vector3::set(const float& a)
+{
+	this->x = a;
+	this->y = a;
+	this->z = a;
+}
+
+Vector3 phoenix::operator+(const Vector3& left, const Vector3& right)
 {
 	return {
 		left.x + right.x,
@@ -26,7 +33,7 @@ Vector3 operator+(const Vector3& left, const Vector3& right)
 	};
 }
 
-Vector3 operator-(const Vector3& left, const Vector3& right)
+Vector3 phoenix::operator-(const Vector3& left, const Vector3& right)
 {
 	return {
 		left.x - right.x,
@@ -35,7 +42,7 @@ Vector3 operator-(const Vector3& left, const Vector3& right)
 	};
 }
 
-Vector3 operator*(const Vector3& left, const Vector3& right)
+Vector3 phoenix::operator*(const Vector3& left, const Vector3& right)
 {
 	return {
 		left.x * right.x,
@@ -44,7 +51,7 @@ Vector3 operator*(const Vector3& left, const Vector3& right)
 	};
 }
 
-Vector3 operator/(const Vector3& left, const Vector3& right)
+Vector3 phoenix::operator/(const Vector3& left, const Vector3& right)
 {
 	return {
 		left.x / right.x,
