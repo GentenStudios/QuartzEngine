@@ -1,10 +1,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace pheonix {
 
     namespace voxels{
+
+        m_blockLibrary std::vector<Block>;
 
         /// @brief This defines what state of matter the block is
         enum class BlockType
@@ -54,6 +57,8 @@ namespace pheonix {
             BlockType m_blockType;
             //??????? textures; //String? Array of strings? Array of file pointers? Image class?
         };
+
+        getBlockByID(std::string id);
 
     }
 

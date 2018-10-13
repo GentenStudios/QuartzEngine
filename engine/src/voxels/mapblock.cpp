@@ -13,8 +13,9 @@ MapBlock::MapBlock( std::string id, int rotation)
 
 //Getters for universal data shared between all blocks
 //something getTextures();
+
 std::string getName(){
-    //Some function to get the name of the block from the parent
+    return getBlockByID(m_id).getName();
 };
 
 //Getters and setters for unique block data
