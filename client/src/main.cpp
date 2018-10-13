@@ -1,6 +1,9 @@
 #include <engine/common.hpp>
 
 #include <engine/graphics/window.hpp>
+#include <engine/graphics/opengl/texture.hpp>
+
+#include <stb_image/stb_image.h>
 
 #include "client/chunk.hpp"
 #include "client/textures.hpp"
@@ -16,10 +19,15 @@ int main()
 
 	glEnable( GL_DEPTH_TEST );
 
-	pheonix::graphics::Texture dirt;
-	DEBUG( "LOADING TEXTURE" );
-	dirt.loadTex( std::string("../dirt.png") );
-	DEBUG( "TEXTURE LOADED" );
+	int nChannels, texWidth, texHeight;
+	unsigned char* data = stbi_load( "../dirt.png", &texWidth, &texHeight, &nChannels, 0);
+
+	pheonix::graphics::opengl::Texture* dirt = new pheonix::graphics::opengl::Texture( pheonix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth, texHeight, pheonix::graphics::opengl::Texture::Format::RGBA );
+	std::cout << glGetError() << std::endl;
+	dirt->bind( pheonix::graphics::opengl::Texture::Unit::T0 );
+	std::cout << glGetError() << std::endl;
+
+	dirt->setData( data );
 
 	pheonix::graphics::Chunk* chunk = new pheonix::graphics::Chunk();
 
@@ -36,7 +44,8 @@ int main()
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glClearColor( 0.1f, 0.3f, 0.9f, 1.0f );
 
-		dirt.bind( 0 );
+		//dirt->bind( pheonix::graphics::opengl::Texture::Unit::T0 );
+		std::cout << glGetError() << std::endl;
 
 		chunk->draw();
 
