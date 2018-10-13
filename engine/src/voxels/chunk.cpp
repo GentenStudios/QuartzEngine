@@ -16,9 +16,9 @@ Chunk::~Chunk()
 
 Block Chunk::getBlock( int x, int y, int z )
 {
-    return m_blocks[x][y][z];
+    return *m_chunkBlocks[x][y][z];
 }
 void Chunk::setBlock( int x, int y, int z, Block block )
 {
-    m_blocks[x][y][z] = block;
+    m_chunkBlocks[x][y][z] = &block;
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "engine/common.hpp"
+
 #include <string>
 #include <vector>
 
@@ -59,13 +61,15 @@ namespace pheonix {
         class BlockRegistry
         {
         public:
+            BlockRegistry();
+            ~BlockRegistry();
+            
             Block getBlockByID(std::string id);
-            void registerBlock(Block block);
+            void registerBlock(Block* block);
 
         private:
-            std::vector<Block> m_blockLibrary;
+            std::vector<Block*> m_blockLibrary;
         };
-
 
     }
 

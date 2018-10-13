@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include "engine/common.hpp"
 
 namespace pheonix {
 
@@ -8,21 +8,24 @@ namespace pheonix {
 
         class MapBlock {
         public:
-            //Getters for universal data shared between all blocks
-            //something getTextures();
-            std::string getName();
+            MapBlock( std::string id, int rotation );
+            ~MapBlock();
 
-            //Getters and setters for unique block data
-            int getRotation();
-            void setRotation(int rotation);
+            // Getters for universal data shared between all blocks
+            // something getTextures();
+            std::string getID() const;
 
-            int getDamage();
-            int setDamage(int damage);
+            // Getters and setters for unique block data
+            int getRotation() const;
+            void setRotation( int rotation );
+
+            int getDamage() const;
+            int setDamage( int damage );
 
         private:
             std::string m_id;
-            int rotation;
-            int damage;
+            int m_rotation;
+            int m_damage;
         };
     }
 }

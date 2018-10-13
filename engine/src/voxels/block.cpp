@@ -1,5 +1,3 @@
-#include "engine/common.hpp"
-
 #include "engine/voxels/block.hpp"
 
 using namespace pheonix::voxels;
@@ -9,8 +7,12 @@ Block::Block( std::string id, std::string name, BlockType type )
     this->m_id = id;
     this->m_name = name;
     this->m_blockType = type;
-    BlockRegistry::registerBlock(this);
 };
+
+Block::~Block()
+{
+    // empty
+}
 
 std::string Block::getID()
 {
@@ -27,18 +29,30 @@ BlockType Block::getBlockType()
     return this->m_blockType;
 };
 
-Block BlockRegistry::getBlockByID(std:string id)
+BlockRegistry::BlockRegistry()
 {
-for(int i=1; i < m_blockLibrary.size(); i++){
-    if (m_blockLibrary[i].m_id == id){
-        return m_blockLibrary[i];
-    }
-    return m_blockLibrary[0];
-};
-
-void BlockRegistry::registerBlock(Block block).
-{
-m_blockLibrary.push_back(block);
 }
 
-BlockRegistry::registerBlock(Block::Block("null", "null", "0"));
+BlockRegistry::~BlockRegistry()
+{
+    // empty
+}
+
+Block BlockRegistry::getBlockByID(std::string id)
+{
+    for( int i = 1; i < m_blockLibrary.size(); i++ )
+    {
+        Block* block = m_blockLibrary[i];
+        if ( block->getID() == id )
+        {
+            return *block;
+        }
+        
+        return *block;
+    };
+}
+
+void BlockRegistry::registerBlock(Block* block)
+{
+    m_blockLibrary.push_back(block);
+}

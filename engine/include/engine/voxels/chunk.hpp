@@ -30,7 +30,9 @@ namespace pheonix {
              */
             void setBlock(int x, int y, int z, Block block);
         private:
-            Block m_blocks[16][16][256];
+            /// 3 Dimensional Vector. Slightly funkier than a 3D array, but more flexible
+            /// or maybe not, I don't know.
+            std::vector< std::vector< std::vector< Block* > > > m_chunkBlocks;
         };
     }
 }

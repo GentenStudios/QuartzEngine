@@ -13,6 +13,7 @@ set(sources
 
     ${source_dir}/voxels/block.cpp
     ${source_dir}/voxels/chunk.cpp
+    ${source_dir}/voxels/mapblock.cpp
 )
 
 set(headers
@@ -29,7 +30,7 @@ set(headers
 
     ${header_dir}/engine/voxels/chunk.hpp
     ${header_dir}/engine/voxels/block.hpp
-        include/engine/voxels/mapblock.hpp src/voxels/mapblock.cpp)
+    ${header_dir}/engine/voxels/mapblock.hpp )
 
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
@@ -54,8 +55,12 @@ if(WIN32)
 endif()
 
 if(UNIX AND NOT APPLE)
+    find_package(X11 REQUIRED)
+    find_package(Threads REQUIRED)
     set(libraries
         ${libraries}
+        ${X11_LIBRARIES}
+        ${X11_Xxf86vm_LIB}
         GL
         )
 endif()
