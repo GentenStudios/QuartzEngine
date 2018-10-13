@@ -57,7 +57,8 @@ namespace pheonix {
 			bool m_populated;
 
 			opengl::VertexArray* m_vao;
-			opengl::Buffer* m_vbo, m_uvbo;
+			opengl::Buffer* m_vbo;
+			opengl::Buffer* m_uvbo;
 
 			const int vertInCube = 36;
 			const int uvInCube = 36;
