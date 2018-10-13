@@ -13,28 +13,28 @@ using namespace phoenix;
 
 extern const char* vertexShaderSource;
 const char* vertexShaderSource = "#version 330 core \n"
-                                 "layout (location = 0) in vec3 aPos; \n"
-                                 "layout (location = 1) in vec2 aUV; \n"
-                                 "uniform mat4 model; \n"
-                                 "uniform mat4 view; \n"
-                                 "uniform mat4 projection; \n"
-                                 "out vec2 UV; \n"
-                                 "void main() \n"
-                                 "{ \n"
-                                     "gl_Position = projection * view * model * vec4(aPos, 1.0); \n"
-                                     "UV = aUV; \n"
-                                 "}";
+								 "layout (location = 0) in vec3 aPos; \n"
+								 "layout (location = 1) in vec2 aUV; \n"
+								 "uniform mat4 model; \n"
+								 "uniform mat4 view; \n"
+								 "uniform mat4 projection; \n"
+								 "out vec2 UV; \n"
+								 "void main() \n"
+								 "{ \n"
+								 "gl_Position = projection * view * model * vec4(aPos, 1.0); \n"
+								 "UV = aUV; \n"
+								 "}";
 
 extern const char* fragmentShaderSource;
 const char* fragmentShaderSource = "#version 330 core \n"
-                                   "out vec4 FragColor; \n"
-                                   "in vec2 UV; \n"
-                                   "uniform sampler2D theTexture; \n"
-                                   "void main() \n"
-                                   "{ \n"
-                                       "vec4 tex = texture(theTexture, UV);"
-                                       "FragColor = tex;"
-                                   "}";
+								   "out vec4 FragColor; \n"
+								   "in vec2 UV; \n"
+								   "uniform sampler2D theTexture; \n"
+								   "void main() \n"
+								   "{ \n"
+								   "vec4 tex = texture(theTexture, UV);"
+								   "FragColor = tex;"
+								   "}";
 
 static const Vector3 CubeVerts[] = {
     // front
@@ -152,132 +152,130 @@ static const Vector2 CubeUV[] = {
 };
 
 
-Chunk::Chunk() : m_vertArrayObject(0), m_vertBufferObject(0), m_uvBufferObject(0)
+Chunk::Chunk() :
+	m_vao( new opengl::VertexArray() ),
+	m_vbo( new opengl::Buffer( opengl::Buffer::Target::ARRAY, opengl::Buffer::Usage::DYNAMIC_DRAW ) ),
+	m_uvbo( new opengl::Buffer( opengl::Buffer::Target::ARRAY, opengl::Buffer::Usage::DYNAMIC_DRAW ) )
 {
-    // empty
 }
 
 void Chunk::populateChunk( unsigned int chunkSize ) {
-    unsigned int sizeCubed = chunkSize * chunkSize * chunkSize;
+	unsigned int sizeCubed = chunkSize * chunkSize * chunkSize;
 
-    m_chunkSize = chunkSize;
-    m_vertsInChunk = sizeCubed * vertInCube;
-    m_uvsInChunk = uvInCube * sizeCubed;
+	m_chunkSize = chunkSize;
+	m_vertsInChunk = sizeCubed * vertInCube;
+	m_uvsInChunk = uvInCube * sizeCubed;
 
-    // Set whole array to have, for example, 16 parts inside the vector.
-    m_chunkBlocks.resize( chunkSize );
+	// Set whole array to have, for example, 16 parts inside the vector.
+	m_chunkBlocks.resize( chunkSize );
 
-    for (unsigned int x = 0; x < m_chunkBlocks.size(); x++)
-    {
-        // Set each X index (first vector part, of the trio) to have, for example, 16 parts. So you can have m_chunkBlocks[x][0] to m_chunkBlocks[x][15]
-        m_chunkBlocks[x].resize( chunkSize );
-        for (unsigned int y = 0; y < m_chunkBlocks.size(); y++)
-        {
-            // Set the Y (first vector part, of the trio) to have, for example, 16 parts. So you can have m_chunkBlocks[x][y][0] to m_chunkBlocks[x][y][15]
-            m_chunkBlocks[x][y].resize( chunkSize );
-            for (unsigned int z = 0; z < m_chunkBlocks.size(); z++)
-            {
-                // Set the Z (first vector part, of the trio) to have the actual value of the blocks data. So, you can have m_chunkBlocks[x][y][z] = BlockType::SOLID
-                m_chunkBlocks[x][y][z] = BlockType::SOLID;
-            }
-        }
-    }
+	for (unsigned int x = 0; x < m_chunkBlocks.size(); x++)
+	{
+		// Set each X index (first vector part, of the trio) to have, for example, 16 parts. So you can have m_chunkBlocks[x][0] to m_chunkBlocks[x][15]
+		m_chunkBlocks[x].resize( chunkSize );
+		for (unsigned int y = 0; y < m_chunkBlocks.size(); y++)
+		{
+			// Set the Y (first vector part, of the trio) to have, for example, 16 parts. So you can have m_chunkBlocks[x][y][0] to m_chunkBlocks[x][y][15]
+			m_chunkBlocks[x][y].resize( chunkSize );
+			for (unsigned int z = 0; z < m_chunkBlocks.size(); z++)
+			{
+				// Set the Z (first vector part, of the trio) to have the actual value of the blocks data. So, you can have m_chunkBlocks[x][y][z] = BlockType::SOLID
+				m_chunkBlocks[x][y][z] = BlockType::SOLID;
+			}
+		}
+	}
 }
 
 void Chunk::build() {
 
-//    if ( m_populated )
-//        this->clearOpenGL();
+	//    if ( m_populated )
+	//        this->clearOpenGL();
 
-    m_chunkVertices = new Vector3[ m_vertsInChunk ];
-    Vector2*   chunkUVs = new Vector2[ m_uvsInChunk ];
+  m_chunkVertices = new Vector3[ m_vertsInChunk ];
+  Vector2*   chunkUVs = new Vector2[ m_uvsInChunk ];
 
-    for (int z = 0; z < m_chunkSize; z++)
-    {
-        for (int y = 0; y < m_chunkSize; y++)
-        {
-            for (int x = 0; x < m_chunkSize; x++)
-            {
-                int memOffset = ( x * vertInCube ) + (m_chunkSize * ((y * vertInCube) + m_chunkSize * (z * vertInCube)));
+	for (int z = 0; z < m_chunkSize; z++)
+	{
+		for (int y = 0; y < m_chunkSize; y++)
+		{
+			for (int x = 0; x < m_chunkSize; x++)
+			{
+				int memOffset = ( x * vertInCube ) + (m_chunkSize * ((y * vertInCube) + m_chunkSize * (z * vertInCube)));
 
-                std::memcpy( m_chunkVertices + memOffset, CubeVerts, sizeof( CubeVerts ) );
-                std::memcpy( chunkUVs + memOffset, CubeUV, sizeof( CubeUV ) );
+				std::memcpy( m_chunkVertices + memOffset, CubeVerts, sizeof( CubeVerts ) );
+				std::memcpy( chunkUVs + memOffset, CubeUV, sizeof( CubeUV ) );
 
-                for (int face = 0; face < 6; face++)
-                {
-                    int memOffsetOffest = static_cast<int>( face ) * 6;
+				for (int face = 0; face < 6; face++)
+				{
+					int memOffsetOffest = static_cast<int>( face ) * 6;
 
-                    for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
-                    {
-                        m_chunkVertices[q].x += x * 2;
-                        m_chunkVertices[q].y += y * 2;
-                        m_chunkVertices[q].z += z * 2;
-                    }
-                }
-            }
-        }
-    }
+					for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
+					{
+						m_chunkVertices[q].x += x * 2;
+						m_chunkVertices[q].y += y * 2;
+						m_chunkVertices[q].z += z * 2;
+					}
+				}
+			}
+		}
+	}
 
-    glGenVertexArrays(1, &m_vertArrayObject);
-    glBindVertexArray(m_vertArrayObject);
+	m_vao->bind();
+  
+	m_vbo->bind();
+	m_vbo->setData( static_cast<void*>(m_chunkVertices), m_vertsInChunk * sizeof(glm::vec3) );
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
+	glEnableVertexAttribArray(0);
 
-    glGenBuffers(1, &m_vertBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, m_vertsInChunk * sizeof(Vector3), m_chunkVertices, GL_DYNAMIC_DRAW);
+	m_uvbo->bind();
+	m_uvbo->setData( static_cast<void*>(chunkUVs), m_uvsInChunk * sizeof(glm::vec2) );
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), (void*)0);
+	glEnableVertexAttribArray(1);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
-    glEnableVertexAttribArray(0);
+	unsigned int vertexShader;
+	vertexShader = glCreateShader( GL_VERTEX_SHADER );
+	glShaderSource( vertexShader, 1, &vertexShaderSource, nullptr );
+	glCompileShader( vertexShader );
 
-    glGenBuffers(1, &m_uvBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, m_uvBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, m_uvsInChunk * sizeof(Vector2), chunkUVs, GL_STATIC_DRAW);
+	int success;
+	char infoLog[512];
+	glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &success );
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), (void*)0);
-    glEnableVertexAttribArray(1);
+	if ( !success ) {
+		glGetShaderInfoLog( vertexShader, 512, nullptr, infoLog );
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
 
-    unsigned int vertexShader;
-    vertexShader = glCreateShader( GL_VERTEX_SHADER );
-    glShaderSource( vertexShader, 1, &vertexShaderSource, nullptr );
-    glCompileShader( vertexShader );
 
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
-    glShaderSource( fragmentShader, 1, &fragmentShaderSource, nullptr );
-    glCompileShader( fragmentShader );
+	unsigned int fragmentShader;
+	fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
+	glShaderSource( fragmentShader, 1, &fragmentShaderSource, nullptr );
+	glCompileShader( fragmentShader );
 
-    int success;
-    char infoLog[512];
-    glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &success );
+	int success2;
+	char infoLog2[512];
+	glGetShaderiv( fragmentShader, GL_COMPILE_STATUS, &success2 );
 
-    if ( !success ) {
-        glGetShaderInfoLog( vertexShader, 512, nullptr, infoLog );
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
+	if ( !success2 ) {
+		glGetShaderInfoLog( fragmentShader, 512, nullptr, infoLog2 );
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog2 << std::endl;
+	}
 
-    int success2;
-    char infoLog2[512];
-    glGetShaderiv( fragmentShader, GL_COMPILE_STATUS, &success2 );
+	m_shaderProgram = glCreateProgram();
 
-    if ( !success2 ) {
-        glGetShaderInfoLog( fragmentShader, 512, nullptr, infoLog2 );
-        std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog2 << std::endl;
-    }
+	glAttachShader( m_shaderProgram, vertexShader );
+	glAttachShader( m_shaderProgram, fragmentShader );
+	glLinkProgram( m_shaderProgram );
 
-    m_shaderProgram = glCreateProgram();
-
-    glAttachShader( m_shaderProgram, vertexShader );
-    glAttachShader( m_shaderProgram, fragmentShader );
-    glLinkProgram( m_shaderProgram );
-
-    glDeleteShader( vertexShader );
-    glDeleteShader( fragmentShader );
+	glDeleteShader( vertexShader );
+	glDeleteShader( fragmentShader );
 
 }
 
 void Chunk::draw()
 {
-    glBindVertexArray(m_vertArrayObject);
-	
+  m_vao->bind();
+
 	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f );
 	
     Matrix4x4 view = Matrix4x4::lookAt(
@@ -297,16 +295,8 @@ void Chunk::draw()
     int projectionLoc = glGetUniformLocation( m_shaderProgram, "projection" );
     glUniformMatrix4fv( projectionLoc, 1, GL_FALSE, &(projection.elements[0]));
 
-    glUseProgram( m_shaderProgram );
-    glBindVertexArray(m_vertArrayObject);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertBufferObject);
-    glDrawArrays(GL_TRIANGLES, 0, m_vertsInChunk);
-}
+	glUseProgram( m_shaderProgram );
+	m_vao->bind();
 
-void Chunk::clearOpenGL()
-{
-    glDeleteVertexArrays(1, &m_vertArrayObject);
-    glDeleteBuffers(1, &m_vertBufferObject);
-
-    m_populated = true;
+	glDrawArrays(GL_TRIANGLES, 0, m_vertsInChunk);
 }

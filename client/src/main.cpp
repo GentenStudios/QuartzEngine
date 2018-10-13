@@ -1,47 +1,56 @@
 #include <engine/common.hpp>
 
 #include <engine/graphics/window.hpp>
+#include <engine/graphics/opengl/texture.hpp>
+
+#include <stb_image/stb_image.h>
 
 #include "client/chunk.hpp"
 #include "client/textures.hpp"
 
 int main()
 {
-    INITLOGGER( "pheonix.log", pheonix::LogVerbosity::DEBUG );
-    INFO( "CLIENT STARTING..." );
+	INITLOGGER( "pheonix.log", pheonix::LogVerbosity::INFO );
+	INFO( "CLIENT STARTING..." );
 
-    pheonix::graphics::Window* window = new pheonix::graphics::Window( 1280, 720, std::string("Project Pheonix") );
+	pheonix::graphics::Window* window = new pheonix::graphics::Window( 1280, 720, std::string("Project Pheonix") );
 
-    glewInit();
+	glewInit();
 
-    glEnable( GL_DEPTH_TEST );
+	glEnable( GL_DEPTH_TEST );
 
-    pheonix::graphics::Texture dirt;
-    DEBUG( "LOADING TEXTURE" );
-    dirt.loadTex( std::string("../dirt.png") );
-    DEBUG( "TEXTURE LOADED" );
+	int nChannels, texWidth, texHeight;
+	unsigned char* data = stbi_load( "../dirt.png", &texWidth, &texHeight, &nChannels, 0);
 
-    pheonix::graphics::Chunk* chunk = new pheonix::graphics::Chunk();
+	pheonix::graphics::opengl::Texture* dirt = new pheonix::graphics::opengl::Texture( pheonix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth, texHeight, pheonix::graphics::opengl::Texture::Format::RGBA );
+	std::cout << glGetError() << std::endl;
+	dirt->bind( pheonix::graphics::opengl::Texture::Unit::T0 );
+	std::cout << glGetError() << std::endl;
 
-    DEBUG( "POPULATING CHUNK!" );
-    chunk->populateChunk(16);
-    DEBUG( "CHUNK POPULATED" );
+	dirt->setData( data );
 
-    chunk->build();
-    DEBUG( "CHUNK HAS BEEN BUILT!" );
+	pheonix::graphics::Chunk* chunk = new pheonix::graphics::Chunk();
 
-    while ( !window->shouldClose() ) {
-        window->pollEvents();
+	DEBUG( "POPULATING CHUNK!" );
+	chunk->populateChunk(16);
+	DEBUG( "CHUNK POPULATED" );
 
-        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-        glClearColor( 0.1f, 0.3f, 0.9f, 1.0f );
+	chunk->build();
+	DEBUG( "CHUNK HAS BEEN BUILT!" );
 
-        dirt.bind( 0 );
+	while ( !window->shouldClose() ) {
+		window->pollEvents();
 
-        chunk->draw();
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glClearColor( 0.1f, 0.3f, 0.9f, 1.0f );
 
-        window->swapBuffers();
-    }
+		//dirt->bind( pheonix::graphics::opengl::Texture::Unit::T0 );
+		std::cout << glGetError() << std::endl;
 
-    INFO( "CLIENT QUITTING" );
+		chunk->draw();
+
+		window->swapBuffers();
+	}
+
+	INFO( "CLIENT QUITTING" );
 }

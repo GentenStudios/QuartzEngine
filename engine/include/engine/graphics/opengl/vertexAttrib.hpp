@@ -5,26 +5,26 @@
 #include <GL/glew.h>
 
 namespace pheonix {
-    namespace graphics {
-        namespace opengl {
+	namespace graphics {
+		namespace opengl {
 
-            struct VertexAttrib
-            {
-                unsigned int location; ///< Location of attrib, used in shader.
+			struct VertexAttrib
+			{
+				unsigned int location; ///< Location of attrib, used in shader.
 
-                int components; ///< Number of componenets in the attribute
+				int components; ///< Number of componenets in the attribute
 
-                GLType type; ///< Attribute Data Type
+				GLType type; ///< Attribute Data Type
 
-                VertexAttrib( unsigned int attribLocation, int attribNumComp, GLType attribType) : location( attribLocation ), components( attribNumComp ), type( attribType )
-                {
-                }
+				VertexAttrib( unsigned int attribLocation, int attribNumComp, GLType attribType) : location( attribLocation ), components( attribNumComp ), type( attribType )
+				{
+				}
 
-                VertexAttrib( unsigned int attribLocation, int attribNumComp ) : VertexAttrib( attribLocation, attribNumComp, GLType::FLOAT )
-                {
-                }
-            };
+				VertexAttrib( unsigned int attribLocation, int attribNumComp ) : VertexAttrib( attribLocation, attribNumComp, GLType::FLOAT )
+				{
+				}
+			};
 
-        }
-    }
+		}
+	}
 }

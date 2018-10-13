@@ -13,10 +13,11 @@ set(sources
 
     ${source_dir}/graphics/opengl/vertexArray.cpp
     ${source_dir}/graphics/opengl/buffer.cpp
-
 	${source_dir}/math/vector3.cpp
 	${source_dir}/math/matrix4x4.cpp
 	${source_dir}/math/vector2.cpp
+
+    ${source_dir}/graphics/opengl/texture.cpp
 )
 
 set(headers
@@ -32,11 +33,11 @@ set(headers
     ${header_dir}/engine/graphics/opengl/vertexArray.hpp
     ${header_dir}/engine/graphics/opengl/buffer.hpp
     ${header_dir}/engine/graphics/opengl/vertexAttrib.hpp
-
 	${header_dir}/engine/math/vector3.hpp
 	${header_dir}/engine/math/matrix4x4.hpp
 	${header_dir}/engine/math/mathutils.hpp
 	${header_dir}/engine/math/vector2.hpp
+    ${header_dir}/engine/graphics/opengl/texture.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
@@ -60,8 +61,12 @@ if(WIN32)
 endif()
 
 if(UNIX AND NOT APPLE)
+    find_package(X11 REQUIRED)
+    find_package(Threads REQUIRED)
     set(libraries
         ${libraries}
+        ${X11_LIBRARIES}
+        ${X11_Xxf86vm_LIB}
         GL
         )
 endif()
