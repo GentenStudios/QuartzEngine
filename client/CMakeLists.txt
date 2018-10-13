@@ -22,7 +22,6 @@ set(headers
 
 
 set(include_dirs
-    ${dependencies}/glm
     ${dependencies}/glfw/include
     ${dependencies}/glew/include
     ${dependencies}/stb_image/

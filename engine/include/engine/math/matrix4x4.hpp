@@ -15,6 +15,13 @@ namespace phoenix {
 		 */
 		Matrix4x4();
 
+		Matrix4x4(
+			float m00, float m10, float m20, float m30,
+			float m01, float m11, float m21, float m31,
+			float m02, float m12, float m22, float m32,
+			float m03, float m13, float m23, float m33
+		);
+
 		/**
 		 * @brief Constructs a perspective projection matrix.
 		 * @param aspect The aspect ratio is the ratio of x (width) to y (height).
@@ -24,6 +31,8 @@ namespace phoenix {
 		 * @return The calculated perspective projection matrix.
 		 */
 		static Matrix4x4 perspective(float aspect, float fov, float far, float near);
+
+		static Matrix4x4 lookAt(const Vector3& eye, const Vector3& centre, const Vector3& up);
 	};
 
     /**

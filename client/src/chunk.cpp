@@ -2,12 +2,14 @@
 
 #include "client/chunk.hpp"
 
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <engine/math/vector3.hpp>
+#include <engine/math/vector2.hpp>
+#include <engine/math/matrix4x4.hpp>
 
 #include <iostream>
 
 using namespace pheonix::graphics;
+using namespace phoenix;
 
 extern const char* vertexShaderSource;
 const char* vertexShaderSource = "#version 330 core \n"
@@ -34,119 +36,119 @@ const char* fragmentShaderSource = "#version 330 core \n"
                                        "FragColor = tex;"
                                    "}";
 
-static const glm::vec3 CubeVerts[] = {
+static const Vector3 CubeVerts[] = {
     // front
-    glm::vec3(-1.f,-1.f,-1.f),
-    glm::vec3(1.f,-1.f,-1.f),
-    glm::vec3(1.f,1.f,-1.f),
-    glm::vec3(1.f,1.f,-1.f),
-    glm::vec3(-1.f,1.f,-1.f),
-    glm::vec3(-1.f,-1.f,-1.f),
+    Vector3(-1.f,-1.f,-1.f),
+    Vector3(1.f,-1.f,-1.f),
+    Vector3(1.f,1.f,-1.f),
+    Vector3(1.f,1.f,-1.f),
+    Vector3(-1.f,1.f,-1.f),
+    Vector3(-1.f,-1.f,-1.f),
 
     // back
-    glm::vec3(-1.f,-1.f,1.f),
-    glm::vec3(1.f,-1.f,1.f),
-    glm::vec3(1.f, 1.f,1.f),
-    glm::vec3(1.f, 1.f,1.f),
-    glm::vec3(-1.f, 1.f,1.f),
-    glm::vec3(-1.f, -1.f,1.f),
+    Vector3(-1.f,-1.f,1.f),
+    Vector3(1.f,-1.f,1.f),
+    Vector3(1.f, 1.f,1.f),
+    Vector3(1.f, 1.f,1.f),
+    Vector3(-1.f, 1.f,1.f),
+    Vector3(-1.f, -1.f,1.f),
 
     // left
-    glm::vec3(-1.f, 1.f,1.f),
-    glm::vec3(-1.f, 1.f,-1.f),
-    glm::vec3(-1.f, -1.f,-1.f),
-    glm::vec3(-1.f, -1.f,-1.f),
-    glm::vec3(-1.f, -1.f,1.f),
-    glm::vec3(-1.f, 1.f,1.f),
+    Vector3(-1.f, 1.f,1.f),
+    Vector3(-1.f, 1.f,-1.f),
+    Vector3(-1.f, -1.f,-1.f),
+    Vector3(-1.f, -1.f,-1.f),
+    Vector3(-1.f, -1.f,1.f),
+    Vector3(-1.f, 1.f,1.f),
 
     // right
-    glm::vec3(1.f, 1.f,1.f),
-    glm::vec3(1.f, 1.f,-1.f),
-    glm::vec3(1.f, -1.f,-1.f),
-    glm::vec3(1.f, -1.f,-1.f),
-    glm::vec3(1.f, -1.f,1.f),
-    glm::vec3(1.f, 1.f,1.f),
+    Vector3(1.f, 1.f,1.f),
+    Vector3(1.f, 1.f,-1.f),
+    Vector3(1.f, -1.f,-1.f),
+    Vector3(1.f, -1.f,-1.f),
+    Vector3(1.f, -1.f,1.f),
+    Vector3(1.f, 1.f,1.f),
 
     // bottom
-    glm::vec3(-1.f, -1.f, -1.f),
-    glm::vec3(1.f, -1.f, -1.f),
-    glm::vec3(1.f, -1.f,  1.f),
-    glm::vec3(1.f, -1.f,  1.f),
-    glm::vec3(-1.f, -1.f,  1.f),
-    glm::vec3(-1.f, -1.f, -1.f),
+    Vector3(-1.f, -1.f, -1.f),
+    Vector3(1.f, -1.f, -1.f),
+    Vector3(1.f, -1.f,  1.f),
+    Vector3(1.f, -1.f,  1.f),
+    Vector3(-1.f, -1.f,  1.f),
+    Vector3(-1.f, -1.f, -1.f),
 
     // top
-    glm::vec3(-1.f,  1.f, -1.f),
-    glm::vec3(1.f,  1.f, -1.f),
-    glm::vec3(1.f,  1.f,  1.f),
-    glm::vec3(1.f,  1.f,  1.f),
-    glm::vec3(-1.f,  1.f,  1.f),
-    glm::vec3(-1.f,  1.f, -1.f)
+    Vector3(-1.f,  1.f, -1.f),
+    Vector3(1.f,  1.f, -1.f),
+    Vector3(1.f,  1.f,  1.f),
+    Vector3(1.f,  1.f,  1.f),
+    Vector3(-1.f,  1.f,  1.f),
+    Vector3(-1.f,  1.f, -1.f)
 };
 
-static const glm::vec3 CubeVertEmpty[] = {
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f),
-    glm::vec3(0.f), glm::vec3(0.f), glm::vec3(0.f)
+static const Vector3 CubeVertEmpty[] = {
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f),
+    Vector3(0.f), Vector3(0.f), Vector3(0.f)
 };
 
-static const glm::vec2 CubeUV[] = {
+static const Vector2 CubeUV[] = {
     // front
-    glm::vec2(0.f, 0.f),
-    glm::vec2(1.f, 0.f),
-    glm::vec2(1.f, 1.f),
-    glm::vec2(1.f, 1.f),
-    glm::vec2(0.f, 1.f),
-    glm::vec2(0.f, 0.f),
+    Vector2(0.f, 0.f),
+    Vector2(1.f, 0.f),
+    Vector2(1.f, 1.f),
+    Vector2(1.f, 1.f),
+    Vector2(0.f, 1.f),
+    Vector2(0.f, 0.f),
 
     // back
-    glm::vec2(0.f, 0.f),
-    glm::vec2(1.f, 0.f),
-    glm::vec2(1.f, 1.f),
-    glm::vec2(1.f, 1.f),
-    glm::vec2(0.f, 1.f),
-    glm::vec2(0.f, 0.f),
+    Vector2(0.f, 0.f),
+    Vector2(1.f, 0.f),
+    Vector2(1.f, 1.f),
+    Vector2(1.f, 1.f),
+    Vector2(0.f, 1.f),
+    Vector2(0.f, 0.f),
 
     // left
-    glm::vec2(1.f, 0.f),
-    glm::vec2(1.f, 1.f),
-    glm::vec2(0.f, 1.f),
-    glm::vec2(0.f, 1.f),
-    glm::vec2(0.f, 0.f),
-    glm::vec2(1.f, 0.f),
+    Vector2(1.f, 0.f),
+    Vector2(1.f, 1.f),
+    Vector2(0.f, 1.f),
+    Vector2(0.f, 1.f),
+    Vector2(0.f, 0.f),
+    Vector2(1.f, 0.f),
 
     // right
-    glm::vec2(1.f, 0.f),
-    glm::vec2(1.f, 1.f),
-    glm::vec2(0.f, 1.f),
-    glm::vec2(0.f, 1.f),
-    glm::vec2(0.f, 0.f),
-    glm::vec2(1.f, 0.f),
+    Vector2(1.f, 0.f),
+    Vector2(1.f, 1.f),
+    Vector2(0.f, 1.f),
+    Vector2(0.f, 1.f),
+    Vector2(0.f, 0.f),
+    Vector2(1.f, 0.f),
 
     // bottom
-    glm::vec2(0.f, 1.f),
-    glm::vec2(1.f, 1.f),
-    glm::vec2(1.f, 0.f),
-    glm::vec2(1.f, 0.f),
-    glm::vec2(0.f, 0.f),
-    glm::vec2(0.f, 1.f),
+    Vector2(0.f, 1.f),
+    Vector2(1.f, 1.f),
+    Vector2(1.f, 0.f),
+    Vector2(1.f, 0.f),
+    Vector2(0.f, 0.f),
+    Vector2(0.f, 1.f),
 
     // top
-    glm::vec2(0.f, 1.f),
-    glm::vec2(1.f, 1.f),
-    glm::vec2(1.f, 0.f),
-    glm::vec2(1.f, 0.f),
-    glm::vec2(0.f, 0.f),
-    glm::vec2(0.f, 1.f)
+    Vector2(0.f, 1.f),
+    Vector2(1.f, 1.f),
+    Vector2(1.f, 0.f),
+    Vector2(1.f, 0.f),
+    Vector2(0.f, 0.f),
+    Vector2(0.f, 1.f)
 };
 
 
@@ -187,8 +189,8 @@ void Chunk::build() {
 //    if ( m_populated )
 //        this->clearOpenGL();
 
-    m_chunkVertices = new glm::vec3[ m_vertsInChunk ];
-    glm::vec2*   chunkUVs = new glm::vec2[ m_uvsInChunk ];
+    m_chunkVertices = new Vector3[ m_vertsInChunk ];
+    Vector2*   chunkUVs = new Vector2[ m_uvsInChunk ];
 
     for (int z = 0; z < m_chunkSize; z++)
     {
@@ -221,16 +223,16 @@ void Chunk::build() {
 
     glGenBuffers(1, &m_vertBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, m_vertsInChunk * sizeof(glm::vec3), m_chunkVertices, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_vertsInChunk * sizeof(Vector3), m_chunkVertices, GL_DYNAMIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
     glEnableVertexAttribArray(0);
 
     glGenBuffers(1, &m_uvBufferObject);
     glBindBuffer(GL_ARRAY_BUFFER, m_uvBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, m_uvsInChunk * sizeof(glm::vec2), chunkUVs, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, m_uvsInChunk * sizeof(Vector2), chunkUVs, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void*)0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), (void*)0);
     glEnableVertexAttribArray(1);
 
     unsigned int vertexShader;
@@ -275,26 +277,25 @@ void Chunk::build() {
 void Chunk::draw()
 {
     glBindVertexArray(m_vertArrayObject);
-
-    glm::mat4 projection = glm::mat4( 1.0f );
-    projection = glm::perspective( glm::radians( 45.0f ), 1280.f / 720.f, 0.1f, 100.0f );
-
-    glm::mat4 view = glm::lookAt(
-        glm::vec3(-25,50,3), // Camera is at (4,3,3), in World Space
-        glm::vec3(10,13,5), // and looks at the origin
-        glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-        );
-
-    glm::mat4 model = glm::mat4( 1.0f );
+	
+	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f );
+	
+    Matrix4x4 view = Matrix4x4::lookAt(
+        Vector3(-25,50,3), // Camera is at (4,3,3), in World Space
+        Vector3(10,13,5), // and looks at the origin
+        Vector3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+	);
+	
+	Matrix4x4 model;
 
     int modelLoc = glGetUniformLocation( m_shaderProgram, "model" );
-    glUniformMatrix4fv( modelLoc, 1, GL_FALSE, glm::value_ptr( model ) );
+    glUniformMatrix4fv( modelLoc, 1, GL_FALSE, &(model.elements[0]) );
 
     int viewLoc = glGetUniformLocation( m_shaderProgram, "view" );
-    glUniformMatrix4fv( viewLoc, 1, GL_FALSE, glm::value_ptr( view ) );
+    glUniformMatrix4fv( viewLoc, 1, GL_FALSE, &(view.elements[0]));
 
     int projectionLoc = glGetUniformLocation( m_shaderProgram, "projection" );
-    glUniformMatrix4fv( projectionLoc, 1, GL_FALSE, glm::value_ptr( projection ) );
+    glUniformMatrix4fv( projectionLoc, 1, GL_FALSE, &(projection.elements[0]));
 
     glUseProgram( m_shaderProgram );
     glBindVertexArray(m_vertArrayObject);
