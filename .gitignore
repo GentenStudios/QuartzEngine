@@ -49,8 +49,7 @@ BUILD/*
 CMakeLists.txt.user*
 
 # VSCode
-.vscode/settings.json
-.vscode/c_cpp_properties.json
+.vscode/*
 
 # Random GLEW file
-third_party/glew/glew.pc
+**/glew.pc**
