@@ -22,12 +22,16 @@ int main()
 	int nChannels, texWidth, texHeight;
 	unsigned char* data = stbi_load( "../dirt.png", &texWidth, &texHeight, &nChannels, 0);
 
-	pheonix::graphics::opengl::Texture* dirt = new pheonix::graphics::opengl::Texture( pheonix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth, texHeight, pheonix::graphics::opengl::Texture::Format::RGBA );
-	std::cout << glGetError() << std::endl;
-	dirt->bind( pheonix::graphics::opengl::Texture::Unit::T0 );
-	std::cout << glGetError() << std::endl;
+	int nChannels2, texWidth2, texHeight2;
+	unsigned char* data2 = stbi_load( "../rubbish.png", &texWidth2, &texHeight2, &nChannels2, 0);
 
+	pheonix::graphics::opengl::Texture* dirt = new pheonix::graphics::opengl::Texture( pheonix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth, texHeight, pheonix::graphics::opengl::Texture::Format::RGBA );
+	dirt->bind( 0 );
 	dirt->setData( data );
+
+	pheonix::graphics::opengl::Texture* wtf = new pheonix::graphics::opengl::Texture( pheonix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth2, texHeight2, pheonix::graphics::opengl::Texture::Format::RGBA );
+	wtf->bind( 1 );
+	wtf->setData( data2 );
 
 	pheonix::graphics::Chunk* chunk = new pheonix::graphics::Chunk();
 
@@ -44,7 +48,8 @@ int main()
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glClearColor( 0.1f, 0.3f, 0.9f, 1.0f );
 
-		//dirt->bind( pheonix::graphics::opengl::Texture::Unit::T0 );
+		wtf->bind( 0 );
+		dirt->bind( 1 );
 		std::cout << glGetError() << std::endl;
 
 		chunk->draw();

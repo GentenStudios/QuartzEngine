@@ -30,9 +30,10 @@ const char* fragmentShaderSource = "#version 330 core \n"
 								   "out vec4 FragColor; \n"
 								   "in vec2 UV; \n"
 								   "uniform sampler2D theTexture; \n"
+								   "uniform sampler2D theTexture2; \n"
 								   "void main() \n"
 								   "{ \n"
-								   "vec4 tex = texture(theTexture, UV);"
+								   "vec4 tex = mix( texture(theTexture, UV), texture(theTexture2, UV), 0.5 );"
 								   "FragColor = tex;"
 								   "}";
 
@@ -295,7 +296,11 @@ void Chunk::draw()
     int projectionLoc = glGetUniformLocation( m_shaderProgram, "projection" );
     glUniformMatrix4fv( projectionLoc, 1, GL_FALSE, &(projection.elements[0]));
 
+	glUniform1i(glGetUniformLocation(m_shaderProgram, "theTexture"), 0); // set it manually
+	glUniform1i(glGetUniformLocation(m_shaderProgram, "theTexture2"), 1); // set it manually
+
 	glUseProgram( m_shaderProgram );
+
 	m_vao->bind();
 
 	glDrawArrays(GL_TRIANGLES, 0, m_vertsInChunk);

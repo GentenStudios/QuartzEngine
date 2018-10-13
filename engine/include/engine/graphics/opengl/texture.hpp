@@ -66,15 +66,6 @@ namespace pheonix {
 					NONE
 				};
 
-				/// Holds UV coordinates
-				struct TextureUV
-				{
-					glm::vec2 bottomLeft;
-					glm::vec2 topLeft;
-					glm::vec2 topRight;
-					glm::vec2 bottomRight;
-				};
-
 				// Constructor and Destructor
 				Texture( Target target, int width, int height, Format format );
 				~Texture();
@@ -83,22 +74,20 @@ namespace pheonix {
 
 				void setCompressedData( unsigned char* pixels, unsigned int levels, unsigned int blockSize );
 
-				void bind( Unit unit );
+				void bind( unsigned int unit );
 
 				void unbind();
 
-				TextureUV uvCoords( float x, float y, float w, float h );
-
 				int getIndex() const;
 
-				unsigned int getId() const;
+				unsigned int getID() const;
 
 				inline bool isBound() { return m_isBound; }
 
 			private:
 				unsigned int m_id;
 				Target m_target;
-				Unit m_currentUnit;
+				unsigned int m_currentUnit;
 				int m_width;
 				int m_height;
 				Format m_format;

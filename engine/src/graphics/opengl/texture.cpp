@@ -7,11 +7,11 @@
 using namespace pheonix::graphics::opengl;
 
 Texture::Texture( Target target, int width, int height, Texture::Format format ) :
-	m_width(width),
-	m_height(height),
-	m_isBound(false),
-	m_pixelDataType(GLType::UBYTE),
-	m_currentUnit( Unit::T0 )
+	m_width( width ),
+	m_height( height ),
+	m_isBound( false ),
+	m_pixelDataType( GLType::UBYTE ),
+	m_currentUnit( 0 )
 {
 	glGenTextures( 1, &m_id );
 	m_target = target;
@@ -20,7 +20,7 @@ Texture::Texture( Target target, int width, int height, Texture::Format format )
 
 void Texture::setData( unsigned char* pixels )
 {
-	assert( m_isBound && "Texture has not been bound" );
+	bind( 0 );
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -40,7 +40,7 @@ void Texture::setData( unsigned char* pixels )
 
 void Texture::setCompressedData( unsigned char * pixels, unsigned int levels, unsigned int blockSize )
 {
-	assert(m_isBound && "Texture has not been bound");
+	bind( 0 );
 
 	int level;
 	int offset = 0;
@@ -68,13 +68,11 @@ void Texture::setCompressedData( unsigned char * pixels, unsigned int levels, un
 	}
 }
 
-void Texture::bind(Unit unit)
+void Texture::bind( unsigned int unit )
 {
-	assert(unit != Texture::Unit::NONE && "Texture unit cannot be NONE");
-
 	m_currentUnit = unit;
 
-	glActiveTexture( static_cast<GLuint>(unit) );
+	glActiveTexture( GL_TEXTURE0 + unit );
 	glBindTexture( static_cast<GLenum>(m_target), m_id );
 
 	m_isBound = true;
@@ -82,30 +80,21 @@ void Texture::bind(Unit unit)
 
 void Texture::unbind()
 {
-	if ( m_currentUnit != Texture::Unit::NONE )
-	{
-		glActiveTexture( static_cast<GLuint>(m_currentUnit) );
-	}
-
+	glActiveTexture( GL_TEXTURE0 + m_currentUnit );
 	glBindTexture( static_cast<GLenum>(m_target), 0 );
 
-	m_currentUnit = Texture::Unit::NONE;
+	m_currentUnit = 0;
 	m_isBound = false;
 }
 
-GLuint Texture::getId() const
+GLuint Texture::getID() const
 {
 	return m_id;
 }
 
 int Texture::getIndex() const
 {
-	if ( m_currentUnit == Texture::Unit::NONE )
-	{
-		return -1;
-	}
-
-	return static_cast<int>(static_cast<GLuint>(m_currentUnit) - static_cast<GLuint>(Texture::Unit::T0));
+	return static_cast<int>(m_currentUnit);
 }
 
 Texture::~Texture()
