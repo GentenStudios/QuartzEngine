@@ -34,6 +34,7 @@ set(headers
 
 	${header_dir}/engine/math/vector3.hpp
 	${header_dir}/engine/math/matrix4x4.hpp
+	${header_dir}/engine/math/mathutils.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
