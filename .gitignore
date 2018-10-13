@@ -47,5 +47,8 @@ build/*
 # QtCreator CMake
 CMakeLists.txt.user*
 
+*.swp
+*.log
+
 # Visual Studio
 .vs**/

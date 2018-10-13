@@ -16,7 +16,6 @@ set(headers
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
 set(include_dirs
-    ${dependencies}/glm
     ${header_dir}/../
     ${CMAKE_CURRENT_LIST_DIR}/../engine/include
 )

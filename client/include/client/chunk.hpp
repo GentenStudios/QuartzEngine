@@ -1,13 +1,14 @@
 #pragma once
 
 #include <engine/common.hpp>
+#include <engine/math/vector3.hpp>
+
 #include <engine/graphics/opengl/buffer.hpp>
 #include <engine/graphics/opengl/vertexArray.hpp>
 
 #include <vector>
 
 #include <GL/glew.h>
-#include <glm/glm.hpp>
 
 namespace pheonix {
 	namespace graphics {
@@ -45,15 +46,15 @@ namespace pheonix {
 		private:
 			void setChunkSize( unsigned int chunkSize );
 
-			void blockAddFace(glm::vec3* vertices, int x, int y, int z, BlockFace face);
-			void blockRemoveFace(glm::vec3* vertices, int x, int y, int z, BlockFace face);
-
+            void blockAddFace(phoenix::Vector3* vertices, int x, int y, int z, BlockFace face);
+            void blockRemoveFace(phoenix::Vector3* vertices, int x, int y, int z, BlockFace face);
 			unsigned int m_shaderProgram;
 
 			int m_chunkSize, m_vertsInChunk, m_uvsInChunk;
 
 			glm::vec3* m_chunkVertices;
 
+      phoenix::Vector3* m_chunkVertices;
 			bool m_populated;
 
 			opengl::VertexArray* m_vao;
