@@ -13,6 +13,7 @@ set(sources
 
     ${source_dir}/graphics/opengl/vertexArray.cpp
     ${source_dir}/graphics/opengl/buffer.cpp
+    ${source_dir}/graphics/opengl/texture.cpp
 )
 
 set(headers
