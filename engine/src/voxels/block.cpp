@@ -9,7 +9,7 @@ Block::Block( std::string id, std::string name, BlockType type )
     this->m_id = id;
     this->m_name = name;
     this->m_blockType = type;
-    m_blockLibrary.insert(this);
+    BlockRegistry::registerBlock(this);
 };
 
 std::string Block::getID()
@@ -27,11 +27,18 @@ BlockType Block::getBlockType()
     return this->m_blockType;
 };
 
-Block getBlockByID(std:string id){
-    for(int i=0; i < m_blockLibrary.size(); i++){
-        if (m_blockLibrary[i].m_id == id){
-            return m_blockLibrary[i];
-        }
+Block BlockRegistry::getBlockByID(std:string id)
+{
+for(int i=1; i < m_blockLibrary.size(); i++){
+    if (m_blockLibrary[i].m_id == id){
+        return m_blockLibrary[i];
     }
-    return NULL;
+    return m_blockLibrary[0];
 };
+
+void BlockRegistry::registerBlock(Block block).
+{
+m_blockLibrary.push_back(block);
+}
+
+BlockRegistry::registerBlock(Block::Block("null", "null", "0"));

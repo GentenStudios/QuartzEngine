@@ -7,8 +7,6 @@ namespace pheonix {
 
     namespace voxels{
 
-        m_blockLibrary std::vector<Block>;
-
         /// @brief This defines what state of matter the block is
         enum class BlockType
         {
@@ -58,7 +56,16 @@ namespace pheonix {
             //??????? textures; //String? Array of strings? Array of file pointers? Image class?
         };
 
-        Block getBlockByID(std::string id);
+        class BlockRegistry
+        {
+        public:
+            Block getBlockByID(std::string id);
+            void registerBlock(Block block);
+
+        private:
+            std::vector<Block> m_blockLibrary;
+        };
+
 
     }
 
