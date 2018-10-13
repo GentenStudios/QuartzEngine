@@ -27,7 +27,7 @@ BlockType Block::getBlockType()
     return this->m_blockType;
 };
 
-getBlockByID(std:string id){
+Block getBlockByID(std:string id){
     for(int i=0; i < m_blockLibrary.size(); i++){
         if (m_blockLibrary[i].m_id == id){
             return m_blockLibrary[i];

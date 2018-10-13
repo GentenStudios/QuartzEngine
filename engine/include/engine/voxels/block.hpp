@@ -58,7 +58,7 @@ namespace pheonix {
             //??????? textures; //String? Array of strings? Array of file pointers? Image class?
         };
 
-        getBlockByID(std::string id);
+        Block getBlockByID(std::string id);
 
     }
 
