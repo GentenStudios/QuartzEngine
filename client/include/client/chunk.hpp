@@ -52,9 +52,8 @@ namespace pheonix {
 
 			int m_chunkSize, m_vertsInChunk, m_uvsInChunk;
 
-			glm::vec3* m_chunkVertices;
+			phoenix::Vector3* m_chunkVertices;
 
-      phoenix::Vector3* m_chunkVertices;
 			bool m_populated;
 
 			opengl::VertexArray* m_vao;

@@ -26,7 +26,7 @@ Matrix4x4 Matrix4x4::perspective(float aspect, float fov, float far, float near)
 
 	float fovr = MathUtils::toRadians(fov);
 
-	float tanHalfFovy = std::tanf(fovr / 2.f);
+	float tanHalfFovy = std::tan(fovr / 2.f);
 
 	mat4.elements[0] = 1.f / (aspect * tanHalfFovy);
 	mat4.elements[INDEX2D(1, 1)] = 1.f / tanHalfFovy;

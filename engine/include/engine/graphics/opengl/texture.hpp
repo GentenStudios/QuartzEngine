@@ -2,7 +2,6 @@
 #include "engine/graphics/opengl/glTypes.hpp"
 
 #include <GL/glew.h>
-#include <glm/glm.hpp>
 
 namespace pheonix {
 	namespace graphics {

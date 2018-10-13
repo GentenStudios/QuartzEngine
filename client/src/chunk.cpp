@@ -7,6 +7,7 @@
 #include <engine/math/matrix4x4.hpp>
 
 #include <iostream>
+#include <cstring>
 
 using namespace pheonix::graphics;
 using namespace phoenix;
@@ -193,7 +194,7 @@ void Chunk::build() {
 	//        this->clearOpenGL();
 
   m_chunkVertices = new Vector3[ m_vertsInChunk ];
-  Vector2*   chunkUVs = new Vector2[ m_uvsInChunk ];
+  Vector2* chunkUVs = new Vector2[ m_uvsInChunk ];
 
 	for (int z = 0; z < m_chunkSize; z++)
 	{
@@ -224,12 +225,12 @@ void Chunk::build() {
 	m_vao->bind();
   
 	m_vbo->bind();
-	m_vbo->setData( static_cast<void*>(m_chunkVertices), m_vertsInChunk * sizeof(glm::vec3) );
+	m_vbo->setData( static_cast<void*>(m_chunkVertices), m_vertsInChunk * sizeof(Vector3) );
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	m_uvbo->bind();
-	m_uvbo->setData( static_cast<void*>(chunkUVs), m_uvsInChunk * sizeof(glm::vec2) );
+	m_uvbo->setData( static_cast<void*>(chunkUVs), m_uvsInChunk * sizeof(Vector2) );
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), (void*)0);
 	glEnableVertexAttribArray(1);
 
