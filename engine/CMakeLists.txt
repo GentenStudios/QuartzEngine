@@ -53,8 +53,12 @@ if(WIN32)
 endif()
 
 if(UNIX AND NOT APPLE)
+    find_package(X11 REQUIRED)
+    find_package(Threads REQUIRED)
     set(libraries
         ${libraries}
+        ${X11_LIBRARIES}
+        ${X11_Xxf86vm_LIB}
         GL
         )
 endif()
