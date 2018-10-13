@@ -29,7 +29,7 @@ set(headers
 
     ${header_dir}/engine/voxels/chunk.hpp
     ${header_dir}/engine/voxels/block.hpp
-)
+        include/engine/voxels/mapblock.hpp src/voxels/mapblock.cpp)
 
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)

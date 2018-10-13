@@ -25,7 +25,7 @@ namespace pheonix {
              * @param[in] The state of block rotation
              * @param[in] The block type (SOLID, LIQUID, GAS)
              */
-            Block( std::string id, std::string name, std::string description, int rotation, BlockType type );
+            Block( std::string id, std::string name, BlockType type );
             ~Block();
 
             /**
@@ -40,20 +40,8 @@ namespace pheonix {
              */
             std::string getName();
 
-            /// @brief[in] Getter, returns the breif block description
-            /**
-            * @brief getDescription - Get description of the block
-            * @return
-            */
-            std::string getDescription();
-
             /// @brief[in] Getter, Returns the block type (Solid, Liquid, Gas)
             BlockType getBlockType();
-
-            /// @brief[in] Getter, Returns the rotation value of the block
-            int getRotation();
-            /// @brief[in] Setter, Sets the rotation value of the block
-            void setRotation( int rotation );
 
             //??????? getTextures();
 
@@ -63,10 +51,6 @@ namespace pheonix {
             /// @brief Name that will display to the user
             std::string m_name;
             /// @brief Short description of the block
-            std::string m_description;
-            /// @brief Direction block is facing
-            int m_rotation;
-            /// @brief What type of block are we dealing with?
             BlockType m_blockType;
             //??????? textures; //String? Array of strings? Array of file pointers? Image class?
         };
