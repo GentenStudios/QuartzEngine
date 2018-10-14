@@ -57,7 +57,16 @@ namespace phoenix {
 		 */
 		static float   dot(const Vector3& a, const Vector3& b);
 
+		/**
+		 * @brief Adds another vector to this vector. Modifys this vector in place
+		 * @param other The vector to add to this.
+		 */
 		void operator+=(const Vector3& other);
+
+		/**
+		 * @brief Subtracts another vector from this vector. Modifys this vector in place.
+		 * @param other The vector to subtract from this vector.
+		 */
 		void operator-=(const Vector3& other);
 	};
 
