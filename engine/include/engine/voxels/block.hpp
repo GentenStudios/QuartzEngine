@@ -24,8 +24,6 @@ namespace pheonix {
              * @brief Initialise a block
              * @param[in] The unique id for the block, should be in format mod:id to eliminate conflict
              * @param[in] The player friendly name of the block
-             * @param[in] A short description of what the block is
-             * @param[in] The state of block rotation
              * @param[in] The block type (SOLID, LIQUID, GAS)
              */
             Block( std::string id, std::string name, BlockType type );
@@ -43,10 +41,20 @@ namespace pheonix {
              */
             std::string getName();
 
-            /// @brief[in] Getter, Returns the block type (Solid, Liquid, Gas)
+            /**
+             * @brief getBlockType - Get the matter state type of the block
+             * @return Return the state of matter the block is
+             */
             BlockType getBlockType();
 
-            //??????? getTextures();
+        //  ??????? getTextures();
+
+            /**
+             * @brief getBlockByID - Get a block object based off its unique ID
+             * @param[in] The unique ID of the block you are trying to find
+             * @return Returns a Block matching the supplied ID
+             */
+            static Block getBlockByID(std::string id);
 
         private:
             /// @brief Unique id using the convention mod:name
@@ -55,20 +63,10 @@ namespace pheonix {
             std::string m_name;
             /// @brief Short description of the block
             BlockType m_blockType;
-            //??????? textures; //String? Array of strings? Array of file pointers? Image class?
-        };
-
-        class BlockRegistry
-        {
-        public:
-            BlockRegistry();
-            ~BlockRegistry();
+        //  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
             
-            Block getBlockByID(std::string id);
-            void registerBlock(Block* block);
-
-        private:
-            std::vector<Block*> m_blockLibrary;
+            //A registry to keep track of all the registered blocks
+            static std::vector<Block*> m_blockLibrary;
         };
 
     }
