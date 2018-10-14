@@ -56,6 +56,9 @@ namespace phoenix {
 		 * @return The dot product of `a` and `b`
 		 */
 		static float   dot(const Vector3& a, const Vector3& b);
+
+		void operator+=(const Vector3& other);
+		void operator-=(const Vector3& other);
 	};
 
 	/**
