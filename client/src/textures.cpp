@@ -3,7 +3,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image/stb_image.h>
 
-using namespace pheonix::graphics;
+using namespace phoenix::graphics;
 
 void Texture::loadTex( std::string textureFilepath )
 {

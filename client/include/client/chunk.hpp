@@ -10,7 +10,7 @@
 
 #include <GL/glew.h>
 
-namespace pheonix {
+namespace phoenix {
 	namespace graphics {
 
 		enum class BlockFace

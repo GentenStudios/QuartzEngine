@@ -7,7 +7,7 @@
 #include <string>
 
 
-namespace pheonix
+namespace phoenix
 {
 	namespace graphics {
 

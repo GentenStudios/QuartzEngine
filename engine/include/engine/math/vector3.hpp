@@ -1,6 +1,7 @@
 #pragma once
 
 namespace phoenix {
+
 	/**
 	 * @brief Represents a vector with 3 float components: x, y, z
 	 */
@@ -89,4 +90,5 @@ namespace phoenix {
 	 * @return The quotient of `left` and `right`
 	 */
 	Vector3 operator/(const Vector3& left, const Vector3& right);
+
 }

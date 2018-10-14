@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Pheonix_Launcher)
+project(Phoenix_Launcher)
 
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(header_dir ${PROJECT_SOURCE_DIR}/include/launcher)
@@ -21,7 +21,7 @@ set(include_dirs
 )
 
 set(libraries
-    Pheonix_Engine
+    Phoenix_Engine
 )
 
 # Link the executable

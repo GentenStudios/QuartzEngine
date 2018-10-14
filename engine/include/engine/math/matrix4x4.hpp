@@ -3,6 +3,7 @@
 #include "engine/math/vector3.hpp"
 
 namespace phoenix {
+
 	/**
 	 * @brief Represents a column major 4x4 matrix of floats.
 	 */
@@ -58,4 +59,5 @@ namespace phoenix {
      * @return Product of `left` and `right`
      */
 	Vector3 operator*(const Matrix4x4& left, const Vector3& right);
+
 }

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Pheonix_Engine)
+project(Phoenix_Engine)
 
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(header_dir ${PROJECT_SOURCE_DIR}/include)
@@ -13,18 +13,23 @@ set(sources
 
     ${source_dir}/graphics/opengl/vertexArray.cpp
     ${source_dir}/graphics/opengl/buffer.cpp
-	${source_dir}/math/vector3.cpp
-	${source_dir}/math/matrix4x4.cpp
-	${source_dir}/math/vector2.cpp
+    ${source_dir}/math/vector3.cpp
+    ${source_dir}/math/matrix4x4.cpp
+    ${source_dir}/math/vector2.cpp
 
     ${source_dir}/graphics/opengl/texture.cpp
-)
+    )
 
 set(headers
     ${header_dir}/engine/common.hpp
     ${header_dir}/engine/os.hpp
     ${header_dir}/engine/engine.hpp
     
+    ${header_dir}/engine/math/vector3.hpp
+    ${header_dir}/engine/math/matrix4x4.hpp
+    ${header_dir}/engine/math/mathutils.hpp
+    ${header_dir}/engine/math/vector2.hpp
+
     ${header_dir}/engine/utils/logging.hpp
 
     ${header_dir}/engine/graphics/window.hpp
@@ -33,12 +38,9 @@ set(headers
     ${header_dir}/engine/graphics/opengl/vertexArray.hpp
     ${header_dir}/engine/graphics/opengl/buffer.hpp
     ${header_dir}/engine/graphics/opengl/vertexAttrib.hpp
-	${header_dir}/engine/math/vector3.hpp
-	${header_dir}/engine/math/matrix4x4.hpp
-	${header_dir}/engine/math/mathutils.hpp
-	${header_dir}/engine/math/vector2.hpp
     ${header_dir}/engine/graphics/opengl/texture.hpp
-)
+
+    )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
@@ -46,18 +48,18 @@ set(include_dirs
     ${dependencies}/glfw/include
     ${dependencies}/glew/include
     ${header_dir}
-)
+    )
 
 set(libraries
     glfw
     glew_s
-)
+    )
 
 if(WIN32)
     set(libraries
         ${libraries}
         OpenGL32.lib
-    )
+        )
 endif()
 
 if(UNIX AND NOT APPLE)

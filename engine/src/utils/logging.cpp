@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <ctime>
 
-using namespace pheonix;
+using namespace phoenix;
 
 // Declarations to get rid of compiler errors
 std::string Logger::m_logFile;
@@ -31,7 +31,7 @@ const char* Logger::LogVerbosityLookup[] = {
         "DEBUG"
 };
 
-void Logger::init( std::string logFile = "logs/pheonix.log", LogVerbosity verbosityLevel = LogVerbosity::INFO)
+void Logger::init( std::string logFile = "logs/phoenix.log", LogVerbosity verbosityLevel = LogVerbosity::INFO)
 {
     // Setting the file names
     Logger::m_logFile = logFile;
