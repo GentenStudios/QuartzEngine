@@ -2,12 +2,15 @@
 
 using namespace pheonix::voxels;
 
+// Declaration to remove compiler errors, due to it being static.
+std::vector<Block*> BlockLibrary::m_blockLibrary;
+
 Block::Block( std::string id, std::string name, BlockType type )
 {
-    this->m_id = id;
-    this->m_name = name;
-    this->m_blockType = type;
-    m_blockLibrary.push_back(this);
+    m_id = id;
+    m_name = name;
+    m_blockType = type;
+    BlockLibrary::registerBlock(this);
 };
 
 Block::~Block()
@@ -17,20 +20,25 @@ Block::~Block()
 
 std::string Block::getID()
 {
-    return this->m_id;
+    return m_id;
 };
 
 std::string Block::getName()
 {
-    return this->m_name;
+    return m_name;
 };
 
 BlockType Block::getBlockType()
 {
-    return this->m_blockType;
+    return m_blockType;
 };
 
-Block Block::getBlockByID(std::string id)
+void BlockLibrary::registerBlock(Block* block)
+{
+    m_blockLibrary.push_back(block);
+}
+
+Block BlockLibrary::getBlockByID(std::string id)
 {
     for( int i = 1; i < m_blockLibrary.size(); i++ )
     {

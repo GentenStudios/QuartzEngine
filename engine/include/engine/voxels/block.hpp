@@ -49,13 +49,6 @@ namespace pheonix {
 
         //  ??????? getTextures();
 
-            /**
-             * @brief getBlockByID - Get a block object based off its unique ID
-             * @param[in] The unique ID of the block you are trying to find
-             * @return Returns a Block matching the supplied ID
-             */
-            static Block getBlockByID(std::string id);
-
         private:
             /// @brief Unique id using the convention mod:name
             std::string m_id;
@@ -63,10 +56,26 @@ namespace pheonix {
             std::string m_name;
             /// @brief Short description of the block
             BlockType m_blockType;
-        //  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
-            
-            //A registry to keep track of all the registered blocks
+            //  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
+            ;
+        };
+
+        class BlockLibrary
+        {
+        public:
+            /**
+             * @brief getBlockByID - Get a block object based off its unique ID
+             * @param[in] The unique ID of the block you are trying to find
+             * @return Returns a Block matching the supplied ID
+             */
+            static Block getBlockByID(std::string id);
+
+            static void registerBlock(Block* block);
+
+        private:
+            // A registry to keep track of all the registered blocks
             static std::vector<Block*> m_blockLibrary;
+
         };
 
     }
