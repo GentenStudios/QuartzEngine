@@ -51,6 +51,20 @@ void Vector3::set(const float& a)
 	this->z = a;
 }
 
+void Vector3::operator+=(const Vector3& other)
+{
+	x += other.x;
+	y += other.y;
+	z += other.z;
+}
+
+void Vector3::operator-=(const Vector3& other)
+{
+	x -= other.x;
+	y -= other.y;
+	z -= other.z;
+}
+
 Vector3 phoenix::operator+(const Vector3& left, const Vector3& right)
 {
 	return {

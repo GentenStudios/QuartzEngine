@@ -34,8 +34,8 @@ const char* fragmentShaderSource = "#version 330 core \n"
 								   "uniform sampler2D theTexture2; \n"
 								   "void main() \n"
 								   "{ \n"
-								   "vec4 tex = mix( texture(theTexture, UV), texture(theTexture2, UV), 0.5 );"
-								   "FragColor = tex;"
+								   "vec4 tex = mix( texture(theTexture, UV), texture(theTexture2, UV), 0.5 );\n"
+								   "FragColor = tex;\n"
 								   "}";
 
 static const Vector3 CubeVerts[] = {
@@ -274,17 +274,13 @@ void Chunk::build() {
 
 }
 
-void Chunk::draw()
+void Chunk::draw(phoenix::FreeRoamCamera& camera)
 {
   m_vao->bind();
 
 	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f );
 	
-    Matrix4x4 view = Matrix4x4::lookAt(
-        Vector3(-25,50,3), // Camera is at (4,3,3), in World Space
-        Vector3(10,13,5), // and looks at the origin
-        Vector3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-	);
+	Matrix4x4 view = camera.calculateViewMatrix();
 	
 	Matrix4x4 model;
 

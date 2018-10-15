@@ -22,6 +22,16 @@ Window::~Window()
     glfwDestroyWindow( m_window );
 }
 
+int Window::getKeyState(int key)
+{
+	return glfwGetKey(m_window, key);
+}
+
+void Window::setCursorState(CursorState state)
+{
+	glfwSetInputMode(m_window, GLFW_CURSOR, static_cast<int>(state));
+}
+
 XyData Window::getCursorPos() const
 {
     double x, y;
@@ -82,4 +92,12 @@ void Window::pollEvents()
     {
         setShouldClose( true );
     }
+}
+
+XyData Window::getWindowSize() const
+{
+	int w, h;
+	glfwGetWindowSize(m_window, &w, &h);
+
+	return { w, h };
 }

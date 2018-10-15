@@ -18,7 +18,8 @@ set(sources
     ${source_dir}/math/vector2.cpp
 
     ${source_dir}/graphics/opengl/texture.cpp
-    )
+    ${source_dir}/camera.cpp
+)
 
 set(headers
     ${header_dir}/engine/common.hpp
@@ -39,8 +40,8 @@ set(headers
     ${header_dir}/engine/graphics/opengl/buffer.hpp
     ${header_dir}/engine/graphics/opengl/vertexAttrib.hpp
     ${header_dir}/engine/graphics/opengl/texture.hpp
-
-    )
+  	${header_dir}/engine/camera.hpp
+)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
