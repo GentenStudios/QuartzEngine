@@ -16,7 +16,7 @@ namespace phoenix {
 		 * @brief Contructs the camera, setting the window that input should be captured relative to.
 		 * @param window The GLFWwindow that input should be captured from/relative to.
 		 */
-		FreeRoamCamera(pheonix::graphics::Window *window);
+		FreeRoamCamera(phoenix::graphics::Window *window);
 
 		/**
 		 * @brief Updates this cameras state (rotation, position etc..). If `enabled` is false then this function does no work.
@@ -38,6 +38,6 @@ namespace phoenix {
 		Vector3 m_up;
 		Vector3 m_direction;
 
-		pheonix::graphics::Window *m_window;
+		phoenix::graphics::Window *m_window;
 	};
 }

@@ -4,15 +4,15 @@
 #include <cmath>
 
 using namespace phoenix;
-using namespace pheonix::graphics;
+using namespace phoenix::graphics;
 
 const float MOUSE_SENSITIVITY = 0.005f;
 const float MOVE_SPEED = 2.f;
 
-FreeRoamCamera::FreeRoamCamera(pheonix::graphics::Window* window)
+FreeRoamCamera::FreeRoamCamera(phoenix::graphics::Window* window)
 	: m_window(window), enabled(true)
 {
-	window->setCursorState(pheonix::graphics::CursorState::DISABLED);
+	window->setCursorState(phoenix::graphics::CursorState::DISABLED);
 }
 
 static XyData _lastMousePos = { 0, 0 };
