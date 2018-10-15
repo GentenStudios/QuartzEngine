@@ -10,18 +10,25 @@ namespace phoenix {
 
 			struct VertexAttrib
 			{
-				unsigned int location; ///< Location of attrib, used in shader.
+				unsigned int location;	///< Location of attrib, used in shader.
+				int components;			///< Number of componenets in the attribute
+				GLType type;			///< Attribute Data Type
+				int stride;				///< The stride.
+				int offset;				///< The Offset
 
-				int components; ///< Number of componenets in the attribute
-
-				GLType type; ///< Attribute Data Type
-
-				VertexAttrib( unsigned int attribLocation, int attribNumComp, GLType attribType) : location( attribLocation ), components( attribNumComp ), type( attribType )
+				VertexAttrib(unsigned int attribLocation, int attribNumComp, GLType attribType, int attribStride, int attribOffset) :
+					location( attribLocation ),
+					components( attribNumComp ),
+					type( attribType ),
+					stride( attribStride ),
+					offset( attribOffset )
 				{
+					glVertexAttribPointer(location, components, static_cast<GLenum>(attribType), GL_FALSE, attribStride, reinterpret_cast<void*>(offset));
 				}
 
-				VertexAttrib( unsigned int attribLocation, int attribNumComp ) : VertexAttrib( attribLocation, attribNumComp, GLType::FLOAT )
+				void enable()
 				{
+					glEnableVertexAttribArray(location);
 				}
 			};
 

@@ -1,5 +1,6 @@
 #include <engine/common.hpp>
 
+#include <engine/graphics/opengl/vertexAttrib.hpp>
 #include "client/chunk.hpp"
 
 #include <engine/math/vector3.hpp>
@@ -226,13 +227,13 @@ void Chunk::build() {
   
 	m_vbo->bind();
 	m_vbo->setData( static_cast<void*>(m_chunkVertices), m_vertsInChunk * sizeof(Vector3) );
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
-	glEnableVertexAttribArray(0);
+	opengl::VertexAttrib chunkVertAttribs( 0, 3, opengl::GLType::FLOAT, sizeof(Vector3), 0);
+	chunkVertAttribs.enable();
 
 	m_uvbo->bind();
 	m_uvbo->setData( static_cast<void*>(chunkUVs), m_uvsInChunk * sizeof(Vector2) );
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vector2), (void*)0);
-	glEnableVertexAttribArray(1);
+	opengl::VertexAttrib uvAttribs( 1, 2, opengl::GLType::FLOAT, sizeof(Vector2), 0 );
+	uvAttribs.enable();
 
 	unsigned int vertexShader;
 	vertexShader = glCreateShader( GL_VERTEX_SHADER );
