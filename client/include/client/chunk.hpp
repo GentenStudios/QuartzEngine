@@ -5,6 +5,7 @@
 
 #include <engine/graphics/opengl/buffer.hpp>
 #include <engine/graphics/opengl/vertexArray.hpp>
+#include <engine/graphics/opengl/shader.hpp>
 #include <engine/camera.hpp>
 
 #include <vector>
@@ -48,8 +49,7 @@ namespace phoenix {
 			void setChunkSize( unsigned int chunkSize );
 
             void blockAddFace(phoenix::Vector3* vertices, int x, int y, int z, BlockFace face);
-            void blockRemoveFace(phoenix::Vector3* vertices, int x, int y, int z, BlockFace face);
-			unsigned int m_shaderProgram;
+			void blockRemoveFace(phoenix::Vector3* vertices, int x, int y, int z, BlockFace face);
 
 			int m_chunkSize, m_vertsInChunk, m_uvsInChunk;
 
@@ -60,6 +60,8 @@ namespace phoenix {
 			opengl::VertexArray* m_vao;
 			opengl::Buffer* m_vbo;
 			opengl::Buffer* m_uvbo;
+
+			opengl::Shader m_shader;
 
 			const int vertInCube = 36;
 			const int uvInCube = 36;

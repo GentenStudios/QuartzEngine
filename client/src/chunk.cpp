@@ -235,71 +235,26 @@ void Chunk::build() {
 	opengl::VertexAttrib uvAttribs( 1, 2, opengl::GLType::FLOAT, sizeof(Vector2), 0 );
 	uvAttribs.enable();
 
-	unsigned int vertexShader;
-	vertexShader = glCreateShader( GL_VERTEX_SHADER );
-	glShaderSource( vertexShader, 1, &vertexShaderSource, nullptr );
-	glCompileShader( vertexShader );
-
-	int success;
-	char infoLog[512];
-	glGetShaderiv( vertexShader, GL_COMPILE_STATUS, &success );
-
-	if ( !success ) {
-		glGetShaderInfoLog( vertexShader, 512, nullptr, infoLog );
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
-	glShaderSource( fragmentShader, 1, &fragmentShaderSource, nullptr );
-	glCompileShader( fragmentShader );
-
-	int success2;
-	char infoLog2[512];
-	glGetShaderiv( fragmentShader, GL_COMPILE_STATUS, &success2 );
-
-	if ( !success2 ) {
-		glGetShaderInfoLog( fragmentShader, 512, nullptr, infoLog2 );
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog2 << std::endl;
-	}
-
-	m_shaderProgram = glCreateProgram();
-
-	glAttachShader( m_shaderProgram, vertexShader );
-	glAttachShader( m_shaderProgram, fragmentShader );
-	glLinkProgram( m_shaderProgram );
-
-	glDeleteShader( vertexShader );
-	glDeleteShader( fragmentShader );
-
+	m_shader.compileShaders(vertexShaderSource, fragmentShaderSource);
 }
 
 void Chunk::draw(phoenix::FreeRoamCamera& camera)
 {
-  m_vao->bind();
-
 	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f );
-	
+
 	Matrix4x4 view = camera.calculateViewMatrix();
-	
+
 	Matrix4x4 model;
 
-    int modelLoc = glGetUniformLocation( m_shaderProgram, "model" );
-    glUniformMatrix4fv( modelLoc, 1, GL_FALSE, &(model.elements[0]) );
-
-    int viewLoc = glGetUniformLocation( m_shaderProgram, "view" );
-    glUniformMatrix4fv( viewLoc, 1, GL_FALSE, &(view.elements[0]));
-
-    int projectionLoc = glGetUniformLocation( m_shaderProgram, "projection" );
-    glUniformMatrix4fv( projectionLoc, 1, GL_FALSE, &(projection.elements[0]));
-
-	glUniform1i(glGetUniformLocation(m_shaderProgram, "theTexture"), 0); // set it manually
-	glUniform1i(glGetUniformLocation(m_shaderProgram, "theTexture2"), 1); // set it manually
-
-	glUseProgram( m_shaderProgram );
-
 	m_vao->bind();
+	m_shader.use();
+
+	m_shader.setMat4("model", model);
+	m_shader.setMat4("view", view);
+	m_shader.setMat4("projection", projection);
+
+	m_shader.setInt("theTexture", 0);
+	m_shader.setInt("theTexture2", 1);
 
 	glDrawArrays(GL_TRIANGLES, 0, m_vertsInChunk);
 }
