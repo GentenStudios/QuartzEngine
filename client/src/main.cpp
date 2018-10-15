@@ -13,25 +13,6 @@
 #include "client/chunk.hpp"
 #include "client/textures.hpp"
 
-//extern const char* vertexShaderSource;
-//const char* vertexShaderSource = "#version 330 core \n"
-//                                 "layout (location = 0) in vec3 aPos; \n"
-//                                 "uniform mat4 model; \n"
-//                                 "uniform mat4 view; \n"
-//                                 "uniform mat4 projection; \n"
-//                                 "void main() \n"
-//                                 "{ \n"
-//                                     "gl_Position = projection * view * model * vec4(aPos, 1.0); \n"
-//                                 "}";
-
-//extern const char* fragmentShaderSource;
-//const char* fragmentShaderSource = "#version 330 core \n"
-//                                   "out vec4 FragColor; \n"
-//                                   "void main() \n"
-//                                   "{ \n"
-//                                       "FragColor = vec4(0.3f, 0.6f, 0.9f, 1.0f);"
-//                                   "}";
-
 int main()
 {
     pheonix::graphics::Window* window = new pheonix::graphics::Window( 1280, 720, std::string("Project Pheonix") );

@@ -33,6 +33,7 @@
 
 # Build folders
 build/*
+BUILD/*
 **/COMPILE/bin
 **/COMPILE/lib
 **/docs/html
@@ -46,3 +47,9 @@ build/*
 
 # QtCreator CMake
 CMakeLists.txt.user*
+
+# VSCode
+.vscode/*
+
+# Random GLEW file
+**/glew.pc**
