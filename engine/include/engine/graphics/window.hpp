@@ -32,6 +32,16 @@ namespace pheonix {
 		};
 
 		/**
+		 * @brief Represents the current state of the cursor.
+		 */
+		enum class CursorState
+		{
+			DISABLED = GLFW_CURSOR_DISABLED, 
+			HIDDEN = GLFW_CURSOR_HIDDEN,
+			NORMAL = GLFW_CURSOR_NORMAL
+		};
+
+		/**
 		 * @brief Class for Window objects.
 		 */
 		class Window
@@ -45,6 +55,14 @@ namespace pheonix {
 			 */
 			Window( int width, int height, std::string title );
 			~Window();
+
+			int getKeyState(int key);
+
+			/*
+			 * @brief Set's the state of the cursor.
+			 * @param state The state to set the cursor to.
+			 */
+			void setCursorState(CursorState state);
 
 			/**
 			 * @brief Gets the cursor position

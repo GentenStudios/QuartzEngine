@@ -2,8 +2,10 @@
 
 #include <engine/graphics/window.hpp>
 #include <engine/graphics/opengl/texture.hpp>
+#include <engine/camera.hpp>
 
 #include <stb_image/stb_image.h>
+#include <thread>
 
 #include "client/chunk.hpp"
 #include "client/textures.hpp"
@@ -35,6 +37,8 @@ int main()
 
 	pheonix::graphics::Chunk* chunk = new pheonix::graphics::Chunk();
 
+	phoenix::FreeRoamCamera camera(window);
+
 	DEBUG( "POPULATING CHUNK!" );
 	chunk->populateChunk(16);
 	DEBUG( "CHUNK POPULATED" );
@@ -45,6 +49,8 @@ int main()
 	while ( !window->shouldClose() ) {
 		window->pollEvents();
 
+		camera.tick(0.16f);
+
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glClearColor( 0.1f, 0.3f, 0.9f, 1.0f );
 
@@ -52,9 +58,13 @@ int main()
 		dirt->bind( 1 );
 		std::cout << glGetError() << std::endl;
 
-		chunk->draw();
+		chunk->draw(camera);
 
 		window->swapBuffers();
+
+		// Lock to 60FPS for now (until a proper game loop is implemented)
+		using namespace std::chrono_literals;
+		std::this_thread::sleep_for(16ms);
 	}
 
 	INFO( "CLIENT QUITTING" );

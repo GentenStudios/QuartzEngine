@@ -3,7 +3,7 @@
 #include "engine/math/vector3.hpp"
 #include "engine/math/matrix4x4.hpp"
 
-#include <GLFW/glfw3.h>
+#include "engine/graphics/window.hpp"
 
 namespace phoenix {
 	/**
@@ -16,7 +16,7 @@ namespace phoenix {
 		 * @brief Contructs the camera, setting the window that input should be captured relative to.
 		 * @param window The GLFWwindow that input should be captured from/relative to.
 		 */
-		FreeRoamCamera(GLFWwindow *window);
+		FreeRoamCamera(pheonix::graphics::Window *window);
 
 		/**
 		 * @brief Updates this cameras state (rotation, position etc..). If `enabled` is false then this function does no work.
@@ -38,6 +38,6 @@ namespace phoenix {
 		Vector3 m_up;
 		Vector3 m_direction;
 
-		GLFWwindow *m_window;
+		pheonix::graphics::Window *m_window;
 	};
 }

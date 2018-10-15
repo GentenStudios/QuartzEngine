@@ -5,6 +5,7 @@
 
 #include <engine/graphics/opengl/buffer.hpp>
 #include <engine/graphics/opengl/vertexArray.hpp>
+#include <engine/camera.hpp>
 
 #include <vector>
 
@@ -37,7 +38,7 @@ namespace pheonix {
 
 			void populateChunk( unsigned int chunkSize );
 			void build();
-			void draw();
+			void draw(phoenix::FreeRoamCamera& camera);
 
 			void blockPlaceAt( int x, int y, int z );
 			void blockDestroyAt( int x, int y, int z );

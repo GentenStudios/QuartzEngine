@@ -4,34 +4,29 @@
 #include <cmath>
 
 using namespace phoenix;
+using namespace pheonix::graphics;
 
-const float MOUSE_SENSITIVITY = 0.000075f;
-const float MOVE_SPEED = 0.01f;
+const float MOUSE_SENSITIVITY = 0.005f;
+const float MOVE_SPEED = 2.f;
 
-FreeRoamCamera::FreeRoamCamera(GLFWwindow* window)
+FreeRoamCamera::FreeRoamCamera(pheonix::graphics::Window* window)
 	: m_window(window), enabled(true)
 {
-	int w, h;
-	glfwGetWindowSize(window, &w, &h);
-	glfwSetCursorPos(window, w / 2, h / 2);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	window->setCursorState(pheonix::graphics::CursorState::DISABLED);
 }
+
+static XyData _lastMousePos = { 0, 0 };
 
 void FreeRoamCamera::tick(float dt)
 {
 	if (!enabled)
 		return;
 
-	double mx, my;
-	glfwGetCursorPos(m_window, &mx, &my);
+	auto mousePos = m_window->getCursorPos();
+	auto windowSize = m_window->getWindowSize();
 
-	int w, h;
-	glfwGetWindowSize(m_window, &w, &h);
-
-	glfwSetCursorPos(m_window, w / 2, h / 2);
-
-	m_rotation.x += MOUSE_SENSITIVITY * dt * static_cast<float>(w / 2.0 - mx);
-	m_rotation.y += MOUSE_SENSITIVITY * dt * static_cast<float>(h / 2.0 - my);
+	m_rotation.x += MOUSE_SENSITIVITY * dt * static_cast<float>(_lastMousePos.x - mousePos.x);
+	m_rotation.y += MOUSE_SENSITIVITY * dt * static_cast<float>(_lastMousePos.y - mousePos.y);
 
 	const float HALF_PI = MathUtils::PI / 2.f;
 
@@ -49,22 +44,24 @@ void FreeRoamCamera::tick(float dt)
 
 	m_up = Vector3::cross(right, m_direction);
 
-	if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+	if (m_window->getKeyState(GLFW_KEY_W) == GLFW_PRESS)
 		m_position += m_direction * dt * MOVE_SPEED;
 
-	if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+	if (m_window->getKeyState(GLFW_KEY_S) == GLFW_PRESS)
 		m_position -= m_direction * dt * MOVE_SPEED;
 
-	if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+	if (m_window->getKeyState(GLFW_KEY_D) == GLFW_PRESS)
 		m_position += right * dt * MOVE_SPEED;
 
-	if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+	if (m_window->getKeyState(GLFW_KEY_A) == GLFW_PRESS)
 		m_position -= right * dt * MOVE_SPEED;
 
+	_lastMousePos = mousePos;
 }
 
 Matrix4x4 FreeRoamCamera::calculateViewMatrix()
 {
-	Matrix4x4 mat4;
-	return mat4;
+	Vector3 centre = m_position + m_direction;
+
+	return Matrix4x4::lookAt(m_position, centre, m_up);
 }
