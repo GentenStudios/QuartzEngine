@@ -9,7 +9,7 @@
 #include <iostream>
 #include <cstring>
 
-using namespace pheonix::graphics;
+using namespace phoenix::graphics;
 using namespace phoenix;
 
 extern const char* vertexShaderSource;

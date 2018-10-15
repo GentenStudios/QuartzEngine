@@ -4,7 +4,7 @@
 #include <memory>
 #include <algorithm>
 
-using namespace pheonix::graphics::opengl;
+using namespace phoenix::graphics::opengl;
 
 Texture::Texture( Target target, int width, int height, Texture::Format format ) :
 	m_width( width ),

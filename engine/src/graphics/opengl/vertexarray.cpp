@@ -1,6 +1,6 @@
 #include "engine/graphics/opengl/vertexArray.hpp"
 
-using namespace pheonix::graphics::opengl;
+using namespace phoenix::graphics::opengl;
 
 VertexArray::VertexArray()
 {

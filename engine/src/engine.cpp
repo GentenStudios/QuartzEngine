@@ -1,6 +1,6 @@
 #include "engine/engine.hpp"
 
-using namespace pheonix;
+using namespace phoenix;
 
 void Engine::fillerFunction()
 {

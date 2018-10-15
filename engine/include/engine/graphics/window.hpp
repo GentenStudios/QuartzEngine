@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-namespace pheonix {
+namespace phoenix {
 	namespace graphics {
 
 		/// @brief A struct to relieve returning multiple values, soon to be replaced by a Vector2
@@ -153,4 +153,4 @@ namespace pheonix {
 		};
 
 	} // namespace graphics
-} // namespace pheonix
+} // namespace phoenix

@@ -12,10 +12,10 @@
 
 int main()
 {
-	INITLOGGER( "pheonix.log", pheonix::LogVerbosity::INFO );
+	INITLOGGER( "pheonix.log", phoenix::LogVerbosity::INFO );
 	INFO( "CLIENT STARTING..." );
 
-	pheonix::graphics::Window* window = new pheonix::graphics::Window( 1280, 720, std::string("Project Pheonix") );
+	phoenix::graphics::Window* window = new phoenix::graphics::Window( 1280, 720, std::string("Project Pheonix") );
 
 	glewInit();
 
@@ -27,15 +27,15 @@ int main()
 	int nChannels2, texWidth2, texHeight2;
 	unsigned char* data2 = stbi_load( "../rubbish.png", &texWidth2, &texHeight2, &nChannels2, 0);
 
-	pheonix::graphics::opengl::Texture* dirt = new pheonix::graphics::opengl::Texture( pheonix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth, texHeight, pheonix::graphics::opengl::Texture::Format::RGBA );
+	phoenix::graphics::opengl::Texture* dirt = new phoenix::graphics::opengl::Texture( phoenix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth, texHeight, phoenix::graphics::opengl::Texture::Format::RGBA );
 	dirt->bind( 0 );
 	dirt->setData( data );
 
-	pheonix::graphics::opengl::Texture* wtf = new pheonix::graphics::opengl::Texture( pheonix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth2, texHeight2, pheonix::graphics::opengl::Texture::Format::RGBA );
+	phoenix::graphics::opengl::Texture* wtf = new phoenix::graphics::opengl::Texture( phoenix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth2, texHeight2, phoenix::graphics::opengl::Texture::Format::RGBA );
 	wtf->bind( 1 );
 	wtf->setData( data2 );
 
-	pheonix::graphics::Chunk* chunk = new pheonix::graphics::Chunk();
+	phoenix::graphics::Chunk* chunk = new phoenix::graphics::Chunk();
 
 	phoenix::FreeRoamCamera camera(window);
 

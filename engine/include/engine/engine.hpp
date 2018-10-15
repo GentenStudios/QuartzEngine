@@ -1,8 +1,8 @@
 #include <iostream>
 
-/// @namespace pheonix
-/// @brief The main namespace for most Pheonix related things.
-namespace pheonix {
+/// @namespace phoenix
+/// @brief The main namespace for most Phoenix related things.
+namespace phoenix {
 
 	class Engine
 	{

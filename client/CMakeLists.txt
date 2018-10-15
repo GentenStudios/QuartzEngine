@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Pheonix_Client)
+project(Phoenix_Client)
 
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(header_dir ${PROJECT_SOURCE_DIR}/include/client)
@@ -30,7 +30,7 @@ set(include_dirs
     )
 
 set(libraries
-    Pheonix_Engine
+    Phoenix_Engine
     glew_s
     )
 

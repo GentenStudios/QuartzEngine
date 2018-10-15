@@ -4,7 +4,7 @@
 
 #include <GL/glew.h>
 
-namespace pheonix
+namespace phoenix
 {
 	namespace graphics
 	{
@@ -41,19 +41,10 @@ namespace pheonix
 				Buffer( Target target, Usage usage );
 				~Buffer();
 
-				/**
-				 * @brief Sets a new target for the buffer.
-				 * @param target The new target which the buffer is set with.
-				 */
-				void setTarget( Target target );
-
-				/**
-				 * @brief Sets a new usage for the buffer.
-				 * @param usage The new usage which the buffer is set with.
-				 */
-				void setUsage( Usage usage );
-
+				/// @brief Bind Buffer.
 				void bind();
+
+				/// @brief Unbind Buffer
 				void unbind();
 
 				/**
@@ -73,7 +64,7 @@ namespace pheonix
 
 				/**
 				 * @brief Returns the ID of the buffer.
-				 * @return unsigned int with the buffers ID.
+				 * @return unsigned int with the buffer's ID.
 				 */
 				unsigned int getID() const;
 
@@ -84,7 +75,6 @@ namespace pheonix
 				Usage m_usage;
 
 				int m_size;
-
 			};
 		}
 	}

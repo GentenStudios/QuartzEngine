@@ -1,7 +1,7 @@
 #include "engine/common.hpp"
 #include "engine/graphics/window.hpp"
 
-using namespace pheonix::graphics;
+using namespace phoenix::graphics;
 
 Window::Window( int width, int height, std::string title )
 {
