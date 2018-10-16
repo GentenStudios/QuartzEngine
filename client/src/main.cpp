@@ -56,8 +56,6 @@ int main()
 
 		wtf->bind( 0 );
 		dirt->bind( 1 );
-		std::cout << glGetError() << std::endl;
-
 		chunk->draw(camera);
 
 		window->swapBuffers();
