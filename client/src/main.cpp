@@ -12,7 +12,7 @@
 
 int main()
 {
-	INITLOGGER( "pheonix.log", phoenix::LogVerbosity::INFO );
+	INITLOGGER( "pheonix.log", phoenix::LogVerbosity::DEBUG );
 	INFO( "CLIENT STARTING..." );
 
 	phoenix::graphics::Window* window = new phoenix::graphics::Window( 1280, 720, std::string("Project Pheonix") );
@@ -36,14 +36,23 @@ int main()
 	wtf->setData( data2 );
 
 	phoenix::graphics::Chunk* chunk = new phoenix::graphics::Chunk();
+	phoenix::graphics::Chunk* chunk2 = new phoenix::graphics::Chunk();
+	phoenix::graphics::Chunk* chunk3 = new phoenix::graphics::Chunk();
+	phoenix::graphics::Chunk* chunk4 = new phoenix::graphics::Chunk();
 
 	phoenix::FreeRoamCamera camera(window);
 
-	DEBUG( "POPULATING CHUNK!" );
-	chunk->populateChunk(16);
-	DEBUG( "CHUNK POPULATED" );
+	DEBUG( "POPULATING CHUNKS!" );
+	chunk->populateChunk(16, {0.0f, 0.0f, 0.0f});
+	chunk2->populateChunk(16, {16.0f, 0.0f, 0.0f});
+	chunk3->populateChunk(16, {16.0f, 16.0f, 0.0f});
+	chunk4->populateChunk(16, {0.0f, 16.0f, 0.0f});
+	DEBUG( "CHUNKS POPULATED" );
 
 	chunk->build();
+	chunk2->build();
+	chunk3->build();
+	chunk4->build();
 	DEBUG( "CHUNK HAS BEEN BUILT!" );
 
 	while ( !window->shouldClose() ) {
@@ -57,6 +66,9 @@ int main()
 		wtf->bind( 0 );
 		dirt->bind( 1 );
 		chunk->draw(camera);
+		chunk2->draw(camera);
+		chunk3->draw(camera);
+		chunk4->draw(camera);
 
 		window->swapBuffers();
 
