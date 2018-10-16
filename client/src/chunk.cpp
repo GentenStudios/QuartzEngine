@@ -35,8 +35,7 @@ const char* fragmentShaderSource = "#version 330 core \n"
 								   "uniform sampler2D theTexture2; \n"
 								   "void main() \n"
 								   "{ \n"
-								   "vec4 tex = mix( texture(theTexture, UV), texture(theTexture2, UV), 0.5 );\n"
-								   "FragColor = tex;\n"
+								   "FragColor = mix( texture(theTexture, UV), texture(theTexture2, UV), 0.5 );\n"
 								   "}";
 
 static const Vector3 CubeVerts[] = {
@@ -154,7 +153,6 @@ static const Vector2 CubeUV[] = {
 	Vector2(0.f, 1.f)
 };
 
-
 Chunk::Chunk() :
 	m_vao( new opengl::VertexArray() ),
 	m_vbo( new opengl::Buffer( opengl::Buffer::Target::ARRAY, opengl::Buffer::Usage::DYNAMIC_DRAW ) ),
@@ -162,13 +160,14 @@ Chunk::Chunk() :
 {
 }
 
-void Chunk::populateChunk( unsigned int chunkSize )
+void Chunk::populateChunk( unsigned int chunkSize, Vector3 chunkPos )
 {
 	unsigned int sizeCubed = chunkSize * chunkSize * chunkSize;
 
 	m_chunkSize = chunkSize;
 	m_vertsInChunk = sizeCubed * vertInCube;
 	m_uvsInChunk = uvInCube * sizeCubed;
+	m_chunkPos = chunkPos;
 
 	// Set whole array to have, for example, 16 parts inside the vector.
 	m_chunkBlocks.resize( chunkSize );
@@ -215,9 +214,9 @@ void Chunk::build()
 
 					for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
 					{
-						m_chunkVertices[q].x += x * 2;
-						m_chunkVertices[q].y += y * 2;
-						m_chunkVertices[q].z += z * 2;
+						m_chunkVertices[q].x += (x * 2) + (m_chunkPos.x * 2);
+						m_chunkVertices[q].y += (y * 2) + (m_chunkPos.y * 2);
+						m_chunkVertices[q].z += (z * 2) + (m_chunkPos.z * 2);
 					}
 				}
 			}

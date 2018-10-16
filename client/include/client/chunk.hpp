@@ -37,7 +37,7 @@ namespace phoenix {
 			Chunk();
 			~Chunk();
 
-			void populateChunk( unsigned int chunkSize );
+			void populateChunk( unsigned int chunkSize, Vector3 chunkPos );
 			void build();
 			void draw(phoenix::FreeRoamCamera& camera);
 
@@ -52,8 +52,9 @@ namespace phoenix {
 			void blockRemoveFace(phoenix::Vector3* vertices, int x, int y, int z, BlockFace face);
 
 			int m_chunkSize, m_vertsInChunk, m_uvsInChunk;
-
 			phoenix::Vector3* m_chunkVertices;
+
+			Vector3 m_chunkPos;
 
 			bool m_populated;
 
