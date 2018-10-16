@@ -61,7 +61,7 @@ namespace phoenix {
 			opengl::Buffer* m_vbo;
 			opengl::Buffer* m_uvbo;
 
-			opengl::Shader m_shader;
+			opengl::ShaderManager m_shader;
 
 			const int vertInCube = 36;
 			const int uvInCube = 36;

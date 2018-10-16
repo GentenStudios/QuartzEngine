@@ -40,118 +40,118 @@ const char* fragmentShaderSource = "#version 330 core \n"
 								   "}";
 
 static const Vector3 CubeVerts[] = {
-    // front
-    Vector3(-1.f,-1.f,-1.f),
-    Vector3(1.f,-1.f,-1.f),
-    Vector3(1.f,1.f,-1.f),
-    Vector3(1.f,1.f,-1.f),
-    Vector3(-1.f,1.f,-1.f),
-    Vector3(-1.f,-1.f,-1.f),
+	// front
+	Vector3(-1.f,-1.f,-1.f),
+	Vector3(1.f,-1.f,-1.f),
+	Vector3(1.f,1.f,-1.f),
+	Vector3(1.f,1.f,-1.f),
+	Vector3(-1.f,1.f,-1.f),
+	Vector3(-1.f,-1.f,-1.f),
 
-    // back
-    Vector3(-1.f,-1.f,1.f),
-    Vector3(1.f,-1.f,1.f),
-    Vector3(1.f, 1.f,1.f),
-    Vector3(1.f, 1.f,1.f),
-    Vector3(-1.f, 1.f,1.f),
-    Vector3(-1.f, -1.f,1.f),
+	// back
+	Vector3(-1.f,-1.f,1.f),
+	Vector3(1.f,-1.f,1.f),
+	Vector3(1.f, 1.f,1.f),
+	Vector3(1.f, 1.f,1.f),
+	Vector3(-1.f, 1.f,1.f),
+	Vector3(-1.f, -1.f,1.f),
 
-    // left
-    Vector3(-1.f, 1.f,1.f),
-    Vector3(-1.f, 1.f,-1.f),
-    Vector3(-1.f, -1.f,-1.f),
-    Vector3(-1.f, -1.f,-1.f),
-    Vector3(-1.f, -1.f,1.f),
-    Vector3(-1.f, 1.f,1.f),
+	// left
+	Vector3(-1.f, 1.f,1.f),
+	Vector3(-1.f, 1.f,-1.f),
+	Vector3(-1.f, -1.f,-1.f),
+	Vector3(-1.f, -1.f,-1.f),
+	Vector3(-1.f, -1.f,1.f),
+	Vector3(-1.f, 1.f,1.f),
 
-    // right
-    Vector3(1.f, 1.f,1.f),
-    Vector3(1.f, 1.f,-1.f),
-    Vector3(1.f, -1.f,-1.f),
-    Vector3(1.f, -1.f,-1.f),
-    Vector3(1.f, -1.f,1.f),
-    Vector3(1.f, 1.f,1.f),
+	// right
+	Vector3(1.f, 1.f,1.f),
+	Vector3(1.f, 1.f,-1.f),
+	Vector3(1.f, -1.f,-1.f),
+	Vector3(1.f, -1.f,-1.f),
+	Vector3(1.f, -1.f,1.f),
+	Vector3(1.f, 1.f,1.f),
 
-    // bottom
-    Vector3(-1.f, -1.f, -1.f),
-    Vector3(1.f, -1.f, -1.f),
-    Vector3(1.f, -1.f,  1.f),
-    Vector3(1.f, -1.f,  1.f),
-    Vector3(-1.f, -1.f,  1.f),
-    Vector3(-1.f, -1.f, -1.f),
+	// bottom
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f,  1.f),
+	Vector3(1.f, -1.f,  1.f),
+	Vector3(-1.f, -1.f,  1.f),
+	Vector3(-1.f, -1.f, -1.f),
 
-    // top
-    Vector3(-1.f,  1.f, -1.f),
-    Vector3(1.f,  1.f, -1.f),
-    Vector3(1.f,  1.f,  1.f),
-    Vector3(1.f,  1.f,  1.f),
-    Vector3(-1.f,  1.f,  1.f),
-    Vector3(-1.f,  1.f, -1.f)
+	// top
+	Vector3(-1.f,  1.f, -1.f),
+	Vector3(1.f,  1.f, -1.f),
+	Vector3(1.f,  1.f,  1.f),
+	Vector3(1.f,  1.f,  1.f),
+	Vector3(-1.f,  1.f,  1.f),
+	Vector3(-1.f,  1.f, -1.f)
 };
 
 static const Vector3 CubeVertEmpty[] = {
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f),
-    Vector3(0.f), Vector3(0.f), Vector3(0.f)
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f)
 };
 
 static const Vector2 CubeUV[] = {
-    // front
-    Vector2(0.f, 0.f),
-    Vector2(1.f, 0.f),
-    Vector2(1.f, 1.f),
-    Vector2(1.f, 1.f),
-    Vector2(0.f, 1.f),
-    Vector2(0.f, 0.f),
+	// front
+	Vector2(0.f, 0.f),
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 0.f),
 
-    // back
-    Vector2(0.f, 0.f),
-    Vector2(1.f, 0.f),
-    Vector2(1.f, 1.f),
-    Vector2(1.f, 1.f),
-    Vector2(0.f, 1.f),
-    Vector2(0.f, 0.f),
+	// back
+	Vector2(0.f, 0.f),
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 0.f),
 
-    // left
-    Vector2(1.f, 0.f),
-    Vector2(1.f, 1.f),
-    Vector2(0.f, 1.f),
-    Vector2(0.f, 1.f),
-    Vector2(0.f, 0.f),
-    Vector2(1.f, 0.f),
+	// left
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 0.f),
+	Vector2(1.f, 0.f),
 
-    // right
-    Vector2(1.f, 0.f),
-    Vector2(1.f, 1.f),
-    Vector2(0.f, 1.f),
-    Vector2(0.f, 1.f),
-    Vector2(0.f, 0.f),
-    Vector2(1.f, 0.f),
+	// right
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 0.f),
+	Vector2(1.f, 0.f),
 
-    // bottom
-    Vector2(0.f, 1.f),
-    Vector2(1.f, 1.f),
-    Vector2(1.f, 0.f),
-    Vector2(1.f, 0.f),
-    Vector2(0.f, 0.f),
-    Vector2(0.f, 1.f),
+	// bottom
+	Vector2(0.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 0.f),
+	Vector2(0.f, 0.f),
+	Vector2(0.f, 1.f),
 
-    // top
-    Vector2(0.f, 1.f),
-    Vector2(1.f, 1.f),
-    Vector2(1.f, 0.f),
-    Vector2(1.f, 0.f),
-    Vector2(0.f, 0.f),
-    Vector2(0.f, 1.f)
+	// top
+	Vector2(0.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 0.f),
+	Vector2(0.f, 0.f),
+	Vector2(0.f, 1.f)
 };
 
 
@@ -162,7 +162,8 @@ Chunk::Chunk() :
 {
 }
 
-void Chunk::populateChunk( unsigned int chunkSize ) {
+void Chunk::populateChunk( unsigned int chunkSize )
+{
 	unsigned int sizeCubed = chunkSize * chunkSize * chunkSize;
 
 	m_chunkSize = chunkSize;
@@ -189,13 +190,13 @@ void Chunk::populateChunk( unsigned int chunkSize ) {
 	}
 }
 
-void Chunk::build() {
-
+void Chunk::build()
+{
 	//    if ( m_populated )
 	//        this->clearOpenGL();
 
-  m_chunkVertices = new Vector3[ m_vertsInChunk ];
-  Vector2* chunkUVs = new Vector2[ m_uvsInChunk ];
+	m_chunkVertices = new Vector3[ m_vertsInChunk ];
+	Vector2* chunkUVs = new Vector2[ m_uvsInChunk ];
 
 	for (int z = 0; z < m_chunkSize; z++)
 	{
@@ -224,7 +225,7 @@ void Chunk::build() {
 	}
 
 	m_vao->bind();
-  
+
 	m_vbo->bind();
 	m_vbo->setData( static_cast<void*>(m_chunkVertices), m_vertsInChunk * sizeof(Vector3) );
 	opengl::VertexAttrib chunkVertAttribs( 0, 3, opengl::GLType::FLOAT, sizeof(Vector3), 0);
@@ -235,7 +236,9 @@ void Chunk::build() {
 	opengl::VertexAttrib uvAttribs( 1, 2, opengl::GLType::FLOAT, sizeof(Vector2), 0 );
 	uvAttribs.enable();
 
-	m_shader.compileShaders(vertexShaderSource, fragmentShaderSource);
+	m_shader.addStage(opengl::ShaderStage::VERTEX_SHADER, vertexShaderSource);
+	m_shader.addStage(opengl::ShaderStage::FRAGMENT_SHADER, fragmentShaderSource);
+	m_shader.build();
 }
 
 void Chunk::draw(phoenix::FreeRoamCamera& camera)
