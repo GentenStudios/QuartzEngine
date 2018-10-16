@@ -65,3 +65,8 @@ Matrix4x4 FreeRoamCamera::calculateViewMatrix()
 
 	return Matrix4x4::lookAt(m_position, centre, m_up);
 }
+
+Vector3 FreeRoamCamera::getPosition()
+{
+	return m_position;
+}

@@ -32,6 +32,12 @@ namespace phoenix {
 
 		bool enabled; //< Controls whether this class controls the mouse cursor. `true` means the mouse is locked, `false` means the mouse is not locked.
 	
+		/**
+		 * @brief Gets camera position
+		 * @return Camera Position
+		 */
+		Vector3 getPosition();
+
 	private:
 		Vector3 m_rotation;
 		Vector3 m_position;
