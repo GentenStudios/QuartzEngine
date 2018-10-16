@@ -47,16 +47,6 @@ void ShaderManager::build()
 		glDetachShader(m_shaderProgram, shader);
 		glDeleteShader(shader);
 	}
-
-	int success;
-	char infoLog[1024];
-	glGetShaderiv(m_shaderProgram, GL_LINK_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(m_shaderProgram, 1024, nullptr, infoLog);
-		ERROR(std::string("ERROR::SHADER::LINKING - ").append(infoLog));
-	}
-
 }
 
 void ShaderManager::use() const
