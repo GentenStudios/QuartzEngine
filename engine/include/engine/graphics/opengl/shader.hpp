@@ -13,13 +13,21 @@ namespace phoenix
 		namespace opengl
 		{
 
-			class Shader
+			enum ShaderStage
+			{
+				VERTEX_SHADER = GL_VERTEX_SHADER,
+				FRAGMENT_SHADER = GL_FRAGMENT_SHADER,
+				GEOMETRY_SHADER = GL_GEOMETRY_SHADER,
+			};
+
+			class ShaderManager
 			{
 			public:
-				Shader();
-				~Shader();
+				ShaderManager();
+				~ShaderManager();
 
-				void compileShaders(const char* vertexShaderSource, const char* fragmentShaderSource);
+				void addStage(ShaderStage stage, const char* shaderSource);
+				void build();
 
 				void use() const;
 
@@ -35,13 +43,12 @@ namespace phoenix
 
 				void setMat4(const std::string &name, Matrix4x4& mat) const;
 
-				unsigned int getShaderID() const;
-				void setShaderID(unsigned int shaderID);
+				unsigned int getShaderProgram() const;
 
 			private:
-				unsigned int m_shaderID;
+				std::vector<unsigned int> m_shaders;
+				unsigned int m_shaderProgram;
 
-				void shaderErrorCheck(GLuint shader);
 			};
 
 		}

@@ -23,6 +23,7 @@ namespace phoenix
 				TRUE = GL_TRUE,
 				FALSE = GL_FALSE
 			};
+
 		}
 	}
 }
