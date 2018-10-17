@@ -21,6 +21,7 @@ set(sources
     ${source_dir}/graphics/opengl/shader.cpp
 
     ${source_dir}/camera.cpp
+	${source_dir}/imgui.cpp
 )
 
 set(headers
@@ -46,6 +47,7 @@ set(headers
 
 
     ${header_dir}/engine/camera.hpp
+	${header_dir}/engine/imgui.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)

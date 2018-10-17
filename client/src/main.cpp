@@ -10,7 +10,7 @@
 #include "client/chunk.hpp"
 #include "client/textures.hpp"
 
-#include <imgui.h>
+#include <engine/imgui.hpp>
 
 int main()
 {
@@ -58,6 +58,8 @@ int main()
 	DEBUG( "CHUNK HAS BEEN BUILT!" );
 
 	bool _lastStateOfEscape = false;
+	phoenix::Vector3 testVec3;
+	phoenix::Matrix4x4 testMat4;
 
 	while ( !window->shouldClose() ) {
 		window->pollEvents();
@@ -89,7 +91,9 @@ int main()
 		chunk4->draw(camera);
 
 		ImGui::Begin("Demo Window");
-		ImGui::Button("Press ME!");
+			ImGui::Button("Press ME!");
+			ImGui::InputVector3("Test Vector", &testVec3);
+			ImGui::InputMatrix4x4("Test Vector", &testMat4);
 		ImGui::End();
 
 		window->swapBuffers();
