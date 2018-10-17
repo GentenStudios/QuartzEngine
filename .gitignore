@@ -33,6 +33,7 @@
 
 # Build folders
 build/*
+BUILD/*
 **/COMPILE/bin
 **/COMPILE/lib
 **/docs/html
@@ -52,3 +53,7 @@ CMakeLists.txt.user*
 
 # Visual Studio
 .vs**/
+# VSCode
+.vscode/*
+
+**/glew.pc**

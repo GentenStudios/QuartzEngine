@@ -21,7 +21,12 @@ set(sources
     ${source_dir}/graphics/opengl/shader.cpp
 
     ${source_dir}/camera.cpp
-	${source_dir}/imgui.cpp
+  	
+    ${source_dir}/imgui.cpp
+    
+    ${source_dir}/voxels/block.cpp
+#    ${source_dir}/voxels/chunk.cpp
+    ${source_dir}/voxels/mapblock.cpp
 )
 
 set(headers
@@ -37,7 +42,7 @@ set(headers
     ${header_dir}/engine/utils/logging.hpp
 
     ${header_dir}/engine/graphics/window.hpp
-
+    
     ${header_dir}/engine/graphics/opengl/glTypes.hpp
     ${header_dir}/engine/graphics/opengl/vertexArray.hpp
     ${header_dir}/engine/graphics/opengl/vertexAttrib.hpp
@@ -47,7 +52,11 @@ set(headers
 
 
     ${header_dir}/engine/camera.hpp
-	${header_dir}/engine/imgui.hpp
+	  ${header_dir}/engine/imgui.hpp
+
+#    ${header_dir}/engine/voxels/chunk.hpp
+     ${header_dir}/engine/voxels/block.hpp
+     ${header_dir}/engine/voxels/mapblock.hpp 
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
