@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Pheonix_Client)
+project(Phoenix_Client)
 
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(header_dir ${PROJECT_SOURCE_DIR}/include/client)
@@ -11,36 +11,36 @@ set(sources
     ${source_dir}/chunk.cpp
     ${source_dir}/textures.cpp
 
-)
+    )
 
 set(headers
-    ${header_dir}/client.hpp
     ${header_dir}/chunk.hpp
     ${header_dir}/textures.hpp
 
-    ${dependencies}/stb_image/stb_image/stb_image.h
-)
+    #${dependencies}/stb_image/stb_image/stb_image.h
+    )
 
 
 set(include_dirs
-    ${dependencies}/glm
     ${dependencies}/glfw/include
     ${dependencies}/glew/include
     ${dependencies}/stb_image/
     ${header_dir}/../
     ${source_dir}/../../engine/include
-)
+	${dependencies}/ImGUI
+    )
 
 set(libraries
-    Pheonix_Engine
+    Phoenix_Engine
     glew_s
+	ImGui
 )
 
 if(WIN32)
     set(libraries
         ${libraries}
         OpenGL32.lib
-    )
+        )
 endif()
 
 if(UNIX AND NOT APPLE)

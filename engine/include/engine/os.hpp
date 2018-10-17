@@ -33,9 +33,9 @@
 */
 
 #if defined(_WIN32) || defined(_WIN64)
-#   define PHEONIX_OS_WINDOWS
+#   define PHOENIX_OS_WINDOWS
 #endif
 
 #if defined(__linux__)
-#   define PHEONIX_OS_LINUX
+#   define PHOENIX_OS_LINUX
 #endif

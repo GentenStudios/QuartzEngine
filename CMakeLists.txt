@@ -2,7 +2,7 @@
 cmake_minimum_required( VERSION 3.0 )
 
 # Set the Project name.
-project( Project-Pheonix )
+project( Project-Phoenix )
 
 # Make CMake use folders. (makes things slightly tidier in the future)
 set_property( GLOBAL PROPERTY USE_FOLDERS ON )

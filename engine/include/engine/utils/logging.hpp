@@ -10,18 +10,20 @@
 #include <string>
 #include <sstream>
 
-#define INITLOGGER( logFile, vbLevel ) pheonix::Logger::init( logFile, vbLevel )
-#define DESTROYLOGGER() pheonix::Logger::destroy()
+#define INITLOGGER( logFile, vbLevel ) phoenix::Logger::init( logFile, vbLevel )
+#define DESTROYLOGGER() phoenix::Logger::destroy()
 
-#define ERROR( message )    pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::ERROR )
-#define WARNING( message )  pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::WARNING )
-#define INFO( message )     pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::INFO )
-#define DEBUG( message )    pheonix::Logger::logMessage( __FILE__, __LINE__, message, pheonix::LogVerbosity::DEBUG )
+#define ERROR( message )    phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::ERROR )
+#define WARNING( message )  phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::WARNING )
+#define INFO( message )     phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::INFO )
+#define DEBUG( message )    phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::DEBUG )
 
-namespace pheonix
+namespace phoenix
 {
-    /** @enum pheonix::LogVerbosity
-     *  @brief This is what will define whether certain messages are low enough a verbosity to be outputted.
+
+	/**
+	 * @enum	phoenix::LogVerbosity
+	 * @brief	This is what will define whether certain messages are low enough a verbosity to be outputted.
      */
     enum class LogVerbosity
     {
@@ -73,4 +75,4 @@ namespace pheonix
         static const char* LogVerbosityLookup[];
     };
 
-} // namespace pheonix
+}

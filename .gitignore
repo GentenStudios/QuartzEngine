@@ -48,8 +48,12 @@ BUILD/*
 # QtCreator CMake
 CMakeLists.txt.user*
 
+*.swp
+*.log
+
+# Visual Studio
+.vs**/
 # VSCode
 .vscode/*
 
-# Random GLEW file
 **/glew.pc**
