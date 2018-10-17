@@ -27,12 +27,14 @@ set(include_dirs
     ${dependencies}/stb_image/
     ${header_dir}/../
     ${source_dir}/../../engine/include
+	${dependencies}/ImGUI
     )
 
 set(libraries
     Phoenix_Engine
     glew_s
-    )
+	ImGui
+)
 
 if(WIN32)
     set(libraries

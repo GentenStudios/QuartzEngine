@@ -53,13 +53,15 @@ set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 set(include_dirs
     ${dependencies}/glfw/include
     ${dependencies}/glew/include
+	${dependencies}/ImGUI
     ${header_dir}
-    )
+)
 
 set(libraries
     glfw
     glew_s
-    )
+	ImGui
+)
 
 if(WIN32)
     set(libraries
