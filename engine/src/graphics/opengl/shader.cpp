@@ -1,6 +1,7 @@
 #include "engine/graphics/opengl/shader.hpp"
 
 using namespace phoenix::graphics::opengl;
+using namespace phoenix;
 
 ShaderManager::ShaderManager()
 {}

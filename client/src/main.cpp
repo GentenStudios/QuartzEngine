@@ -10,6 +10,8 @@
 #include "client/chunk.hpp"
 #include "client/textures.hpp"
 
+#include <engine/imgui.hpp>
+
 int main()
 {
 	INITLOGGER( "pheonix.log", phoenix::LogVerbosity::DEBUG );
@@ -55,10 +57,28 @@ int main()
 	chunk4->build();
 	DEBUG( "CHUNK HAS BEEN BUILT!" );
 
+	bool _lastStateOfEscape = false;
+	phoenix::Vector3 testVec3;
+	phoenix::Matrix4x4 testMat4;
+
 	while ( !window->shouldClose() ) {
 		window->pollEvents();
 
 		camera.tick(0.16f);
+
+		bool isEscapeDown = window->getKeyState(GLFW_KEY_ESCAPE) != 0;
+
+		if (isEscapeDown && !_lastStateOfEscape) {
+			camera.enabled = !camera.enabled;
+			if (camera.enabled) {
+				window->setCursorState(phoenix::graphics::CursorState::DISABLED);
+			}
+			else {
+				window->setCursorState(phoenix::graphics::CursorState::NORMAL);
+			}
+		}
+
+		_lastStateOfEscape = isEscapeDown;
 
 		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 		glClearColor( 0.1f, 0.3f, 0.9f, 1.0f );
@@ -69,6 +89,12 @@ int main()
 		chunk2->draw(camera);
 		chunk3->draw(camera);
 		chunk4->draw(camera);
+
+		ImGui::Begin("Demo Window");
+			ImGui::Button("Press ME!");
+			ImGui::InputVector3("Test Vector", &testVec3);
+			ImGui::InputMatrix4x4("Test Vector", &testMat4);
+		ImGui::End();
 
 		window->swapBuffers();
 

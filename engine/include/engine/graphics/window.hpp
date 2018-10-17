@@ -56,6 +56,11 @@ namespace phoenix {
 			Window( int width, int height, std::string title );
 			~Window();
 
+			/**
+			 * @brief Get's the state of the specified keyboard key.
+			 * @param key The GLFW_KEY_* macro for this key. See http://www.glfw.org/docs/latest/group__keys.html
+			 * @return Return's the state of this key. Either GLFW_PRESS or GLFW_RELEASE.
+			 */
 			int getKeyState(int key);
 
 			/*

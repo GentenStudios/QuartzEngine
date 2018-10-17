@@ -1,6 +1,10 @@
 #include "engine/common.hpp"
 #include "engine/graphics/window.hpp"
 
+#include <imgui.h>
+#include <examples/imgui_impl_glfw.h>
+#include <examples/imgui_impl_opengl3.h>
+
 using namespace phoenix::graphics;
 
 Window::Window( int width, int height, std::string title )
@@ -15,6 +19,12 @@ Window::Window( int width, int height, std::string title )
     m_window = glfwCreateWindow( width, height, title.c_str(), nullptr, nullptr );
 
     glfwMakeContextCurrent( m_window );
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+
+	ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+	ImGui_ImplOpenGL3_Init();
 }
 
 Window::~Window()
@@ -81,6 +91,9 @@ void Window::setShouldClose( bool close )
 
 void Window::swapBuffers()
 {
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
     glfwSwapBuffers( m_window );
 }
 
@@ -88,10 +101,9 @@ void Window::pollEvents()
 {
     glfwPollEvents();
 
-    if ( glfwGetKey( m_window, GLFW_KEY_ESCAPE ) == GLFW_PRESS )
-    {
-        setShouldClose( true );
-    }
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
 }
 
 XyData Window::getWindowSize() const
