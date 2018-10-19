@@ -39,7 +39,7 @@ int MapBlock::getDamage() const
     return m_damage;
 };
 
-int MapBlock::setDamage(int damage)
+void MapBlock::setDamage(int damage)
 {
     m_damage = damage;
 };

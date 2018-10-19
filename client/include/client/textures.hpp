@@ -17,11 +17,11 @@ namespace phoenix
 			Texture() {}
 			~Texture() {}
 
-			void loadTex( std::string textureFilepath );
+			void loadTex(std::string textureFilepath);
 
 			inline unsigned int getTextureID() const { return m_texId; }
 
-			void bind( int textureSlot );
+			void bind(int textureSlot);
 			void unbind();
 
 		private:

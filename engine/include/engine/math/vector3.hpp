@@ -28,7 +28,7 @@ namespace phoenix {
 		 * @brief Default constructs the Vector3 initalizing x, y and z with 0.0f
 		 */
 		Vector3();
-		
+
 		/**
 		 * @brief Resets this vectors x, y and z component to the same specified value.
 		 * @param a The new value for x, y and z
@@ -72,10 +72,10 @@ namespace phoenix {
 	};
 
 	/**
-	 * @brief Adds two vectors - the equation is `p + q` where `p` and `q` are both 3 component vectors. Add's `left` to `right` 
+	 * @brief Adds two vectors - the equation is `p + q` where `p` and `q` are both 3 component vectors. Add's `left` to `right`
 	 * @param left The left hand side of the addition
 	 * @param right The right hand side of the addition
-	 * @return The result of the addition of the 3 component vectors `left` and `right` 
+	 * @return The result of the addition of the 3 component vectors `left` and `right`
 	 */
 	Vector3 operator+(const Vector3& left, const Vector3& right);
 

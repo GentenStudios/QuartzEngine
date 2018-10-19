@@ -20,7 +20,7 @@ namespace phoenix {
 
 		/**
 		 * @brief Updates this cameras state (rotation, position etc..). If `enabled` is false then this function does no work.
-		 * @param dt Game loop delta time (in seconds) 
+		 * @param dt Game loop delta time (in seconds)
 		 */
 		void tick(float dt);
 
@@ -31,7 +31,7 @@ namespace phoenix {
 		Matrix4x4 calculateViewMatrix();
 
 		bool enabled; //< Controls whether this class controls the mouse cursor. `true` means the mouse is locked, `false` means the mouse is not locked.
-	
+
 		/**
 		 * @brief Gets camera position
 		 * @return Camera Position

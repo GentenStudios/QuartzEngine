@@ -21,7 +21,7 @@ namespace phoenix {
 
 		/**
 		 * @brief Converts radians to degrees.
-	 	 * @param degrees The value in radians to convert to degrees
+		 * @param degrees The value in radians to convert to degrees
 		 * @return The value of the specified radians in degrees
 		 */
 		template <typename T>

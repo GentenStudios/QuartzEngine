@@ -22,7 +22,7 @@ namespace ImGui {
 	* @return Return's true if the Vector2 has been edited through the widget.
 	*/
 	bool InputVector2(const char* name, phoenix::Vector2* vec2);
-	
+
 	/**
 	* @brief Creates an ImGui widget for editing a phoenix::Matrix4x4.
 	* @param name The unique name (is treated as an ID) for this widget

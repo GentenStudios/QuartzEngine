@@ -5,7 +5,7 @@
 
 using namespace phoenix::graphics;
 
-void Texture::loadTex( std::string textureFilepath )
+void Texture::loadTex(std::string textureFilepath)
 {
 	glGenTextures(1, &m_texId);
 	glBindTexture(GL_TEXTURE_2D, m_texId);
@@ -14,7 +14,7 @@ void Texture::loadTex( std::string textureFilepath )
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	int nChannels;
-	unsigned char* data = stbi_load( textureFilepath.c_str(), &m_texWidth, &m_texHeight, &nChannels, 0);
+	unsigned char* data = stbi_load(textureFilepath.c_str(), &m_texWidth, &m_texHeight, &nChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_texWidth, m_texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -28,7 +28,7 @@ void Texture::loadTex( std::string textureFilepath )
 	stbi_image_free(data);
 }
 
-void Texture::bind( int slot )
+void Texture::bind(int slot)
 {
 	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, m_texId);

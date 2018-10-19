@@ -37,22 +37,23 @@ namespace phoenix {
 			Chunk();
 			~Chunk();
 
-			void populateChunk( unsigned int chunkSize, Vector3 chunkPos );
+			void populateChunk(unsigned int chunkSize, Vector3 chunkPos);
 			void build();
 			void draw(phoenix::FreeRoamCamera& camera);
 
-			void blockPlaceAt( int x, int y, int z );
-			void blockDestroyAt( int x, int y, int z );
-			BlockType blockExists( float x, float y, float z );
+			void blockPlaceAt(int x, int y, int z);
+			void blockDestroyAt(int x, int y, int z);
+			BlockType blockExists(float x, float y, float z);
 
 		private:
-			void setChunkSize( unsigned int chunkSize );
+			void setChunkSize(unsigned int chunkSize);
 
-            void blockAddFace(phoenix::Vector3* vertices, int x, int y, int z, BlockFace face);
+			void blockAddFace(phoenix::Vector3* vertices, int x, int y, int z, BlockFace face);
 			void blockRemoveFace(phoenix::Vector3* vertices, int x, int y, int z, BlockFace face);
 
 			int m_chunkSize, m_vertsInChunk, m_uvsInChunk;
 			phoenix::Vector3* m_chunkVertices;
+			phoenix::Vector2* m_chunkUVs;
 
 			Vector3 m_chunkPos;
 

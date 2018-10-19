@@ -36,7 +36,7 @@ namespace phoenix {
 		 */
 		enum class CursorState
 		{
-			DISABLED = GLFW_CURSOR_DISABLED, 
+			DISABLED = GLFW_CURSOR_DISABLED,
 			HIDDEN = GLFW_CURSOR_HIDDEN,
 			NORMAL = GLFW_CURSOR_NORMAL
 		};
@@ -53,7 +53,7 @@ namespace phoenix {
 			 * @param height The window height
 			 * @param title The window title.
 			 */
-			Window( int width, int height, std::string title );
+			Window(int width, int height, std::string title);
 			~Window();
 
 			/**
@@ -79,14 +79,14 @@ namespace phoenix {
 			 * @brief Sets the cursor position.
 			 * @param pos An X and Y value from the XyDataStruct
 			 */
-			void setCursorPos( XyData pos );
+			void setCursorPos(XyData pos);
 
 			/**
 			 * @brief Sets the cursor position
 			 * @param x The new X coordinate for the cursor
 			 * @param y The new Y coordinate for the cursor
 			 */
-			void setCursorPos( int x, int y );
+			void setCursorPos(int x, int y);
 
 			/**
 			 * @brief Resets the GLFW window to default "settings"
@@ -98,7 +98,7 @@ namespace phoenix {
 			 * @param target The target "variable" to set
 			 * @param hint The value that the target is set to.
 			 */
-			void hint( int target, int hint );
+			void hint(int target, int hint);
 
 			/**
 			 * @brief Initialise GLFW
@@ -109,7 +109,7 @@ namespace phoenix {
 			 * @brief Set the swap interval, basically, to help enable/disable VSync easily
 			 * @param interval The interval, "1" for the vertical sync rate of your screen/monitor, or VSync
 			 */
-			void swapInterval( int interval );
+			void swapInterval(int interval);
 
 			/**
 			 * @brief Returns whether the window should close or not
@@ -121,7 +121,7 @@ namespace phoenix {
 			 * @brief Set whether the window should close or not.
 			 * @param close The boolean to set the window closing variable to.
 			 */
-			void setShouldClose( bool close );
+			void setShouldClose(bool close);
 
 			/**
 			 * @brief Swap the back and front buffers.
@@ -143,14 +143,14 @@ namespace phoenix {
 			 * @brief Set the Window Size.
 			 * @param size The new X and Y size of the window in the form of the XyData struct.
 			 */
-			void setWindowSize( XyData size );
+			void setWindowSize(XyData size);
 
 			/**
 			 * @brief Set the Window Size
 			 * @param x The new width of the window.
 			 * @param y The new height of the window.
 			 */
-			void setWindowSize( int x, int y );
+			void setWindowSize(int x, int y);
 
 		private:
 			GLFWwindow* m_window;

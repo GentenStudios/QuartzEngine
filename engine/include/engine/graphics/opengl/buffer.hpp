@@ -38,7 +38,7 @@ namespace phoenix
 				 * @param target An entry from the Target Enum.
 				 * @param usage An entry from the Usage Enum.
 				 */
-				Buffer( Target target, Usage usage );
+				Buffer(Target target, Usage usage);
 				~Buffer();
 
 				/// @brief Bind Buffer.
@@ -52,7 +52,7 @@ namespace phoenix
 				 * @param buffer The buffer itself.
 				 * @param size The size of the buffer.
 				 */
-				void setData( void* buffer, int size );
+				void setData(void* buffer, int size);
 
 				/**
 				 * @brief Sub in Buffer data, wraps glBufferSubData
@@ -60,7 +60,7 @@ namespace phoenix
 				 * @param offset The offset of the data being subbed.
 				 * @param size The size of the data being subbed.
 				 */
-				void subData( void* buffer, int offset, int size );
+				void subData(void* buffer, int offset, int size);
 
 				/**
 				 * @brief Returns the ID of the buffer.
@@ -68,7 +68,7 @@ namespace phoenix
 				 */
 				unsigned int getID() const;
 
-			private: 
+			private:
 				unsigned int m_bufferID;
 
 				Target m_target;

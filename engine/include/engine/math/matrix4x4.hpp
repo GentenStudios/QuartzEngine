@@ -36,28 +36,28 @@ namespace phoenix {
 		static Matrix4x4 lookAt(const Vector3& eye, const Vector3& centre, const Vector3& up);
 	};
 
-    /**
-     * @brief Multiplys two matrices together. Multiplication is not commutative (therefore left*right != right*left)
-     * @param left Left hand side of matrix multiplication.
-     * @param right Right hand side of matrix multiplication.
-     * @return Product of `left` and `right` matrices.
-     */
+	/**
+	 * @brief Multiplys two matrices together. Multiplication is not commutative (therefore left*right != right*left)
+	 * @param left Left hand side of matrix multiplication.
+	 * @param right Right hand side of matrix multiplication.
+	 * @return Product of `left` and `right` matrices.
+	 */
 	Matrix4x4 operator*(const Matrix4x4& left, const Matrix4x4& right);
 
-    /**
-     * @brief Multiplys together a matrix and a scalar value.
-     * @param left Left hand side of multiplication.
-     * @param right Right hand side of multiplication
-     * @return Product of `left` and `right`
-     */
+	/**
+	 * @brief Multiplys together a matrix and a scalar value.
+	 * @param left Left hand side of multiplication.
+	 * @param right Right hand side of multiplication
+	 * @return Product of `left` and `right`
+	 */
 	Matrix4x4 operator*(const Matrix4x4& left, const float& right);
 
-    /**
-     * @brief Multipys together a matrix and a Vector3 value.
-     * @param left Left hand side of multiplication.
-     * @param right Right hand side of multiplication.
-     * @return Product of `left` and `right`
-     */
+	/**
+	 * @brief Multipys together a matrix and a Vector3 value.
+	 * @param left Left hand side of multiplication.
+	 * @param right Right hand side of multiplication.
+	 * @return Product of `left` and `right`
+	 */
 	Vector3 operator*(const Matrix4x4& left, const Vector3& right);
 
 }

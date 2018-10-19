@@ -13,7 +13,7 @@ namespace phoenix
 			enum class GLType
 			{
 				FLOAT = GL_FLOAT,
-				INT	= GL_INT,
+				INT = GL_INT,
 				UINT = GL_UNSIGNED_INT,
 				BYTE = GL_BYTE,
 				UBYTE = GL_UNSIGNED_BYTE,

@@ -15,7 +15,7 @@ namespace phoenix {
 				enum class Target
 				{
 					TEXTURE2D = GL_TEXTURE_2D,
-					CUBEMAP   = GL_TEXTURE_CUBE_MAP,
+					CUBEMAP = GL_TEXTURE_CUBE_MAP,
 
 					CUBE_MAP_POS_Y = GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
 					CUBE_MAP_NEG_Y = GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
@@ -28,8 +28,8 @@ namespace phoenix {
 				/// Texture formats
 				enum class Format
 				{
-					RGB       = GL_RGB,
-					RGBA      = GL_RGBA,
+					RGB = GL_RGB,
+					RGBA = GL_RGBA,
 				};
 
 				/// Parameter Names
@@ -37,19 +37,19 @@ namespace phoenix {
 				{
 					MAG_FILTER = GL_TEXTURE_MAG_FILTER,
 					MIN_FILTER = GL_TEXTURE_MIN_FILTER,
-					WRAP_S     = GL_TEXTURE_WRAP_S,
-					WRAP_T     = GL_TEXTURE_WRAP_T,
-					WRAP_R     = GL_TEXTURE_WRAP_R
+					WRAP_S = GL_TEXTURE_WRAP_S,
+					WRAP_T = GL_TEXTURE_WRAP_T,
+					WRAP_R = GL_TEXTURE_WRAP_R
 				};
 
 				/// Parameter Values
 				enum class ParamValue
 				{
-					NEAREST    = GL_NEAREST,
-					LINEAR     = GL_LINEAR,
-					CLAMP      = GL_CLAMP,
+					NEAREST = GL_NEAREST,
+					LINEAR = GL_LINEAR,
+					CLAMP = GL_CLAMP,
 					CLAMP_EDGE = GL_CLAMP_TO_EDGE,
-					REPEAT     = GL_REPEAT
+					REPEAT = GL_REPEAT
 				};
 
 				/// Texture units
@@ -66,14 +66,14 @@ namespace phoenix {
 				};
 
 				// Constructor and Destructor
-				Texture( Target target, int width, int height, Format format );
+				Texture(Target target, int width, int height, Format format);
 				~Texture();
 
-				void setData( unsigned char* pixelData );
+				void setData(unsigned char* pixelData);
 
-				void setCompressedData( unsigned char* pixels, unsigned int levels, unsigned int blockSize );
+				void setCompressedData(unsigned char* pixels, unsigned int levels, unsigned int blockSize);
 
-				void bind( unsigned int unit );
+				void bind(unsigned int unit);
 
 				void unbind();
 

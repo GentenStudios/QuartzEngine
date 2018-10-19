@@ -17,11 +17,11 @@ namespace phoenix {
 				int offset;				///< The Offset
 
 				VertexAttrib(unsigned int attribLocation, int attribNumComp, GLType attribType, int attribStride, int attribOffset) :
-					location( attribLocation ),
-					components( attribNumComp ),
-					type( attribType ),
-					stride( attribStride ),
-					offset( attribOffset )
+					location(attribLocation),
+					components(attribNumComp),
+					type(attribType),
+					stride(attribStride),
+					offset(attribOffset)
 				{
 					glVertexAttribPointer(location, components, static_cast<GLenum>(attribType), GL_FALSE, attribStride, reinterpret_cast<void*>(offset));
 				}

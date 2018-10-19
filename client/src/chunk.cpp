@@ -15,28 +15,28 @@ using namespace phoenix;
 
 extern const char* vertexShaderSource;
 const char* vertexShaderSource = "#version 330 core \n"
-								 "layout (location = 0) in vec3 aPos; \n"
-								 "layout (location = 1) in vec2 aUV; \n"
-								 "uniform mat4 model; \n"
-								 "uniform mat4 view; \n"
-								 "uniform mat4 projection; \n"
-								 "out vec2 UV; \n"
-								 "void main() \n"
-								 "{ \n"
-								 "gl_Position = projection * view * model * vec4(aPos, 1.0); \n"
-								 "UV = aUV; \n"
-								 "}";
+								"layout (location = 0) in vec3 aPos; \n"
+								"layout (location = 1) in vec2 aUV; \n"
+								"uniform mat4 model; \n"
+								"uniform mat4 view; \n"
+								"uniform mat4 projection; \n"
+								"out vec2 UV; \n"
+								"void main() \n"
+								"{ \n"
+								"gl_Position = projection * view * model * vec4(aPos, 1.0); \n"
+								"UV = aUV; \n"
+								"}";
 
 extern const char* fragmentShaderSource;
 const char* fragmentShaderSource = "#version 330 core \n"
-								   "out vec4 FragColor; \n"
-								   "in vec2 UV; \n"
-								   "uniform sampler2D theTexture; \n"
-								   "uniform sampler2D theTexture2; \n"
-								   "void main() \n"
-								   "{ \n"
-								   "FragColor = mix( texture(theTexture, UV), texture(theTexture2, UV), 0.5 );\n"
-								   "}";
+									"out vec4 FragColor; \n"
+									"in vec2 UV; \n"
+									"uniform sampler2D theTexture; \n"
+									"uniform sampler2D theTexture2; \n"
+									"void main() \n"
+									"{ \n"
+									"FragColor = mix( texture(theTexture, UV), texture(theTexture2, UV), 0.5 );\n"
+									"}";
 
 static const Vector3 CubeVerts[] = {
 	// front
@@ -154,13 +154,13 @@ static const Vector2 CubeUV[] = {
 };
 
 Chunk::Chunk() :
-	m_vao( new opengl::VertexArray() ),
-	m_vbo( new opengl::Buffer( opengl::Buffer::Target::ARRAY, opengl::Buffer::Usage::DYNAMIC_DRAW ) ),
-	m_uvbo( new opengl::Buffer( opengl::Buffer::Target::ARRAY, opengl::Buffer::Usage::DYNAMIC_DRAW ) )
+	m_vao(new opengl::VertexArray()),
+	m_vbo(new opengl::Buffer(opengl::Buffer::Target::ARRAY, opengl::Buffer::Usage::DYNAMIC_DRAW)),
+	m_uvbo(new opengl::Buffer(opengl::Buffer::Target::ARRAY, opengl::Buffer::Usage::DYNAMIC_DRAW))
 {
 }
 
-void Chunk::populateChunk( unsigned int chunkSize, Vector3 chunkPos )
+void Chunk::populateChunk(unsigned int chunkSize, Vector3 chunkPos)
 {
 	unsigned int sizeCubed = chunkSize * chunkSize * chunkSize;
 
@@ -170,16 +170,16 @@ void Chunk::populateChunk( unsigned int chunkSize, Vector3 chunkPos )
 	m_chunkPos = chunkPos;
 
 	// Set whole array to have, for example, 16 parts inside the vector.
-	m_chunkBlocks.resize( chunkSize );
+	m_chunkBlocks.resize(chunkSize);
 
 	for (unsigned int x = 0; x < m_chunkBlocks.size(); x++)
 	{
 		// Set each X index (first vector part, of the trio) to have, for example, 16 parts. So you can have m_chunkBlocks[x][0] to m_chunkBlocks[x][15]
-		m_chunkBlocks[x].resize( chunkSize );
+		m_chunkBlocks[x].resize(chunkSize);
 		for (unsigned int y = 0; y < m_chunkBlocks.size(); y++)
 		{
 			// Set the Y (first vector part, of the trio) to have, for example, 16 parts. So you can have m_chunkBlocks[x][y][0] to m_chunkBlocks[x][y][15]
-			m_chunkBlocks[x][y].resize( chunkSize );
+			m_chunkBlocks[x][y].resize(chunkSize);
 			for (unsigned int z = 0; z < m_chunkBlocks.size(); z++)
 			{
 				// Set the Z (first vector part, of the trio) to have the actual value of the blocks data. So, you can have m_chunkBlocks[x][y][z] = BlockType::SOLID
@@ -194,8 +194,8 @@ void Chunk::build()
 	//    if ( m_populated )
 	//        this->clearOpenGL();
 
-	m_chunkVertices = new Vector3[ m_vertsInChunk ];
-	Vector2* chunkUVs = new Vector2[ m_uvsInChunk ];
+	m_chunkVertices = new Vector3[m_vertsInChunk];
+	m_chunkUVs = new Vector2[m_uvsInChunk];
 
 	for (int z = 0; z < m_chunkSize; z++)
 	{
@@ -203,14 +203,14 @@ void Chunk::build()
 		{
 			for (int x = 0; x < m_chunkSize; x++)
 			{
-				int memOffset = ( x * vertInCube ) + (m_chunkSize * ((y * vertInCube) + m_chunkSize * (z * vertInCube)));
+				int memOffset = (x * vertInCube) + (m_chunkSize * ((y * vertInCube) + m_chunkSize * (z * vertInCube)));
 
-				std::memcpy( m_chunkVertices + memOffset, CubeVerts, sizeof( CubeVerts ) );
-				std::memcpy( chunkUVs + memOffset, CubeUV, sizeof( CubeUV ) );
+				std::memcpy(m_chunkVertices + memOffset, CubeVerts, sizeof(CubeVerts));
+				std::memcpy(m_chunkUVs + memOffset, CubeUV, sizeof(CubeUV));
 
 				for (int face = 0; face < 6; face++)
 				{
-					int memOffsetOffest = static_cast<int>( face ) * 6;
+					int memOffsetOffest = static_cast<int>(face) * 6;
 
 					for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
 					{
@@ -226,13 +226,13 @@ void Chunk::build()
 	m_vao->bind();
 
 	m_vbo->bind();
-	m_vbo->setData( static_cast<void*>(m_chunkVertices), m_vertsInChunk * sizeof(Vector3) );
-	opengl::VertexAttrib chunkVertAttribs( 0, 3, opengl::GLType::FLOAT, sizeof(Vector3), 0);
+	m_vbo->setData(static_cast<void*>(m_chunkVertices), m_vertsInChunk * sizeof(Vector3));
+	opengl::VertexAttrib chunkVertAttribs(0, 3, opengl::GLType::FLOAT, sizeof(Vector3), 0);
 	chunkVertAttribs.enable();
 
 	m_uvbo->bind();
-	m_uvbo->setData( static_cast<void*>(chunkUVs), m_uvsInChunk * sizeof(Vector2) );
-	opengl::VertexAttrib uvAttribs( 1, 2, opengl::GLType::FLOAT, sizeof(Vector2), 0 );
+	m_uvbo->setData(static_cast<void*>(m_chunkUVs), m_uvsInChunk * sizeof(Vector2));
+	opengl::VertexAttrib uvAttribs(1, 2, opengl::GLType::FLOAT, sizeof(Vector2), 0);
 	uvAttribs.enable();
 
 	m_shader.addStage(opengl::ShaderStage::VERTEX_SHADER, vertexShaderSource);
@@ -240,9 +240,22 @@ void Chunk::build()
 	m_shader.build();
 }
 
+void Chunk::blockDestroyAt(int x, int y, int z)
+{
+	int memOffset = (x * vertInCube) + (m_chunkSize * ((y * vertInCube) + m_chunkSize * (z * vertInCube)));
+	std::memcpy(m_chunkVertices + memOffset, CubeVertEmpty, sizeof(CubeVertEmpty));
+	std::memset(m_chunkUVs + memOffset, 0, sizeof(CubeUV));
+
+	m_vbo->bind();
+	m_vbo->setData(static_cast<void*>(m_chunkVertices), m_vertsInChunk * sizeof(Vector3));
+	m_uvbo->bind();
+	m_uvbo->setData(static_cast<void*>(m_chunkUVs), m_uvsInChunk * sizeof(Vector2));
+
+}
+
 void Chunk::draw(phoenix::FreeRoamCamera& camera)
 {
-	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f );
+	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f);
 
 	Matrix4x4 view = camera.calculateViewMatrix();
 
