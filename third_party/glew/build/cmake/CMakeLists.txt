@@ -33,9 +33,9 @@ file (STRINGS ${GLEW_DIR}/config/version  _VERSION_PATCH_STRING REGEX "GLEW_MICR
 string (REGEX REPLACE "GLEW_MICRO[ ]*=[ ]*([0-9]+)" "\\1" CPACK_PACKAGE_VERSION_PATCH ${_VERSION_PATCH_STRING})
 set (GLEW_VERSION ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH})
 
-set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+#set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # PHOENIX EDIT
+#set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib) # PHOENIX EDIT
+#set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin) # PHOENIX EDIT
 
 find_package (OpenGL REQUIRED)
 
@@ -214,28 +214,30 @@ if(WIN32 AND MSVC AND (NOT MSVC_VERSION LESS 1600) AND (NOT CMAKE_VERSION VERSIO
     )
 endif()
 
-install (FILES
-    ${GLEW_DIR}/include/GL/wglew.h
-    ${GLEW_DIR}/include/GL/glew.h
-    ${GLEW_DIR}/include/GL/glxew.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/GL)
+# PHOENIX EDIT: REMOVE INSTALL/UNINSTALL STUFF
 
-if(MAYBE_EXPORT)
-  install(EXPORT glew-targets DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/glew
-    NAMESPACE GLEW::)
-  install(FILES
-      ${CMAKE_CURRENT_SOURCE_DIR}/glew-config.cmake
-      ${CMAKE_CURRENT_SOURCE_DIR}/CopyImportedTargetProperties.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/glew)
-endif()
+#install (FILES
+#    ${GLEW_DIR}/include/GL/wglew.h
+#    ${GLEW_DIR}/include/GL/glew.h
+#    ${GLEW_DIR}/include/GL/glxew.h
+#    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/GL)
 
-if(NOT TARGET uninstall)
-  configure_file(
-      ${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in
-      ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
-      IMMEDIATE @ONLY)
+#if(MAYBE_EXPORT)
+#  install(EXPORT glew-targets DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/glew
+#    NAMESPACE GLEW::)
+#  install(FILES
+#      ${CMAKE_CURRENT_SOURCE_DIR}/glew-config.cmake
+#      ${CMAKE_CURRENT_SOURCE_DIR}/CopyImportedTargetProperties.cmake
+#    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/glew)
+#endif()
 
-  add_custom_target(uninstall
-      COMMAND ${CMAKE_COMMAND} -P
-      ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
-endif()
+#if(NOT TARGET uninstall)
+#  configure_file(
+#      ${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in
+#      ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+#      IMMEDIATE @ONLY)
+#
+#  add_custom_target(uninstall
+#      COMMAND ${CMAKE_COMMAND} -P
+#      ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+#endif()

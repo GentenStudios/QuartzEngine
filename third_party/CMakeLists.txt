@@ -12,3 +12,5 @@ add_subdirectory( wren )
 add_subdirectory( glfw )
 add_subdirectory( glew/build/cmake )
 add_subdirectory( ImGUI )
+
+set_target_properties(WrenVM glew_s glew glfw ImGui PROPERTIES FOLDER third_party)
