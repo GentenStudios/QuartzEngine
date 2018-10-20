@@ -12,9 +12,9 @@ set(sources
     ${source_dir}/math/matrix4x4.cpp
     ${source_dir}/math/vector2.cpp
 
-    ${source_dir}/graphics/IWindow.cpp
-
     ${source_dir}/SDL/SDLWindow.cpp
+
+    ${source_dir}/graphics/IWindow.cpp
 )
 
 set(headers
@@ -29,9 +29,10 @@ set(headers
 
     ${header_dir}/engine/utils/logging.hpp
 
-    ${header_dir}/engine/graphics/IWindow.hpp
     ${header_dir}/engine/SDL/SDLWindow.hpp
     ${header_dir}/engine/SDL/context.hpp
+
+    ${header_dir}/engine/graphics/IWindow.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)

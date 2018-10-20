@@ -1,6 +1,6 @@
-prefix=C:/Program Files (x86)/Project-Phoenix
+prefix=C:/Users/vfadia/CMakeBuilds/d40e03da-e2b5-2d36-8eb0-058eba236c89/install/x64-Debug (default)
 exec_prefix=${prefix}
-libdir=C:/Program Files (x86)/Project-Phoenix/lib
+libdir=C:/Users/vfadia/CMakeBuilds/d40e03da-e2b5-2d36-8eb0-058eba236c89/install/x64-Debug (default)/lib
 includedir=${prefix}/include
 
 Name: glew
