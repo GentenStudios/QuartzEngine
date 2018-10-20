@@ -2,9 +2,28 @@
 
 using namespace phx::sdl;
 
-SDLWindow::SDLWindow(const char* title, int width, int height)
+SDLWindow::SDLWindow(const char* title, int width, int height, phx::graphics::GLVersion version, phx::graphics::GLProfile profile)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
+	
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.major);	
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minor);
+	
+	uint32_t SDLProfile;
+	switch (profile)
+	{
+	case phx::graphics::GLProfile::CORE:
+		SDLProfile = SDL_GL_CONTEXT_PROFILE_CORE;
+		break;
+	case phx::graphics::GLProfile::COMPATABILITY:
+		SDLProfile = SDL_GL_CONTEXT_PROFILE_COMPATIBILITY;
+		break;
+	case phx::graphics::GLProfile::ES:
+		SDLProfile = SDL_GL_CONTEXT_PROFILE_ES;
+		break;
+	}
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDLProfile);
 
 	m_window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 	m_context = SDL_GL_CreateContext(m_window);

@@ -4,12 +4,12 @@
 
 using namespace phx::graphics;
 
-Window* Window::createWindow(WindowingAPI windowingAPI, const char* title, int width, int height)
+Window* Window::createWindow(WindowingAPI windowingAPI, const char* title, int width, int height, GLVersion version, GLProfile profile)
 {
 	switch (windowingAPI)
 	{
 	case WindowingAPI::SDL:
-		return new phx::sdl::SDLWindow(title, width, height);
+		return new phx::sdl::SDLWindow(title, width, height, version, profile);
 	}
 
 	return nullptr;

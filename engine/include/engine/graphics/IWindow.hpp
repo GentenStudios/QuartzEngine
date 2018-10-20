@@ -1,6 +1,7 @@
 #pragma once
 
 #include "engine/common.hpp"
+#include "engine/graphics/Context.hpp"
 
 namespace phx
 {
@@ -15,7 +16,7 @@ namespace phx
 		class Window
 		{
 		public:
-			static Window* createWindow(WindowingAPI windowApi, const char* title, int width, int height);
+			static Window* createWindow(WindowingAPI windowApi, const char* title, int width, int height, GLVersion version, GLProfile profile);
 
 			virtual void pollEvents() = 0;
 			virtual void swapBuffers() = 0;

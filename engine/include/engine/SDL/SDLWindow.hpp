@@ -5,7 +5,7 @@
 
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
-#include "engine/SDL/context.hpp"
+#include "engine/graphics/context.hpp"
 
 #include "engine/graphics/IWindow.hpp"
 
@@ -17,7 +17,7 @@ namespace phx
 		class SDLWindow : public phx::graphics::Window
 		{
 		public:
-			SDLWindow(const char* title, int width, int height);
+			SDLWindow(const char* title, int width, int height, phx::graphics::GLVersion version, phx::graphics::GLProfile profile);
 
 			virtual void pollEvents();
 			virtual void swapBuffers();

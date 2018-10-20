@@ -8,9 +8,9 @@ set(header_dir ${PROJECT_SOURCE_DIR}/include)
 set(sources
     ${source_dir}/utils/logging.cpp
 
-    ${source_dir}/math/vector3.cpp
-    ${source_dir}/math/matrix4x4.cpp
-    ${source_dir}/math/vector2.cpp
+    ${source_dir}/math/Vector3.cpp
+    ${source_dir}/math/Matrix4x4.cpp
+    ${source_dir}/math/Vector2.cpp
 
     ${source_dir}/SDL/SDLWindow.cpp
 
@@ -22,17 +22,19 @@ set(headers
     ${header_dir}/engine/os.hpp
     ${header_dir}/engine/types.hpp
 
-    ${header_dir}/engine/math/vector3.hpp
-    ${header_dir}/engine/math/matrix4x4.hpp
-    ${header_dir}/engine/math/mathutils.hpp
-    ${header_dir}/engine/math/vector2.hpp
+    ${header_dir}/engine/math/Vector3.hpp
+    ${header_dir}/engine/math/Matrix4x4.hpp
+    ${header_dir}/engine/math/MathUtils.hpp
+    ${header_dir}/engine/math/Vector2.hpp
 
     ${header_dir}/engine/utils/logging.hpp
 
     ${header_dir}/engine/SDL/SDLWindow.hpp
-    ${header_dir}/engine/SDL/context.hpp
 
     ${header_dir}/engine/graphics/IWindow.hpp
+    ${header_dir}/engine/graphics/Context.hpp
+
+	${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)

@@ -1,6 +1,6 @@
-#include "engine/math/matrix4x4.hpp"
+#include "engine/math/Matrix4x4.hpp"
 
-#include "engine/math/mathutils.hpp"
+#include "engine/math/MathUtils.hpp"
 
 #include <cstring>
 #include <cmath>
