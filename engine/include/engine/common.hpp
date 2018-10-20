@@ -1,7 +1,5 @@
 #pragma once
 
-#include "engine/os.hpp"
-
 /// INCLUDE OTHER TYPES AND STL TEMPALTES ///
 #include <string>
 #include <vector>
@@ -11,5 +9,10 @@
 #include <fstream>
 #include <sstream>
 
+/// INCLUDE MATH ///
+#include <cmath>
+
 /// INCLUDE CUSTOM THINGS. ///
+#include "engine/os.hpp"
+#include "engine/types.hpp"
 #include "engine/utils/logging.hpp"
