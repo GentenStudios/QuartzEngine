@@ -15,6 +15,8 @@ set(sources
     ${source_dir}/SDL/SDLWindow.cpp
 
     ${source_dir}/graphics/IWindow.cpp
+
+	${source_dir}/graphics/opengl/ShaderPipeline.cpp
 )
 
 set(headers
