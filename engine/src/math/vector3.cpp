@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-using namespace phoenix;
+using namespace phx;
 
 Vector3::Vector3(const float& x, const float& y, const float& z) : 
 	x(x), y(y), z(z)
@@ -65,7 +65,7 @@ void Vector3::operator-=(const Vector3& other)
 	z -= other.z;
 }
 
-Vector3 phoenix::operator+(const Vector3& left, const Vector3& right)
+Vector3 phx::operator+(const Vector3& left, const Vector3& right)
 {
 	return {
 		left.x + right.x,
@@ -74,7 +74,7 @@ Vector3 phoenix::operator+(const Vector3& left, const Vector3& right)
 	};
 }
 
-Vector3 phoenix::operator-(const Vector3& left, const Vector3& right)
+Vector3 phx::operator-(const Vector3& left, const Vector3& right)
 {
 	return {
 		left.x - right.x,
@@ -83,7 +83,7 @@ Vector3 phoenix::operator-(const Vector3& left, const Vector3& right)
 	};
 }
 
-Vector3 phoenix::operator*(const Vector3& left, const Vector3& right)
+Vector3 phx::operator*(const Vector3& left, const Vector3& right)
 {
 	return {
 		left.x * right.x,
@@ -92,7 +92,7 @@ Vector3 phoenix::operator*(const Vector3& left, const Vector3& right)
 	};
 }
 
-Vector3 phoenix::operator/(const Vector3& left, const Vector3& right)
+Vector3 phx::operator/(const Vector3& left, const Vector3& right)
 {
 	return {
 		left.x / right.x,

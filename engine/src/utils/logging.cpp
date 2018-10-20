@@ -9,7 +9,7 @@
 #include <cstdio>
 #include <ctime>
 
-using namespace phoenix;
+using namespace phx;
 
 // Declarations to get rid of compiler errors
 std::string Logger::m_logFile;

@@ -10,15 +10,15 @@
 #include <string>
 #include <sstream>
 
-#define INITLOGGER( logFile, vbLevel ) phoenix::Logger::init( logFile, vbLevel )
-#define DESTROYLOGGER() phoenix::Logger::destroy()
+#define INITLOGGER( logFile, vbLevel ) phx::Logger::init( logFile, vbLevel )
+#define DESTROYLOGGER() phx::Logger::destroy()
 
-#define ERROR( message )    phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::ERROR )
-#define WARNING( message )  phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::WARNING )
-#define INFO( message )     phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::INFO )
-#define DEBUG( message )    phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::DEBUG )
+#define ERROR( message )    phx::Logger::logMessage( __FILE__, __LINE__, message, phx::LogVerbosity::ERROR )
+#define WARNING( message )  phx::Logger::logMessage( __FILE__, __LINE__, message, phx::LogVerbosity::WARNING )
+#define INFO( message )     phx::Logger::logMessage( __FILE__, __LINE__, message, phx::LogVerbosity::INFO )
+#define DEBUG( message )    phx::Logger::logMessage( __FILE__, __LINE__, message, phx::LogVerbosity::DEBUG )
 
-namespace phoenix
+namespace phx
 {
 
 	/**

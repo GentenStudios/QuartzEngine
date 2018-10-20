@@ -11,6 +11,8 @@ set(sources
     ${source_dir}/math/vector3.cpp
     ${source_dir}/math/matrix4x4.cpp
     ${source_dir}/math/vector2.cpp
+
+    ${source_dir}/SDL/window.cpp
 )
 
 set(headers
@@ -25,7 +27,8 @@ set(headers
 
     ${header_dir}/engine/utils/logging.hpp
 
-    ${header_dir}/engine/graphics/shader/shader.hpp
+    ${header_dir}/engine/SDL/window.hpp
+    ${header_dir}/engine/SDL/context.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
@@ -39,7 +42,7 @@ set(include_dirs
 set(libraries
     glfw
     glew_s
-	ImGui
+    ImGui
 )
 
 if(WIN32)

@@ -1,6 +1,6 @@
 #include "engine/math/vector2.hpp"
 
-using namespace phoenix;
+using namespace phx;
 
 Vector2::Vector2()
 	: x(0.f), y(0.f)

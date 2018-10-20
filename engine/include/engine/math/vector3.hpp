@@ -1,6 +1,6 @@
 #pragma once
 
-namespace phoenix {
+namespace phx {
 
 	/**
 	 * @brief Represents a vector with 3 float components: x, y, z

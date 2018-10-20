@@ -2,7 +2,7 @@
 
 #include "engine/math/vector3.hpp"
 
-namespace phoenix {
+namespace phx {
 
 	/**
 	 * @brief Represents a column major 4x4 matrix of floats.

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace phoenix {
+namespace phx {
 
 	struct Vector2 {
 		float x;

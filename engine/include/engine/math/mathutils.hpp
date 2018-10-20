@@ -1,6 +1,6 @@
 #pragma once
 
-namespace phoenix {
+namespace phx {
 	/**
 	 * @brief Math utility functions.
 	 */
