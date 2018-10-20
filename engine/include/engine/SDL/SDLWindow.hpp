@@ -14,10 +14,10 @@ namespace phx
 	namespace sdl
 	{
 
-		class SDLWindow : public phx::graphics::Window
+		class SDLWindow : public phx::gfx::Window
 		{
 		public:
-			SDLWindow(const char* title, int width, int height, phx::graphics::GLVersion version, phx::graphics::GLProfile profile);
+			SDLWindow(const char* title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile);
 
 			virtual void pollEvents();
 			virtual void swapBuffers();

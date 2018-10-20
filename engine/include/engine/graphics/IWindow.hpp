@@ -5,7 +5,7 @@
 
 namespace phx
 {
-	namespace graphics
+	namespace gfx
 	{
 
 		enum class WindowingAPI

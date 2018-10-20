@@ -2,7 +2,7 @@
 
 #include "engine/SDL/SDLWindow.hpp"
 
-using namespace phx::graphics;
+using namespace phx::gfx;
 
 Window* Window::createWindow(WindowingAPI windowingAPI, const char* title, int width, int height, GLVersion version, GLProfile profile)
 {

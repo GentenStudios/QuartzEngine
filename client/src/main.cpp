@@ -9,7 +9,7 @@ using namespace phx;
 
 int main(int argc, char *argv[])
 {
-	graphics::Window* window = graphics::Window::createWindow(graphics::WindowingAPI::SDL, "Phoenix!", 1280, 720, {3,3}, graphics::GLProfile::CORE);
+	gfx::Window* window = gfx::Window::createWindow(gfx::WindowingAPI::SDL, "Phoenix!", 1280, 720, {3,3}, gfx::GLProfile::CORE);
 
 	glewInit();
 
