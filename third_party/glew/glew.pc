@@ -1,6 +1,6 @@
-prefix=C:/Program Files/Project-Phoenix
+prefix=C:/Program Files (x86)/Project-Phoenix
 exec_prefix=${prefix}
-libdir=C:/Program Files/Project-Phoenix/lib
+libdir=C:/Program Files (x86)/Project-Phoenix/lib
 includedir=${prefix}/include
 
 Name: glew

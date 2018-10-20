@@ -2,7 +2,7 @@
 
 #include "engine/common.hpp"
 
-namespace pheonix {
+namespace phoenix {
 
 	namespace voxels {
 

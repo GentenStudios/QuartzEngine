@@ -5,16 +5,26 @@
 #include <string>
 #include <vector>
 
-namespace pheonix {
+namespace phoenix {
 
 	namespace voxels {
+		
+		enum class BlockFace
+		{
+			FRONT,
+			BACK,
+			RIGHT,
+			LEFT,
+			BOTTOM,
+			TOP
+		};
 
 		/// @brief This defines what state of matter the block is
 		enum class BlockType
 		{
 			GAS,    ///< Gas Blocks are, for example, Air, or Oxygen if implemented.
 			LIQUID, ///< Fluid Liquid Dynamics are applied to these blocks.
-			SOLID,  ///< Generic Stable Block, used for most things.
+			SOLID   ///< Generic Stable Block, used for most things.
 		};
 
 		class Block
@@ -57,7 +67,6 @@ namespace pheonix {
 			/// @brief Short description of the block
 			BlockType m_blockType;
 			//  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
-			;
 		};
 
 		class BlockLibrary

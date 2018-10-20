@@ -54,10 +54,10 @@ if(UNIX AND NOT APPLE)
         )
 endif()
 
+
 # Link the executable
 set(EXECUTABLE_OUTPUT_PATH ../../COMPILE/bin)
 
 add_executable(${PROJECT_NAME} ${sources} ${headers})
 target_link_libraries(${PROJECT_NAME} ${libraries})
 include_directories(${include_dirs})
-

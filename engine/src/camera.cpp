@@ -56,6 +56,12 @@ void FreeRoamCamera::tick(float dt)
 	if (m_window->getKeyState(GLFW_KEY_A) == GLFW_PRESS)
 		m_position -= right * dt * MOVE_SPEED;
 
+	if (m_window->getKeyState(GLFW_KEY_SPACE) == GLFW_PRESS)
+		m_position += Vector3(0.f, 1.f, 0.f) * dt * MOVE_SPEED;
+
+	if (m_window->getKeyState(GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		m_position -= Vector3(0.f, 1.f, 0.f) * dt * MOVE_SPEED;
+
 	_lastMousePos = mousePos;
 }
 

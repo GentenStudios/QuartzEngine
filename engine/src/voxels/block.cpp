@@ -1,6 +1,6 @@
 #include "engine/voxels/block.hpp"
 
-using namespace pheonix::voxels;
+using namespace phoenix::voxels;
 
 std::vector<Block*> BlockLibrary::m_blockLibrary;
 

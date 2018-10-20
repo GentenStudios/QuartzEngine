@@ -25,7 +25,7 @@ set(sources
     ${source_dir}/imgui.cpp
     
     ${source_dir}/voxels/block.cpp
-#    ${source_dir}/voxels/chunk.cpp
+    ${source_dir}/voxels/chunk.cpp
     ${source_dir}/voxels/mapblock.cpp
 )
 
@@ -52,9 +52,9 @@ set(headers
 
 
     ${header_dir}/engine/camera.hpp
-	  ${header_dir}/engine/imgui.hpp
+	${header_dir}/engine/imgui.hpp
 
-#    ${header_dir}/engine/voxels/chunk.hpp
+    ${header_dir}/engine/voxels/chunk.hpp
      ${header_dir}/engine/voxels/block.hpp
      ${header_dir}/engine/voxels/mapblock.hpp 
 )
