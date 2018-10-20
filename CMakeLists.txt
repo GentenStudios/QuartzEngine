@@ -1,23 +1,23 @@
 # Say that VERSION 3.0 of CMake is the minumum required.
-cmake_minimum_required( VERSION 3.0 )
+cmake_minimum_required(VERSION 3.0)
 
 # Set the Project name.
-project( Project-Phoenix )
+project(Project-Phoenix)
 
 # Make CMake use folders. (makes things slightly tidier in the future)
-set_property( GLOBAL PROPERTY USE_FOLDERS ON )
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Add the subdirectory for all our Third Party dependencies
-add_subdirectory( third_party )
+add_subdirectory(third_party)
 
 # Add the subdirectory for our Engine.
-add_subdirectory( engine )
+add_subdirectory(engine)
 
 # Add the subdirectory for our Client.
-add_subdirectory( client )
+#add_subdirectory( client )
 
 # Add the subdirectory for our Launcher.
-add_subdirectory( launcher )
+#add_subdirectory( launcher )
 
 # Add the subdirectory for our Server.
-add_subdirectory( server )
+#add_subdirectory( server )
