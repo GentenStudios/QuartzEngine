@@ -1,5 +1,5 @@
 #include <engine/common.hpp>
-#include <engine/graphics/window.hpp>
+#include <engine/graphics/IWindow.hpp>
 
 #include <GL/glew.h>
 
@@ -13,8 +13,10 @@ int main(int argc, char *argv[])
 
 	glewInit();
 
-	while (true)
+	while (window->isRunning())
 	{
+		window->pollEvents();
+
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 

@@ -4,12 +4,24 @@ using namespace phx::sdl;
 
 SDLWindow::SDLWindow(const char* title, int width, int height)
 {
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_EVERYTHING);
 
 	m_window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 	m_context = SDL_GL_CreateContext(m_window);
 
 	SDL_ShowWindow(m_window);
+
+	m_running = true;
+}
+
+void SDLWindow::pollEvents()
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event) > 0)
+	{
+		if (event.type == SDL_QUIT)
+			m_running = false;
+	}
 }
 
 void SDLWindow::swapBuffers()

@@ -7,7 +7,7 @@
 #include <SDL.h>
 #include "engine/SDL/context.hpp"
 
-#include "engine/graphics/window.hpp"
+#include "engine/graphics/IWindow.hpp"
 
 namespace phx
 {
@@ -19,7 +19,7 @@ namespace phx
 		public:
 			SDLWindow(const char* title, int width, int height);
 
-			virtual void pollEvents() {}
+			virtual void pollEvents();
 			virtual void swapBuffers();
 			virtual bool isRunning();
 			

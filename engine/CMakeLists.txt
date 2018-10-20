@@ -12,7 +12,7 @@ set(sources
     ${source_dir}/math/matrix4x4.cpp
     ${source_dir}/math/vector2.cpp
 
-    ${source_dir}/graphics/window.cpp
+    ${source_dir}/graphics/IWindow.cpp
 
     ${source_dir}/SDL/SDLWindow.cpp
 )
@@ -29,7 +29,7 @@ set(headers
 
     ${header_dir}/engine/utils/logging.hpp
 
-    ${header_dir}/engine/graphics/window.hpp
+    ${header_dir}/engine/graphics/IWindow.hpp
     ${header_dir}/engine/SDL/SDLWindow.hpp
     ${header_dir}/engine/SDL/context.hpp
 )

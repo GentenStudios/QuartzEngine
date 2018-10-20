@@ -1,4 +1,4 @@
-#include "engine/graphics/window.hpp"
+#include "engine/graphics/IWindow.hpp"
 
 #include "engine/SDL/SDLWindow.hpp"
 
