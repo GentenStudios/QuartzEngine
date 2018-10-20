@@ -15,11 +15,27 @@ set(headers
 
 
 set(include_dirs
+    ${dependencies}/SDL2/include
+    ${dependencies}/../engine/include
+	${dependencies}/glew/include
 )
 
 set(libraries
+	glew_s
     Phoenix_Engine
 )
+
+if(WIN32)
+    set(libraries
+        ${libraries}
+        imm32.lib
+        ole32.lib
+        oleaut32.lib
+        opengl32.lib
+        version.lib
+        winmm.lib
+        )
+endif()
 
 # Link the executable
 set(EXECUTABLE_OUTPUT_PATH ../../COMPILE/bin)

@@ -40,15 +40,19 @@ set(include_dirs
 )
 
 set(libraries
-    glfw
+    SDL2-static
     glew_s
-    ImGui
 )
 
 if(WIN32)
     set(libraries
         ${libraries}
-        OpenGL32.lib
+        imm32.lib
+        ole32.lib
+        oleaut32.lib
+        opengl32.lib
+        version.lib
+        winmm.lib
         )
 endif()
 

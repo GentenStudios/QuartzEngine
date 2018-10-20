@@ -14,7 +14,7 @@ add_subdirectory(third_party)
 add_subdirectory(engine)
 
 # Add the subdirectory for our Client.
-#add_subdirectory( client )
+add_subdirectory(client)
 
 # Add the subdirectory for our Launcher.
 #add_subdirectory( launcher )
