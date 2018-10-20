@@ -21,7 +21,9 @@ set(include_dirs
 )
 
 set(libraries
-	glew_s
+    SDL2-static
+    SDL2main
+    glew_s
     Phoenix_Engine
 )
 

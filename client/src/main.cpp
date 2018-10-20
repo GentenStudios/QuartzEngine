@@ -1,5 +1,5 @@
 #include <engine/common.hpp>
-#include <engine/SDL/window.hpp>
+#include <engine/graphics/window.hpp>
 
 #include <GL/glew.h>
 
@@ -9,11 +9,7 @@ using namespace phx;
 
 int main(int argc, char *argv[])
 {
-	sdl::Window* window = new sdl::Window();
-
-	window->setAttribute(sdl::Feature::DOUBLEBUFFER, true);
-	window->setContextInfo(sdl::GLProfile::CORE, sdl::GLVersion {3,3});
-	window->initialise("Phoenix!", 1280, 720, sdl::Window::Flags::OPENGL | sdl::Window::Flags::RESIZABLE);
+	graphics::Window* window = graphics::Window::createWindow(graphics::WindowingAPI::SDL, "Phoenix!", 1280, 720);
 
 	glewInit();
 
