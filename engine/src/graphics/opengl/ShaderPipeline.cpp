@@ -71,7 +71,7 @@ void ShaderPipeline::setFloat(const std::string& name, float value) const
 	glUniform1f(glGetUniformLocation(m_shaderProgram, name.c_str()), value);
 }
 
-void ShaderPipeline::setVec2(const std::string& name, Vector2& data) const
+void ShaderPipeline::setVec2(const std::string& name, phx::Vector2& data) const
 {
 	glUniform2fv(glGetUniformLocation(m_shaderProgram, name.c_str()), 1, &data.x);
 }
@@ -81,7 +81,7 @@ void ShaderPipeline::setVec2(const std::string& name, float x, float y) const
 	glUniform2f(glGetUniformLocation(m_shaderProgram, name.c_str()), x, y);
 }
 
-void ShaderPipeline::setVec3(const std::string& name, Vector3& data) const
+void ShaderPipeline::setVec3(const std::string& name, phx::Vector3& data) const
 {
 	glUniform3fv(glGetUniformLocation(m_shaderProgram, name.c_str()), 1, &data.x);
 }
@@ -91,7 +91,7 @@ void ShaderPipeline::setVec3(const std::string& name, float x, float y, float z)
 	glUniform3f(glGetUniformLocation(m_shaderProgram, name.c_str()), x, y, z);
 }
 
-void ShaderPipeline::setMat4(const std::string& name, Matrix4x4& mat) const
+void ShaderPipeline::setMat4(const std::string& name, phx::Matrix4x4& mat) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(m_shaderProgram, name.c_str()), 1, GL_FALSE, &mat.elements[0]);
 }
