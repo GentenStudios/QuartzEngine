@@ -37,9 +37,21 @@ if(WIN32)
         )
 endif()
 
-# Link the executable
-set(EXECUTABLE_OUTPUT_PATH ../../COMPILE/bin)
+set(AssetsPath ${CMAKE_CURRENT_SOURCE_DIR}/../assets)
+
+file(GLOB shaders ${AssetsPath}/shaders/*.vert ${AssetsPath}/shaders/*.frag)
+file(GLOB scripts ${AssetsPath}/scripts/*.wren)
+file(GLOB images ${AssetsPath}/images/*.png)
+
+add_custom_target(Phoenix_Client-Assets
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${AssetsPath} ${CMAKE_CURRENT_BINARY_DIR}/assets
+				   SOURCES ${shaders} ${scripts} ${images}
+)
+
 
 add_executable(${PROJECT_NAME} ${sources} ${headers})
 target_link_libraries(${PROJECT_NAME} ${libraries})
 include_directories(${include_dirs})
+
+add_dependencies(${PROJECT_NAME} Phoenix_Client-Assets)
