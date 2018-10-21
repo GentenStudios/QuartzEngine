@@ -41,9 +41,8 @@ set(headers
 	${header_dir}/engine/graphics/opengl/opengl.hpp
 	${header_dir}/engine/graphics/opengl/VertexArray.hpp
 	${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
+	${header_dir}/engine/graphics/opengl/VertexAttrib.hpp
 	${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
-
-	${header_dir}/engine/graphics/opengl/Renderer.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
