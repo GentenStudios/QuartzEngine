@@ -49,15 +49,47 @@ namespace pheonix {
 
 			//  ??????? getTextures();
 
+			/////////////////////////////////////////////
+			// Getters and setters for event callbacks //
+			/////////////////////////////////////////////
+
+			///@breif Setter: Sets the function executed when a block is placed
+			void setOnPlaceCallback(void* callback);
+			///@breif Getter: Gets the function executed when a block is placed
+			void* getOnPlaceCallback();
+
+			///@breif Setter: Sets the function executed when a block is broken
+			void setOnBreakCallback(void* callback);
+			///@breif Getter: Gets the function executed when a block is broken
+			void* getOnBreakCallback();
+
+			///@breif Setter: Sets the function executed when a block is left clicked
+			void setOnInteractLeftCallback(void* callback);
+			///@breif Getter: Gets the function executed when a block is left clicked
+			void* getOnInteractLeftCallback();
+			
+			///@breif Setter: Sets the function executed when a block is right clicked
+			void setOnInteractRightCallback(void* callback);
+			///@breif Getter: Gets the function executed when a block is right clicked
+			void* getOnInteractRightCallback();
+
 		private:
 			/// @brief Unique id using the convention mod:name
 			std::string m_id;
 			/// @brief Name that will display to the user
 			std::string m_name;
-			/// @brief Short description of the block
+			/// @brief State of matter of the block
 			BlockType m_blockType;
 			//  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
-			;
+			
+			/// @brief Lambda callback for when the block is placed (well, hopefully lambdas if we can)
+			void* m_onPlaceCallback;
+			/// @brief Lambda callback for when the block is broken (well, hopefully lambdas if we can)
+			void* m_onBreakCallback;
+			/// @brief Lambda callback for when the block is interacted with by left arm (well, hopefully lambdas if we can)
+			void* m_onInteractLeftCallback;
+			/// @brief Lambda callback for when the block is interacted with by right arm (well, hopefully lambdas if we can)
+			void* m_onInteractRightCallback;
 		};
 
 		class BlockLibrary
@@ -73,7 +105,7 @@ namespace pheonix {
 			static void registerBlock(Block* block);
 
 		private:
-			// A registry to keep track of all the registered blocks
+			/// @brief A registry to keep track of all the registered blocks
 			static std::vector<Block*> m_blockLibrary;
 
 		};
