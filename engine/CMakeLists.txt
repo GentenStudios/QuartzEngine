@@ -27,6 +27,9 @@ set(sources
     ${source_dir}/voxels/block.cpp
 #    ${source_dir}/voxels/chunk.cpp
     ${source_dir}/voxels/mapblock.cpp
+
+    ${source_dir}/entities/item.cpp
+    ${source_dir}/entities/iteminstance.cpp
 )
 
 set(headers
@@ -57,6 +60,9 @@ set(headers
 #    ${header_dir}/engine/voxels/chunk.hpp
      ${header_dir}/engine/voxels/block.hpp
      ${header_dir}/engine/voxels/mapblock.hpp 
+
+    ${header_dir}/engine/entities/item.hpp
+    ${header_dir}/engine/entities/iteminstance.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
