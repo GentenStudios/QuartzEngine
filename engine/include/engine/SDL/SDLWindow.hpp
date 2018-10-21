@@ -1,11 +1,11 @@
 #pragma once
 
 #include "engine/common.hpp"
-#include "engine/math/vector2.hpp"
+#include "engine/math/Vector2.hpp"
 
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
-#include "engine/graphics/context.hpp"
+#include "engine/graphics/Context.hpp"
 
 #include "engine/graphics/IWindow.hpp"
 
