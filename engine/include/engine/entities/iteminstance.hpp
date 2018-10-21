@@ -9,6 +9,7 @@ namespace pheonix {
 
 		class ItemInstance {
 		public:
+			ItemInstance(std::string id);
 			ItemInstance(std::string id, int baseDamage);
 			~ItemInstance();
 
