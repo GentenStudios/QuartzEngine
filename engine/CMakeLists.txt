@@ -5,45 +5,87 @@ project(Phoenix_Engine)
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(header_dir ${PROJECT_SOURCE_DIR}/include)
 
-set(sources
-    ${source_dir}/utils/logging.cpp
-
+set(mathSrc
     ${source_dir}/math/Vector3.cpp
     ${source_dir}/math/Matrix4x4.cpp
-    ${source_dir}/math/Vector2.cpp
-
-    ${source_dir}/SDL/SDLWindow.cpp
-
-    ${source_dir}/graphics/IWindow.cpp
-
-	${source_dir}/graphics/opengl/VertexArray.cpp
-	${source_dir}/graphics/opengl/VertexBuffer.cpp
-	${source_dir}/graphics/opengl/ShaderPipeline.cpp
+    ${source_dir}/math/Vector2.cpp	
 )
 
-set(headers
-    ${header_dir}/engine/common.hpp
-    ${header_dir}/engine/os.hpp
-    ${header_dir}/engine/types.hpp
-
+set(mathHeaders
     ${header_dir}/engine/math/Vector3.hpp
     ${header_dir}/engine/math/Matrix4x4.hpp
     ${header_dir}/engine/math/MathUtils.hpp
-    ${header_dir}/engine/math/Vector2.hpp
+    ${header_dir}/engine/math/Vector2.hpp	
+)
 
-    ${header_dir}/engine/utils/logging.hpp
+set(platformSrc
+	${source_dir}/SDL/SDLWindow.cpp
+    ${source_dir}/graphics/IWindow.cpp
+)
 
-    ${header_dir}/engine/SDL/SDLWindow.hpp
-
+set(platformHeaders
+	${header_dir}/engine/SDL/SDLWindow.hpp
     ${header_dir}/engine/graphics/IWindow.hpp
     ${header_dir}/engine/graphics/Context.hpp
+    ${header_dir}/engine/os.hpp
+)
 
+set(graphicsHeaders
 	${header_dir}/engine/graphics/opengl/opengl.hpp
 	${header_dir}/engine/graphics/opengl/VertexArray.hpp
 	${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
 	${header_dir}/engine/graphics/opengl/VertexAttrib.hpp
 	${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
 )
+
+set(graphicsSrc
+	${source_dir}/graphics/opengl/VertexArray.cpp
+	${source_dir}/graphics/opengl/VertexBuffer.cpp
+	${source_dir}/graphics/opengl/ShaderPipeline.cpp
+)
+
+set(debugSrc
+    ${source_dir}/utils/logging.cpp
+)
+
+set(debugHeaders
+    ${header_dir}/engine/utils/logging.hpp
+)
+
+set(commonHeaders
+    ${header_dir}/engine/common.hpp
+    ${header_dir}/engine/types.hpp
+)
+
+set(sources
+	${graphicsSrc}
+	${mathSrc}
+	${platformSrc}
+	${debugSrc}
+)
+
+set(headers
+	${commonHeaders}
+	${graphicsHeaders}
+	${mathHeaders}
+	${platformHeaders}
+	${debugSrc}
+)
+
+source_group("Source Files\\Math" FILES ${mathSrc})
+source_group("Header Files\\Math" FILES ${mathHeaders})
+
+source_group("Source Files\\Platform" FILES ${platformSrc})
+source_group("Header Files\\Platform" FILES ${platformHeaders})
+
+source_group("Source Files\\Graphics" FILES ${graphicsSrc})
+source_group("Header Files\\Graphics" FILES ${graphicsHeaders})
+
+source_group("Source Files\\Debug" FILES ${debugSrc})
+source_group("Header Files\\Debug" FILES ${debugHeaders})
+
+source_group("Header Files\\Common" FILES ${commonHeaders})
+
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
