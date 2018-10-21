@@ -3,6 +3,7 @@
 
 #include <engine/graphics/opengl/VertexArray.hpp>
 #include <engine/graphics/opengl/VertexBuffer.hpp>
+#include <engine/graphics/opengl/VertexAttrib.hpp>
 
 #include <GL/glew.h>
 
@@ -13,7 +14,7 @@ using namespace phx;
 
 int main(int argc, char *argv[])
 {
-	gfx::Window* window = gfx::Window::createWindow(gfx::WindowingAPI::SDL, "Phoenix!", 1280, 720, {3,3}, gfx::GLProfile::CORE);
+	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL, "Phoenix!", 1280, 720, {3,3}, gfx::GLProfile::CORE);
 
 	glewInit();
 
@@ -30,8 +31,8 @@ int main(int argc, char *argv[])
 	vbo->bind();
 	vbo->setData(static_cast<void*>(vertices), sizeof(vertices));
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, nullptr);
-	glEnableVertexAttribArray(0);
+	gl::VertexAttrib vertAttrib(0, 3, 3, 0);
+	vertAttrib.enable();
 
 	while (window->isRunning())
 	{
@@ -41,7 +42,7 @@ int main(int argc, char *argv[])
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 
 		vao->bind();
-		glEnableVertexAttribArray(0);
+		vertAttrib.enable();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		window->swapBuffers();
