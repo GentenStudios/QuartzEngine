@@ -26,6 +26,16 @@ std::string Item::getName()
     return m_name;
 };
 
+void Item::setOnBreakCallback(void* callback) { m_onBreakCallback = callback; }
+void* Item::getOnBreakCallback() { return m_onBreakCallback; }
+
+void Item::setOnUseCallback(void* callback) { m_onUseCallback = callback; }
+void* Item::getOnUseCallback() { return m_onUseCallback; }
+
+/////////////////////////////////////////////////////////////////
+/////////////////// Block Library Code //////////////////////////
+/////////////////////////////////////////////////////////////////
+
 void ItemLibrary::registerItem(Item* item)
 {
     m_itemLibrary.push_back(item);

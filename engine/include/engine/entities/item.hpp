@@ -31,11 +31,27 @@ namespace pheonix {
 			 */
 			std::string getName();
 
+
+			///@breif Setter: Sets the function executed when an items breaks (damage used up)
+			void setOnBreakCallback(void* callback);
+			///@breif Getter: Gets the function executed when an item breaks (damage used up)
+			void* getOnBreakCallback();
+
+			///@breif Setter: Sets the function executed when you use the item
+			void setOnUseCallback(void* callback);
+			///@breif Getter: Gets the function executed when you use the item
+			void* getOnUseCallback();
+
         private:
 			/// @brief Unique id using the convention mod:name
 			std::string m_id;
 			/// @brief Name that will display to the user
 			std::string m_name;
+
+			/// @brief Lambda callback for when the item is broken (well, hopefully lambdas if we can)
+			void* m_onBreakCallback;
+			/// @brief Lambda callback for when the item is used (well, hopefully lambdas if we can)
+			void* m_onUseCallback;
         };
 
         class ItemLibrary
