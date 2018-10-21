@@ -4,17 +4,12 @@ using namespace phx::gfx::gl;
 
 VertexArray::VertexArray()
 {
-	glGenVertexArrays(1, &m_vertexArrayID);
-}
-
-VertexArray::~VertexArray()
-{
-	glDeleteVertexArrays(1, &m_vertexArrayID);
+	glGenVertexArrays(1, &m_arrayID);
 }
 
 void VertexArray::bind()
 {
-	glBindVertexArray(m_vertexArrayID);
+	glBindVertexArray(m_arrayID);
 }
 
 void VertexArray::unbind()
@@ -22,7 +17,7 @@ void VertexArray::unbind()
 	glBindVertexArray(0);
 }
 
-unsigned int VertexArray::getID()
+VertexArray::~VertexArray()
 {
-	return m_vertexArrayID;
+	glDeleteVertexArrays(1, &m_arrayID);
 }

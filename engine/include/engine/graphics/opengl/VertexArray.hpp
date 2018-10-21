@@ -18,10 +18,8 @@ namespace phx
 				void bind();
 				void unbind();
 
-				unsigned int getID();
-
 			private:
-				unsigned int m_vertexArrayID;
+				unsigned int m_arrayID;
 			};
 
 		}

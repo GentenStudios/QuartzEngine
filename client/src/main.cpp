@@ -1,10 +1,14 @@
 #include <engine/common.hpp>
 #include <engine/graphics/IWindow.hpp>
 
+#include <engine/graphics/opengl/VertexArray.hpp>
+#include <engine/graphics/opengl/VertexBuffer.hpp>
+
 #include <GL/glew.h>
 
 #include <SDL.h>
 
+using namespace phx::gfx;
 using namespace phx;
 
 int main(int argc, char *argv[])
@@ -19,14 +23,13 @@ int main(int argc, char *argv[])
 		0.0f, 1.0f, 0.0f
 	};
 
-	unsigned int vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	gl::VertexArray* vao = new gl::VertexArray();
+	vao->bind();
 
-	unsigned int vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), static_cast<void*>(vertices), GL_DYNAMIC_DRAW);
+	gl::VertexBuffer* vbo = new gl::VertexBuffer(gl::VertexBuffer::Target::ARRAY, gl::VertexBuffer::Usage::DYNAMIC_DRAW);
+	vbo->bind();
+	vbo->setData(static_cast<void*>(vertices), sizeof(vertices));
+
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, nullptr);
 	glEnableVertexAttribArray(0);
 
@@ -37,7 +40,7 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 
-		glBindVertexArray(vao);
+		vao->bind();
 		glEnableVertexAttribArray(0);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 

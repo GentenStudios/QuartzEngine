@@ -13,10 +13,10 @@ namespace phx
 			SDL
 		};
 
-		class Window
+		class IWindow
 		{
 		public:
-			static Window* createWindow(WindowingAPI windowApi, const char* title, int width, int height, GLVersion version, GLProfile profile);
+			static IWindow* createWindow(WindowingAPI windowApi, const char* title, int width, int height, GLVersion version, GLProfile profile);
 
 			virtual void pollEvents() = 0;
 			virtual void swapBuffers() = 0;

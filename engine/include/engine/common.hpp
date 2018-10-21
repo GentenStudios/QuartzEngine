@@ -11,6 +11,7 @@
 /// INCLUDE STL CONTAINERS ///
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 /// INCLUDE CUSTOM THINGS. ///
 #include "engine/os.hpp"

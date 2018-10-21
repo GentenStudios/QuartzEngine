@@ -14,7 +14,7 @@ namespace phx
 	namespace sdl
 	{
 
-		class SDLWindow : public phx::gfx::Window
+		class SDLWindow : public phx::gfx::IWindow
 		{
 		public:
 			SDLWindow(const char* title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile);

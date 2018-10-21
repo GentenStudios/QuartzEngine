@@ -9,7 +9,7 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.major);	
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minor);
 	
-	uint32_t SDLProfile;
+	uint32_t SDLProfile = SDL_GL_CONTEXT_PROFILE_CORE;
 	switch (profile)
 	{
 	case phx::gfx::GLProfile::CORE:

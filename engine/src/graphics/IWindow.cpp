@@ -4,7 +4,7 @@
 
 using namespace phx::gfx;
 
-Window* Window::createWindow(WindowingAPI windowingAPI, const char* title, int width, int height, GLVersion version, GLProfile profile)
+IWindow* Window::createWindow(WindowingAPI windowingAPI, const char* title, int width, int height, GLVersion version, GLProfile profile)
 {
 	switch (windowingAPI)
 	{

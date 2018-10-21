@@ -17,6 +17,7 @@ set(sources
     ${source_dir}/graphics/IWindow.cpp
 
 	${source_dir}/graphics/opengl/VertexArray.cpp
+	${source_dir}/graphics/opengl/VertexBuffer.cpp
 	${source_dir}/graphics/opengl/ShaderPipeline.cpp
 )
 
@@ -41,6 +42,8 @@ set(headers
 	${header_dir}/engine/graphics/opengl/VertexArray.hpp
 	${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
 	${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
+
+	${header_dir}/engine/graphics/opengl/Renderer.hpp
 )
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
