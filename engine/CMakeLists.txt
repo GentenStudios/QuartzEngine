@@ -16,6 +16,7 @@ set(sources
 
     ${source_dir}/graphics/IWindow.cpp
 
+	${source_dir}/graphics/opengl/VertexArray.cpp
 	${source_dir}/graphics/opengl/ShaderPipeline.cpp
 )
 
@@ -36,6 +37,9 @@ set(headers
     ${header_dir}/engine/graphics/IWindow.hpp
     ${header_dir}/engine/graphics/Context.hpp
 
+	${header_dir}/engine/graphics/opengl/opengl.hpp
+	${header_dir}/engine/graphics/opengl/VertexArray.hpp
+	${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
 	${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
 )
 

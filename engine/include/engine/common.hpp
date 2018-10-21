@@ -1,9 +1,5 @@
 #pragma once
 
-/// INCLUDE OTHER TYPES AND STL TEMPALTES ///
-#include <string>
-#include <vector>
-
 /// INCLUDE STREAMS ///
 #include <iostream>
 #include <fstream>
@@ -11,6 +7,10 @@
 
 /// INCLUDE MATH ///
 #include <cmath>
+
+/// INCLUDE STL CONTAINERS ///
+#include <string>
+#include <vector>
 
 /// INCLUDE CUSTOM THINGS. ///
 #include "engine/os.hpp"
