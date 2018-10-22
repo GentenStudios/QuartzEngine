@@ -44,11 +44,11 @@ set(graphicsSrc
 	${source_dir}/graphics/opengl/ShaderPipeline.cpp
 )
 
-set(debugSrc
+set(utilSrc
     ${source_dir}/utils/logging.cpp
 )
 
-set(debugHeaders
+set(utilHeaders
     ${header_dir}/engine/utils/logging.hpp
 )
 
@@ -61,7 +61,7 @@ set(sources
 	${graphicsSrc}
 	${mathSrc}
 	${platformSrc}
-	${debugSrc}
+	${utilSrc}
 )
 
 set(headers
@@ -69,7 +69,7 @@ set(headers
 	${graphicsHeaders}
 	${mathHeaders}
 	${platformHeaders}
-	${debugSrc}
+	${utilHeaders}
 )
 
 source_group("Source Files\\Math" FILES ${mathSrc})
@@ -81,8 +81,8 @@ source_group("Header Files\\Platform" FILES ${platformHeaders})
 source_group("Source Files\\Graphics" FILES ${graphicsSrc})
 source_group("Header Files\\Graphics" FILES ${graphicsHeaders})
 
-source_group("Source Files\\Debug" FILES ${debugSrc})
-source_group("Header Files\\Debug" FILES ${debugHeaders})
+source_group("Source Files\\Utils" FILES ${utilSrc})
+source_group("Header Files\\Utils" FILES ${utilHeaders})
 
 source_group("Header Files\\Common" FILES ${commonHeaders})
 
