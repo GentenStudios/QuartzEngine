@@ -42,21 +42,19 @@ set(graphicsSrc
 	${source_dir}/graphics/opengl/VertexArray.cpp
 	${source_dir}/graphics/opengl/VertexBuffer.cpp
     ${source_dir}/graphics/opengl/ShaderPipeline.cpp
-    
 )
 
-set(voxelHeaders
-    ${header_dir}/engine/voxels/chunk.hpp
-    ${header_dir}/engine/voxels/block.hpp
-    ${header_dir}/engine/voxels/mapblock.hpp 
+set(voxelsHeaders
+    ${header_dir}/engine/voxels/Block.hpp
+    ${header_dir}/engine/voxels/MapBlock.hpp 
 
     ${header_dir}/engine/entities/item.hpp
     ${header_dir}/engine/entities/iteminstance.hpp
 )
 
-set(voxelSrc
-    ${source_dir}/voxels/block.cpp
-    ${source_dir}/voxels/mapblock.cpp
+set(voxelsSrc
+    ${source_dir}/voxels/Block.cpp
+    ${source_dir}/voxels/MapBlock.cpp
 
     ${source_dir}/entities/item.cpp
     ${source_dir}/entities/iteminstance.cpp
@@ -80,6 +78,7 @@ set(sources
 	${mathSrc}
 	${platformSrc}
 	${utilSrc}
+	${voxelsSrc}
 )
 
 set(headers
@@ -88,6 +87,7 @@ set(headers
 	${mathHeaders}
 	${platformHeaders}
 	${utilHeaders}
+	${voxelsHeaders}
 )
 
 source_group("Source Files\\Math" FILES ${mathSrc})
@@ -102,8 +102,10 @@ source_group("Header Files\\Graphics" FILES ${graphicsHeaders})
 source_group("Source Files\\Utils" FILES ${utilSrc})
 source_group("Header Files\\Utils" FILES ${utilHeaders})
 
-source_group("Header Files\\Common" FILES ${commonHeaders})
+source_group("Source Files\\Voxels" FILES ${voxelsSrc})
+source_group("Header Files\\Voxels" FILES ${voxelsHeaders})
 
+source_group("Header Files\\Common" FILES ${commonHeaders})
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
