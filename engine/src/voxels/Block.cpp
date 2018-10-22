@@ -1,4 +1,4 @@
-#include "engine/voxels/block.hpp"
+#include "engine/voxels/Block.hpp"
 
 using namespace pheonix::voxels;
 
