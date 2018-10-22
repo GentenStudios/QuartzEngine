@@ -30,6 +30,12 @@ set(platformHeaders
     ${header_dir}/engine/os.hpp
 )
 
+<<<<<<< HEAD
+    
+  	
+       
+
+=======
 set(graphicsHeaders
 	${header_dir}/engine/graphics/opengl/opengl.hpp
 	${header_dir}/engine/graphics/opengl/VertexArray.hpp
@@ -41,7 +47,25 @@ set(graphicsHeaders
 set(graphicsSrc
 	${source_dir}/graphics/opengl/VertexArray.cpp
 	${source_dir}/graphics/opengl/VertexBuffer.cpp
-	${source_dir}/graphics/opengl/ShaderPipeline.cpp
+    ${source_dir}/graphics/opengl/ShaderPipeline.cpp
+    
+)
+
+set(voxelHeaders
+    ${header_dir}/engine/voxels/chunk.hpp
+    ${header_dir}/engine/voxels/block.hpp
+    ${header_dir}/engine/voxels/mapblock.hpp 
+
+    ${header_dir}/engine/entities/item.hpp
+    ${header_dir}/engine/entities/iteminstance.hpp
+)
+
+set(voxelSrc
+    ${source_dir}/voxels/block.cpp
+    ${source_dir}/voxels/mapblock.cpp
+
+    ${source_dir}/entities/item.cpp
+    ${source_dir}/entities/iteminstance.cpp
 )
 
 set(utilSrc
