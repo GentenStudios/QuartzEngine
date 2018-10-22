@@ -6,22 +6,22 @@
 #include <engine/graphics/opengl/VertexAttrib.hpp>
 #include <engine/graphics/opengl/ShaderPipeline.hpp>
 
-#include <GL/glew.h>
-
-#include <SDL.h>
-
 using namespace phx::gfx;
 using namespace phx;
 
-const char *vertexShaderSource = "#version 330 \n layout (location = 0) in vec3 pos; void main() { gl_Position = vec4(pos.x, pos.y, pos.z, 1.0); }";
-const char *fragmentShaderSource = "#version 330 \n out vec4 FragColor; void main() { FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f); }";
+const char* vertexShaderSource = "#version 330 \n layout (location = 0) in vec3 pos; void main() { gl_Position = vec4(pos.x, pos.y, pos.z, 1.0); }";
+const char* fragmentShaderSource = "#version 330 \n out vec4 FragColor; void main() { FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f); }";
 
 int main(int argc, char *argv[])
-{
-	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL, "Phoenix!", 1280, 720, {3,3}, gfx::GLProfile::CORE);
-
-	glewInit();
-
+{ 
+	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE SDL FOR WINDOWING 
+														"Phoenix!",				// WINDOW TITLE IS PHOENIX
+														1280,					// WINDOW WIDTH IS 1280px
+														720,					// WINDOW HEIGHT is 720px
+														{3,3},					// OPENGL VERSION IS 3.3
+														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
+	);
+	
 	float vertices[] = {
 		-1.0f, -1.0f, 0.0f,
 		1.0f, -1.0f, 0.0f,
