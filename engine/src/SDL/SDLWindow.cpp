@@ -1,4 +1,5 @@
 #include "engine/SDL/SDLWindow.hpp"
+#include <GL/glew.h>
 
 using namespace phx::sdl;
 
@@ -27,6 +28,12 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 
 	m_window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 	m_context = SDL_GL_CreateContext(m_window);
+
+	if (glewInit() != GLEW_OK)
+	{
+		ERROR("OPENGL CONTEXT COULD NOT BE MADE PROPERLY");
+		exit(EXIT_FAILURE);
+	}
 
 	SDL_ShowWindow(m_window);
 
