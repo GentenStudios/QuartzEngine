@@ -1,3 +1,5 @@
+#pragma once
+
 #include "engine/common.hpp"
 #include "engine/graphics/opengl/opengl.hpp"
 

@@ -47,6 +47,7 @@ set(graphicsSrc
 set(voxelsHeaders
     ${header_dir}/engine/voxels/Block.hpp
     ${header_dir}/engine/voxels/MapBlock.hpp 
+	${header_dir}/engine/voxels/Chunk.hpp
 
     ${header_dir}/engine/entities/Item.hpp
     ${header_dir}/engine/entities/ItemInstance.hpp

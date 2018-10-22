@@ -1,3 +1,5 @@
+#pragma once
+
 #include "engine/graphics/opengl/opengl.hpp"
 
 namespace phx
