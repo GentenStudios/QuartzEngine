@@ -30,12 +30,6 @@ set(platformHeaders
     ${header_dir}/engine/os.hpp
 )
 
-<<<<<<< HEAD
-    
-  	
-       
-
-=======
 set(graphicsHeaders
 	${header_dir}/engine/graphics/opengl/opengl.hpp
 	${header_dir}/engine/graphics/opengl/VertexArray.hpp
