@@ -5,9 +5,10 @@
 #include <string>
 #include <vector>
 
-namespace pheonix {
-
-	namespace voxels {
+namespace phx
+{
+	namespace voxels
+	{
 
 		/// @brief This defines what state of matter the block is
 		enum class BlockType
@@ -53,24 +54,24 @@ namespace pheonix {
 			// Getters and setters for event callbacks //
 			/////////////////////////////////////////////
 
-			///@breif Setter: Sets the function executed when a block is placed
+			/// @brief Setter: Sets the function executed when a block is placed
 			void setOnPlaceCallback(void* callback);
-			///@breif Getter: Gets the function executed when a block is placed
+			/// @brief Getter: Gets the function executed when a block is placed
 			void* getOnPlaceCallback();
 
-			///@breif Setter: Sets the function executed when a block is broken
+			/// @brief Setter: Sets the function executed when a block is broken
 			void setOnBreakCallback(void* callback);
-			///@breif Getter: Gets the function executed when a block is broken
+			/// @brief Getter: Gets the function executed when a block is broken
 			void* getOnBreakCallback();
 
-			///@breif Setter: Sets the function executed when a block is left clicked
+			/// @brief Setter: Sets the function executed when a block is left clicked
 			void setOnInteractLeftCallback(void* callback);
-			///@breif Getter: Gets the function executed when a block is left clicked
+			/// @brief Getter: Gets the function executed when a block is left clicked
 			void* getOnInteractLeftCallback();
-			
-			///@breif Setter: Sets the function executed when a block is right clicked
+
+			/// @brief Setter: Sets the function executed when a block is right clicked
 			void setOnInteractRightCallback(void* callback);
-			///@breif Getter: Gets the function executed when a block is right clicked
+			/// @brief Getter: Gets the function executed when a block is right clicked
 			void* getOnInteractRightCallback();
 
 		private:
@@ -81,7 +82,7 @@ namespace pheonix {
 			/// @brief State of matter of the block
 			BlockType m_blockType;
 			//  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
-			
+
 			/// @brief Lambda callback for when the block is placed (well, hopefully lambdas if we can)
 			void* m_onPlaceCallback;
 			/// @brief Lambda callback for when the block is broken (well, hopefully lambdas if we can)
@@ -111,5 +112,4 @@ namespace pheonix {
 		};
 
 	}
-
 }

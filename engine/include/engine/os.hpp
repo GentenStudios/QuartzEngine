@@ -2,18 +2,6 @@
  * @file os.hpp
  * @brief Detects operation system and sets definitions.
  *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
  */
 
 #pragma once

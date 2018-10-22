@@ -3,7 +3,7 @@
 #include "engine/voxels/Block.hpp"
 #include "engine/voxels/MapBlock.hpp"
 
-using namespace pheonix::voxels;
+using namespace phx::voxels;
 
 MapBlock::MapBlock(std::string id, int rotation) : m_id(id), m_rotation(rotation), m_damage(0)
 {

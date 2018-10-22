@@ -4,13 +4,13 @@
 
 using namespace phx;
 
-Vector3::Vector3(const float& x, const float& y, const float& z) : 
+Vector3::Vector3(const float& x, const float& y, const float& z) :
 	x(x), y(y), z(z)
 {
 }
 
 Vector3::Vector3(const float& a) :
-	x(a), y(a), z(a) 
+	x(a), y(a), z(a)
 {
 }
 

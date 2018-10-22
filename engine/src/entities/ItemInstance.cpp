@@ -2,7 +2,9 @@
 
 #include "engine/entities/iteminstance.hpp"
 
-using namespace pheonix::entities;
+using namespace phx::entities;
+
+// JUST HERE FOR REFERENCE. NOT NEEDED FOR ANYTHING ATM.
 // MapBlock::MapBlock( std::string id, int rotation ) : m_id( id ), m_rotation( rotation ), m_damage( 0 )
 
 ItemInstance::ItemInstance(std::string id) : m_damage(0), m_id(id)

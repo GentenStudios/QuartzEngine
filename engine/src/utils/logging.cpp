@@ -25,56 +25,56 @@ LogVerbosity Logger::m_vbLevel = LogVerbosity::INFO;
  *  an unnecessary switch-case statement.
  */
 const char* Logger::LogVerbosityLookup[] = {
-        "ERROR",
-        "WARNING",
-        "INFO",
-        "DEBUG"
+		"ERROR",
+		"WARNING",
+		"INFO",
+		"DEBUG"
 };
 
-void Logger::init( std::string logFile = "logs/phoenix.log", LogVerbosity verbosityLevel = LogVerbosity::INFO)
+void Logger::init(std::string logFile = "logs/phoenix.log", LogVerbosity verbosityLevel = LogVerbosity::INFO)
 {
-    // Setting the file names
-    Logger::m_logFile = logFile;
+	// Setting the file names
+	Logger::m_logFile = logFile;
 
-    Logger::m_vbLevel = verbosityLevel;
+	Logger::m_vbLevel = verbosityLevel;
 
-    // Creating the files
-    Logger::m_logFileHandle.open( Logger::m_logFile, std::ios::app );
+	// Creating the files
+	Logger::m_logFileHandle.open(Logger::m_logFile, std::ios::app);
 }
 
 void Logger::destroy()
 {
-    Logger::m_logFileHandle.close();
+	Logger::m_logFileHandle.close();
 }
 
-void Logger::logMessage( std::string errorFile, int lineNumber, std::string message, LogVerbosity verbosity)
+void Logger::logMessage(std::string errorFile, int lineNumber, std::string message, LogVerbosity verbosity)
 {
-    if (verbosity <= Logger::m_vbLevel ) // Make sure the logging call has a verbosity level below the defined level set at initialisation.
-    {
-        std::stringstream logMessage;
-        logMessage << "[" << Logger::LogVerbosityLookup[static_cast<int>(verbosity)] << "] "; // Add the [INFO]/etc... at the beginning, via the use of a lookup table.
+	if (verbosity <= Logger::m_vbLevel) // Make sure the logging call has a verbosity level below the defined level set at initialisation.
+	{
+		std::stringstream logMessage;
+		logMessage << "[" << Logger::LogVerbosityLookup[static_cast<int>(verbosity)] << "] "; // Add the [INFO]/etc... at the beginning, via the use of a lookup table.
 
-        // Add time stamp to line
-        std::time_t t = std::time(0);   // get time now
-        std::tm* now = std::localtime(&t);
+		// Add time stamp to line
+		std::time_t t = std::time(0);   // get time now
+		std::tm* now = std::localtime(&t);
 
-        logMessage << "["
-                  << (now->tm_year + 1900)  << '-'
-                  << (now->tm_mon + 1)      << '-'
-                  <<  now->tm_mday          << " "
-                  <<  now->tm_hour          << ":"
-                  <<  now->tm_min           << ":"
-                  <<  now->tm_sec
-                  << "] ";
+		logMessage << "["
+			<< (now->tm_year + 1900) << '-'
+			<< (now->tm_mon + 1) << '-'
+			<< now->tm_mday << " "
+			<< now->tm_hour << ":"
+			<< now->tm_min << ":"
+			<< now->tm_sec
+			<< "] ";
 
-        if (verbosity != LogVerbosity::INFO) // Print the erroring file and line number if the message is not classed as INFO
-        {
-            logMessage << errorFile << ":" << lineNumber << " ";
-        }
+		if (verbosity != LogVerbosity::INFO) // Print the erroring file and line number if the message is not classed as INFO
+		{
+			logMessage << errorFile << ":" << lineNumber << " ";
+		}
 
-        logMessage << message << std::endl;
+		logMessage << message << std::endl;
 
-        m_logFileHandle << logMessage.str();
-        std::cout << logMessage.str() << std::endl;
-    }
+		m_logFileHandle << logMessage.str();
+		std::cout << logMessage.str() << std::endl;
+	}
 }

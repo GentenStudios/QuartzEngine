@@ -3,11 +3,13 @@
 #include "engine/common.hpp"
 #include "engine/entities/item.hpp"
 
-namespace pheonix {
+namespace phx
+{
+	namespace entities
+	{
 
-	namespace entities {
-
-		class ItemInstance {
+		class ItemInstance
+		{
 		public:
 			ItemInstance(std::string id);
 			ItemInstance(std::string id, int baseDamage);
@@ -24,5 +26,6 @@ namespace pheonix {
 			std::string m_id;
 			int m_damage;
 		};
+
 	}
 }

@@ -5,16 +5,18 @@
 #include <string>
 #include <vector>
 
-namespace pheonix {
+namespace phx
+{
+	namespace entities
+	{
 
-	namespace entities {
-
-		class Item{
-        public:
+		class Item
+		{
+		public:
 			/**
 			 * @brief Initialise an item
-			 * @param[in] The unique id for the item, should be in format mod:id to eliminate conflict
-			 * @param[in] The player friendly name of the item
+			 * @param The unique id for the item, should be in format mod:id to eliminate conflict
+			 * @param The player friendly name of the item
 			 */
 			Item(std::string id, std::string name);
 			~Item();
@@ -32,17 +34,17 @@ namespace pheonix {
 			std::string getName();
 
 
-			///@breif Setter: Sets the function executed when an items breaks (damage used up)
+			/// @brief Setter: Sets the function executed when an items breaks (damage used up)
 			void setOnBreakCallback(void* callback);
-			///@breif Getter: Gets the function executed when an item breaks (damage used up)
+			/// @brief Getter: Gets the function executed when an item breaks (damage used up)
 			void* getOnBreakCallback();
 
-			///@breif Setter: Sets the function executed when you use the item
+			/// @brief Setter: Sets the function executed when you use the item
 			void setOnUseCallback(void* callback);
-			///@breif Getter: Gets the function executed when you use the item
+			/// @brief Getter: Gets the function executed when you use the item
 			void* getOnUseCallback();
 
-        private:
+		private:
 			/// @brief Unique id using the convention mod:name
 			std::string m_id;
 			/// @brief Name that will display to the user
@@ -52,14 +54,14 @@ namespace pheonix {
 			void* m_onBreakCallback;
 			/// @brief Lambda callback for when the item is used (well, hopefully lambdas if we can)
 			void* m_onUseCallback;
-        };
+		};
 
-        class ItemLibrary
+		class ItemLibrary
 		{
 		public:
 			/**
 			 * @brief getItemByID - Get an item object based off its unique ID
-			 * @param[in] The unique ID of the item you are trying to find
+			 * @param The unique ID of the item you are trying to find
 			 * @return Returns an item matching the supplied ID
 			 */
 			static Item getItemByID(std::string id);
@@ -70,5 +72,6 @@ namespace pheonix {
 			// A registry to keep track of all the registered items
 			static std::vector<Item*> m_itemLibrary;
 		};
-    };
-};
+
+	}
+}

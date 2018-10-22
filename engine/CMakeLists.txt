@@ -48,16 +48,16 @@ set(voxelsHeaders
     ${header_dir}/engine/voxels/Block.hpp
     ${header_dir}/engine/voxels/MapBlock.hpp 
 
-    ${header_dir}/engine/entities/item.hpp
-    ${header_dir}/engine/entities/iteminstance.hpp
+    ${header_dir}/engine/entities/Item.hpp
+    ${header_dir}/engine/entities/ItemInstance.hpp
 )
 
 set(voxelsSrc
     ${source_dir}/voxels/Block.cpp
     ${source_dir}/voxels/MapBlock.cpp
 
-    ${source_dir}/entities/item.cpp
-    ${source_dir}/entities/iteminstance.cpp
+    ${source_dir}/entities/Item.cpp
+    ${source_dir}/entities/ItemInstance.cpp
 )
 
 set(utilSrc

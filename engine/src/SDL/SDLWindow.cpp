@@ -6,10 +6,10 @@ using namespace phx::sdl;
 SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.major);	
+
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.major);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minor);
-	
+
 	uint32_t SDLProfile = SDL_GL_CONTEXT_PROFILE_CORE;
 	switch (profile)
 	{
