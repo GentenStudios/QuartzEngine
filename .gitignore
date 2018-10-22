@@ -56,4 +56,4 @@ CMakeLists.txt.user*
 # VSCode
 .vscode/*
 
-**/glew.pc**
+glew.pc

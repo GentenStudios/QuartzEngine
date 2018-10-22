@@ -1,105 +1,62 @@
 #include <engine/common.hpp>
+#include <engine/graphics/IWindow.hpp>
 
-#include <engine/graphics/window.hpp>
-#include <engine/graphics/opengl/texture.hpp>
-#include <engine/camera.hpp>
+#include <engine/graphics/opengl/VertexArray.hpp>
+#include <engine/graphics/opengl/VertexBuffer.hpp>
+#include <engine/graphics/opengl/VertexAttrib.hpp>
+#include <engine/graphics/opengl/ShaderPipeline.hpp>
 
-#include <stb_image/stb_image.h>
-#include <thread>
+#include <GL/glew.h>
 
-#include "client/chunk.hpp"
-#include "client/textures.hpp"
+#include <SDL.h>
 
-#include <engine/imgui.hpp>
+using namespace phx::gfx;
+using namespace phx;
 
-int main()
+const char *vertexShaderSource = "#version 330 \n layout (location = 0) in vec3 pos; void main() { gl_Position = vec4(pos.x, pos.y, pos.z, 1.0); }";
+const char *fragmentShaderSource = "#version 330 \n out vec4 FragColor; void main() { FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f); }";
+
+int main(int argc, char *argv[])
 {
-	INITLOGGER("pheonix.log", phoenix::LogVerbosity::DEBUG);
-	INFO("CLIENT STARTING...");
+	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL, "Phoenix!", 1280, 720, {3,3}, gfx::GLProfile::CORE);
 
-	phoenix::graphics::Window* window = new phoenix::graphics::Window(1280, 720, std::string("Project Pheonix"));
 	glewInit();
 
-	glEnable(GL_DEPTH_TEST);
+	float vertices[] = {
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f
+	};
 
-	int nChannels, texWidth, texHeight;
-	unsigned char* data = stbi_load("../dirt.png", &texWidth, &texHeight, &nChannels, 0);
+	gl::VertexArray* vao = new gl::VertexArray();
+	vao->bind();
 
-	int nChannels2, texWidth2, texHeight2;
-	unsigned char* data2 = stbi_load("../rubbish.png", &texWidth2, &texHeight2, &nChannels2, 0);
+	gl::VertexBuffer* vbo = new gl::VertexBuffer(gl::VertexBuffer::Target::ARRAY, gl::VertexBuffer::Usage::DYNAMIC_DRAW);
+	vbo->bind();
+	vbo->setData(static_cast<void*>(vertices), sizeof(vertices));
 
-	phoenix::graphics::opengl::Texture* dirt = new phoenix::graphics::opengl::Texture(phoenix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth, texHeight, phoenix::graphics::opengl::Texture::Format::RGBA);
-	dirt->bind(0);
-	dirt->setData(data);
+	gl::VertexAttrib vertAttrib(0, 3, 3, 0);
+	vertAttrib.enable();
 
-	phoenix::graphics::opengl::Texture* wtf = new phoenix::graphics::opengl::Texture(phoenix::graphics::opengl::Texture::Target::TEXTURE2D, texWidth2, texHeight2, phoenix::graphics::opengl::Texture::Format::RGBA);
-	wtf->bind(1);
-	wtf->setData(data2);
+	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
+	shaderProgram->addStage(gl::ShaderStage::VERTEX_SHADER, vertexShaderSource);
+	shaderProgram->addStage(gl::ShaderStage::FRAGMENT_SHADER, fragmentShaderSource);
+	shaderProgram->build();
 
-	phoenix::graphics::Chunk* chunk = new phoenix::graphics::Chunk();
-
-	phoenix::FreeRoamCamera camera(window);
-
-	DEBUG("POPULATING CHUNK!");
-	chunk->populateChunk(16, { 0.0f, 0.0f, 0.0f });
-	DEBUG("CHUNK POPULATED");
-
-	chunk->build();
-	DEBUG("CHUNK HAS BEEN BUILT!");
-
-	bool _lastStateOfEscape = false;
-
-	phoenix::Vector3 positionOfDestroy[3] = { 0,0,0 };
-
-	while (!window->shouldClose()) {
+	while (window->isRunning())
+	{
 		window->pollEvents();
 
-		camera.tick(0.16f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 
-		bool isEscapeDown = window->getKeyState(GLFW_KEY_ESCAPE) != 0;
-
-		if (isEscapeDown && !_lastStateOfEscape) {
-			camera.enabled = !camera.enabled;
-			if (camera.enabled) {
-				window->setCursorState(phoenix::graphics::CursorState::DISABLED);
-			}
-			else {
-				window->setCursorState(phoenix::graphics::CursorState::NORMAL);
-			}
-		}
-
-		_lastStateOfEscape = isEscapeDown;
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.1f, 0.3f, 0.9f, 1.0f);
-
-		wtf->bind(0);
-		dirt->bind(1);
-		chunk->draw(camera);
-
-		chunk->blockDestroyAt(0, 0, 0);
-
-		std::stringstream camPos;
-		phoenix::Vector3 cameraPos = camera.getPosition();
-		camPos << "Position of Camera:   " << cameraPos.x << ", " << cameraPos.y << ", " << cameraPos.z;
-
-		ImGui::Begin("Demo Window");
-		ImGui::Text(camPos.str().c_str());
-		ImGui::NewLine();
-
-		ImGui::Text("Destroy at Position: ");
-		ImGui::SameLine();
-		ImGui::InputVector3("", positionOfDestroy);
-		if (ImGui::Button("DESTROY!!!"))
-			chunk->blockDestroyAt(static_cast<int>(positionOfDestroy->x), static_cast<int>(positionOfDestroy->y), static_cast<int>(positionOfDestroy->z));
-		ImGui::End();
+		vao->bind();
+		shaderProgram->use();
+		vertAttrib.enable();
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		window->swapBuffers();
-
-		// Lock to 60FPS for now (until a proper game loop is implemented)
-		using namespace std::chrono_literals;
-		std::this_thread::sleep_for(16ms);
 	}
 
-	INFO("CLIENT QUITTING");
+	return 0;
 }
