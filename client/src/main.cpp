@@ -26,7 +26,11 @@ const char* vertexShaderSource =	"#version 330 core \n"
 									"UV = aUV;"
 									"}";
 
-const char* fragmentShaderSource = "#version 330 \n out vec4 FragColor; in vec2 UV; uniform sampler2DArray ourTexture; void main() { FragColor = texture2DArray(ourTexture, vec3(UV, 1.0)).rgba; }";
+const char* fragmentShaderSource = "#version 330 \n"
+								   "out vec4 FragColor;\n"
+								   "in vec2 UV;\n"
+								   "uniform sampler2DArray ourTexture;\n"
+								   "void main() { FragColor = texture(ourTexture, vec3(UV, 1.0)).rgba; }";
 
 int main(int argc, char *argv[])
 {
@@ -34,7 +38,7 @@ int main(int argc, char *argv[])
 														"Phoenix!",				// WINDOW TITLE IS PHOENIX
 														1280,					// WINDOW WIDTH IS 1280px
 														720,					// WINDOW HEIGHT is 720px
-														{4,5},					// OPENGL VERSION IS 3.3
+														{3,3},					// OPENGL VERSION IS 3.3
 														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 	);
 
