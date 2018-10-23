@@ -64,12 +64,13 @@ set(voxelsSrc
     ${source_dir}/entities/ItemInstance.cpp
 )
 
-set(utilSrc
-    ${source_dir}/utils/logging.cpp
-)
-
 set(utilHeaders
     ${header_dir}/engine/utils/logging.hpp
+	${header_dir}/engine/graphics/opengl/debug.hpp
+)
+
+set(utilSrc
+    ${source_dir}/utils/logging.cpp
 )
 
 set(commonHeaders

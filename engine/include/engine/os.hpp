@@ -21,9 +21,12 @@
  */
 
 #if defined(_WIN32) || defined(_WIN64)
-#   define PHOENIX_OS_WINDOWS
+#   define PHX_OS_WINDOWS
 #endif
 
 #if defined(__linux__)
-#   define PHOENIX_OS_LINUX
+#   define PHX_OS_LINUX
 #endif
+
+// FOR TESTING PURPOSES ONLY
+#define PHX_GL_DEBUG
