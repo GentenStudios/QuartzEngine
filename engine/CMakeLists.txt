@@ -36,12 +36,14 @@ set(graphicsHeaders
 	${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
 	${header_dir}/engine/graphics/opengl/VertexAttrib.hpp
 	${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
+	${header_dir}/engine/graphics/opengl/TextureArray.hpp
 )
 
 set(graphicsSrc
 	${source_dir}/graphics/opengl/VertexArray.cpp
 	${source_dir}/graphics/opengl/VertexBuffer.cpp
     ${source_dir}/graphics/opengl/ShaderPipeline.cpp
+    ${source_dir}/graphics/opengl/TextureArray.cpp
 )
 
 set(voxelsHeaders
@@ -114,6 +116,7 @@ set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 set(include_dirs
     ${dependencies}/SDL2/include
     ${dependencies}/glew/include
+	${dependencies}/stb_image/
     ${header_dir}
 )
 
