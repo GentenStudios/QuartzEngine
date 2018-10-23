@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 	thing.push_back("assets/images/dirt.png");
 	thing.push_back("assets/images/grass_side.png");
 	texture.add(thing);
-	texture.bind();
+	texture.bind(10); // Bind to 10th texture unit for no particular reason, except testing the index slot thingy. ya know?
 
 	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f);
 	Matrix4x4 view = Matrix4x4::lookAt({ 50, 40, 12 }, { 0,10,0 }, { 0,1,0 });
@@ -91,12 +91,12 @@ int main(int argc, char *argv[])
 
 		vao->bind();
 		shaderProgram->use();
-		texture.bind();
+		texture.bind(10);
 
 		shaderProgram->setMat4("projection", projection);
 		shaderProgram->setMat4("view", view);
 		shaderProgram->setMat4("model", model);
-		shaderProgram->setInt("texture", 0);
+		shaderProgram->setInt("ourTexture", 10);
 
 		vertAttrib.enable();
 		uvAttrib.enable();
