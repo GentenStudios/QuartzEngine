@@ -142,11 +142,11 @@ void Chunk::populateData()
 	m_chunkData->chunkVertices.resize(m_vertInChunk);
 	m_chunkData->chunkUVs.resize(m_uvInChunk);
 
-	for (int z = 0; z < m_chunkData->chunkSize; z++)
+	for (unsigned int z = 0; z < m_chunkData->chunkSize; z++)
 	{
-		for (int y = 0; y < m_chunkData->chunkSize; y++)
+		for (unsigned int y = 0; y < m_chunkData->chunkSize; y++)
 		{
-			for (int x = 0; x < m_chunkData->chunkSize; x++)
+			for (unsigned int x = 0; x < m_chunkData->chunkSize; x++)
 			{
 				int memOffset = (x * 36) + (m_chunkData->chunkSize * ((y * 36) + m_chunkData->chunkSize * (z * 36)));
 

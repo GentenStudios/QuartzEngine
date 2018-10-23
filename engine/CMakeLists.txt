@@ -56,6 +56,7 @@ set(voxelsHeaders
 set(voxelsSrc
     ${source_dir}/voxels/Block.cpp
     ${source_dir}/voxels/MapBlock.cpp
+    ${source_dir}/voxels/Chunk.cpp
 
     ${source_dir}/entities/Item.cpp
     ${source_dir}/entities/ItemInstance.cpp
@@ -146,8 +147,6 @@ if(UNIX AND NOT APPLE)
 endif()
 
 # Link the library
-set(LIBRARY_OUTPUT_PATH ../../COMPILE/lib)
-
 add_library(${PROJECT_NAME} STATIC ${sources} ${headers})
 #add_executable(${PROJECT_NAME} ${sources} ${headers})
 target_link_libraries(${PROJECT_NAME} ${libraries})
