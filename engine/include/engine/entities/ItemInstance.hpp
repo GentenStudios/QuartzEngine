@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/common.hpp"
-#include "engine/entities/item.hpp"
+#include "engine/entities/Item.hpp"
 
 namespace phx
 {

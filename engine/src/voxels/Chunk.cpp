@@ -1,4 +1,5 @@
 #include "engine/voxels/Chunk.hpp"
+#include <cstring>
 
 using namespace phx::voxels;
 using namespace phx;
