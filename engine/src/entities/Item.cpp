@@ -1,4 +1,4 @@
-#include "engine/entities/item.hpp"
+#include "engine/entities/Item.hpp"
 
 using namespace phx::entities;
 

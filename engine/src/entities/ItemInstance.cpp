@@ -1,6 +1,6 @@
 #include "engine/common.hpp"
 
-#include "engine/entities/iteminstance.hpp"
+#include "engine/entities/ItemInstance.hpp"
 
 using namespace phx::entities;
 
