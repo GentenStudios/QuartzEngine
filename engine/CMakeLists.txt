@@ -24,10 +24,14 @@ set(platformSrc
 )
 
 set(platformHeaders
+    ${header_dir}/engine/os.hpp
+
 	${header_dir}/engine/SDL/SDLWindow.hpp
     ${header_dir}/engine/graphics/IWindow.hpp
-    ${header_dir}/engine/graphics/Context.hpp
-    ${header_dir}/engine/os.hpp
+   	${header_dir}/engine/graphics/Context.hpp
+
+	${header_dir}/engine/SDL/SDLKeyboardDefinitions.hpp
+	${header_dir}/engine/events/IKeyboardDefinitions.hpp
 )
 
 set(graphicsHeaders
