@@ -105,6 +105,8 @@ static const Vector3 CubeVerts[] = {
 
 Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock)
 {
+	m_defaultBlock = new Block(*defaultBlock);
+	
 	m_chunkData = new ChunkData();
 	m_chunkData->chunkSize = chunkSize;
 	m_chunkData->chunkPos = chunkPos;
@@ -135,7 +137,10 @@ void Chunk::populateData()
 			for (unsigned int z = 0; z < m_chunkData->chunkBlocks.size(); z++)
 			{
 				// Set the Z (first vector part, of the trio) to have the actual value of the blocks data. So, you can have m_chunkBlocks[x][y][z] = BlockType::SOLID
-				m_chunkData->chunkBlocks[x][y][z] = m_defaultBlock;
+				if (z % 4 != 0)
+					m_chunkData->chunkBlocks[x][y][z] = m_defaultBlock;
+				else
+					m_chunkData->chunkBlocks[x][y][z] = new Block(BlockLibrary::getBlockByID("core:air"));
 			}
 		}
 	}
@@ -149,23 +154,41 @@ void Chunk::populateData()
 		{
 			for (unsigned int x = 0; x < m_chunkData->chunkSize; x++)
 			{
+				if (m_chunkData->chunkBlocks[x][y][z]->getID() == "core:air")
+					continue;
+
 				int memOffset = (x * 36) + (m_chunkData->chunkSize * ((y * 36) + m_chunkData->chunkSize * (z * 36)));
 
 				std::memcpy(m_chunkData->chunkVertices.data() + memOffset, CubeVerts, sizeof(CubeVerts));
 				std::memcpy(m_chunkData->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
 
-				for (int face = 0; face < 6; face++)
-				{
-					int memOffsetOffest = static_cast<int>(face) * 6;
-
-					for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
-					{
-						m_chunkData->chunkVertices[q].x += (x * 2) + (m_chunkData->chunkPos.x * 2);
-						m_chunkData->chunkVertices[q].y += (y * 2) + (m_chunkData->chunkPos.y * 2);
-						m_chunkData->chunkVertices[q].z += (z * 2) + (m_chunkData->chunkPos.z * 2);
-					}
-				}
+				if (x == 0 || m_chunkData->chunkBlocks[x - 1][y][z]->getID() == "core:air")
+					addFace(BlockFace::Right, memOffset, x, y, z);
+				if (x == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x + 1][y][z]->getID() == "core:air")
+					addFace(BlockFace::Left, memOffset, x, y, z);
+				
+				if (y == 0 || m_chunkData->chunkBlocks[x][y - 1][z]->getID() == "core:air")
+					addFace(BlockFace::Bottom, memOffset, x, y, z);
+				if (y == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x][y + 1][z]->getID() == "core:air")
+					addFace(BlockFace::Top, memOffset, x, y, z);
+				
+				if (z == 0 || m_chunkData->chunkBlocks[x][y][z - 1]->getID() == "core:air")
+					addFace(BlockFace::Front, memOffset, x, y, z);
+				if (z == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x][y][z + 1]->getID() == "core:air")
+					addFace(BlockFace::Left, memOffset, x, y, z);
 			}
 		}
+	}
+}
+
+void Chunk::addFace(BlockFace face, int memOffset, int x, int y, int z)
+{
+	int memOffsetOffest = static_cast<int>(face) * 6;
+
+	for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
+	{
+		m_chunkData->chunkVertices[q].x += (x * 2) + (m_chunkData->chunkPos.x * 2);
+		m_chunkData->chunkVertices[q].y += (y * 2) + (m_chunkData->chunkPos.y * 2);
+		m_chunkData->chunkVertices[q].z += (z * 2) + (m_chunkData->chunkPos.z * 2);
 	}
 }

@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
 	glEnable(GL_DEPTH_TEST);
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
+	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
 	voxels::Chunk* chunk = new voxels::Chunk({0,0,0}, 16, block);
 	chunk->populateData();
 	

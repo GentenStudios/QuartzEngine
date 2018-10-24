@@ -28,6 +28,7 @@ namespace phx
 			 * @param[in] The block type (SOLID, LIQUID, GAS)
 			 */
 			Block(std::string id, std::string name, BlockType type);
+			Block(const Block& other);
 			~Block();
 
 			/**

@@ -26,6 +26,16 @@ namespace phx
 			std::vector<phx::Vector2> chunkUVs;
 		};
 
+		enum class BlockFace : int
+		{
+			Front = 0,
+			Back = 1,
+			Right = 2,
+			Left = 3,
+			Bottom = 4,
+			Top = 5
+		};
+
 		class Chunk
 		{
 		public:
@@ -51,6 +61,8 @@ namespace phx
 			unsigned int m_vertInChunk;
 			unsigned int m_normalInChunk;
 			unsigned int m_uvInChunk;
+
+			void addFace(BlockFace face, int memOffset, int x, int y, int z);
 		};
 
 	}

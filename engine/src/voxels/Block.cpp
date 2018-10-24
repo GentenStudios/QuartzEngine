@@ -10,7 +10,15 @@ Block::Block(std::string id, std::string name, BlockType type)
 	m_name = name;
 	m_blockType = type;
 	BlockLibrary::registerBlock(this);
-};
+}
+
+Block::Block(const Block& other)
+{
+	m_id = other.m_id;
+	m_name = other.m_name;
+	m_blockType = other.m_blockType;
+	// no need to register the block again
+}
 
 Block::~Block()
 {
@@ -20,17 +28,17 @@ Block::~Block()
 std::string Block::getID()
 {
 	return m_id;
-};
+}
 
 std::string Block::getName()
 {
 	return m_name;
-};
+}
 
 BlockType Block::getBlockType()
 {
 	return m_blockType;
-};
+}
 
 /////////////////////////////////////////////
 // Getters and setters for event callbacks //
