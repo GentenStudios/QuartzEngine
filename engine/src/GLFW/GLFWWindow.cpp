@@ -49,6 +49,25 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
 	}
 
 	glViewport(0, 0, m_width, m_height);
+
+    // on resize
+    std::get<GLFWWindow::WindowResizeCallbackBase>(std::get<GLFWWindow::WindowResizeCallbackIndex>(m_callbacks)) = [this] (int w, int h) {
+        this->m_width = w;
+        this->m_height = h;
+    };
+    // TODO change
+    glfwSetFramebufferSizeCallback(m_window, [] (GLFWwindow* window, int w, int h) {
+        glViewport(0, 0, w, h);
+        auto& base = std::get<GLFWWindow::WindowResizeCallbackBase>(
+            std::get<GLFWWindow::WindowResizeCallbackIndex>(
+                *static_cast<GLFWWindow::Callbacks_t*>(glfwGetWindowUserPointer(window))));
+        auto& user = std::get<GLFWWindow::WindowResizeCallbackUser>(
+            std::get<GLFWWindow::WindowResizeCallbackIndex>(
+                *static_cast<GLFWWindow::Callbacks_t*>(glfwGetWindowUserPointer(window))));
+        base(w, h);
+        user(w, h);
+    });
+    glfwSetWindowUserPointer(m_window, &m_callbacks);
 }
 
 GLFWWindow::~GLFWWindow()
@@ -97,4 +116,40 @@ void GLFWWindow::setResizable(bool enabled)
 void GLFWWindow::setVSync(bool value)
 {
     glfwSwapInterval(value ? 1 : 0);
+}
+
+void GLFWWindow::updateKeysCallbacks()
+{
+    glfwSetKeyCallback(m_window, [](GLFWwindow* window, int key, int scancode, int action, int mod) {
+        auto& callbacks = std::get<GLFWWindow::KeyboardCallbacksIndex>(*static_cast<GLFWWindow::Callbacks_t*>(glfwGetWindowUserPointer(window)));
+        for (auto& f: callbacks)
+        {
+            int ev_idx = std::get<0>(f);
+
+            if (((ev_idx & (int) EventType::Released) != 0 && action == GLFW_RELEASE) ||
+                ((ev_idx & (int) EventType::Pressed) != 0  && action == GLFW_PRESS)   ||
+                ((ev_idx & (int) EventType::Repeat) != 0   && action == GLFW_REPEAT))
+                if ((int) std::get<1>(f) == key)
+                    std::get<2>(f)();
+        }
+    });
+}
+
+void GLFWWindow::addKeyCallback(int eventType, int key, std::function<void()> callback)
+{
+    std::get<GLFWWindow::KeyboardCallbacksIndex>(m_callbacks).emplace_back(
+        eventType, key, std::move(callback)
+    );
+    updateKeysCallbacks();
+    glfwSetWindowUserPointer(m_window, &m_callbacks);
+}
+
+void GLFWWindow::addMouseMoveCallback(std::function<void(double, double)> callback)
+{
+    std::get<GLFWWindow::MouseMoveCallback>(m_callbacks) = std::move(callback);
+    glfwSetCursorPosCallback(m_window, [] (GLFWwindow* window, double x, double y) {
+        auto& f = std::get<GLFWWindow::MouseMoveCallback>(*static_cast<GLFWWindow::Callbacks_t*>(glfwGetWindowUserPointer(window)));
+        f(x, y);
+    });
+    glfwSetWindowUserPointer(m_window, &m_callbacks);
 }

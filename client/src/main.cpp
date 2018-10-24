@@ -6,6 +6,8 @@
 #include <engine/graphics/opengl/VertexAttrib.hpp>
 #include <engine/graphics/opengl/ShaderPipeline.hpp>
 #include <engine/graphics/opengl/TextureArray.hpp>
+#include <engine/SDL/SDLWindow.hpp>
+#include <engine/GLFW/GLFWWindow.hpp>
 
 #include <engine/voxels/Block.hpp>
 #include <engine/voxels/Chunk.hpp>
@@ -45,6 +47,8 @@ int main(int argc, char *argv[])
 														{3,3},					// OPENGL VERSION IS 3.3
 														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 	);
+
+	window->addKeyCallback((int) glfw::EventType::Repeat, GLFW_KEY_P, [](){ std::cout << "guess what ? i'm a P !" << std::endl; });
 
 	glEnable(GL_DEPTH_TEST);
 

@@ -3,6 +3,11 @@
 #include "engine/common.hpp"
 #include "engine/graphics/Context.hpp"
 
+#include <cinttypes>
+#include <tuple>
+#include <vector>
+#include <functional>
+
 namespace phx
 {
 	namespace gfx
@@ -27,6 +32,10 @@ namespace phx
 			virtual void setTitle(const char* title) = 0;
 			virtual void setFullscreen(bool enabled) = 0;
 			virtual void setResizable(bool enabled) = 0;
+
+			virtual void setVSync(bool value) = 0;
+			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback) = 0;
+			virtual void addMouseMoveCallback(std::function<void(double, double)> callback) = 0;
 		};
 
 	}
