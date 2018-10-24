@@ -16,7 +16,9 @@ using namespace phx;
 const char* vertexShaderSource =	"#version 330 core \n"
 									"layout (location = 0) in vec3 aPos; \n"
 									"layout (location = 1) in vec2 aUV; \n"
+									//"layout (location = 2) in int aTexLayer; \n"
 									"out vec2 UV; \n"
+									//"out int TexLayer; \n"
 									"uniform mat4 model; \n"
 									"uniform mat4 view; \n"
 									"uniform mat4 projection; \n"
@@ -24,13 +26,15 @@ const char* vertexShaderSource =	"#version 330 core \n"
 									"{ \n"
 									"gl_Position = projection * view * model * vec4(aPos, 1.0); \n"
 									"UV = aUV;"
+									//"TexLayer = aTexLayer;"
 									"}";
 
 const char* fragmentShaderSource = "#version 330 \n"
 								   "out vec4 FragColor;\n"
 								   "in vec2 UV;\n"
+								   "uniform int TexLayer; \n"
 								   "uniform sampler2DArray ourTexture;\n"
-								   "void main() { FragColor = texture(ourTexture, vec3(UV, 1.0)).rgba; }";
+								   "void main() { FragColor = texture(ourTexture, vec3(UV, TexLayer)).rgba; }";
 
 int main(int argc, char *argv[])
 {
@@ -83,10 +87,10 @@ int main(int argc, char *argv[])
 	texture.bind(10); // Bind to 10th texture unit for no particular reason, except testing the index slot thingy. ya know?
 
 	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f);
-	Matrix4x4 view = Matrix4x4::lookAt({ 50, 40, 12 }, { 0,10,0 }, { 0,1,0 });
+	Matrix4x4 view = Matrix4x4::lookAt({ 50, 40, 12 }, { 5,10,0 }, { 0,1,0 });
 	Matrix4x4 model;
 
-
+	int i = 0;
 	while (window->isRunning())
 	{
 		window->pollEvents();
@@ -102,6 +106,21 @@ int main(int argc, char *argv[])
 		shaderProgram->setMat4("view", view);
 		shaderProgram->setMat4("model", model);
 		shaderProgram->setUniform1<int>("ourTexture", 10);
+
+		if (i < 1000)
+		{
+			shaderProgram->setUniform1<int>("TexLayer", 0);
+			i++;
+		}
+		else if (i >= 1000 && i < 2000)
+		{
+			shaderProgram->setUniform1<int>("TexLayer", 1);
+			i++;
+		}
+		else
+		{
+			i = 0;
+		}
 
 		vertAttrib.enable();
 		uvAttrib.enable();
