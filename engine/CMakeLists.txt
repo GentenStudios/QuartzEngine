@@ -123,6 +123,7 @@ set(include_dirs
     ${dependencies}/SDL2/include
     ${dependencies}/glew/include
     ${dependencies}/stb_image/
+    ${dependencies}/glfw/include
     ${header_dir}
     )
 
@@ -152,6 +153,7 @@ if(UNIX AND NOT APPLE)
         ${X11_LIBRARIES}
         ${X11_Xxf86vm_LIB}
         GL
+        glfw
         )
 endif()
 

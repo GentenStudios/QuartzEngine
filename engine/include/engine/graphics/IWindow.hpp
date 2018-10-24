@@ -10,7 +10,8 @@ namespace phx
 
 		enum class WindowingAPI
 		{
-			SDL
+			SDL,
+			GLFW
 		};
 
 		class IWindow
