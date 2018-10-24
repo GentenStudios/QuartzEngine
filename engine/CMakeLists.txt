@@ -19,6 +19,7 @@ set(mathHeaders
     )
 
 set(platformSrc
+    ${source_dir}/GLFW/GLFWWindow.cpp
     ${source_dir}/SDL/SDLWindow.cpp
     ${source_dir}/graphics/IWindow.cpp
     )
@@ -26,6 +27,7 @@ set(platformSrc
 set(platformHeaders
     ${header_dir}/engine/os.hpp
 
+    ${header_dir}/engine/GLFW/GLFWWindow.hpp
     ${header_dir}/engine/SDL/SDLWindow.hpp
     ${header_dir}/engine/graphics/IWindow.hpp
     ${header_dir}/engine/graphics/Context.hpp

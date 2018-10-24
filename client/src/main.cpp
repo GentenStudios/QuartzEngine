@@ -38,7 +38,7 @@ const char* fragmentShaderSource = "#version 330 \n"
 
 int main(int argc, char *argv[])
 {
-	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE SDL FOR WINDOWING 
+	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::GLFW,	// USE GLFW FOR WINDOWING 
 														"Phoenix!",				// WINDOW TITLE IS PHOENIX
 														1280,					// WINDOW WIDTH IS 1280px
 														720,					// WINDOW HEIGHT is 720px

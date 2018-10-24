@@ -1,5 +1,5 @@
-#include "engine/GLFWWindow/GLFWWindowWindow.hpp"
 #include <GL/glew.h>
+#include "engine/GLFW/GLFWWindow.hpp"
 
 using namespace phx::glfw;
 
@@ -49,8 +49,6 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
 	}
 
 	glViewport(0, 0, m_width, m_height);
-
-	m_running = true;
 }
 
 GLFWWindow::~GLFWWindow()
@@ -92,7 +90,8 @@ void GLFWWindow::setFullscreen(bool enabled)
 
 void GLFWWindow::setResizable(bool enabled)
 {
-	SDL_SetWindowResizable(m_window, enabled ? SDL_TRUE : SDL_FALSE);
+    // TODO
+	// SDL_SetWindowResizable(m_window, enabled ? SDL_TRUE : SDL_FALSE);
 }
 
 void GLFWWindow::setVSync(bool value)
