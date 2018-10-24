@@ -54,14 +54,14 @@ int main(int argc, char *argv[])
 	gl::VertexArray* vao = new gl::VertexArray();
 	vao->bind();
 
-	gl::VertexBuffer* vbo = new gl::VertexBuffer(gl::VertexBuffer::Target::ARRAY, gl::VertexBuffer::Usage::DYNAMIC_DRAW);
+	gl::VertexBuffer* vbo = new gl::VertexBuffer(gl::BufferTarget::ARRAY_BUFFER, gl::BufferUsage::DYNAMIC_DRAW);
 	vbo->bind();
 	vbo->setData(static_cast<void*>(chunkData->chunkVertices.data()), sizeof(chunkData->chunkVertices[0]) * chunkData->chunkVertices.size());
 
 	gl::VertexAttrib vertAttrib(0, 3, 3, 0, gl::GLType::FLOAT);
 	vertAttrib.enable();
 
-	gl::VertexBuffer* uvbo = new gl::VertexBuffer(gl::VertexBuffer::Target::ARRAY, gl::VertexBuffer::Usage::DYNAMIC_DRAW);
+	gl::VertexBuffer* uvbo = new gl::VertexBuffer(gl::BufferTarget::ARRAY_BUFFER, gl::BufferUsage::DYNAMIC_DRAW);
 	uvbo->bind();
 	uvbo->setData(static_cast<void*>(chunkData->chunkUVs.data()), sizeof(chunkData->chunkUVs[0]) * chunkData->chunkUVs.size());
 
@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
 	uvAttrib.enable();
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
-	shaderProgram->addStage(gl::ShaderStage::VERTEX_SHADER, vertexShaderSource);
-	shaderProgram->addStage(gl::ShaderStage::FRAGMENT_SHADER, fragmentShaderSource);
+	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, vertexShaderSource);
+	shaderProgram->addStage(gl::ShaderType::FRAGMENT_SHADER, fragmentShaderSource);
 	shaderProgram->build();
 
 	vao->bind();

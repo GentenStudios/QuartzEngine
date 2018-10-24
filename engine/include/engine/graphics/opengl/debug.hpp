@@ -4,6 +4,7 @@
 
 #include <GL/glew.h>
 
+// MACRO FOR OPENGL DEBUGGING
 #ifdef PHX_GL_DEBUG
 #	define GLCheck(x) x; phx::gfx::gl::checkError(__FILE__, __LINE__);
 #else

@@ -8,56 +8,57 @@ set(header_dir ${PROJECT_SOURCE_DIR}/include)
 set(mathSrc
     ${source_dir}/math/Vector3.cpp
     ${source_dir}/math/Matrix4x4.cpp
-    ${source_dir}/math/Vector2.cpp	
-)
+    ${source_dir}/math/Vector2.cpp
+    )
 
 set(mathHeaders
     ${header_dir}/engine/math/Vector3.hpp
     ${header_dir}/engine/math/Matrix4x4.hpp
     ${header_dir}/engine/math/MathUtils.hpp
-    ${header_dir}/engine/math/Vector2.hpp	
-)
+    ${header_dir}/engine/math/Vector2.hpp
+    )
 
 set(platformSrc
-	${source_dir}/SDL/SDLWindow.cpp
+    ${source_dir}/SDL/SDLWindow.cpp
     ${source_dir}/graphics/IWindow.cpp
-)
+    )
 
 set(platformHeaders
     ${header_dir}/engine/os.hpp
 
-	${header_dir}/engine/SDL/SDLWindow.hpp
+    ${header_dir}/engine/SDL/SDLWindow.hpp
     ${header_dir}/engine/graphics/IWindow.hpp
-   	${header_dir}/engine/graphics/Context.hpp
+    ${header_dir}/engine/graphics/Context.hpp
 
-	${header_dir}/engine/SDL/SDLKeyboardDefinitions.hpp
-	${header_dir}/engine/events/IKeyboardDefinitions.hpp
-)
+    ${header_dir}/engine/SDL/SDLKeyboardDefinitions.hpp
+    ${header_dir}/engine/events/IKeyboardDefinitions.hpp
+    )
 
 set(graphicsHeaders
-	${header_dir}/engine/graphics/opengl/opengl.hpp
-	${header_dir}/engine/graphics/opengl/VertexArray.hpp
-	${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
-	${header_dir}/engine/graphics/opengl/VertexAttrib.hpp
-	${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
-	${header_dir}/engine/graphics/opengl/TextureArray.hpp
-)
+    ${header_dir}/engine/graphics/opengl/opengl.hpp
+    ${header_dir}/engine/graphics/opengl/GLEnums.hpp
+    ${header_dir}/engine/graphics/opengl/VertexArray.hpp
+    ${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
+    ${header_dir}/engine/graphics/opengl/VertexAttrib.hpp
+    ${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
+    ${header_dir}/engine/graphics/opengl/TextureArray.hpp
+    )
 
 set(graphicsSrc
-	${source_dir}/graphics/opengl/VertexArray.cpp
-	${source_dir}/graphics/opengl/VertexBuffer.cpp
+    ${source_dir}/graphics/opengl/VertexArray.cpp
+    ${source_dir}/graphics/opengl/VertexBuffer.cpp
     ${source_dir}/graphics/opengl/ShaderPipeline.cpp
     ${source_dir}/graphics/opengl/TextureArray.cpp
-)
+    )
 
 set(voxelsHeaders
     ${header_dir}/engine/voxels/Block.hpp
-    ${header_dir}/engine/voxels/MapBlock.hpp 
-	${header_dir}/engine/voxels/Chunk.hpp
+    ${header_dir}/engine/voxels/MapBlock.hpp
+    ${header_dir}/engine/voxels/Chunk.hpp
 
     ${header_dir}/engine/entities/Item.hpp
     ${header_dir}/engine/entities/ItemInstance.hpp
-)
+    )
 
 set(voxelsSrc
     ${source_dir}/voxels/Block.cpp
@@ -66,38 +67,38 @@ set(voxelsSrc
 
     ${source_dir}/entities/Item.cpp
     ${source_dir}/entities/ItemInstance.cpp
-)
+    )
 
 set(utilHeaders
     ${header_dir}/engine/utils/logging.hpp
-	${header_dir}/engine/graphics/opengl/debug.hpp
-)
+    ${header_dir}/engine/graphics/opengl/debug.hpp
+    )
 
 set(utilSrc
     ${source_dir}/utils/logging.cpp
-)
+    )
 
 set(commonHeaders
     ${header_dir}/engine/common.hpp
     ${header_dir}/engine/types.hpp
-)
+    )
 
 set(sources
-	${graphicsSrc}
-	${mathSrc}
-	${platformSrc}
-	${utilSrc}
-	${voxelsSrc}
-)
+    ${graphicsSrc}
+    ${mathSrc}
+    ${platformSrc}
+    ${utilSrc}
+    ${voxelsSrc}
+    )
 
 set(headers
-	${commonHeaders}
-	${graphicsHeaders}
-	${mathHeaders}
-	${platformHeaders}
-	${utilHeaders}
-	${voxelsHeaders}
-)
+    ${commonHeaders}
+    ${graphicsHeaders}
+    ${mathHeaders}
+    ${platformHeaders}
+    ${utilHeaders}
+    ${voxelsHeaders}
+    )
 
 source_group("Source Files\\Math" FILES ${mathSrc})
 source_group("Header Files\\Math" FILES ${mathHeaders})
@@ -121,15 +122,15 @@ set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 set(include_dirs
     ${dependencies}/SDL2/include
     ${dependencies}/glew/include
-	${dependencies}/stb_image/
+    ${dependencies}/stb_image/
     ${header_dir}
-)
+    )
 
 set(libraries
     SDL2-static
     SDL2main
     glew_s
-)
+    )
 
 if(WIN32)
     set(libraries

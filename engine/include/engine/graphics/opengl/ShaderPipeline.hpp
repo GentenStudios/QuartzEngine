@@ -14,20 +14,13 @@ namespace phx
 		namespace gl
 		{
 
-			enum class ShaderStage
-			{
-				VERTEX_SHADER = GL_VERTEX_SHADER,
-				FRAGMENT_SHADER = GL_FRAGMENT_SHADER,
-				GEOMETRY_SHADER = GL_GEOMETRY_SHADER,
-			};
-
 			class ShaderPipeline
 			{
 			public:
 				ShaderPipeline();
 				~ShaderPipeline();
 
-				void addStage(ShaderStage stage, const char* shaderSource);
+				void addStage(ShaderType stage, const char* shaderSource);
 				void build();
 
 				void use() const;
