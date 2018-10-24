@@ -10,7 +10,7 @@ ShaderPipeline::~ShaderPipeline()
 	glDeleteProgram(m_shaderProgram);
 }
 
-void ShaderPipeline::addStage(ShaderStage stage, const char* shaderSource)
+void ShaderPipeline::addStage(ShaderType stage, const char* shaderSource)
 {
 	unsigned int shader;
 

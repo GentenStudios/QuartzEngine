@@ -2,7 +2,7 @@
 
 using namespace phx::gfx::gl;
 
-VertexBuffer::VertexBuffer(Target target, Usage usage) : m_target(target), m_usage(usage)
+VertexBuffer::VertexBuffer(BufferTarget target, BufferUsage usage) : m_target(target), m_usage(usage)
 {
 	glGenBuffers(1, &m_bufferID);
 }
