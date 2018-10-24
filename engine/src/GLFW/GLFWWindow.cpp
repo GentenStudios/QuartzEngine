@@ -7,7 +7,10 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
     m_width(width), m_height(height)
 {
     if (!glfwInit())
-        throw std::runtime_error("Couldn't create window");
+    {
+        ERROR("Ding a dang dong champion, couldn't start glfw");
+        exit(EXIT_FAILURE);
+    }
 	
     glfwWindowHint(GLFW_SAMPLES, aaSamples);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.major);
@@ -38,7 +41,8 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
     if (m_window == nullptr)
     {
         glfwTerminate();
-        throw std::runtime_error("Couldn't create window, need OpenGL >= " + std::to_string(version.major) + "." + std::to_string(version.minor));
+        ERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.major) + "." + std::to_string(version.minor));
+        exit(EXIT_FAILURE);
     }
     glfwMakeContextCurrent(m_window);
 
