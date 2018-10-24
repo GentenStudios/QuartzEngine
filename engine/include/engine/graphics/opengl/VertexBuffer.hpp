@@ -50,16 +50,11 @@ namespace phx
 
 				unsigned int getID() const;
 
-				void addVertexAttrib(int index, int componentCount, int totalSize, int offset);
-				void enableVertexAttribs();
-
 			private:
 				unsigned int m_bufferID;
 
 				Target m_target;
 				Usage m_usage;
-
-				std::vector<VertexAttrib> m_vertexAttribs;
 
 				int m_size;
 			};

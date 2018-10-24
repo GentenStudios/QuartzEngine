@@ -58,14 +58,14 @@ int main(int argc, char *argv[])
 	vbo->bind();
 	vbo->setData(static_cast<void*>(chunkData->chunkVertices.data()), sizeof(chunkData->chunkVertices[0]) * chunkData->chunkVertices.size());
 
-	gl::VertexAttrib vertAttrib(0, 3, 3, 0);
+	gl::VertexAttrib vertAttrib(0, 3, 3, 0, gl::GLType::FLOAT);
 	vertAttrib.enable();
 
 	gl::VertexBuffer* uvbo = new gl::VertexBuffer(gl::VertexBuffer::Target::ARRAY, gl::VertexBuffer::Usage::DYNAMIC_DRAW);
 	uvbo->bind();
 	uvbo->setData(static_cast<void*>(chunkData->chunkUVs.data()), sizeof(chunkData->chunkUVs[0]) * chunkData->chunkUVs.size());
 
-	gl::VertexAttrib uvAttrib(1, 2, 2, 0);
+	gl::VertexAttrib uvAttrib(1, 2, 2, 0, gl::GLType::FLOAT);
 	uvAttrib.enable();
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();

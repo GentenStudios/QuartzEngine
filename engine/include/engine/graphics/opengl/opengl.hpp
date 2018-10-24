@@ -28,7 +28,9 @@ namespace phx
 			{
 				FLOAT = GL_FLOAT,
 				UINT = GL_UNSIGNED_INT,
-				INT = GL_INT
+				INT = GL_INT,
+				UBYTE = GL_UNSIGNED_BYTE,
+				BYTE = GL_BYTE,
 			};
 
 		}

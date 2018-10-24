@@ -13,13 +13,19 @@ namespace phx
 			{
 			public:
 
-				VertexAttrib(unsigned int attribLocation, int attribNumComp, int attribStride, int attribOffset) :
+				VertexAttrib(unsigned int attribLocation, int attribNumComp, int attribStride, int attribOffset, GLType type) :
 					location(attribLocation),
 					components(attribNumComp),
 					stride(attribStride),
 					offset(attribOffset)
 				{
-					glVertexAttribPointer(location, components, GL_FLOAT, GL_FALSE, attribStride * sizeof(float), reinterpret_cast<void*>(offset * sizeof(float)));
+					glVertexAttribPointer(location,
+						components,
+						static_cast<GLenum>(type),
+						GL_FALSE,
+						attribStride * sizeof(static_cast<GLenum>(type)),
+						reinterpret_cast<void*>(offset * sizeof(static_cast<GLenum>(type)))
+					);
 				}
 
 				void enable()

@@ -36,24 +36,3 @@ unsigned int VertexBuffer::getID() const
 {
 	return m_bufferID;
 }
-
-void VertexBuffer::addVertexAttrib(int index, int componentCount, int totalSize, int offset)
-{
-	m_vertexAttribs.push_back({ index, componentCount, totalSize, offset });
-}
-
-void VertexBuffer::enableVertexAttribs()
-{
-	for (auto& attrib : m_vertexAttribs)
-	{
-		glVertexAttribPointer(
-			attrib.index,
-			attrib.totalSize,
-			GL_FLOAT,
-			GL_FALSE,
-			attrib.totalSize * sizeof(float),
-			(void*)(attrib.offset * sizeof(float))
-		);
-		glEnableVertexAttribArray(attrib.index);
-	}
-}
