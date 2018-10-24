@@ -25,9 +25,10 @@ namespace phx
 
 				void use() const;
 
-				void setBool(const std::string& name, bool value) const;
-				void setInt(const std::string& name, int value) const;
-				void setFloat(const std::string& name, float value) const;
+				template <typename T> void setUniform1(const std::string& name, T a) const;
+        		template <typename T> void setUniform2(const std::string& name, T a, T b) const;
+        		template <typename T> void setUniform3(const std::string& name, T a, T b, T c) const;
+        		template <typename T> void setUniform4(const std::string& name, T a, T b, T c, T d) const;
 
 				void setVec2(const std::string& name, phx::Vector2 &value) const;
 				void setVec2(const std::string& name, float x, float y) const;

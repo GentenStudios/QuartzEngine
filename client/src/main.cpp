@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 		shaderProgram->setMat4("projection", projection);
 		shaderProgram->setMat4("view", view);
 		shaderProgram->setMat4("model", model);
-		shaderProgram->setInt("ourTexture", 10);
+		shaderProgram->setUniform1<int>("ourTexture", 10);
 
 		vertAttrib.enable();
 		uvAttrib.enable();
