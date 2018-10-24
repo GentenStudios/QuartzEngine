@@ -53,6 +53,22 @@ static const Vector2 CubeUV[] = {
 	Vector2(0.f, 0.f),
 	Vector2(0.f, 1.f)
 };
+
+static const Vector3 CubeEmpty[] = {
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f),
+	Vector3(0.f), Vector3(0.f), Vector3(0.f)
+};
+
 static const Vector3 CubeVerts[] = {
 	// front
 	Vector3(-1.f,-1.f,-1.f),
@@ -154,28 +170,28 @@ void Chunk::populateData()
 		{
 			for (unsigned int x = 0; x < m_chunkData->chunkSize; x++)
 			{
-				if (m_chunkData->chunkBlocks[x][y][z]->getID() == "core:air")
+				if (m_chunkData->chunkBlocks[x][y][z]->getBlockType() == BlockType::GAS)
 					continue;
 
 				int memOffset = (x * 36) + (m_chunkData->chunkSize * ((y * 36) + m_chunkData->chunkSize * (z * 36)));
 
-				std::memcpy(m_chunkData->chunkVertices.data() + memOffset, CubeVerts, sizeof(CubeVerts));
+				std::memcpy(m_chunkData->chunkVertices.data() + memOffset, CubeEmpty, sizeof(CubeVerts));
 				std::memcpy(m_chunkData->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
 
-				if (x == 0 || m_chunkData->chunkBlocks[x - 1][y][z]->getID() == "core:air")
+				if (x == 0 || m_chunkData->chunkBlocks[x - 1][y][z]->getBlockType() != BlockType::SOLID)
 					addFace(BlockFace::Right, memOffset, x, y, z);
-				if (x == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x + 1][y][z]->getID() == "core:air")
+				if (x == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x + 1][y][z]->getBlockType() != BlockType::SOLID)
 					addFace(BlockFace::Left, memOffset, x, y, z);
 				
-				if (y == 0 || m_chunkData->chunkBlocks[x][y - 1][z]->getID() == "core:air")
+				if (y == 0 || m_chunkData->chunkBlocks[x][y - 1][z]->getBlockType() != BlockType::SOLID)
 					addFace(BlockFace::Bottom, memOffset, x, y, z);
-				if (y == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x][y + 1][z]->getID() == "core:air")
+				if (y == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x][y + 1][z]->getBlockType() != BlockType::SOLID)
 					addFace(BlockFace::Top, memOffset, x, y, z);
 				
-				if (z == 0 || m_chunkData->chunkBlocks[x][y][z - 1]->getID() == "core:air")
+				if (z == 0 || m_chunkData->chunkBlocks[x][y][z - 1]->getBlockType() != BlockType::SOLID)
 					addFace(BlockFace::Front, memOffset, x, y, z);
-				if (z == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x][y][z + 1]->getID() == "core:air")
-					addFace(BlockFace::Left, memOffset, x, y, z);
+				if (z == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x][y][z + 1]->getBlockType() != BlockType::SOLID)
+					addFace(BlockFace::Back, memOffset, x, y, z);
 			}
 		}
 	}
@@ -183,12 +199,14 @@ void Chunk::populateData()
 
 void Chunk::addFace(BlockFace face, int memOffset, int x, int y, int z)
 {
-	int memOffsetOffest = static_cast<int>(face) * 6;
+	int bytesInFace = 6 * sizeof(Vector3);
 
+	int memOffsetOffest = static_cast<int>(face) * 6;
+	std::memcpy(m_chunkData->chunkVertices.data() + memOffset + memOffsetOffest, CubeVerts + memOffsetOffest, bytesInFace);
 	for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
 	{
-		m_chunkData->chunkVertices[q].x += (x * 2) + (m_chunkData->chunkPos.x * 2);
-		m_chunkData->chunkVertices[q].y += (y * 2) + (m_chunkData->chunkPos.y * 2);
-		m_chunkData->chunkVertices[q].z += (z * 2) + (m_chunkData->chunkPos.z * 2);
+		m_chunkData->chunkVertices[q].x += (x * 2) + (m_chunkData->chunkPos.x * 2);;
+		m_chunkData->chunkVertices[q].y += (y * 2) + (m_chunkData->chunkPos.y * 2);;
+		m_chunkData->chunkVertices[q].z += (z * 2) + (m_chunkData->chunkPos.z * 2);;
 	}
 }
