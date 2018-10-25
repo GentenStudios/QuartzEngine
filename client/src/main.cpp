@@ -1,4 +1,6 @@
 #include <engine/common.hpp>
+#include <engine/utils/io.hpp>
+
 #include <engine/graphics/IWindow.hpp>
 
 #include <engine/graphics/opengl/VertexArray.hpp>
@@ -40,7 +42,7 @@ const char* fragmentShaderSource = "#version 330 \n"
 
 int main(int argc, char *argv[])
 {
-	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::GLFW,	// USE GLFW FOR WINDOWING 
+	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE GLFW FOR WINDOWING
 														"Phoenix!",				// WINDOW TITLE IS PHOENIX
 														1280,					// WINDOW WIDTH IS 1280px
 														720,					// WINDOW HEIGHT is 720px
@@ -48,7 +50,7 @@ int main(int argc, char *argv[])
 														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 	);
 
-	window->addKeyCallback((int) glfw::EventType::Repeat, GLFW_KEY_P, [](){ std::cout << "guess what ? i'm a P !" << std::endl; });
+//	window->addKeyCallback((int) glfw::EventType::Repeat, GLFW_KEY_P, [](){ std::cout << "guess what ? i'm a P !" << std::endl; });
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -77,8 +79,8 @@ int main(int argc, char *argv[])
 	uvAttrib.enable();
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
-	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, vertexShaderSource);
-	shaderProgram->addStage(gl::ShaderType::FRAGMENT_SHADER, fragmentShaderSource);
+	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
+	shaderProgram->addStage(gl::ShaderType::FRAGMENT_SHADER, File::readFile("assets/shaders/main.frag").c_str());
 	shaderProgram->build();
 
 	vao->bind();
@@ -109,7 +111,7 @@ int main(int argc, char *argv[])
 		shaderProgram->setMat4("projection", projection);
 		shaderProgram->setMat4("view", view);
 		shaderProgram->setMat4("model", model);
-		shaderProgram->setUniform1<int>("ourTexture", 10);
+		shaderProgram->setUniform1<int>("TexArray", 10);
 
 		if (i < 1000)
 		{
