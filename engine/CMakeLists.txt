@@ -18,12 +18,6 @@ set(mathHeaders
     ${header_dir}/engine/math/Vector2.hpp
     )
 
-set(platformSrc
-    ${source_dir}/GLFW/GLFWWindow.cpp
-    ${source_dir}/SDL/SDLWindow.cpp
-    ${source_dir}/graphics/IWindow.cpp
-    )
-
 set(platformHeaders
     ${header_dir}/engine/os.hpp
 
@@ -36,8 +30,17 @@ set(platformHeaders
     ${header_dir}/engine/events/IKeyboardDefinitions.hpp
     )
 
+set(platformSrc
+    ${source_dir}/GLFW/GLFWWindow.cpp
+    ${source_dir}/SDL/SDLWindow.cpp
+    ${source_dir}/graphics/IWindow.cpp
+    )
+
+
 set(graphicsHeaders
     ${header_dir}/engine/graphics/opengl/opengl.hpp
+    ${header_dir}/engine/graphics/opengl/debug.hpp
+
     ${header_dir}/engine/graphics/opengl/GLEnums.hpp
     ${header_dir}/engine/graphics/opengl/VertexArray.hpp
     ${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
@@ -73,11 +76,12 @@ set(voxelsSrc
 
 set(utilHeaders
     ${header_dir}/engine/utils/logging.hpp
-    ${header_dir}/engine/graphics/opengl/debug.hpp
+	${header_dir}/engine/utils/io.hpp
     )
 
 set(utilSrc
     ${source_dir}/utils/logging.cpp
+    ${source_dir}/utils/io.cpp
     )
 
 set(commonHeaders
