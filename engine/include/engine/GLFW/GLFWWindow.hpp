@@ -16,9 +16,9 @@ namespace phx
 
         enum class EventType : int
         {
-            Pressed,
-            Released,
-            Repeat
+			PRESSED,
+			RELEASED,
+			REPEAT
         };
 
 		class GLFWWindow : public phx::gfx::IWindow

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "engine/common.hpp"
-#include <SDL.h>
 
 namespace phx
 {

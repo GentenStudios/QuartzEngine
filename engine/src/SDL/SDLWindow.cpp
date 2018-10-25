@@ -5,7 +5,11 @@ using namespace phx::sdl;
 
 SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
+	if(!SDL_Init(SDL_INIT_EVERYTHING))
+	{
+		ERROR("Uh oh! We had a booboo. Just tell the pros this: SDL couldn't initialise itself");
+		exit(EXIT_FAILURE);
+	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.major);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minor);
@@ -27,11 +31,18 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDLProfile);
 
 	m_window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+	if (m_window != nullptr)
+	{
+		SDL_Quit();
+		ERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.major) + "." + std::to_string(version.minor));
+		exit(EXIT_FAILURE);
+	}
+
 	m_context = SDL_GL_CreateContext(m_window);
 
 	if (glewInit() != GLEW_OK)
 	{
-		ERROR("OPENGL CONTEXT COULD NOT BE MADE PROPERLY");
+		ERROR("Uh Oh! There was a booboo, and we can't fix it :(. Tell the pros that an OpenGL context could not be created. Sorry for the inconvenience!");
 		exit(EXIT_FAILURE);
 	}
 

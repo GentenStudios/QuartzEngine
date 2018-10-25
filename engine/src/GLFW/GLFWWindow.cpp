@@ -8,10 +8,10 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
 {
     if (!glfwInit())
     {
-        ERROR("Ding a dang dong champion, couldn't start glfw");
+		ERROR("Ding a dang dong we're the champions! (not really, but don't fight the kings of the world) A team of monkeys will not be dispatched to fix your problems, tell one of the absolute mad pros that GLFW could not start");
         exit(EXIT_FAILURE);
     }
-	
+
     glfwWindowHint(GLFW_SAMPLES, aaSamples);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.major);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.minor);
@@ -41,14 +41,14 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
     if (m_window == nullptr)
     {
         glfwTerminate();
-        ERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.major) + "." + std::to_string(version.minor));
-        exit(EXIT_FAILURE);
+		ERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.major) + "." + std::to_string(version.minor));
+		exit(EXIT_FAILURE);
     }
     glfwMakeContextCurrent(m_window);
 
 	if (glewInit() != GLEW_OK)
 	{
-		ERROR("OPENGL CONTEXT COULD NOT BE MADE PROPERLY");
+		ERROR("Holy Molesters. Something seriously went wrong, guess we'll have to fix it now, Tell the pros that GLEW could not initialise. :)");
 		exit(EXIT_FAILURE);
 	}
 
@@ -130,9 +130,9 @@ void GLFWWindow::updateKeysCallbacks()
         {
             int ev_idx = std::get<0>(f);
 
-            if (((ev_idx & (int) EventType::Released) != 0 && action == GLFW_RELEASE) ||
-                ((ev_idx & (int) EventType::Pressed) != 0  && action == GLFW_PRESS)   ||
-                ((ev_idx & (int) EventType::Repeat) != 0   && action == GLFW_REPEAT))
+            if (((ev_idx & (int) EventType::RELEASED) != 0 && action == GLFW_RELEASE) ||
+                ((ev_idx & (int) EventType::PRESSED) != 0  && action == GLFW_PRESS)   ||
+                ((ev_idx & (int) EventType::REPEAT) != 0   && action == GLFW_REPEAT))
                 if ((int) std::get<1>(f) == key)
                     std::get<2>(f)();
         }

@@ -133,6 +133,7 @@ set(libraries
     SDL2-static
     SDL2main
     glew_s
+    glfw
     )
 
 if(WIN32)
@@ -155,7 +156,6 @@ if(UNIX AND NOT APPLE)
         ${X11_LIBRARIES}
         ${X11_Xxf86vm_LIB}
         GL
-        glfw
         )
 endif()
 
