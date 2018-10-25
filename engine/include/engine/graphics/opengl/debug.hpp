@@ -33,10 +33,9 @@ namespace phx
 			 * @param line The line where the function was called (should be __LINE__)
 			 * @return A boolean, to know if we got an error or not
 			 */
-			inline bool checkError(const char* file, int line)
+			inline void checkError(const char* file, int line)
 			{
 #ifdef PHX_GL_DEBUG
-				bool hasError = false;
 				GLenum errorCode;
 				while ((errorCode = glGetError()) != GL_NO_ERROR)
 				{
@@ -49,16 +48,12 @@ namespace phx
 					case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
 					case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
 					case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-#ifndef PHX_OS_WINDOWS  // does not exist on Windows for some reason
+#ifndef PHX_OS_WINDOWS  // Doesn't exist on Windows.
 					case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
 #endif // !PHX_OS_WINDOWS
 					}
 					RENDER_WARNING("", error.c_str());
-					hasError = true;
 				}
-				return hasError;
-#else
-				return false;
 #endif  // PHX_GL_DEBUG
 			}
 

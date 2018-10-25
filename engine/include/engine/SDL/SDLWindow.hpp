@@ -28,7 +28,7 @@ namespace phx
 			virtual void setFullscreen(bool enabled);
 			virtual void setResizable(bool enabled);
 
-			virtual void setVSync(bool value) {}
+			virtual void setVSync(bool value);
 			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback) {}
 			virtual void addMouseMoveCallback(std::function<void(double, double)> callback) {}
 

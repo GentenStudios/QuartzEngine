@@ -56,14 +56,14 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
 	GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
 	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
 	{
-		std::cout << "OpenGL Debugging is active..." << std::endl;
-		glEnable(GL_DEBUG_OUTPUT);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(phx::gfx::gl::glDebugOutput, nullptr);
-		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+		GLCheck(glEnable(GL_DEBUG_OUTPUT));
+		GLCheck(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
+		GLCheck(glDebugMessageCallback(phx::gfx::gl::glDebugOutput, nullptr));
+		GLCheck(glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE));
 	}
-
-	glViewport(0, 0, m_width, m_height);
+	
+	GLCheck(glEnable(GL_DEPTH_TEST));
+	GLCheck(glViewport(0, 0, m_width, m_height));
 
     // on resize
     std::get<GLFWWindow::WindowResizeCallbackBase>(std::get<GLFWWindow::WindowResizeCallbackIndex>(m_callbacks)) = [this] (int w, int h) {

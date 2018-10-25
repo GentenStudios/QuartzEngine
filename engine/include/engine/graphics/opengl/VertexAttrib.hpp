@@ -19,23 +19,23 @@ namespace phx
 					stride(attribStride),
 					offset(attribOffset)
 				{
-					glVertexAttribPointer(location,
+					GLCheck(glVertexAttribPointer(location,
 						components,
 						static_cast<GLenum>(type),
 						GL_FALSE,
 						attribStride * sizeof(static_cast<GLenum>(type)),
 						reinterpret_cast<void*>(offset * sizeof(static_cast<GLenum>(type)))
-					);
+					));
 				}
 
 				void enable()
 				{
-					glEnableVertexAttribArray(location);
+					GLCheck(glEnableVertexAttribArray(location));
 				}
 
 				void disable()
 				{
-					glDisableVertexAttribArray(location);
+					GLCheck(glDisableVertexAttribArray(location));
 				}
 
 			private:

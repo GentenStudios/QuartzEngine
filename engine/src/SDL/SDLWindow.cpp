@@ -1,6 +1,5 @@
+#include "engine/graphics/opengl/opengl.hpp
 #include "engine/SDL/SDLWindow.hpp"
-#include <GL/glew.h>
-
 using namespace phx::sdl;
 
 SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
@@ -44,6 +43,8 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 
 	SDL_ShowWindow(m_window);
 
+	GLCheck(glEnable(GL_DEPTH_TEST));
+	
 	m_running = true;
 }
 
@@ -77,12 +78,17 @@ void SDLWindow::getSize(int& width, int& height)
 	SDL_GetWindowSize(m_window, &width, &height);
 }
 
-void phx::sdl::SDLWindow::setFullscreen(bool enabled)
+void SDLWindow::setFullscreen(bool enabled)
 {
 	SDL_SetWindowFullscreen(m_window, enabled ? SDL_WINDOW_FULLSCREEN : 0);
 }
 
-void phx::sdl::SDLWindow::setResizable(bool enabled)
+void SDLWindow::setResizable(bool enabled)
 {
 	SDL_SetWindowResizable(m_window, enabled ? SDL_TRUE : SDL_FALSE);
+}
+
+void SDLWindow::setVSync(bool enabled)
+{
+	SDL_GL_SetSwapInterval(enabled ? 1 : 0);
 }

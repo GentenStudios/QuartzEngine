@@ -17,29 +17,6 @@
 using namespace phx::gfx;
 using namespace phx;
 
-const char* vertexShaderSource =	"#version 330 core \n"
-									"layout (location = 0) in vec3 aPos; \n"
-									"layout (location = 1) in vec2 aUV; \n"
-									//"layout (location = 2) in int aTexLayer; \n"
-									"out vec2 UV; \n"
-									//"out int TexLayer; \n"
-									"uniform mat4 model; \n"
-									"uniform mat4 view; \n"
-									"uniform mat4 projection; \n"
-									"void main() \n"
-									"{ \n"
-									"gl_Position = projection * view * model * vec4(aPos, 1.0); \n"
-									"UV = aUV;"
-									//"TexLayer = aTexLayer;"
-									"}";
-
-const char* fragmentShaderSource = "#version 330 \n"
-								   "out vec4 FragColor;\n"
-								   "in vec2 UV;\n"
-								   "uniform int TexLayer; \n"
-								   "uniform sampler2DArray ourTexture;\n"
-								   "void main() { FragColor = texture(ourTexture, vec3(UV, TexLayer)).rgba; }";
-
 int main(int argc, char *argv[])
 {
 	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::GLFW,	// USE GLFW FOR WINDOWING
@@ -49,11 +26,10 @@ int main(int argc, char *argv[])
 														{3,3},					// OPENGL VERSION IS 3.3
 														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 	);
-	GLCheck(glBindVertexArray(12));
+
+	window->setVSync(true);
 
 	window->addKeyCallback((int) glfw::EventType::REPEAT, GLFW_KEY_P, [](){ std::cout << "guess what ? i'm a P !" << std::endl; });
-
-	glEnable(GL_DEPTH_TEST);
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
 	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
