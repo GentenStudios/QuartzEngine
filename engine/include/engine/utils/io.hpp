@@ -7,7 +7,8 @@ namespace phx
 
 	class File
 	{
-		static std::string readFile(std::string& filePath);
+	public:
+		static std::string readFile(const std::string& filePath);
 	};
 
 }

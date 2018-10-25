@@ -2,7 +2,7 @@
 
 using namespace phx;
 
-std::string File::readFile(std::string& filePath)
+std::string File::readFile(const std::string& filePath)
 {
 	std::fstream fileIn;
 	fileIn.open(filePath.c_str());
