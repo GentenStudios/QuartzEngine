@@ -1,4 +1,4 @@
-#include "engine/graphics/opengl/opengl.hpp
+#include "engine/graphics/opengl/opengl.hpp"
 #include "engine/SDL/SDLWindow.hpp"
 using namespace phx::sdl;
 

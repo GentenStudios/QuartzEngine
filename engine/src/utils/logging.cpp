@@ -40,6 +40,8 @@ void Logger::init(std::string logFile = "logs/phoenix.log", LogVerbosity verbosi
 
 	// Creating the files
 	Logger::m_logFileHandle.open(Logger::m_logFile, std::ios::app);
+
+	std::ios::sync_with_stdio(false);
 }
 
 void Logger::destroy()
@@ -74,9 +76,9 @@ void Logger::logMessage(std::string errorFile, int lineNumber, std::string subSe
 			logMessage << errorFile << ":" << lineNumber << " ";
 		}
 
-		logMessage << message << std::endl;
+		logMessage << message;
 
 		m_logFileHandle << logMessage.str();
-		std::cout << logMessage.str() << std::endl;
+		std::cout << logMessage.str() << "\n";
 	}
 }
