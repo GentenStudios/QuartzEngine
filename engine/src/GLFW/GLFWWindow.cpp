@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include "engine/graphics/opengl/opengl.hpp"
 #include "engine/GLFW/GLFWWindow.hpp"
 
 using namespace phx::glfw;
@@ -15,6 +15,7 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
     glfwWindowHint(GLFW_SAMPLES, aaSamples);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, version.major);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, version.minor);
+	glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 
 	uint32_t GLFWProfile = GLFW_OPENGL_CORE_PROFILE;
 	switch (profile)
@@ -52,6 +53,16 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
 		exit(EXIT_FAILURE);
 	}
 
+	GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+	{
+		std::cout << "OpenGL Debugging is active..." << std::endl;
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(phx::gfx::gl::glDebugOutput, nullptr);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+	}
+
 	glViewport(0, 0, m_width, m_height);
 
     // on resize
@@ -76,6 +87,7 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
 
 GLFWWindow::~GLFWWindow()
 {
+	glfwDestroyWindow(m_window);
     glfwTerminate();
     m_window = nullptr;
 }

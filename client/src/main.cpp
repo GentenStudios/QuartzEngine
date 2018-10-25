@@ -42,15 +42,16 @@ const char* fragmentShaderSource = "#version 330 \n"
 
 int main(int argc, char *argv[])
 {
-	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE GLFW FOR WINDOWING
+	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::GLFW,	// USE GLFW FOR WINDOWING
 														"Phoenix!",				// WINDOW TITLE IS PHOENIX
 														1280,					// WINDOW WIDTH IS 1280px
 														720,					// WINDOW HEIGHT is 720px
 														{3,3},					// OPENGL VERSION IS 3.3
 														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 	);
+	GLCheck(glBindVertexArray(12));
 
-//	window->addKeyCallback((int) glfw::EventType::Repeat, GLFW_KEY_P, [](){ std::cout << "guess what ? i'm a P !" << std::endl; });
+	window->addKeyCallback((int) glfw::EventType::REPEAT, GLFW_KEY_P, [](){ std::cout << "guess what ? i'm a P !" << std::endl; });
 
 	glEnable(GL_DEPTH_TEST);
 

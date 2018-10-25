@@ -47,12 +47,14 @@ void Logger::destroy()
 	Logger::m_logFileHandle.close();
 }
 
-void Logger::logMessage(std::string errorFile, int lineNumber, std::string message, LogVerbosity verbosity)
+void Logger::logMessage(std::string errorFile, int lineNumber, std::string subSectors, std::string message, LogVerbosity verbosity)
 {
 	if (verbosity <= Logger::m_vbLevel) // Make sure the logging call has a verbosity level below the defined level set at initialisation.
 	{
 		std::stringstream logMessage;
 		logMessage << "[" << Logger::LogVerbosityLookup[static_cast<int>(verbosity)] << "] "; // Add the [INFO]/etc... at the beginning, via the use of a lookup table.
+
+		logMessage << subSectors;
 
 		// Add time stamp to line
 		std::time_t t = std::time(0);   // get time now

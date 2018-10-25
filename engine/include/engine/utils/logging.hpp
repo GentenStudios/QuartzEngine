@@ -13,10 +13,10 @@
 #define INITLOGGER(logFile, vbLevel) phx::Logger::init( logFile, vbLevel )
 #define DESTROYLOGGER()	phx::Logger::destroy()
 
-#define ERROR(message)		phx::Logger::logMessage( __FILE__, __LINE__, message, phx::LogVerbosity::ERROR)
-#define WARNING(message)	phx::Logger::logMessage( __FILE__, __LINE__, message, phx::LogVerbosity::WARNING)
-#define INFO(message)		phx::Logger::logMessage( __FILE__, __LINE__, message, phx::LogVerbosity::INFO)
-#define DEBUG(message)		phx::Logger::logMessage( __FILE__, __LINE__, message, phx::LogVerbosity::DEBUG)
+#define ERROR(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::ERROR)
+#define WARNING(message)	phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::WARNING)
+#define INFO(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::INFO)
+#define DEBUG(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::DEBUG)
 
 namespace phx
 {
@@ -56,7 +56,7 @@ namespace phx
 		 * @param message       The actual message to be logged.
 		 * @param verbosity     The verbosity of the message, dictates whether the message is outputted or not.
 		 */
-		static void logMessage(std::string errorFile, int lineNumber, std::string message, LogVerbosity verbosity);
+		static void logMessage(std::string errorFile, int lineNumber, std::string subSectors, std::string message, LogVerbosity verbosity);
 
 	private:
 		Logger() {}
