@@ -14,12 +14,12 @@ namespace phx
 	namespace glfw
 	{
 
-        enum class EventType : int
-        {
-			PRESSED,
-			RELEASED,
-			REPEAT
-        };
+		enum class GLFWCursorState
+		{
+			DISABLED = GLFW_CURSOR_DISABLED,
+			HIDDEN = GLFW_CURSOR_HIDDEN,
+			NORMAL = GLFW_CURSOR_NORMAL
+		};
 
 		class GLFWWindow : public phx::gfx::IWindow
 		{
@@ -30,11 +30,13 @@ namespace phx
 			virtual void pollEvents();
 			virtual void swapBuffers();
 			virtual bool isRunning();
+			virtual void close();
 			
 			virtual void setTitle(const char* title);
 			virtual void getSize(int& width, int& height);
 			virtual void setFullscreen(bool enabled);
 			virtual void setResizable(bool enabled);
+			virtual void setCursorState(phx::gfx::CursorState cursorState);
 
             virtual void setVSync(bool value);
 

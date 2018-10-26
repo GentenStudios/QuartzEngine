@@ -68,6 +68,11 @@ bool SDLWindow::isRunning()
 	return m_running;
 }
 
+void SDLWindow::close()
+{
+	m_running = false;
+}
+
 void SDLWindow::setTitle(const char* title)
 {
 	SDL_SetWindowTitle(m_window, title);

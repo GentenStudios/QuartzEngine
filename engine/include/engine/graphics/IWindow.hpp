@@ -19,6 +19,20 @@ namespace phx
 			GLFW
 		};
 
+		enum class CursorState : int
+		{
+			DISABLED,
+			HIDDEN,
+			NORMAL
+		};
+
+		enum class EventType : int
+		{
+			PRESSED,
+			RELEASED,
+			REPEAT
+		};
+
 		class IWindow
 		{
 		public:
@@ -27,11 +41,13 @@ namespace phx
 			virtual void pollEvents() = 0;
 			virtual void swapBuffers() = 0;
 			virtual bool isRunning() = 0;
+			virtual void close() = 0;
 
 			virtual void getSize(int& width, int& height) = 0;
 			virtual void setTitle(const char* title) = 0;
 			virtual void setFullscreen(bool enabled) = 0;
 			virtual void setResizable(bool enabled) = 0;
+			virtual void setCursorState(CursorState cursorState) = 0;
 
 			virtual void setVSync(bool value) = 0;
 			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback) = 0;

@@ -33,6 +33,8 @@ int main(int argc, char *argv[])
 														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 	);
 
+	window->addKeyCallback(static_cast<int>(EventType::PRESSED), GLFW_KEY_ESCAPE, [&window]() { window->close(); });
+
 	window->setVSync(true);
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);

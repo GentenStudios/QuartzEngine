@@ -22,11 +22,13 @@ namespace phx
 			virtual void pollEvents();
 			virtual void swapBuffers();
 			virtual bool isRunning();
+			virtual void close();
 			
 			virtual void setTitle(const char* title);
 			virtual void getSize(int& width, int& height);
 			virtual void setFullscreen(bool enabled);
 			virtual void setResizable(bool enabled);
+			virtual void setCursorState(phx::gfx::CursorState cursorState) {}
 
 			virtual void setVSync(bool value);
 			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback) {}

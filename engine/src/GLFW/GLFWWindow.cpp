@@ -79,8 +79,8 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
         auto& user = std::get<GLFWWindow::WindowResizeCallbackUser>(
             std::get<GLFWWindow::WindowResizeCallbackIndex>(
                 *static_cast<GLFWWindow::Callbacks_t*>(glfwGetWindowUserPointer(window))));
-        base(w, h);
-        user(w, h);
+        //base(w, h);
+        //user(w, h);
     });
     glfwSetWindowUserPointer(m_window, &m_callbacks);
 }
@@ -107,6 +107,11 @@ bool GLFWWindow::isRunning()
 	return !glfwWindowShouldClose(m_window);
 }
 
+void GLFWWindow::close()
+{
+	glfwSetWindowShouldClose(m_window, true);
+}
+
 void GLFWWindow::setTitle(const char* title)
 {
 	glfwSetWindowTitle(m_window, title);
@@ -129,6 +134,11 @@ void GLFWWindow::setResizable(bool enabled)
 	// SDL_SetWindowResizable(m_window, enabled ? SDL_TRUE : SDL_FALSE);
 }
 
+void phx::glfw::GLFWWindow::setCursorState(phx::gfx::CursorState cursorState)
+{
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
 void GLFWWindow::setVSync(bool value)
 {
     glfwSwapInterval(value ? 1 : 0);
@@ -142,9 +152,9 @@ void GLFWWindow::updateKeysCallbacks()
         {
             int ev_idx = std::get<0>(f);
 
-            if (((ev_idx & (int) EventType::RELEASED) != 0 && action == GLFW_RELEASE) ||
-                ((ev_idx & (int) EventType::PRESSED) != 0  && action == GLFW_PRESS)   ||
-                ((ev_idx & (int) EventType::REPEAT) != 0   && action == GLFW_REPEAT))
+            if (((ev_idx & (int)phx::gfx::EventType::RELEASED) != 0 && action == GLFW_RELEASE) ||
+                ((ev_idx & (int)phx::gfx::EventType::PRESSED) != 0  && action == GLFW_PRESS)   ||
+                ((ev_idx & (int)phx::gfx::EventType::REPEAT) != 0   && action == GLFW_REPEAT))
                 if ((int) std::get<1>(f) == key)
                     std::get<2>(f)();
         }
