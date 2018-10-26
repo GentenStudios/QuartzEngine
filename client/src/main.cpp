@@ -14,6 +14,10 @@
 #include <engine/voxels/Block.hpp>
 #include <engine/voxels/Chunk.hpp>
 
+#include <engine/graphics/Camera.hpp>
+
+#include <chrono>
+
 using namespace phx::gfx;
 using namespace phx;
 
@@ -30,8 +34,6 @@ int main(int argc, char *argv[])
 	);
 
 	window->setVSync(true);
-
-	window->addKeyCallback((int) glfw::EventType::REPEAT, GLFW_KEY_P, [](){ std::cout << "guess what ? i'm a P !" << std::endl; });
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
 	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
@@ -72,13 +74,31 @@ int main(int argc, char *argv[])
 	texture.bind(10); // Bind to 10th texture unit for no particular reason, except testing the index slot thingy. ya know?
 
 	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f);
-	Matrix4x4 view = Matrix4x4::lookAt({ 50, 40, 12 }, { 5,10,0 }, { 0,1,0 });
+	//Matrix4x4 view = Matrix4x4::lookAt({ 50, 40, 12 }, { 5,10,0 }, { 0,1,0 });
 	Matrix4x4 model;
 
+	FPSCam* cam = new FPSCam(window);
+	
+	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_W, [&cam]() { cam->cameraMoveEvent(CamDir::FORWARD); });
+	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_S, [&cam]() { cam->cameraMoveEvent(CamDir::BACKWARD); });
+	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_A, [&cam]() { cam->cameraMoveEvent(CamDir::LEFT); });
+	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_D, [&cam]() { cam->cameraMoveEvent(CamDir::RIGHT); });
+	window->addMouseMoveCallback([&cam](double x, double y) { cam->cameraLookEvent(x, y); });
+
+	cam->enabled = true;
+
+	using namespace std::chrono;
+
 	int i = 0;
+	high_resolution_clock::time_point initial = high_resolution_clock::now();
 	while (window->isRunning())
 	{
+		high_resolution_clock::time_point now = high_resolution_clock::now();
+		auto deltaTime = now - initial;
+		initial = now;
+
 		window->pollEvents();
+		cam->setDT(static_cast<float>(duration_cast<milliseconds>(deltaTime).count()) / 1000);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
@@ -88,7 +108,7 @@ int main(int argc, char *argv[])
 		texture.bind(10);
 
 		shaderProgram->setMat4("projection", projection);
-		shaderProgram->setMat4("view", view);
+		shaderProgram->setMat4("view", cam->calculateViewMatrix());
 		shaderProgram->setMat4("model", model);
 		shaderProgram->setUniform1<int>("TexArray", 10);
 

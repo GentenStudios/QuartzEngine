@@ -47,6 +47,8 @@ set(graphicsHeaders
     ${header_dir}/engine/graphics/opengl/VertexAttrib.hpp
     ${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
     ${header_dir}/engine/graphics/opengl/TextureArray.hpp
+
+    ${header_dir}/engine/graphics/Camera.hpp
     )
 
 set(graphicsSrc
@@ -54,6 +56,8 @@ set(graphicsSrc
     ${source_dir}/graphics/opengl/VertexBuffer.cpp
     ${source_dir}/graphics/opengl/ShaderPipeline.cpp
     ${source_dir}/graphics/opengl/TextureArray.cpp
+
+    ${source_dir}/graphics/Camera.cpp
     )
 
 set(voxelsHeaders
