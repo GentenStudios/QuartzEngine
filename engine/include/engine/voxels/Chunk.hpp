@@ -21,10 +21,10 @@ namespace phx
 			unsigned int chunkSize;
 
 			std::vector<std::vector<std::vector<Block*>>> chunkBlocks;
-			std::vector<phx::Vector3> chunkVertices;
-			std::vector<phx::Vector3> chunkNormals;
-			std::vector<phx::Vector2> chunkUVs;
-			std::vector<int> chunkTexLayers;
+			//std::vector<phx::Vector3> chunkVertices;
+			//std::vector<phx::Vector3> chunkNormals;
+			//std::vector<phx::Vector2> chunkUVs;
+			//std::vector<int> chunkTexLayers;
 		};
 
 		enum class BlockFace : int
@@ -37,15 +37,65 @@ namespace phx
 			TOP = 5
 		};
 
+		class Mesh
+		{
+			std::vector<phx::Vector3> chunkVertices;
+			std::vector<phx::Vector3> chunkNormals;
+			std::vector<phx::Vector2> chunkUVs;
+			std::vector<int> chunkTexLayers;
+
+			void reset();
+			void update(const Mesh& mesh);
+		};
+
+		class ChunkMesh
+		{
+		public:
+			ChunkMesh();
+			~ChunkMesh();
+
+			void addFace(BlockFace face, int memOffset, int x, int y, int z);
+			
+			const Mesh& getBlocksMesh();
+			const Mesh& getObjectsMesh();
+			const Mesh& getWaterMesh();
+
+		private:
+			// first mesh is for water blocks
+			// second is for objects, we will draw them with another shader to add transparency support and have better performances
+			// last one is for water since we need a specific shader for this shit to add beautiful flying and moving waves (and apply face culling)
+			Mesh m_blocks, m_objects, m_water;
+		};
+
+		class ChunkRenderer
+		{
+		public:
+			ChunkRenderer();
+			~ChunkRenderer();
+
+			void resetMesh();
+			void updateMesh(const Mesh& other);
+
+			void bufferData();
+			void render();
+
+			std::size_t getTrianglesCount() const;
+
+		private:
+			VertexArray* m_vao;
+			VertexBuffer* m_vbo;
+			ChunkMesh m_mesh;
+		};
+
 		class Chunk
 		{
 		public:
 			Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock);
 			~Chunk();
 
-			void populateData();
+			void populateData();  // should update the chunk mesh for the chunk renderer
 
-			void buildMesh();
+			void buildMesh();  // should update the meshes
 
 			void breakBlockAt(phx::Vector3 position, Block* replaceBlock);
 			void placeBlockAt(phx::Vector3 position);
@@ -63,7 +113,9 @@ namespace phx
 			unsigned int m_normalInChunk;
 			unsigned int m_uvInChunk;
 
-			void addFace(BlockFace face, int memOffset, int x, int y, int z);
+			ChunkRenderer m_blocksRenderer, m_objectsRenderer, m_waterRenderer;
+
+			//void addFace(BlockFace face, int memOffset, int x, int y, int z);
 		};
 
 	}
