@@ -26,22 +26,22 @@ int main(int argc, char *argv[])
 	INITLOGGER("logs/phoenix.log", phx::LogVerbosity::DEBUG);
 
 	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::GLFW,	// USE GLFW FOR WINDOWING
-														"Phoenix!",				// WINDOW TITLE IS PHOENIX
-														1280,					// WINDOW WIDTH IS 1280px
-														720,					// WINDOW HEIGHT is 720px
-														{3,3},					// OPENGL VERSION IS 3.3
-														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
+		"Phoenix!",				// WINDOW TITLE IS PHOENIX
+		1280,					// WINDOW WIDTH IS 1280px
+		720,					// WINDOW HEIGHT is 720px
+		{ 3,3 },					// OPENGL VERSION IS 3.3
+		gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 	);
 
-	window->addKeyCallback(static_cast<int>(EventType::PRESSED), GLFW_KEY_ESCAPE, [&window]() { window->close(); });
+	window->addKeyCallback(static_cast<int>(EventType::PRESSED) | static_cast<int>(EventType::RELEASED), GLFW_KEY_ESCAPE, [&window]() { window->close(); });
 
-	window->setVSync(true);
+	window->setVSync(false);
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
 	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
-	voxels::Chunk* chunk = new voxels::Chunk({0,0,0}, 16, block);
+	voxels::Chunk* chunk = new voxels::Chunk({ 0,0,0 }, 16, block);
 	chunk->populateData();
-	
+
 	voxels::ChunkData* chunkData = chunk->getChunkDataPointer();
 
 	gl::VertexArray* vao = new gl::VertexArray();
@@ -66,8 +66,6 @@ int main(int argc, char *argv[])
 	shaderProgram->addStage(gl::ShaderType::FRAGMENT_SHADER, File::readFile("assets/shaders/main.frag").c_str());
 	shaderProgram->build();
 
-	vao->bind();
-
 	gl::TextureArray texture;
 	std::vector<std::string> thing;
 	thing.push_back("assets/images/dirt.png");
@@ -75,12 +73,11 @@ int main(int argc, char *argv[])
 	texture.add(thing);
 	texture.bind(10); // Bind to 10th texture unit for no particular reason, except testing the index slot thingy. ya know?
 
-	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 100.f, 0.1f);
-	//Matrix4x4 view = Matrix4x4::lookAt({ 50, 40, 12 }, { 5,10,0 }, { 0,1,0 });
+	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 1000.f, 0.1f);
 	Matrix4x4 model;
 
 	FPSCam* cam = new FPSCam(window);
-	
+
 	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_W, [&cam]() { cam->cameraMoveEvent(CamDir::FORWARD); });
 	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_S, [&cam]() { cam->cameraMoveEvent(CamDir::BACKWARD); });
 	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_A, [&cam]() { cam->cameraMoveEvent(CamDir::LEFT); });
@@ -92,15 +89,24 @@ int main(int argc, char *argv[])
 	using namespace std::chrono;
 
 	int i = 0;
-	high_resolution_clock::time_point initial = high_resolution_clock::now();
+	double lastTime = glfwGetTime();
+	double lastTimeFPS = glfwGetTime();
+	int nbFrames = 0;
 	while (window->isRunning())
 	{
-		high_resolution_clock::time_point now = high_resolution_clock::now();
-		auto deltaTime = now - initial;
-		initial = now;
-
+		double currentTime = glfwGetTime();
+		double deltaTime = currentTime - lastTime;
+		lastTime = currentTime;
 		window->pollEvents();
-		cam->setDT(static_cast<float>(duration_cast<milliseconds>(deltaTime).count()) / 1000);
+		cam->setDT(deltaTime * 10);
+		
+		nbFrames++;
+		if (currentTime - lastTimeFPS >= 1.0) { // If last prinf() was more than 1 sec ago
+			// printf and reset timer
+			printf("%f FPS: \n", double(nbFrames));
+			nbFrames = 0;
+			lastTimeFPS += 1.0;
+		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
@@ -131,7 +137,7 @@ int main(int argc, char *argv[])
 
 		vertAttrib.enable();
 		uvAttrib.enable();
-		glDrawArrays(GL_TRIANGLES, 0, 16*16*16*36);
+		glDrawArrays(GL_TRIANGLES, 0, 16 * 16 * 16 * 36);
 
 		window->swapBuffers();
 	}

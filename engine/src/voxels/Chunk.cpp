@@ -179,19 +179,19 @@ void Chunk::populateData()
 				std::memcpy(m_chunkData->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
 
 				if (x == 0 || m_chunkData->chunkBlocks[x - 1][y][z]->getBlockType() != BlockType::SOLID)
-					addFace(BlockFace::Right, memOffset, x, y, z);
+					addFace(BlockFace::RIGHT, memOffset, x, y, z);
 				if (x == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x + 1][y][z]->getBlockType() != BlockType::SOLID)
-					addFace(BlockFace::Left, memOffset, x, y, z);
+					addFace(BlockFace::LEFT, memOffset, x, y, z);
 				
 				if (y == 0 || m_chunkData->chunkBlocks[x][y - 1][z]->getBlockType() != BlockType::SOLID)
-					addFace(BlockFace::Bottom, memOffset, x, y, z);
+					addFace(BlockFace::BOTTOM, memOffset, x, y, z);
 				if (y == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x][y + 1][z]->getBlockType() != BlockType::SOLID)
-					addFace(BlockFace::Top, memOffset, x, y, z);
+					addFace(BlockFace::TOP, memOffset, x, y, z);
 				
 				if (z == 0 || m_chunkData->chunkBlocks[x][y][z - 1]->getBlockType() != BlockType::SOLID)
-					addFace(BlockFace::Front, memOffset, x, y, z);
+					addFace(BlockFace::FRONT, memOffset, x, y, z);
 				if (z == m_chunkData->chunkSize - 1 || m_chunkData->chunkBlocks[x][y][z + 1]->getBlockType() != BlockType::SOLID)
-					addFace(BlockFace::Back, memOffset, x, y, z);
+					addFace(BlockFace::BACK, memOffset, x, y, z);
 			}
 		}
 	}
@@ -205,8 +205,8 @@ void Chunk::addFace(BlockFace face, int memOffset, int x, int y, int z)
 	std::memcpy(m_chunkData->chunkVertices.data() + memOffset + memOffsetOffest, CubeVerts + memOffsetOffest, bytesInFace);
 	for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
 	{
-		m_chunkData->chunkVertices[q].x += (x * 2) + (m_chunkData->chunkPos.x * 2);;
-		m_chunkData->chunkVertices[q].y += (y * 2) + (m_chunkData->chunkPos.y * 2);;
-		m_chunkData->chunkVertices[q].z += (z * 2) + (m_chunkData->chunkPos.z * 2);;
+		m_chunkData->chunkVertices[q].x += (x * 2) + (m_chunkData->chunkPos.x * 2);
+		m_chunkData->chunkVertices[q].y += (y * 2) + (m_chunkData->chunkPos.y * 2);
+		m_chunkData->chunkVertices[q].z += (z * 2) + (m_chunkData->chunkPos.z * 2);
 	}
 }

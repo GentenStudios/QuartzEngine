@@ -24,16 +24,17 @@ namespace phx
 			std::vector<phx::Vector3> chunkVertices;
 			std::vector<phx::Vector3> chunkNormals;
 			std::vector<phx::Vector2> chunkUVs;
+			std::vector<int> chunkTexLayers;
 		};
 
 		enum class BlockFace : int
 		{
-			Front = 0,
-			Back = 1,
-			Right = 2,
-			Left = 3,
-			Bottom = 4,
-			Top = 5
+			FRONT = 0,
+			BACK = 1,
+			RIGHT = 2,
+			LEFT = 3,
+			BOTTOM = 4,
+			TOP = 5
 		};
 
 		class Chunk
@@ -45,7 +46,7 @@ namespace phx
 			void populateData();
 
 			void buildMesh();
-			
+
 			void breakBlockAt(phx::Vector3 position, Block* replaceBlock);
 			void placeBlockAt(phx::Vector3 position);
 
