@@ -165,7 +165,7 @@ void ShaderPipeline::setVec3(const std::string& name, float x, float y, float z)
 	GLCheck(glUniform3f(glGetUniformLocation(m_shaderProgram, name.c_str()), x, y, z));
 }
 
-void ShaderPipeline::setMat4(const std::string& name, phx::Matrix4x4& mat) const
+void ShaderPipeline::setMat4(const std::string& name, const phx::Matrix4x4& mat) const
 {
 	GLCheck(glUniformMatrix4fv(glGetUniformLocation(m_shaderProgram, name.c_str()), 1, GL_FALSE, &mat.elements[0]));
 }

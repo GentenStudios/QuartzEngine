@@ -36,7 +36,7 @@ namespace phx
 				void setVec3(const std::string& name, phx::Vector3 &value) const;
 				void setVec3(const std::string& name, float x, float y, float z) const;
 
-				void setMat4(const std::string &name, Matrix4x4& mat) const;
+				void setMat4(const std::string &name, const Matrix4x4& mat) const;
 
 				unsigned int getShaderProgram() const;
 
