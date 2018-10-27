@@ -10,15 +10,15 @@
 #include <string>
 #include <sstream>
 
-#define INITLOGGER( logFile, vbLevel ) phoenix::Logger::init( logFile, vbLevel )
-#define DESTROYLOGGER() phoenix::Logger::destroy()
+#define INITLOGGER(logFile, vbLevel) phx::Logger::init( logFile, vbLevel )
+#define DESTROYLOGGER()	phx::Logger::destroy()
 
-#define ERROR( message )    phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::ERROR )
-#define WARNING( message )  phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::WARNING )
-#define INFO( message )     phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::INFO )
-#define DEBUG( message )    phoenix::Logger::logMessage( __FILE__, __LINE__, message, phoenix::LogVerbosity::DEBUG )
+#define ERROR(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::ERROR)
+#define WARNING(message)	phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::WARNING)
+#define INFO(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::INFO)
+#define DEBUG(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::DEBUG)
 
-namespace phoenix
+namespace phx
 {
 
 	/**
@@ -27,10 +27,10 @@ namespace phoenix
 	 */
 	enum class LogVerbosity
 	{
-		ERROR = 0,      ///< ERROR -> Is for critical messages that result in FAILURES
-		WARNING = 1,    ///< WARNING-> More verbose logging, for errors that are not FATAL, but are errors none-the-less
-		INFO = 2,       ///< INFO -> For important information which can aid finding problems quickly
-		DEBUG = 3,       ///< DEBUG-> For absolutely everything, like entering a function to exiting the function.
+		ERROR = 0,      ///< ERROR Is for critical messages that result in FAILURES
+		WARNING = 1,    ///< WARNING More verbose logging, for errors that are not FATAL, but are errors none-the-less
+		INFO = 2,       ///< INFO For important information which can aid finding problems quickly
+		DEBUG = 3,       ///< DEBUG For absolutely everything, like entering a function to exiting the function.
 	};
 
 	class Logger
@@ -51,12 +51,12 @@ namespace phoenix
 
 		/**
 		 * @brief logMessage is to actually log the message to the console and the file opened by init();
-		 * @param[in] errorFile     The file from which the error is occurring
-		 * @param[in] lineNumber    The line from which the error is occurring
-		 * @param[in] message       The actual message to be logged.
-		 * @param[in] verbosity     The verbosity of the message, dictates whether the message is outputted or not.
+		 * @param errorFile     The file from which the error is occurring
+		 * @param lineNumber    The line from which the error is occurring
+		 * @param message       The actual message to be logged.
+		 * @param verbosity     The verbosity of the message, dictates whether the message is outputted or not.
 		 */
-		static void logMessage(std::string errorFile, int lineNumber, std::string message, LogVerbosity verbosity);
+		static void logMessage(std::string errorFile, int lineNumber, std::string subSectors, std::string message, LogVerbosity verbosity);
 
 	private:
 		Logger() {}

@@ -5,85 +5,154 @@ project(Phoenix_Engine)
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(header_dir ${PROJECT_SOURCE_DIR}/include)
 
-set(sources
-    ${source_dir}/engine.cpp
+set(mathSrc
+    ${source_dir}/math/Vector3.cpp
+    ${source_dir}/math/Matrix4x4.cpp
+    ${source_dir}/math/Vector2.cpp
+    )
+
+set(mathHeaders
+    ${header_dir}/engine/math/Vector3.hpp
+    ${header_dir}/engine/math/Matrix4x4.hpp
+    ${header_dir}/engine/math/MathUtils.hpp
+    ${header_dir}/engine/math/Vector2.hpp
+    )
+
+set(platformHeaders
+    ${header_dir}/engine/os.hpp
+
+    ${header_dir}/engine/GLFW/GLFWWindow.hpp
+    ${header_dir}/engine/SDL/SDLWindow.hpp
+    ${header_dir}/engine/graphics/IWindow.hpp
+    ${header_dir}/engine/graphics/Context.hpp
+
+    ${header_dir}/engine/SDL/SDLKeyboardDefinitions.hpp
+    ${header_dir}/engine/events/IKeyboardDefinitions.hpp
+    )
+
+set(platformSrc
+    ${source_dir}/GLFW/GLFWWindow.cpp
+    ${source_dir}/SDL/SDLWindow.cpp
+    ${source_dir}/graphics/IWindow.cpp
+    )
+
+
+set(graphicsHeaders
+    ${header_dir}/engine/graphics/opengl/opengl.hpp
+    ${header_dir}/engine/graphics/opengl/debug.hpp
+
+    ${header_dir}/engine/graphics/opengl/GLEnums.hpp
+    ${header_dir}/engine/graphics/opengl/VertexArray.hpp
+    ${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
+    ${header_dir}/engine/graphics/opengl/VertexAttrib.hpp
+    ${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
+    ${header_dir}/engine/graphics/opengl/TextureArray.hpp
+
+    ${header_dir}/engine/graphics/Camera.hpp
+    )
+
+set(graphicsSrc
+    ${source_dir}/graphics/opengl/VertexArray.cpp
+    ${source_dir}/graphics/opengl/VertexBuffer.cpp
+    ${source_dir}/graphics/opengl/ShaderPipeline.cpp
+    ${source_dir}/graphics/opengl/TextureArray.cpp
+
+    ${source_dir}/graphics/Camera.cpp
+    )
+
+set(voxelsHeaders
+    ${header_dir}/engine/voxels/Block.hpp
+    ${header_dir}/engine/voxels/MapBlock.hpp
+    ${header_dir}/engine/voxels/Chunk.hpp
+
+    ${header_dir}/engine/entities/Item.hpp
+    ${header_dir}/engine/entities/ItemInstance.hpp
+    )
+
+set(voxelsSrc
+    ${source_dir}/voxels/Block.cpp
+    ${source_dir}/voxels/MapBlock.cpp
+    ${source_dir}/voxels/Chunk.cpp
+
+    ${source_dir}/entities/Item.cpp
+    ${source_dir}/entities/ItemInstance.cpp
+    )
+
+set(utilHeaders
+    ${header_dir}/engine/utils/logging.hpp
+	${header_dir}/engine/utils/io.hpp
+    )
+
+set(utilSrc
     ${source_dir}/utils/logging.cpp
+    ${source_dir}/utils/io.cpp
+    )
 
-    ${source_dir}/math/vector3.cpp
-    ${source_dir}/math/matrix4x4.cpp
-    ${source_dir}/math/vector2.cpp
+set(commonHeaders
+    ${header_dir}/engine/common.hpp
+    ${header_dir}/engine/types.hpp
+    )
 
-    ${source_dir}/graphics/window.cpp
-
-    ${source_dir}/graphics/opengl/vertexArray.cpp
-    ${source_dir}/graphics/opengl/buffer.cpp
-    ${source_dir}/graphics/opengl/texture.cpp
-    ${source_dir}/graphics/opengl/shader.cpp
-
-    ${source_dir}/camera.cpp
-  	
-    ${source_dir}/imgui.cpp
-    
-    ${source_dir}/voxels/block.cpp
-#    ${source_dir}/voxels/chunk.cpp
-    ${source_dir}/voxels/mapblock.cpp
-
-    ${source_dir}/entities/item.cpp
-    ${source_dir}/entities/iteminstance.cpp
-)
+set(sources
+    ${graphicsSrc}
+    ${mathSrc}
+    ${platformSrc}
+    ${utilSrc}
+    ${voxelsSrc}
+    )
 
 set(headers
-    ${header_dir}/engine/common.hpp
-    ${header_dir}/engine/os.hpp
-    ${header_dir}/engine/engine.hpp
-    
-    ${header_dir}/engine/math/vector3.hpp
-    ${header_dir}/engine/math/matrix4x4.hpp
-    ${header_dir}/engine/math/mathutils.hpp
-    ${header_dir}/engine/math/vector2.hpp
+    ${commonHeaders}
+    ${graphicsHeaders}
+    ${mathHeaders}
+    ${platformHeaders}
+    ${utilHeaders}
+    ${voxelsHeaders}
+    )
 
-    ${header_dir}/engine/utils/logging.hpp
+source_group("Source Files\\Math" FILES ${mathSrc})
+source_group("Header Files\\Math" FILES ${mathHeaders})
 
-    ${header_dir}/engine/graphics/window.hpp
-    
-    ${header_dir}/engine/graphics/opengl/glTypes.hpp
-    ${header_dir}/engine/graphics/opengl/vertexArray.hpp
-    ${header_dir}/engine/graphics/opengl/vertexAttrib.hpp
-    ${header_dir}/engine/graphics/opengl/buffer.hpp
-    ${header_dir}/engine/graphics/opengl/shader.hpp
-    ${header_dir}/engine/graphics/opengl/texture.hpp
+source_group("Source Files\\Platform" FILES ${platformSrc})
+source_group("Header Files\\Platform" FILES ${platformHeaders})
 
+source_group("Source Files\\Graphics" FILES ${graphicsSrc})
+source_group("Header Files\\Graphics" FILES ${graphicsHeaders})
 
-    ${header_dir}/engine/camera.hpp
-	  ${header_dir}/engine/imgui.hpp
+source_group("Source Files\\Utils" FILES ${utilSrc})
+source_group("Header Files\\Utils" FILES ${utilHeaders})
 
-#    ${header_dir}/engine/voxels/chunk.hpp
-     ${header_dir}/engine/voxels/block.hpp
-     ${header_dir}/engine/voxels/mapblock.hpp 
+source_group("Source Files\\Voxels" FILES ${voxelsSrc})
+source_group("Header Files\\Voxels" FILES ${voxelsHeaders})
 
-    ${header_dir}/engine/entities/item.hpp
-    ${header_dir}/engine/entities/iteminstance.hpp
-)
+source_group("Header Files\\Common" FILES ${commonHeaders})
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
 set(include_dirs
-    ${dependencies}/glfw/include
+    ${dependencies}/SDL2/include
     ${dependencies}/glew/include
-	${dependencies}/ImGUI
+    ${dependencies}/stb_image/
+    ${dependencies}/glfw/include
     ${header_dir}
-)
+    )
 
 set(libraries
-    glfw
+    SDL2-static
+    SDL2main
     glew_s
-	ImGui
-)
+    glfw
+    )
 
 if(WIN32)
     set(libraries
         ${libraries}
-        OpenGL32.lib
+        imm32.lib
+        ole32.lib
+        oleaut32.lib
+        opengl32.lib
+        version.lib
+        winmm.lib
         )
 endif()
 
@@ -99,8 +168,6 @@ if(UNIX AND NOT APPLE)
 endif()
 
 # Link the library
-set(LIBRARY_OUTPUT_PATH ../../COMPILE/lib)
-
 add_library(${PROJECT_NAME} STATIC ${sources} ${headers})
 #add_executable(${PROJECT_NAME} ${sources} ${headers})
 target_link_libraries(${PROJECT_NAME} ${libraries})

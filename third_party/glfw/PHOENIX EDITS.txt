@@ -1,0 +1,6 @@
+CMAKE EDITS LISTED IN CMakeLists.txt
+Summary:
+	- Delete tests, examples, documentation and installation target stuff from CMake. ( save space, and unclutter CMake a bit, as well as not needing it :) )
+
+Delete Deps, examples, docs, tests folders. to save space
+Delete .github folder as well.
