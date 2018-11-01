@@ -16,8 +16,6 @@
 
 #include <engine/graphics/Camera.hpp>
 
-#include <chrono>
-
 using namespace phx::gfx;
 using namespace phx;
 
@@ -26,12 +24,12 @@ int main(int argc, char *argv[])
 	INITLOGGER("logs/phoenix.log", phx::LogVerbosity::DEBUG);
 
 	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::GLFW,	// USE GLFW FOR WINDOWING
-		"Phoenix!",				// WINDOW TITLE IS PHOENIX
-		1280,					// WINDOW WIDTH IS 1280px
-		720,					// WINDOW HEIGHT is 720px
-		{ 3,3 },					// OPENGL VERSION IS 3.3
-		gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
-	);
+														"Phoenix!",				// WINDOW TITLE IS PHOENIX
+														1280,					// WINDOW WIDTH IS 1280px
+														720,					// WINDOW HEIGHT is 720px
+														{ 3,3 },				// OPENGL VERSION IS 3.3
+														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
+													);
 
 	window->addKeyCallback(static_cast<int>(EventType::PRESSED) | static_cast<int>(EventType::RELEASED), GLFW_KEY_ESCAPE, [&window]() { window->close(); });
 
@@ -41,25 +39,11 @@ int main(int argc, char *argv[])
 	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
 	voxels::Chunk* chunk = new voxels::Chunk({ 0,0,0 }, 16, block);
 	chunk->populateData();
+	chunk->buildMesh();
 
-	voxels::ChunkData* chunkData = chunk->getChunkDataPointer();
-
-	gl::VertexArray* vao = new gl::VertexArray();
-	vao->bind();
-
-	gl::VertexBuffer* vbo = new gl::VertexBuffer(gl::BufferTarget::ARRAY_BUFFER, gl::BufferUsage::DYNAMIC_DRAW);
-	vbo->bind();
-	vbo->setData(static_cast<void*>(chunkData->chunkVertices.data()), sizeof(chunkData->chunkVertices[0]) * chunkData->chunkVertices.size());
-
-	gl::VertexAttrib vertAttrib(0, 3, 3, 0, gl::GLType::FLOAT);
-	vertAttrib.enable();
-
-	gl::VertexBuffer* uvbo = new gl::VertexBuffer(gl::BufferTarget::ARRAY_BUFFER, gl::BufferUsage::DYNAMIC_DRAW);
-	uvbo->bind();
-	uvbo->setData(static_cast<void*>(chunkData->chunkUVs.data()), sizeof(chunkData->chunkUVs[0]) * chunkData->chunkUVs.size());
-
-	gl::VertexAttrib uvAttrib(1, 2, 2, 0, gl::GLType::FLOAT);
-	uvAttrib.enable();
+	voxels::ChunkRenderer* chunkRenderer = new voxels::ChunkRenderer();
+	chunkRenderer->attachChunk(chunk);
+	chunkRenderer->bufferData();
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
 	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
@@ -86,8 +70,6 @@ int main(int argc, char *argv[])
 
 	cam->enabled = true;
 
-	using namespace std::chrono;
-
 	int i = 0;
 	double lastTime = glfwGetTime();
 	double lastTimeFPS = glfwGetTime();
@@ -111,7 +93,6 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 
-		vao->bind();
 		shaderProgram->use();
 		texture.bind(10);
 
@@ -135,10 +116,7 @@ int main(int argc, char *argv[])
 			i = 0;
 		}
 
-		vertAttrib.enable();
-		uvAttrib.enable();
-		glDrawArrays(GL_TRIANGLES, 0, 16 * 16 * 16 * 36);
-
+		chunkRenderer->render();
 		window->swapBuffers();
 	}
 

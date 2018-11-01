@@ -7,6 +7,7 @@
 #include "engine/voxels/Block.hpp"
 
 #include "engine/graphics/opengl/VertexBuffer.hpp"
+#include "engine/graphics/opengl/VertexArray.hpp"
 #include "engine/graphics/opengl/VertexAttrib.hpp"
 
 namespace phx
@@ -21,10 +22,6 @@ namespace phx
 			unsigned int chunkSize;
 
 			std::vector<std::vector<std::vector<Block*>>> chunkBlocks;
-			//std::vector<phx::Vector3> chunkVertices;
-			//std::vector<phx::Vector3> chunkNormals;
-			//std::vector<phx::Vector2> chunkUVs;
-			//std::vector<int> chunkTexLayers;
 		};
 
 		enum class BlockFace : int
@@ -37,7 +34,7 @@ namespace phx
 			TOP = 5
 		};
 
-		class Mesh
+		struct Mesh
 		{
 			std::vector<phx::Vector3> chunkVertices;
 			std::vector<phx::Vector3> chunkNormals;
@@ -52,46 +49,32 @@ namespace phx
 		{
 		public:
 			ChunkMesh();
-			~ChunkMesh();
+			~ChunkMesh() {}
 
-			void addFace(BlockFace face, int memOffset, int x, int y, int z);
-			
-			const Mesh& getBlocksMesh();
-			const Mesh& getObjectsMesh();
-			const Mesh& getWaterMesh();
+			void addBlockFace(BlockFace face, int memOffset, int x, int y, int z);
+			void removeBlockFace(BlockFace face, int memOffset, int x, int y, int z);
+			void setMeshPos(Vector3& chunkPos);
+
+			Mesh* getBlocksMesh();
+			Mesh* getObjectsMesh();
+			Mesh* getWaterMesh();
 
 		private:
-			// first mesh is for water blocks
+			Vector3 m_chunkPos;
+
+			// first mesh is for blocks
 			// second is for objects, we will draw them with another shader to add transparency support and have better performances
 			// last one is for water since we need a specific shader for this shit to add beautiful flying and moving waves (and apply face culling)
-			Mesh m_blocks, m_objects, m_water;
-		};
-
-		class ChunkRenderer
-		{
-		public:
-			ChunkRenderer();
-			~ChunkRenderer();
-
-			void resetMesh();
-			void updateMesh(const Mesh& other);
-
-			void bufferData();
-			void render();
-
-			std::size_t getTrianglesCount() const;
-
-		private:
-			VertexArray* m_vao;
-			VertexBuffer* m_vbo;
-			ChunkMesh m_mesh;
+			Mesh* m_blocks;
+			Mesh* m_objects;
+			Mesh* m_water;
 		};
 
 		class Chunk
 		{
 		public:
 			Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock);
-			~Chunk();
+			~Chunk() {}
 
 			void populateData();  // should update the chunk mesh for the chunk renderer
 
@@ -100,23 +83,45 @@ namespace phx
 			void breakBlockAt(phx::Vector3 position, Block* replaceBlock);
 			void placeBlockAt(phx::Vector3 position);
 
-			Block getBlockAt(phx::Vector3 position);
-			void setBlockAt(phx::Vector3 position, Block& block);
+			Block* getBlockAt(phx::Vector3 position);
+			void setBlockAt(phx::Vector3 position, Block* block);
+
+			ChunkMesh* getChunkMesh();
 
 			ChunkData* getChunkDataPointer() { return m_chunkData; }
-			ChunkData* m_chunkData;
 
 		private:
 			Block* m_defaultBlock;
+			ChunkData* m_chunkData;
+			ChunkMesh* m_mesh;
 
 			unsigned int m_vertInChunk;
 			unsigned int m_normalInChunk;
 			unsigned int m_uvInChunk;
-
-			ChunkRenderer m_blocksRenderer, m_objectsRenderer, m_waterRenderer;
-
-			//void addFace(BlockFace face, int memOffset, int x, int y, int z);
+			unsigned int m_layersInChunk;
 		};
+
+		class ChunkRenderer
+		{
+		public:
+			ChunkRenderer();
+			~ChunkRenderer() {};
+
+			void attachChunk(Chunk* chunkPointer);
+
+			void bufferData();
+			void render();
+
+			std::size_t getTrianglesCount() const;
+
+		private:
+			phx::gfx::gl::VertexArray* m_vao;
+			phx::gfx::gl::VertexBuffer* m_vbo;
+			phx::gfx::gl::VertexBuffer* m_uvbo;
+
+			std::vector<Chunk*> m_chunks;
+		};
+
 
 	}
 }
