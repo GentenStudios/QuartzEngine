@@ -7,7 +7,6 @@
 - CMake (Version >= 3.0)
 - A C++11 compatible compiler. The following have been tested
   - Visual Studio 2017 (MSVC 14.10)
-  - MinGW-w64 Toolchain (GCC 8.1.0)
 
 #### Building
 
