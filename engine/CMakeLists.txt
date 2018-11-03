@@ -21,21 +21,17 @@ set(mathHeaders
 set(platformHeaders
     ${header_dir}/engine/os.hpp
 
-    ${header_dir}/engine/GLFW/GLFWWindow.hpp
     ${header_dir}/engine/SDL/SDLWindow.hpp
     ${header_dir}/engine/graphics/IWindow.hpp
     ${header_dir}/engine/graphics/Context.hpp
 
-    ${header_dir}/engine/SDL/SDLKeyboardDefinitions.hpp
-    ${header_dir}/engine/events/IKeyboardDefinitions.hpp
+    ${header_dir}/engine/events/Keys.hpp
     )
 
 set(platformSrc
-    ${source_dir}/GLFW/GLFWWindow.cpp
     ${source_dir}/SDL/SDLWindow.cpp
     ${source_dir}/graphics/IWindow.cpp
     )
-
 
 set(graphicsHeaders
     ${header_dir}/engine/graphics/opengl/opengl.hpp
@@ -135,7 +131,6 @@ set(include_dirs
     ${dependencies}/SDL2/include
     ${dependencies}/glew/include
     ${dependencies}/stb_image/
-    ${dependencies}/glfw/include
     ${header_dir}
     )
 
@@ -143,7 +138,6 @@ set(libraries
     SDL2-static
     SDL2main
     glew_s
-    glfw
     )
 
 if(WIN32)
@@ -171,7 +165,6 @@ endif()
 
 # Link the library
 add_library(${PROJECT_NAME} STATIC ${sources} ${headers})
-#add_executable(${PROJECT_NAME} ${sources} ${headers})
 target_link_libraries(${PROJECT_NAME} ${libraries})
 include_directories(${include_dirs})
 
