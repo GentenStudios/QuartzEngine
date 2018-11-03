@@ -1,6 +1,6 @@
 #include "engine/graphics/opengl/opengl.hpp"
 #include "engine/SDL/SDLWindow.hpp"
-#include "engine/SDL/SDLKeyboardDefinitions.hpp"
+
 #include "engine/math/Vector2.hpp"
 
 using namespace phx::sdl;
@@ -48,7 +48,7 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 	SDL_ShowWindow(m_window);
 
 	GLCheck(glEnable(GL_DEPTH_TEST));
-	
+
 	m_running = true;
 }
 
@@ -71,23 +71,28 @@ void SDLWindow::pollEvents()
 		case SDL_KEYDOWN:
 			for (auto& e : m_keyEvents)
 			{
-				if (e.eventType == (int)gfx::EventType::PRESSED) {
-					if (event.key.keysym.scancode == (SDL_Scancode)e.key) {
+				if (e.eventType == static_cast<int>(gfx::EventType::PRESSED))
+				{
+					if (event.key.keysym.scancode == static_cast<SDL_Scancode>(e.key))
+					{
+						std::cout << "Key Pressed!" << std::endl;
 						e.callback();
 					}
 				}
 			}
 			break;
 		case SDL_KEYUP:
-		{
 			for (auto& e : m_keyEvents)
 			{
-				if (e.eventType == (int)gfx::EventType::RELEASED &&
-					event.key.keysym.scancode == (SDL_Scancode)e.key)
-					e.callback();
+				if (e.eventType == static_cast<int>(gfx::EventType::RELEASED))
+				{
+					if (event.key.keysym.scancode == static_cast<SDL_Scancode>(e.key))
+					{
+						e.callback();
+					}
+				}
 			}
 			break;
-		}
 		}
 	}
 }

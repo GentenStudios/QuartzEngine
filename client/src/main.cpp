@@ -3,23 +3,18 @@
 
 #include <engine/graphics/IWindow.hpp>
 
-#include <engine/graphics/opengl/VertexArray.hpp>
-#include <engine/graphics/opengl/VertexBuffer.hpp>
-#include <engine/graphics/opengl/VertexAttrib.hpp>
 #include <engine/graphics/opengl/ShaderPipeline.hpp>
 #include <engine/graphics/opengl/TextureArray.hpp>
-#include <engine/SDL/SDLWindow.hpp>
-#include <engine/events/IKeyboardDefinitions.hpp>
-#include <engine/GLFW/GLFWWindow.hpp>
+#include <engine/graphics/Camera.hpp>
+
+#include <engine/events/Keys.hpp>
 
 #include <engine/voxels/Block.hpp>
 #include <engine/voxels/Chunk.hpp>
 
-#include <engine/graphics/Camera.hpp>
-
 using namespace phx::gfx;
 using namespace phx;
-#include <engine/SDL/SDLKeyboardDefinitions.hpp>
+
 int main(int argc, char *argv[])
 {
 	INITLOGGER("logs/phoenix.log", phx::LogVerbosity::DEBUG);
@@ -60,7 +55,7 @@ int main(int argc, char *argv[])
 
 	FPSCam* cam = new FPSCam(window);
 
-	window->addKeyCallback(static_cast<int>(EventType::PRESSED), SDL_SCANCODE_ESCAPE, [&cam, &window]() { 
+	window->addKeyCallback(static_cast<int>(EventType::PRESSED), static_cast<int>(events::Keys::KEY_ESCAPE), [&cam, &window]() {
 		cam->enabled = !cam->enabled;
 		if (cam->enabled) {
 			window->setCursorState(gfx::CursorState::DISABLED);
@@ -83,14 +78,6 @@ int main(int argc, char *argv[])
 		last = now;
 		window->pollEvents();
 		cam->update(dt);
-
-		nbFrames++;
-		if (currentTime - lastTimeFPS >= 1.0) { // If last prinf() was more than 1 sec ago
-			// printf and reset timer
-			printf("%f FPS: \n", double(nbFrames));
-			nbFrames = 0;
-			lastTimeFPS += 1.0;
-		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);

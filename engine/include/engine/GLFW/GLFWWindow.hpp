@@ -8,6 +8,7 @@
 #include "engine/graphics/Context.hpp"
 
 #include "engine/graphics/IWindow.hpp"
+#include "engine/events/Keys.hpp"
 
 #include <assert.h>
 
