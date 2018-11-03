@@ -9,6 +9,8 @@
 
 #include "engine/graphics/IWindow.hpp"
 
+#include <vector>
+
 namespace phx
 {
 	namespace sdl
@@ -28,20 +30,37 @@ namespace phx
 			virtual void getSize(int& width, int& height);
 			virtual void setFullscreen(bool enabled);
 			virtual void setResizable(bool enabled);
-			virtual void setCursorState(phx::gfx::CursorState cursorState) {}
+			virtual void setCursorState(phx::gfx::CursorState cursorState);
 
 			virtual void setVSync(bool value);
-			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback) {}
-			virtual void addMouseMoveCallback(std::function<void(double, double)> callback) {}
+			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback);
+			virtual void addMouseMoveCallback(std::function<void(double, double)> callback);
 
 			inline SDL_Window* getSDLWindow() const { return m_window; }
+
+			virtual bool isKeyDown(int key);
+			virtual TVector2<int> getMousePosition();
+
+			virtual void setMousePosition(TVector2<int> newPos);
 
 		private:
 			SDL_Window* m_window;
 			SDL_GLContext m_context;
 
 			bool m_running;
+			
+			struct KeyEvent_t {
+				int eventType;
+				int key;
+				std::function<void()> callback;
+			};
 
+			struct MouseMoveEvent_t {
+				std::function<void(double,double)> callback;
+			};
+
+			std::vector<KeyEvent_t> m_keyEvents;
+			std::vector<MouseMoveEvent_t> m_mouseMoveEvents;
 		};
 
 	}

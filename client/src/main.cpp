@@ -9,6 +9,7 @@
 #include <engine/graphics/opengl/ShaderPipeline.hpp>
 #include <engine/graphics/opengl/TextureArray.hpp>
 #include <engine/SDL/SDLWindow.hpp>
+#include <engine/events/IKeyboardDefinitions.hpp>
 #include <engine/GLFW/GLFWWindow.hpp>
 
 #include <engine/voxels/Block.hpp>
@@ -18,21 +19,18 @@
 
 using namespace phx::gfx;
 using namespace phx;
-
+#include <engine/SDL/SDLKeyboardDefinitions.hpp>
 int main(int argc, char *argv[])
 {
 	INITLOGGER("logs/phoenix.log", phx::LogVerbosity::DEBUG);
 
-	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::GLFW,	// USE GLFW FOR WINDOWING
+	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE GLFW FOR WINDOWING
 														"Phoenix!",				// WINDOW TITLE IS PHOENIX
 														1280,					// WINDOW WIDTH IS 1280px
 														720,					// WINDOW HEIGHT is 720px
 														{ 3,3 },				// OPENGL VERSION IS 3.3
 														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 													);
-
-	window->addKeyCallback(static_cast<int>(EventType::PRESSED) | static_cast<int>(EventType::RELEASED), GLFW_KEY_ESCAPE, [&window]() { window->close(); });
-
 	window->setVSync(false);
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
@@ -62,26 +60,30 @@ int main(int argc, char *argv[])
 
 	FPSCam* cam = new FPSCam(window);
 
-	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_W, [&cam]() { cam->cameraMoveEvent(CamDir::FORWARD); });
-	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_S, [&cam]() { cam->cameraMoveEvent(CamDir::BACKWARD); });
-	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_A, [&cam]() { cam->cameraMoveEvent(CamDir::LEFT); });
-	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_D, [&cam]() { cam->cameraMoveEvent(CamDir::RIGHT); });
-	window->addMouseMoveCallback([&cam](double x, double y) { cam->cameraLookEvent(x, y); });
+	window->addKeyCallback(static_cast<int>(EventType::PRESSED), SDL_SCANCODE_ESCAPE, [&cam, &window]() { 
+		cam->enabled = !cam->enabled;
+		if (cam->enabled) {
+			window->setCursorState(gfx::CursorState::DISABLED);
+		}
+		else {
+			window->setCursorState(gfx::CursorState::NORMAL);
+		}
+	});
 
-	cam->enabled = true;
+  cam->enabled = true;
 
 	int i = 0;
-	double lastTime = glfwGetTime();
-	double lastTimeFPS = glfwGetTime();
-	int nbFrames = 0;
+
+	float last = SDL_GetTicks();
+
 	while (window->isRunning())
 	{
-		double currentTime = glfwGetTime();
-		double deltaTime = currentTime - lastTime;
-		lastTime = currentTime;
+		float now = SDL_GetTicks();
+		float dt = now - last;
+		last = now;
 		window->pollEvents();
-		cam->setDT(deltaTime * 10);
-		
+		cam->update(dt);
+
 		nbFrames++;
 		if (currentTime - lastTimeFPS >= 1.0) { // If last prinf() was more than 1 sec ago
 			// printf and reset timer
