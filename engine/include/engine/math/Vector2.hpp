@@ -11,4 +11,10 @@ namespace phx {
 		Vector2(const float& a);
 	};
 
+	template <typename T>
+	struct TVector2 {
+		T x, y;
+
+		TVector2(const T& x, const T& y) : x(x), y(y) {}
+	};
 }

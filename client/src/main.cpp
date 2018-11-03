@@ -9,6 +9,7 @@
 #include <engine/graphics/opengl/ShaderPipeline.hpp>
 #include <engine/graphics/opengl/TextureArray.hpp>
 #include <engine/SDL/SDLWindow.hpp>
+#include <engine/events/IKeyboardDefinitions.hpp>
 #include <engine/GLFW/GLFWWindow.hpp>
 
 #include <engine/voxels/Block.hpp>
@@ -20,12 +21,12 @@
 
 using namespace phx::gfx;
 using namespace phx;
-
+#include <engine/SDL/SDLKeyboardDefinitions.hpp>
 int main(int argc, char *argv[])
 {
 	INITLOGGER("logs/phoenix.log", phx::LogVerbosity::DEBUG);
 
-	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::GLFW,	// USE GLFW FOR WINDOWING
+	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE GLFW FOR WINDOWING
 														"Phoenix!",				// WINDOW TITLE IS PHOENIX
 														1280,					// WINDOW WIDTH IS 1280px
 														720,					// WINDOW HEIGHT is 720px
@@ -33,7 +34,6 @@ int main(int argc, char *argv[])
 														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 	);
 
-	window->addKeyCallback(static_cast<int>(EventType::PRESSED), GLFW_KEY_ESCAPE, [&window]() { window->close(); });
 
 	window->setVSync(true);
 
@@ -80,27 +80,31 @@ int main(int argc, char *argv[])
 	Matrix4x4 model;
 
 	FPSCam* cam = new FPSCam(window);
+	window->addKeyCallback(static_cast<int>(EventType::PRESSED), SDL_SCANCODE_ESCAPE, [&cam, &window]() { 
+		cam->enabled = !cam->enabled;
+		if (cam->enabled) {
+			window->setCursorState(gfx::CursorState::DISABLED);
+		}
+		else {
+			window->setCursorState(gfx::CursorState::NORMAL);
+		}
+	});
 	
-	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_W, [&cam]() { cam->cameraMoveEvent(CamDir::FORWARD); });
-	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_S, [&cam]() { cam->cameraMoveEvent(CamDir::BACKWARD); });
-	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_A, [&cam]() { cam->cameraMoveEvent(CamDir::LEFT); });
-	window->addKeyCallback(static_cast<int>(EventType::RELEASED) | static_cast<int>(EventType::REPEAT) | static_cast<int>(EventType::PRESSED), GLFW_KEY_D, [&cam]() { cam->cameraMoveEvent(CamDir::RIGHT); });
-	window->addMouseMoveCallback([&cam](double x, double y) { cam->cameraLookEvent(x, y); });
-
 	cam->enabled = true;
 
 	using namespace std::chrono;
 
 	int i = 0;
-	high_resolution_clock::time_point initial = high_resolution_clock::now();
+	
+	float last = SDL_GetTicks();
+
 	while (window->isRunning())
 	{
-		high_resolution_clock::time_point now = high_resolution_clock::now();
-		auto deltaTime = now - initial;
-		initial = now;
-
+		float now = SDL_GetTicks();
+		float dt = now - last;
+		last = now;
 		window->pollEvents();
-		cam->setDT(static_cast<float>(duration_cast<milliseconds>(deltaTime).count()) / 1000);
+		cam->update(dt);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);

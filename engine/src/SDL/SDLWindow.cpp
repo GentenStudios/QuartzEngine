@@ -1,6 +1,10 @@
 #include "engine/graphics/opengl/opengl.hpp"
 #include "engine/SDL/SDLWindow.hpp"
+#include "engine/SDL/SDLKeyboardDefinitions.hpp"
+#include "engine/math/Vector2.hpp"
+
 using namespace phx::sdl;
+using namespace phx;
 
 SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
 {
@@ -53,8 +57,38 @@ void SDLWindow::pollEvents()
 	SDL_Event event;
 	while (SDL_PollEvent(&event) > 0)
 	{
-		if (event.type == SDL_QUIT)
+		switch (event.type)
+		{
+		case SDL_QUIT:
 			m_running = false;
+			break;
+		case SDL_MOUSEMOTION:
+			for (auto& e : m_mouseMoveEvents)
+			{
+				e.callback(event.motion.x, event.motion.y);
+			}
+			break;
+		case SDL_KEYDOWN:
+			for (auto& e : m_keyEvents)
+			{
+				if (e.eventType == (int)gfx::EventType::PRESSED) {
+					if (event.key.keysym.scancode == (SDL_Scancode)e.key) {
+						e.callback();
+					}
+				}
+			}
+			break;
+		case SDL_KEYUP:
+		{
+			for (auto& e : m_keyEvents)
+			{
+				if (e.eventType == (int)gfx::EventType::RELEASED &&
+					event.key.keysym.scancode == (SDL_Scancode)e.key)
+					e.callback();
+			}
+			break;
+		}
+		}
 	}
 }
 
@@ -93,7 +127,40 @@ void SDLWindow::setResizable(bool enabled)
 	SDL_SetWindowResizable(m_window, enabled ? SDL_TRUE : SDL_FALSE);
 }
 
+void SDLWindow::setCursorState(phx::gfx::CursorState cursorState)
+{
+	bool on = cursorState == phx::gfx::CursorState::NORMAL;
+	SDL_ShowCursor(on);
+}
+
 void SDLWindow::setVSync(bool enabled)
 {
 	SDL_GL_SetSwapInterval(enabled ? 1 : 0);
+}
+
+void SDLWindow::addKeyCallback(int eventType, int key, std::function<void()> callback)
+{
+	m_keyEvents.push_back({ eventType, key, callback });
+}
+
+void SDLWindow::addMouseMoveCallback(std::function<void(double, double)> callback)
+{
+	m_mouseMoveEvents.push_back({ callback });
+}
+
+bool SDLWindow::isKeyDown(int key)
+{
+	return SDL_GetKeyboardState(NULL)[key];
+}
+
+TVector2<int> SDLWindow::getMousePosition()
+{
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+	return { x, y };
+}
+
+void SDLWindow::setMousePosition(TVector2<int> newPos)
+{
+	SDL_WarpMouseInWindow(m_window, newPos.x, newPos.y);
 }

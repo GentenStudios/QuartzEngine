@@ -9,6 +9,8 @@
 
 #include "engine/graphics/IWindow.hpp"
 
+#include <assert.h>
+
 namespace phx
 {
 	namespace glfw
@@ -45,6 +47,10 @@ namespace phx
 
 			inline GLFWwindow* getGLFWWindow() const { return m_window; }
 
+			virtual bool isKeyDown(int key) { assert(false);  return true; }
+			virtual TVector2<int> getMousePosition() { assert(false);  return { 0, 0 }; }
+			virtual void setMousePosition(TVector2<int> newPos) { assert(false); }
+
 		private:
 			GLFWwindow* m_window;
 			int m_width, m_height;
@@ -73,10 +79,10 @@ namespace phx
             >;
             Callbacks_t m_callbacks;
 
-            static const std::size_t
-                WindowResizeCallbackIndex = 0,
-                    WindowResizeCallbackBase = 0,
-                    WindowResizeCallbackUser = 1,
+            static const std::size_t 
+				WindowResizeCallbackIndex = 0,
+			    WindowResizeCallbackBase = 0,
+                WindowResizeCallbackUser = 1,
                 KeyboardCallbacksIndex = 1,
                 MouseMoveCallback = 2;
 		};

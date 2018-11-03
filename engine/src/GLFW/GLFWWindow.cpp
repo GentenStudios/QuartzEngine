@@ -56,6 +56,9 @@ GLFWWindow::GLFWWindow(const char* title, int width, int height, phx::gfx::GLVer
 	GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
 	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
 	{
+		/*
+		todo: glDebugMessageCallback & co are GL4 only. this should probably be looked at further.
+		*/
 		GLCheck(glEnable(GL_DEBUG_OUTPUT));
 		GLCheck(glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS));
 		GLCheck(glDebugMessageCallback(phx::gfx::gl::glDebugOutput, nullptr));
