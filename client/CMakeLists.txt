@@ -11,17 +11,15 @@ set(sources
 )
 
 set(headers
-)
 
+)
 
 set(include_dirs
     ${dependencies}/SDL2/include
     ${dependencies}/../engine/include
-	${dependencies}/glew/include
 )
 
 set(libraries
-    glew_s
     Phoenix_Engine
 )
 
