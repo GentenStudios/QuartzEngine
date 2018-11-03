@@ -64,6 +64,7 @@ set(voxelsHeaders
     ${header_dir}/engine/voxels/Block.hpp
     ${header_dir}/engine/voxels/MapBlock.hpp
     ${header_dir}/engine/voxels/Chunk.hpp
+    ${header_dir}/engine/voxels/ChunkManager.hpp
 
     ${header_dir}/engine/entities/Item.hpp
     ${header_dir}/engine/entities/ItemInstance.hpp
@@ -73,6 +74,7 @@ set(voxelsSrc
     ${source_dir}/voxels/Block.cpp
     ${source_dir}/voxels/MapBlock.cpp
     ${source_dir}/voxels/Chunk.cpp
+    ${source_dir}/voxels/ChunkManager.cpp
 
     ${source_dir}/entities/Item.cpp
     ${source_dir}/entities/ItemInstance.cpp

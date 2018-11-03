@@ -14,7 +14,6 @@ namespace phx
 {
 	namespace voxels
 	{
-
 		struct ChunkData
 		{
 			// Data to allow for identifying where this chunk's data is.
@@ -121,7 +120,5 @@ namespace phx
 
 			std::vector<Chunk*> m_chunks;
 		};
-
-
 	}
 }

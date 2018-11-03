@@ -9,7 +9,6 @@ namespace phx
 {
 	namespace entities
 	{
-
 		class Item
 		{
 		public:
@@ -32,7 +31,6 @@ namespace phx
 			 * @return Return a string of the name of the item
 			 */
 			std::string getName();
-
 
 			/// @brief Setter: Sets the function executed when an items breaks (damage used up)
 			void setOnBreakCallback(void* callback);
@@ -72,6 +70,5 @@ namespace phx
 			// A registry to keep track of all the registered items
 			static std::vector<Item*> m_itemLibrary;
 		};
-
 	}
 }

@@ -10,5 +10,6 @@ uniform sampler2DArray TexArray;
 
 void main()
 {
-	FragColor = texture(TexArray, vec3(TexCoord, TexLayer)).rgba;
+	vec4 texel = texture(TexArray, vec3(TexCoord, TexLayer));
+	FragColor = texel;
 }

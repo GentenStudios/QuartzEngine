@@ -9,7 +9,6 @@ namespace phx
 {
 	namespace voxels
 	{
-
 		/// @brief This defines what state of matter the block is
 		enum class BlockType
 		{
@@ -109,8 +108,6 @@ namespace phx
 		private:
 			/// @brief A registry to keep track of all the registered blocks
 			static std::vector<Block*> m_blockLibrary;
-
 		};
-
 	}
 }
