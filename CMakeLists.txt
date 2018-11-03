@@ -17,7 +17,7 @@ add_subdirectory(engine)
 add_subdirectory(client)
 
 # Add the subdirectory for our Launcher.
-#add_subdirectory( launcher )
+#add_subdirectory(launcher)
 
 # Add the subdirectory for our Server.
-#add_subdirectory( server )
+#add_subdirectory(server)
