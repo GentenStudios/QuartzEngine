@@ -12,4 +12,4 @@ add_subdirectory(glew/build/cmake)
 add_subdirectory(SDL2)
 add_subdirectory(glfw)
 
-set_target_properties(glew_s glew SDL2-static SDL2main SDL2 uninstall PROPERTIES FOLDER third_party)
+set_target_properties(glew_s glew SDL2-static SDL2main SDL2 glfw uninstall PROPERTIES FOLDER third_party)
