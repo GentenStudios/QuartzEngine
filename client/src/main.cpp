@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
 	voxels::ChunkManager* world = new voxels::ChunkManager();
 	world->setDefaultBlock(block);
-	world->testGeneration(10);
+	world->testGeneration(100);
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
 	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 	thing.push_back("assets/images/dirt.png");
 	thing.push_back("assets/images/grass_side.png");
 	texture.add(thing);
-	texture.bind(10); // Bind to 10th texture unit for no particular reason, except testing the index slot thingy. ya know?
+	texture.bind(100); // Bind to 10th texture unit for no particular reason, except testing the index slot thingy. ya know?
 
 	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 1000.f, 0.1f);
 	Matrix4x4 model;
@@ -111,12 +111,9 @@ int main(int argc, char *argv[])
 			i = 0;
 		}
 
-		int thing = 1;
+		int thing = 10;
 		world->render(thing);
 		window->swapBuffers();
-
-		using namespace std::chrono_literals;
-		std::this_thread::sleep_for(1s);
 	}
 
 	DESTROYLOGGER();

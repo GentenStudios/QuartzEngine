@@ -243,11 +243,10 @@ void Chunk::bufferData()
 
 void Chunk::render(int* counter)
 {
-	if ((*counter) == 0)
-		return;
-
 	if (m_chunkFlags & NEEDS_MESHING)
 	{
+		if ((*counter) == 0)
+			return;
 		std::cout << "BUILDING!" << std::endl;
 		buildMesh();
 		(*counter)--;
@@ -256,6 +255,8 @@ void Chunk::render(int* counter)
 	
 	if (m_chunkFlags & NEEDS_BUFFERING)
 	{
+		if ((*counter) == 0)
+			return;
 		std::cout << "BUFFERING!" << std::endl;
 		bufferData();
 		(*counter)--;
