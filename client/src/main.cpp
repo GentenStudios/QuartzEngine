@@ -34,11 +34,11 @@ int main(int argc, char *argv[])
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
 	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
-	voxels::Chunk* chunk = new voxels::Chunk({ 0,0,0 }, 16, block);
-	chunk->populateData();
-	//chunk->buildMesh();
+	//voxels::Chunk* chunk = new voxels::Chunk({ 0,0,0 }, 16, block);
+	//chunk->populateData();
+	////chunk->buildMesh();
 
-	chunk->bufferData();
+	//chunk->bufferData();
 
 	voxels::ChunkManager* world = new voxels::ChunkManager();
 	world->setDefaultBlock(block);
@@ -114,6 +114,9 @@ int main(int argc, char *argv[])
 		int thing = 1;
 		world->render(thing);
 		window->swapBuffers();
+
+		using namespace std::chrono_literals;
+		std::this_thread::sleep_for(1s);
 	}
 
 	DESTROYLOGGER();

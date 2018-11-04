@@ -193,7 +193,8 @@ void Chunk::buildMesh()
 	}
 
 	m_chunkFlags &= ~NEEDS_MESHING;
-	m_chunkFlags |= NEEDS_BUFFERING;
+	if(!m_chunkFlags & NEEDS_BUFFERING)
+		m_chunkFlags |= NEEDS_BUFFERING;
 }
 
 void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
@@ -247,6 +248,7 @@ void Chunk::render(int* counter)
 
 	if (m_chunkFlags & NEEDS_MESHING)
 	{
+		std::cout << "BUILDING!" << std::endl;
 		buildMesh();
 		(*counter)--;
 		return;
@@ -254,6 +256,7 @@ void Chunk::render(int* counter)
 	
 	if (m_chunkFlags & NEEDS_BUFFERING)
 	{
+		std::cout << "BUFFERING!" << std::endl;
 		bufferData();
 		(*counter)--;
 	}

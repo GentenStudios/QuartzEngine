@@ -86,8 +86,8 @@ namespace phx
 			Mesh* m_objectMesh;
 			Mesh* m_waterMesh;
 
-			phx::gfx::gl::VertexArray* m_vao;
-			phx::gfx::gl::VertexBuffer* m_vbo;
+			phx::gfx::gl::VertexArray* m_vao = nullptr;
+			phx::gfx::gl::VertexBuffer* m_vbo = nullptr;
 
 			unsigned int m_vertInChunk;
 			unsigned int m_normalInChunk;

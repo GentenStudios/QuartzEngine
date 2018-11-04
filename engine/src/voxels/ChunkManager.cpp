@@ -19,14 +19,12 @@ void ChunkManager::testGeneration(int test)
 {
 	if (m_managerData->chunks.size() == 0)
 	{
-		Chunk chunk({ 0, 0, 0 }, 16, m_defaultBlock);
-		m_managerData->chunks.push_back(chunk);
+		m_managerData->chunks.push_back(Chunk({ 0, 0, 0 }, 16, m_defaultBlock));
 	}
 
 	for (int i = 1; i < test + 1; i++)
 	{
-		Chunk chunk({ i * 16.f, 0, 0 }, 16, m_defaultBlock);
-		m_managerData->chunks.push_back(chunk);
+		m_managerData->chunks.push_back(Chunk({ i * 16.f, 0, 0 }, 16, m_defaultBlock));
 	}
 
 	for (auto& chunk : m_managerData->chunks)
