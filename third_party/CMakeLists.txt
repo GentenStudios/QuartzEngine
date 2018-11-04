@@ -1,6 +1,8 @@
 # Say that VERSION 3.0 of CMake is the minumum required.
 cmake_minimum_required(VERSION 3.0)
 
+option(LIBC "..." ON)
+
 # Set the Project name.
 project(Pheonix-Dependencies)
 

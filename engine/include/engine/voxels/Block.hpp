@@ -15,6 +15,8 @@ namespace phx
 			GAS,    ///< Gas Blocks are, for example, Air, or Oxygen if implemented.
 			LIQUID, ///< Fluid Liquid Dynamics are applied to these blocks.
 			SOLID,  ///< Generic Stable Block, used for most things.
+			WATER, ///< Water as a fundamental type as it needs to be specially done.
+			OBJECT, ///< Things like Entities and objects that like transparent turds.
 		};
 
 		class Block

@@ -11,6 +11,10 @@
 
 #include <engine/voxels/Block.hpp>
 #include <engine/voxels/Chunk.hpp>
+#include <engine/voxels/ChunkManager.hpp>
+
+#include <chrono>
+#include <thread>
 
 using namespace phx::gfx;
 using namespace phx;
@@ -26,17 +30,19 @@ int main(int argc, char *argv[])
 														{ 3,3 },				// OPENGL VERSION IS 3.3
 														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
 													);
-	window->setVSync(false);
+	window->setVSync(true);
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
 	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
 	voxels::Chunk* chunk = new voxels::Chunk({ 0,0,0 }, 16, block);
 	chunk->populateData();
-	chunk->buildMesh();
+	//chunk->buildMesh();
 
-	voxels::ChunkRenderer* chunkRenderer = new voxels::ChunkRenderer();
-	chunkRenderer->attachChunk(chunk);
-	chunkRenderer->bufferData();
+	chunk->bufferData();
+
+	voxels::ChunkManager* world = new voxels::ChunkManager();
+	world->setDefaultBlock(block);
+	world->testGeneration(10);
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
 	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
@@ -105,7 +111,8 @@ int main(int argc, char *argv[])
 			i = 0;
 		}
 
-		chunkRenderer->render();
+		int thing = 1;
+		world->render(thing);
 		window->swapBuffers();
 	}
 
