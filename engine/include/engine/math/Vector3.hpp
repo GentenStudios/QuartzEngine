@@ -69,6 +69,7 @@ namespace phx {
 		 * @param other The vector to subtract from this vector.
 		 */
 		void operator-=(const Vector3& other);
+
 	};
 
 	/**
@@ -102,5 +103,21 @@ namespace phx {
 	 * @return The quotient of `left` and `right`
 	 */
 	Vector3 operator/(const Vector3& left, const Vector3& right);
+
+	/**
+	 * @brief Compares two vectors.
+	 * @param left The left hand side of the comparison.
+	 * @param right The right hand side of the comparison
+	 * @return True when both vectors are equivalent, otherwise false.
+	 */
+	bool operator==(const Vector3& left, const Vector3& right);
+
+	/**
+	 * @brief Compares two vectors.
+	 * @param left The left hand side of the comparison.
+	 * @param right The right hand side of the comparison
+	 * @return False when both vectors are equivalent, otherwise true.
+	 */
+	bool operator!=(const Vector3& left, const Vector3& right);
 
 }

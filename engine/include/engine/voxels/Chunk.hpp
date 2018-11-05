@@ -54,18 +54,18 @@ namespace phx
 			void populateData();  // should update the chunk mesh for the chunk renderer
 
 			void buildMesh();  // should update the meshes
+			void rebuildMeshAt(phx::Vector3 position);
 
 			void addBlockFace(BlockFace face, int memOffset, int x, int y, int z);
-			void removeBlockFace(BlockFace face, int memOffset, int x, int y, int z);
-
-			void bufferData();
-			void render(int* counter);
 
 			void breakBlockAt(phx::Vector3 position, Block* replaceBlock);
-			void placeBlockAt(phx::Vector3 position);
+			void placeBlockAt(phx::Vector3 position, Block* placeBlock);
 
 			const Block* getBlockAt(phx::Vector3 position);
 			void setBlockAt(phx::Vector3 position, Block* block);
+
+			void bufferData();
+			void render(int* counter);
 
 			const Vector3& getChunkPos() { return m_chunkPos; }
 
@@ -88,6 +88,7 @@ namespace phx
 
 			phx::gfx::gl::VertexArray* m_vao = nullptr;
 			phx::gfx::gl::VertexBuffer* m_vbo = nullptr;
+			phx::gfx::gl::VertexBuffer* m_uvbo = nullptr;
 
 			unsigned int m_vertInChunk;
 			unsigned int m_normalInChunk;

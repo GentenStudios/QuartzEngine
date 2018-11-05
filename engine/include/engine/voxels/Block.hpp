@@ -2,8 +2,7 @@
 
 #include "engine/common.hpp"
 
-#include <string>
-#include <vector>
+#include <functional>
 
 namespace phx
 {
@@ -57,24 +56,24 @@ namespace phx
 			/////////////////////////////////////////////
 
 			/// @brief Setter: Sets the function executed when a block is placed
-			void setOnPlaceCallback(void* callback);
+			void setOnPlaceCallback(std::function<void()> callback);
 			/// @brief Getter: Gets the function executed when a block is placed
-			void* getOnPlaceCallback();
+			std::function<void()> getOnPlaceCallback();
 
 			/// @brief Setter: Sets the function executed when a block is broken
-			void setOnBreakCallback(void* callback);
+			void setOnBreakCallback(std::function<void()> callback);
 			/// @brief Getter: Gets the function executed when a block is broken
-			void* getOnBreakCallback();
+			std::function<void()> getOnBreakCallback();
 
 			/// @brief Setter: Sets the function executed when a block is left clicked
-			void setOnInteractLeftCallback(void* callback);
+			void setOnInteractLeftCallback(std::function<void()> callback);
 			/// @brief Getter: Gets the function executed when a block is left clicked
-			void* getOnInteractLeftCallback();
+			std::function<void()> getOnInteractLeftCallback();
 
 			/// @brief Setter: Sets the function executed when a block is right clicked
-			void setOnInteractRightCallback(void* callback);
+			void setOnInteractRightCallback(std::function<void()> callback);
 			/// @brief Getter: Gets the function executed when a block is right clicked
-			void* getOnInteractRightCallback();
+			std::function<void()> getOnInteractRightCallback();
 
 		private:
 			/// @brief Unique id using the convention mod:name
@@ -86,13 +85,13 @@ namespace phx
 			//  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
 
 			/// @brief Lambda callback for when the block is placed (well, hopefully lambdas if we can)
-			void* m_onPlaceCallback;
+			std::function<void()> m_onPlaceCallback;
 			/// @brief Lambda callback for when the block is broken (well, hopefully lambdas if we can)
-			void* m_onBreakCallback;
+			std::function<void()> m_onBreakCallback;
 			/// @brief Lambda callback for when the block is interacted with by left arm (well, hopefully lambdas if we can)
-			void* m_onInteractLeftCallback;
+			std::function<void()> m_onInteractLeftCallback;
 			/// @brief Lambda callback for when the block is interacted with by right arm (well, hopefully lambdas if we can)
-			void* m_onInteractRightCallback;
+			std::function<void()> m_onInteractRightCallback;
 		};
 
 		class BlockLibrary

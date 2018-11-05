@@ -1,5 +1,7 @@
 #include "engine/voxels/Chunk.hpp"
+
 #include <cstring>
+#include <functional>
 
 using namespace phx::voxels;
 using namespace phx;
@@ -141,10 +143,7 @@ void Chunk::populateData()
 			for (unsigned int z = 0; z < m_chunkBlocks[x][y].size(); z++)
 			{
 				// Set the Z (first vector part, of the trio) to have the actual value of the blocks data. So, you can have m_chunkBlocks[x][y][z] = BlockType::SOLID
-				if (z % 4 != 0)
-					m_chunkBlocks[x][y][z] = m_defaultBlock;
-				else
-					m_chunkBlocks[x][y][z] = new Block(BlockLibrary::getBlockByID("core:air"));
+				m_chunkBlocks[x][y][z] = m_defaultBlock;
 			}
 		}
 	}
@@ -160,13 +159,14 @@ void Chunk::buildMesh()
 			{
 				if (m_chunkBlocks[x][y][z]->getBlockType() != BlockType::OBJECT && m_chunkBlocks[x][y][z]->getBlockType() != BlockType::WATER)
 				{
-					if (m_chunkBlocks[x][y][z]->getBlockType() == BlockType::GAS)
-						continue;
 
 					int memOffset = (x * 36) + (m_chunkSize * ((y * 36) + m_chunkSize * (z * 36)));
 
 					std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
 					std::memcpy(m_blockMesh->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
+
+					if (m_chunkBlocks[x][y][z]->getBlockType() == BlockType::GAS)
+						continue;
 
 					if (x == 0 || m_chunkBlocks[x - 1][y][z]->getBlockType() != BlockType::SOLID)
 						addBlockFace(BlockFace::RIGHT, memOffset, x, y, z);
@@ -193,8 +193,28 @@ void Chunk::buildMesh()
 	}
 
 	m_chunkFlags &= ~NEEDS_MESHING;
-	if(!m_chunkFlags & NEEDS_BUFFERING)
+	if(!(m_chunkFlags & NEEDS_BUFFERING))
 		m_chunkFlags |= NEEDS_BUFFERING;
+}
+
+void Chunk::rebuildMeshAt(phx::Vector3 position)
+{
+	if (position.x != 0 && position.y != 0 && position.z != 0)
+	{
+		if (position.x < m_chunkSize && position.y < m_chunkSize && position.z < m_chunkSize)
+		{
+			int memOffsetAbove = (position.x * 36) + (m_chunkSize * (((position.y + 1) * 36) + m_chunkSize * (position.z * 36)));
+			int memOffsetBelow = (position.x * 36) + (m_chunkSize * (((position.y - 1) * 36) + m_chunkSize * (position.z * 36)));
+
+			int memOffsetRight = ((position.x + 1) * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
+			int memOffsetLeft =  ((position.x - 1) * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
+
+			int memOffsetBack =	 (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * ((position.z + 1) * 36)));
+			int memOffsetFront = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * ((position.z - 1) * 36)));
+
+			// TODO: THE REST OF THIS.
+		}
+	}
 }
 
 void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
@@ -216,6 +236,87 @@ void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 	}
 }
 
+void Chunk::breakBlockAt(phx::Vector3 position, Block* blockReplace)
+{
+	if (position.x < m_chunkBlocks.size())
+	{
+		if (position.y < m_chunkBlocks[position.x].size())
+		{
+			if (position.z < m_chunkBlocks[position.z].size())
+			{
+				int memOffset = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
+				std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
+
+				auto& breakCallback = m_chunkBlocks[position.x][position.y][position.z]->getOnBreakCallback();
+				if (breakCallback != nullptr)
+					breakCallback();
+
+				m_chunkBlocks[position.x][position.y][position.z] = blockReplace;
+				
+				if (!(m_chunkFlags & NEEDS_MESHING))
+					m_chunkFlags |= NEEDS_MESHING;
+			}
+		}
+	}
+}
+
+void Chunk::placeBlockAt(phx::Vector3 position, Block* placeBlock)
+{
+	if (position.x < m_chunkBlocks.size())
+	{
+		if (position.y < m_chunkBlocks[position.x].size())
+		{
+			if (position.z < m_chunkBlocks[position.z].size())
+			{
+				int memOffset = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
+				std::memcpy(m_blockMesh->chunkVertices.data() + memOffset, CubeVerts, sizeof(CubeVerts));
+
+				auto& placeCallback = m_chunkBlocks[position.x][position.y][position.z]->getOnPlaceCallback();
+				if (placeCallback != nullptr)
+					placeCallback();
+
+				m_chunkBlocks[position.x][position.y][position.z] = placeBlock;
+
+				if (!(m_chunkFlags & NEEDS_MESHING))
+					m_chunkFlags |= NEEDS_MESHING;
+			}
+		}
+	}
+}
+
+const Block* Chunk::getBlockAt(phx::Vector3 position)
+{
+	if (position.x < m_chunkBlocks.size())
+	{
+		if (position.y < m_chunkBlocks[position.x].size())
+		{
+			if (position.z < m_chunkBlocks[position.z].size())
+			{
+				return m_chunkBlocks[position.x][position.y][position.z];
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+void Chunk::setBlockAt(phx::Vector3 position, Block* block)
+{
+	if (position.x < m_chunkBlocks.size())
+	{
+		if (position.y < m_chunkBlocks[position.x].size())
+		{
+			if (position.z < m_chunkBlocks[position.y].size())
+			{
+				m_chunkBlocks[position.x][position.y][position.z] = block;
+
+				if (!(m_chunkFlags & NEEDS_MESHING))
+					m_chunkFlags |= NEEDS_MESHING;
+			}
+		}
+	}
+}
+
 void Chunk::bufferData()
 {
 	if (m_blockMesh->chunkVertices.size() == 0)
@@ -229,14 +330,20 @@ void Chunk::bufferData()
 	if (m_vbo == nullptr)
 		m_vbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
 
+	if (m_uvbo == nullptr)
+		m_uvbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
+
 	m_vbo->bind();
 	m_vbo->setData(static_cast<void*>(m_blockMesh->chunkVertices.data()), sizeof(m_blockMesh->chunkVertices[0]) * m_blockMesh->chunkVertices.size());	
-	
+
 	gfx::gl::VertexAttrib test(0, 3, 3, 0, gfx::gl::GLType::FLOAT);
 	test.enable();
 
-	//gfx::gl::VertexAttrib test2(1, 2, 5, 3, gfx::gl::GLType::FLOAT);
-	//test2.enable();
+	m_uvbo->bind();
+	m_uvbo->setData(static_cast<void*>(m_blockMesh->chunkUVs.data()), sizeof(m_blockMesh->chunkUVs[0]) * m_blockMesh->chunkUVs.size());
+
+	gfx::gl::VertexAttrib test2(1, 2, 2, 0, gfx::gl::GLType::FLOAT);
+	test2.enable();
 
 	m_chunkFlags &= ~NEEDS_BUFFERING;
 }

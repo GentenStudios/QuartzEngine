@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
 	voxels::ChunkManager* world = new voxels::ChunkManager();
 	world->setDefaultBlock(block);
-	world->testGeneration(100);
+	world->testGeneration(10);
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
 	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
   cam->enabled = true;
 
 	int i = 0;
+	int test = 0;
 
 	float last = SDL_GetTicks();
 
@@ -96,19 +97,28 @@ int main(int argc, char *argv[])
 		shaderProgram->setMat4("model", model);
 		shaderProgram->setUniform1<int>("TexArray", 10);
 
-		if (i < 1000)
+		if (i < 100)
 		{
 			shaderProgram->setUniform1<int>("TexLayer", 0);
 			i++;
 		}
-		else if (i >= 1000 && i < 2000)
+		else if (i >= 100 && i < 200)
 		{
 			shaderProgram->setUniform1<int>("TexLayer", 1);
 			i++;
 		}
 		else
 		{
-			i = 0;
+			i = 0;  // no, it works now, but the actual block removal doesn't, for some reason, or I just can't find it.
+			// are we sure the coordinates are correct? 
+			// well, it worked 10 mintues ago (that ole chesnut :D)
+			// WHY NOT USE DICORD TO TEXT	
+			// this is quicker, less context switching
+			// better for concentration (plus these will all be gone in a couple mins anyway)
+			// aha, I think I know.
+
+			world->setBlockAt({ (float)test, 0, 1 }, blockAir);
+			test++;
 		}
 
 		int thing = 10;
