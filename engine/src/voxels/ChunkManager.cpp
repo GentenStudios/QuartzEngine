@@ -43,7 +43,7 @@ void ChunkManager::setBlockAt(phx::Vector3 position, Block* block)
 	int pos_y = (position.y / 16);
 	int pos_z = (position.z / 16);
 
-		for (auto& chunk : m_managerData->chunks)
+	for (auto& chunk : m_managerData->chunks)
 	{
 		if (chunk.getChunkPos() == phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f))
 		{
