@@ -354,7 +354,7 @@ void Chunk::render(int* counter)
 	{
 		if ((*counter) == 0)
 			return;
-		std::cout << "BUILDING!" << std::endl;
+		DEBUG("BUILDING MESH!");
 		buildMesh();
 		(*counter)--;
 		return;
@@ -364,7 +364,7 @@ void Chunk::render(int* counter)
 	{
 		if ((*counter) == 0)
 			return;
-		std::cout << "BUFFERING!" << std::endl;
+		DEBUG("BUFFERING MESH DATA!");
 		bufferData();
 		(*counter)--;
 	}

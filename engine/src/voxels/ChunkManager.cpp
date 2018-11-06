@@ -42,20 +42,19 @@ void ChunkManager::setBlockAt(phx::Vector3 position, Block* block)
 	int pos_x = (position.x / 16);
 	int pos_y = (position.y / 16);
 	int pos_z = (position.z / 16);
-	//  int pos = pos_x+pos_y*max_chunks_x+pos_z*max_chunks_xz;
 
-	int pos = pos_x + ((pos_y * m_managerData->chunks.size()) + (pos_z * (m_managerData->chunks.size() * m_managerData->chunks.size())));
-	std::cout << pos << "-----------> " << pos_x << ", " << pos_y << ", " << pos_z << std::endl;
-
-	phx::Vector3 helpmeplz(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f);
-
-	for (auto& chunk : m_managerData->chunks)
+		for (auto& chunk : m_managerData->chunks)
 	{
-		if (chunk.getChunkPos() == helpmeplz)
+		if (chunk.getChunkPos() == phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f))
 		{
-			phx::Vector3 imgunnakillmyself(static_cast<float>(static_cast<int>(position.x) % 16), static_cast<float>(static_cast<int>(position.y) % 16), static_cast<float>(static_cast<int>(position.z) % 16));
-			std::cout << imgunnakillmyself.x << ", " << imgunnakillmyself.y << ", " << imgunnakillmyself.z << std::endl;
-			chunk.setBlockAt(imgunnakillmyself, block); // funky shit happening right 'ere.
+			chunk.setBlockAt(
+				{ // "INLINE" VECTOR 3 DECLARATION
+				static_cast<float>(static_cast<int>(position.x) % 16), // x position IN the chunk, not overall 
+				static_cast<float>(static_cast<int>(position.y) % 16), // y position IN the chunk, not overall 
+				static_cast<float>(static_cast<int>(position.z) % 16)  // z position IN the chunk, not overall 
+				}, 
+				block
+			);
 
 			break;
 		}
