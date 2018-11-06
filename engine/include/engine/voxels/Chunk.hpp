@@ -10,8 +10,6 @@
 #include "engine/graphics/opengl/VertexArray.hpp"
 #include "engine/graphics/opengl/VertexAttrib.hpp"
 
-#include <atomic>
-
 namespace phx
 {
 	namespace voxels

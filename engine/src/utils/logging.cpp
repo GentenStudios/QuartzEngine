@@ -41,7 +41,7 @@ void Logger::init(std::string logFile = "logs/phoenix.log", LogVerbosity verbosi
 	// Creating the files
 	Logger::m_logFileHandle.open(Logger::m_logFile, std::ios::app);
 
-	//std::ios::sync_with_stdio(false);
+	std::ios::sync_with_stdio(false);
 }
 
 void Logger::destroy()

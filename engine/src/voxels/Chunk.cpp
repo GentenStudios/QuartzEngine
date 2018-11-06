@@ -124,7 +124,7 @@ Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock)
 	m_blockMesh->chunkVertices.resize(m_vertInChunk);
 	m_blockMesh->chunkUVs.resize(m_uvInChunk);
 
-	m_chunkFlags |= NEEDS_BUFFERING | NEEDS_MESHING;
+	m_chunkFlags = NEEDS_BUFFERING | NEEDS_MESHING;
 }
 
 void Chunk::populateData()
