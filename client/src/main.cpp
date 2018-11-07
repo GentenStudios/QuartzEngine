@@ -109,13 +109,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-			i = 0;  // no, it works now, but the actual block removal doesn't, for some reason, or I just can't find it.
-			// are we sure the coordinates are correct? 
-			// well, it worked 10 mintues ago (that ole chesnut :D)
-			// WHY NOT USE DICORD TO TEXT	
-			// this is quicker, less context switching
-			// better for concentration (plus these will all be gone in a couple mins anyway)
-			// aha, I think I know.
+			i = 0;
 
 			world->setBlockAt({ (float)test, 0, 1 }, blockAir);
 			test++;

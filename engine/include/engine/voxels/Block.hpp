@@ -8,7 +8,7 @@ namespace phx
 {
 	namespace voxels
 	{
-		typedef std::function<void()> BlockCallback;
+		using BlockCallback = std::function<void()>;
 
 		/// @brief This defines what state of matter the block is
 		enum class BlockType
@@ -60,22 +60,22 @@ namespace phx
 			/// @brief Setter: Sets the function executed when a block is placed
 			void setOnPlaceCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is placed
-			BlockCallback getOnPlaceCallback();
+			const BlockCallback& getOnPlaceCallback();
 
 			/// @brief Setter: Sets the function executed when a block is broken
 			void setOnBreakCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is broken
-			BlockCallback getOnBreakCallback();
+			const BlockCallback& getOnBreakCallback();
 
 			/// @brief Setter: Sets the function executed when a block is left clicked
 			void setOnInteractLeftCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is left clicked
-			BlockCallback getOnInteractLeftCallback();
+			const BlockCallback& getOnInteractLeftCallback();
 
 			/// @brief Setter: Sets the function executed when a block is right clicked
 			void setOnInteractRightCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is right clicked
-			BlockCallback getOnInteractRightCallback();
+			const BlockCallback& getOnInteractRightCallback();
 
 		private:
 			/// @brief Unique id using the convention mod:name

@@ -45,16 +45,16 @@ BlockType Block::getBlockType()
 /////////////////////////////////////////////
 
 void Block::setOnPlaceCallback(BlockCallback callback) { m_onPlaceCallback = callback; }
-BlockCallback Block::getOnPlaceCallback() { return m_onPlaceCallback; }
+const BlockCallback& Block::getOnPlaceCallback() { return m_onPlaceCallback; }
 
 void Block::setOnBreakCallback(BlockCallback callback) { m_onBreakCallback = callback; }
-BlockCallback Block::getOnBreakCallback() { return m_onBreakCallback; }
+const BlockCallback& Block::getOnBreakCallback() { return m_onBreakCallback; }
 
 void Block::setOnInteractLeftCallback(BlockCallback callback) { m_onInteractLeftCallback = callback; }
-BlockCallback Block::getOnInteractLeftCallback() { return m_onInteractLeftCallback; }
+const BlockCallback& Block::getOnInteractLeftCallback() { return m_onInteractLeftCallback; }
 
 void Block::setOnInteractRightCallback(BlockCallback callback) { m_onInteractRightCallback = callback; }
-BlockCallback Block::getOnInteractRightCallback() { return m_onInteractRightCallback; }
+const BlockCallback& Block::getOnInteractRightCallback() { return m_onInteractRightCallback; }
 
 
 /////////////////////////////////////////////////////////////////
