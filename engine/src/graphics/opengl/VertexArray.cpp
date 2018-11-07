@@ -2,7 +2,7 @@
 
 using namespace phx::gfx::gl;
 
-VertexArray::VertexArray()
+VertexArray::VertexArray() : m_arrayID(0)
 {
 	GLCheck(glGenVertexArrays(1, &m_arrayID));
 }

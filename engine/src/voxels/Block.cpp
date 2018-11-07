@@ -44,17 +44,17 @@ BlockType Block::getBlockType()
 // Getters and setters for event callbacks //
 /////////////////////////////////////////////
 
-void Block::setOnPlaceCallback(void* callback) { m_onPlaceCallback = callback; }
-void* Block::getOnPlaceCallback() { return m_onPlaceCallback; }
+void Block::setOnPlaceCallback(BlockCallback callback) { m_onPlaceCallback = callback; }
+const BlockCallback& Block::getOnPlaceCallback() { return m_onPlaceCallback; }
 
-void Block::setOnBreakCallback(void* callback) { m_onBreakCallback = callback; }
-void* Block::getOnBreakCallback() { return m_onBreakCallback; }
+void Block::setOnBreakCallback(BlockCallback callback) { m_onBreakCallback = callback; }
+const BlockCallback& Block::getOnBreakCallback() { return m_onBreakCallback; }
 
-void Block::setOnInteractLeftCallback(void* callback) { m_onInteractLeftCallback = callback; }
-void* Block::getOnInteractLeftCallback() { return m_onInteractLeftCallback; }
+void Block::setOnInteractLeftCallback(BlockCallback callback) { m_onInteractLeftCallback = callback; }
+const BlockCallback& Block::getOnInteractLeftCallback() { return m_onInteractLeftCallback; }
 
-void Block::setOnInteractRightCallback(void* callback) { m_onInteractRightCallback = callback; }
-void* Block::getOnInteractRightCallback() { return m_onInteractRightCallback; }
+void Block::setOnInteractRightCallback(BlockCallback callback) { m_onInteractRightCallback = callback; }
+const BlockCallback& Block::getOnInteractRightCallback() { return m_onInteractRightCallback; }
 
 
 /////////////////////////////////////////////////////////////////

@@ -2,19 +2,22 @@
 
 #include "engine/common.hpp"
 
-#include <string>
-#include <vector>
+#include <functional>
 
 namespace phx
 {
 	namespace voxels
 	{
+		using BlockCallback = std::function<void()>;
+
 		/// @brief This defines what state of matter the block is
 		enum class BlockType
 		{
 			GAS,    ///< Gas Blocks are, for example, Air, or Oxygen if implemented.
 			LIQUID, ///< Fluid Liquid Dynamics are applied to these blocks.
 			SOLID,  ///< Generic Stable Block, used for most things.
+			WATER, ///< Water as a fundamental type as it needs to be specially done.
+			OBJECT, ///< Things like Entities and objects that like transparent turds.
 		};
 
 		class Block
@@ -55,24 +58,24 @@ namespace phx
 			/////////////////////////////////////////////
 
 			/// @brief Setter: Sets the function executed when a block is placed
-			void setOnPlaceCallback(void* callback);
+			void setOnPlaceCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is placed
-			void* getOnPlaceCallback();
+			const BlockCallback& getOnPlaceCallback();
 
 			/// @brief Setter: Sets the function executed when a block is broken
-			void setOnBreakCallback(void* callback);
+			void setOnBreakCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is broken
-			void* getOnBreakCallback();
+			const BlockCallback& getOnBreakCallback();
 
 			/// @brief Setter: Sets the function executed when a block is left clicked
-			void setOnInteractLeftCallback(void* callback);
+			void setOnInteractLeftCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is left clicked
-			void* getOnInteractLeftCallback();
+			const BlockCallback& getOnInteractLeftCallback();
 
 			/// @brief Setter: Sets the function executed when a block is right clicked
-			void setOnInteractRightCallback(void* callback);
+			void setOnInteractRightCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is right clicked
-			void* getOnInteractRightCallback();
+			const BlockCallback& getOnInteractRightCallback();
 
 		private:
 			/// @brief Unique id using the convention mod:name
@@ -84,13 +87,13 @@ namespace phx
 			//  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
 
 			/// @brief Lambda callback for when the block is placed (well, hopefully lambdas if we can)
-			void* m_onPlaceCallback;
+			BlockCallback m_onPlaceCallback;
 			/// @brief Lambda callback for when the block is broken (well, hopefully lambdas if we can)
-			void* m_onBreakCallback;
+			BlockCallback m_onBreakCallback;
 			/// @brief Lambda callback for when the block is interacted with by left arm (well, hopefully lambdas if we can)
-			void* m_onInteractLeftCallback;
+			BlockCallback m_onInteractLeftCallback;
 			/// @brief Lambda callback for when the block is interacted with by right arm (well, hopefully lambdas if we can)
-			void* m_onInteractRightCallback;
+			BlockCallback m_onInteractRightCallback;
 		};
 
 		class BlockLibrary
