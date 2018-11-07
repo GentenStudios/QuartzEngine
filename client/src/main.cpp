@@ -24,21 +24,17 @@ int main(int argc, char *argv[])
 	INITLOGGER("logs/phoenix.log", phx::LogVerbosity::DEBUG);
 
 	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE GLFW FOR WINDOWING
-														"Phoenix!",				// WINDOW TITLE IS PHOENIX
-														1280,					// WINDOW WIDTH IS 1280px
-														720,					// WINDOW HEIGHT is 720px
-														{ 3,3 },				// OPENGL VERSION IS 3.3
-														gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
-													);
+		"Phoenix!",				// WINDOW TITLE IS PHOENIX
+		1280,					// WINDOW WIDTH IS 1280px
+		720,					// WINDOW HEIGHT is 720px
+		{ 3,3 },				// OPENGL VERSION IS 3.3
+		gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
+	);
+
 	window->setVSync(true);
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
 	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
-	//voxels::Chunk* chunk = new voxels::Chunk({ 0,0,0 }, 16, block);
-	//chunk->populateData();
-	////chunk->buildMesh();
-
-	//chunk->bufferData();
 
 	voxels::ChunkManager* world = new voxels::ChunkManager();
 	world->setDefaultBlock(block);
@@ -71,7 +67,11 @@ int main(int argc, char *argv[])
 		}
 	});
 
-  cam->enabled = true;
+	window->addKeyCallback(static_cast<int>(EventType::PRESSED), static_cast<int>(events::Keys::KEY_1), [&world]() {
+		world->toggleWireframe();
+	});
+
+	cam->enabled = true;
 
 	int i = 0;
 	int test = 0;

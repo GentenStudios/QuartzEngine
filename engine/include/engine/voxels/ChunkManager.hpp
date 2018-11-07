@@ -23,12 +23,16 @@ namespace phx
 
 			void setDefaultBlock(Block* block);
 
+			void toggleWireframe();
+			bool isWireframe() { return m_wireframe; };
+
 			void determineGeneration(int test);
 			void testGeneration(int test);
 			void unloadRedundant() { /* TODO this. */ }
 
 			void setBlockAt(phx::Vector3 position, Block* block);
 			void getBlockAt();
+
 
 			void breakBlockAt();
 			void placeBlockAt();
@@ -38,6 +42,8 @@ namespace phx
 		private:
 			ChunkContainer* m_managerData;
 			Block* m_defaultBlock;
+
+			bool m_wireframe;
 		};
 
 	}

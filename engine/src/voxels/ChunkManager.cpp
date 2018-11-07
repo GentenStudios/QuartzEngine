@@ -2,7 +2,7 @@
 
 using namespace phx::voxels;
 
-ChunkManager::ChunkManager()
+ChunkManager::ChunkManager() : m_wireframe(false)
 {
 	m_managerData = new ChunkContainer();
 }
@@ -13,6 +13,12 @@ ChunkManager::~ChunkManager()
 void ChunkManager::setDefaultBlock(Block* block)
 {
 	m_defaultBlock = block;
+}
+
+void phx::voxels::ChunkManager::toggleWireframe()
+{
+	m_wireframe = !m_wireframe;
+	glPolygonMode(GL_FRONT_AND_BACK, m_wireframe ? GL_LINE : GL_FILL);
 }
 
 void ChunkManager::testGeneration(int test)
