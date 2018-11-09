@@ -37,13 +37,13 @@ namespace phx
 			 * @brief getID - getID of Block
 			 * @return Return a string for the ID of the block
 			 */
-			std::string getID();
+			const std::string& getID();
 
 			/**
 			 * @brief getName - Get name of block
 			 * @return Return a string of the name of the block
 			 */
-			std::string getName();
+			const std::string& getName();
 
 			/**
 			 * @brief getBlockType - Get the matter state type of the block
@@ -51,7 +51,8 @@ namespace phx
 			 */
 			BlockType getBlockType();
 
-			//  ??????? getTextures();
+			const std::vector<std::string>& getTextures() { return m_textures; };
+			void setTextures(std::vector<std::string> texNames) { m_textures = texNames; };
 
 			/////////////////////////////////////////////
 			// Getters and setters for event callbacks //
@@ -84,7 +85,9 @@ namespace phx
 			std::string m_name;
 			/// @brief State of matter of the block
 			BlockType m_blockType;
-			//  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
+
+			/// @brief Vector of textures, should be in order: front, back, right, left, bottom, top.   
+			std::vector<std::string> m_textures;
 
 			/// @brief Lambda callback for when the block is placed (well, hopefully lambdas if we can)
 			BlockCallback m_onPlaceCallback;

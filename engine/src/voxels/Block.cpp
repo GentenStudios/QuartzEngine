@@ -25,12 +25,12 @@ Block::~Block()
 	// empty
 }
 
-std::string Block::getID()
+const std::string& Block::getID()
 {
 	return m_id;
 }
 
-std::string Block::getName()
+const std::string& Block::getName()
 {
 	return m_name;
 }

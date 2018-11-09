@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 	cam->enabled = true;
 
 	int i = 0;
-	int test = 0;
+	int breakTest = 0;
 
 	float last = SDL_GetTicks();
 
@@ -111,12 +111,11 @@ int main(int argc, char *argv[])
 		{
 			i = 0;
 
-			world->setBlockAt({ (float)test, 0, 1 }, blockAir);
-			test++;
+			world->setBlockAt({ (float)breakTest, 0, 1 }, blockAir);
+			breakTest++;
 		}
 
-		int thing = 10;
-		world->render(thing);
+		world->render(10);
 		window->swapBuffers();
 	}
 
