@@ -167,6 +167,7 @@ void Chunk::buildMesh()
 					int memOffset = (x * 36) + (m_chunkSize * ((y * 36) + m_chunkSize * (z * 36)));
 
 					std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
+					std::memset(m_blockMesh->chunkUVs.data() + memOffset, 0, 36 * sizeof(float));
 					std::memcpy(m_blockMesh->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
 
 					if (m_chunkBlocks[x][y][z]->getBlockType() == BlockType::GAS)
@@ -241,8 +242,8 @@ void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 	}
 
 	std::memset(m_blockMesh->chunkTexLayers.data() + memOffset + memOffsetOffest,	// Position in memory to copy to. So... original memory location + memory offset for that block + memory offset for that face.
-		texLayer,																	// Data to copy, PLUS, the memory offset, so the correct portion of the block is copied.
-		bytesInFace																	// Size of Data to copy.
+		(float)texLayer,															// Data to copy, PLUS, the memory offset, so the correct portion of the block is copied.
+		6 * sizeof(float)															// Size of Data to copy.
 	);
 
 	// Set block positions in world space
@@ -350,7 +351,10 @@ void Chunk::bufferData()
 
 	if (m_uvbo == nullptr)
 		m_uvbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
-	
+
+	if (m_tlbo == nullptr)
+		m_tlbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
+
 	m_vbo->bind();
 	m_vbo->setData(static_cast<void*>(m_blockMesh->chunkVertices.data()), sizeof(m_blockMesh->chunkVertices[0]) * m_blockMesh->chunkVertices.size());	
 
@@ -362,6 +366,12 @@ void Chunk::bufferData()
 
 	gfx::gl::VertexAttrib uvs(1, 2, 2, 0, gfx::gl::GLType::FLOAT);
 	uvs.enable();
+
+	m_tlbo->bind();
+	m_tlbo->setData(static_cast<void*>(m_blockMesh->chunkTexLayers.data()), sizeof(m_blockMesh->chunkTexLayers[0]) * m_blockMesh->chunkTexLayers.size());
+
+	gfx::gl::VertexAttrib texLayers(2, 1, 1, 0, gfx::gl::GLType::FLOAT);
+	texLayers.enable();
 
 	m_chunkFlags &= ~NEEDS_BUFFERING;
 }
@@ -387,7 +397,9 @@ void Chunk::render(int* counter)
 		(*counter)--;
 	}
 
+	m_textureArray->bind(10);
 	m_vao->bind();
 	glDrawArrays(GL_TRIANGLES, 0, m_vertInChunk);
+	m_textureArray->unbind();
 	m_vao->unbind();
 }

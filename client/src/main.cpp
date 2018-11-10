@@ -35,11 +35,12 @@ int main(int argc, char *argv[])
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
 	std::vector<std::string> texForGrass;
+	//texForGrass.push_back("assets/images/grass_side.png");
 	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_top.png");
+	texForGrass.push_back("assets/images/dirt.png");
+	texForGrass.push_back("assets/images/dirt.png");
+	texForGrass.push_back("assets/images/dirt.png");
+	texForGrass.push_back("assets/images/dirt.png");
 	texForGrass.push_back("assets/images/dirt.png");
 	block->setTextures(texForGrass);
 
@@ -53,13 +54,6 @@ int main(int argc, char *argv[])
 	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
 	shaderProgram->addStage(gl::ShaderType::FRAGMENT_SHADER, File::readFile("assets/shaders/main.frag").c_str());
 	shaderProgram->build();
-
-	gl::TextureArray texture;
-	std::vector<std::string> thing;
-	thing.push_back("assets/images/dirt.png");
-	thing.push_back("assets/images/grass_side.png");
-	texture.add(thing);
-	texture.bind(100); // Bind to 10th texture unit for no particular reason, except testing the index slot thingy. ya know?
 
 	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 1000.f, 0.1f);
 	Matrix4x4 model;
@@ -99,12 +93,11 @@ int main(int argc, char *argv[])
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 
 		shaderProgram->use();
-		texture.bind(10);
 
-		shaderProgram->setMat4("projection", projection);
-		shaderProgram->setMat4("view", cam->calculateViewMatrix());
-		shaderProgram->setMat4("model", model);
-		shaderProgram->setUniform1<int>("TexArray", 10);
+		shaderProgram->setMat4("u_projection", projection);
+		shaderProgram->setMat4("u_view", cam->calculateViewMatrix());
+		shaderProgram->setMat4("u_model", model);
+		shaderProgram->setUniform1<int>("u_TexArray", 10);
 
 		if (i < 100)
 		{

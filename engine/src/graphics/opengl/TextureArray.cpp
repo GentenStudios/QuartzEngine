@@ -10,6 +10,9 @@ using namespace phx::gfx::gl;
 TextureArray::TextureArray()
 {
 	GLCheck(glGenTextures(1, &m_textureID));
+	bind();
+	GLCheck(glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, 16, 16, 256, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
+	unbind();
 }
 
 TextureArray::~TextureArray()
@@ -34,10 +37,9 @@ int phx::gfx::gl::TextureArray::getTexLayer(const std::string& path)
 {
 	if (m_texNames.find(path) != m_texNames.end())
 	{
-		return m_texNames[path];
+		return m_texNames.at(path);
 	}
-
-	return -1;
+	return 0;
 }
 
 void TextureArray::add(const std::vector<std::string>& paths)
@@ -45,7 +47,6 @@ void TextureArray::add(const std::vector<std::string>& paths)
 	bind();
 	int mipLevelCount = 4;
 	auto layerCount = static_cast<GLsizei>(paths.size());
-	GLCheck(glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, 16, 16, layerCount, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
 
 	for (auto& path : paths) {
 		if (m_texNames.find(path) == m_texNames.end())
@@ -81,17 +82,16 @@ void TextureArray::add(const std::string& path)
 {
 	bind();
 	int mipLevelCount = 4;
-	GLCheck(glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA, 16, 16, static_cast<GLsizei>(1), 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
 
 	if (m_texNames.find(path) == m_texNames.end())
 	{
 		RENDER_DEBUG("[TEXTURING]", "TEXTURE NOT FOUND, LOADING...");
 		int width, height, nbChannels;
 		unsigned char* image = stbi_load(path.c_str(), &width, &height, &nbChannels, 0);
-		std::cout << width << " " << height << std::endl;
 		if (image != nullptr)
 		{
 			GLCheck(glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, m_textureNumber, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image));
+			
 			m_texNames[path] = m_textureNumber;
 			m_textureNumber++;
 		}
