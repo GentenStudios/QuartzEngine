@@ -114,6 +114,8 @@ Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock)
 	m_objectMesh = new Mesh();
 	m_waterMesh = new Mesh();
 
+	m_textureArray = new gfx::gl::TextureArray();
+
 	m_chunkPos = chunkPos;
 	m_chunkSize = chunkSize;
 
@@ -122,9 +124,11 @@ Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock)
 	m_uvInChunk = sizeCubed * 36;
 
 	m_blockMesh->chunkVertices.resize(m_vertInChunk);
+	m_blockMesh->chunkTexLayers.resize(m_vertInChunk);
 	m_blockMesh->chunkUVs.resize(m_uvInChunk);
 
 	m_chunkFlags = NEEDS_BUFFERING | NEEDS_MESHING;
+
 }
 
 void Chunk::populateData()
@@ -224,6 +228,20 @@ void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 
 	std::memcpy(m_blockMesh->chunkVertices.data() + memOffset + memOffsetOffest,	// Position in memory to copy to. So... original memory location + memory offset for that block + memory offset for that face.
 		CubeVerts + memOffsetOffest,												// Data to copy, PLUS, the memory offset, so the correct portion of the block is copied.
+		bytesInFace																	// Size of Data to copy.
+	);
+
+	auto& blockTex = m_chunkBlocks[x][y][z]->getTextures();
+	int texLayer = 0;
+
+	if (static_cast<int>(face) < blockTex.size())
+	{
+		m_textureArray->add(blockTex[static_cast<int>(face)]);
+		texLayer = m_textureArray->getTexLayer(blockTex[static_cast<int>(face)]);
+	}
+
+	std::memset(m_blockMesh->chunkTexLayers.data() + memOffset + memOffsetOffest,	// Position in memory to copy to. So... original memory location + memory offset for that block + memory offset for that face.
+		texLayer,																	// Data to copy, PLUS, the memory offset, so the correct portion of the block is copied.
 		bytesInFace																	// Size of Data to copy.
 	);
 
