@@ -33,13 +33,12 @@ void TextureArray::unbind()
 	GLCheck(glBindTexture(GL_TEXTURE_2D_ARRAY, 0));
 }
 
-int phx::gfx::gl::TextureArray::getTexLayer(const std::string& path)
+int TextureArray::getTexLayer(const std::string& path)
 {
-	if (m_texNames.find(path) != m_texNames.end())
-	{
-		return m_texNames.at(path);
-	}
-	return 0;
+	auto it = m_texNames.find(path);
+	if (it == m_texNames.end())
+		return -1;
+	return it->second;
 }
 
 void TextureArray::add(const std::vector<std::string>& paths)
@@ -52,7 +51,7 @@ void TextureArray::add(const std::vector<std::string>& paths)
 		if (m_texNames.find(path) == m_texNames.end())
 		{
 			RENDER_DEBUG("[TEXTURING]", "TEXTURE NOT FOUND, LOADING...");
-			int width, height, nbChannels;
+			int width = -1, height = -1, nbChannels = -1;
 			unsigned char* image = stbi_load(path.c_str(), &width, &height, &nbChannels, 0);
 			if (image != nullptr)
 			{
@@ -85,7 +84,7 @@ void TextureArray::add(const std::string& path)
 
 	if (m_texNames.find(path) == m_texNames.end())
 	{
-		int width, height, nbChannels;
+		int width = -1, height = -1, nbChannels = -1;
 		unsigned char* image = stbi_load(path.c_str(), &width, &height, &nbChannels, 0);
 		if (image != nullptr)
 		{
@@ -96,7 +95,7 @@ void TextureArray::add(const std::string& path)
 		}
 		else
 		{
-			RENDER_DEBUG("[TEXTURING]", "Image could not be loaded.");
+			RENDER_DEBUG("[TEXTURING]", "Image '" + path + "' could not be loaded.");
 			return;
 		}
 		stbi_image_free(image);

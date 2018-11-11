@@ -52,7 +52,7 @@ namespace phx
 			BlockType getBlockType();
 
 			const std::vector<std::string>& getTextures() { return m_textures; };
-			void setTextures(std::vector<std::string> texNames) { m_textures = texNames; };
+			void setTextures(const std::vector<std::string>& texNames) { m_textures = texNames; };
 
 			/////////////////////////////////////////////
 			// Getters and setters for event callbacks //
