@@ -38,7 +38,7 @@ namespace phx
 			std::vector<phx::Vector3> chunkVertices;
 			std::vector<phx::Vector3> chunkNormals;
 			std::vector<phx::Vector2> chunkUVs;
-			std::vector<float> chunkTexLayers;
+			std::vector<int> chunkTexLayers;
 
 			void reset();
 			void update(const Mesh& mesh);

@@ -2,42 +2,43 @@
 
 #include <cstring>
 #include <functional>
+#include <numeric>
 
 using namespace phx::voxels;
 using namespace phx;
 
 static const Vector2 CubeUV[] = {
 	// front
-	Vector2(0.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 1.f),
 	Vector2(0.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 0.f),
 	Vector2(0.f, 0.f),
+	Vector2(0.f, 1.f),
 
 	// back
-	Vector2(0.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 1.f),
 	Vector2(0.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 0.f),
 	Vector2(0.f, 0.f),
+	Vector2(0.f, 1.f),
 
 	// left
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(0.f, 1.f),
-	Vector2(0.f, 1.f),
 	Vector2(0.f, 0.f),
 	Vector2(1.f, 0.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 0.f),
 
 	// right
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(0.f, 1.f),
-	Vector2(0.f, 1.f),
 	Vector2(0.f, 0.f),
 	Vector2(1.f, 0.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 0.f),
 
 	// bottom
 	Vector2(0.f, 1.f),
@@ -53,55 +54,55 @@ static const Vector2 CubeUV[] = {
 	Vector2(1.f, 0.f),
 	Vector2(1.f, 0.f),
 	Vector2(0.f, 0.f),
-	Vector2(0.f, 1.f)
+	Vector2(0.f, 1.f),
 };
 
 static const Vector3 CubeVerts[] = {
 	// front
-	Vector3(-1.f,-1.f,-1.f),
-	Vector3(1.f,-1.f,-1.f),
-	Vector3(1.f,1.f,-1.f),
-	Vector3(1.f,1.f,-1.f),
-	Vector3(-1.f,1.f,-1.f),
-	Vector3(-1.f,-1.f,-1.f),
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3( 1.f, -1.f, -1.f),
+	Vector3( 1.f,  1.f, -1.f),
+	Vector3( 1.f,  1.f, -1.f),
+	Vector3(-1.f,  1.f, -1.f),
+	Vector3(-1.f, -1.f, -1.f),
 
 	// back
-	Vector3(-1.f,-1.f,1.f),
-	Vector3(1.f,-1.f,1.f),
-	Vector3(1.f, 1.f,1.f),
-	Vector3(1.f, 1.f,1.f),
-	Vector3(-1.f, 1.f,1.f),
-	Vector3(-1.f, -1.f,1.f),
+	Vector3(-1.f, -1.f, 1.f),
+	Vector3( 1.f, -1.f, 1.f),
+	Vector3( 1.f,  1.f, 1.f),
+	Vector3( 1.f,  1.f, 1.f),
+	Vector3(-1.f,  1.f, 1.f),
+	Vector3(-1.f, -1.f, 1.f),
 
 	// left
-	Vector3(-1.f, 1.f,1.f),
-	Vector3(-1.f, 1.f,-1.f),
-	Vector3(-1.f, -1.f,-1.f),
-	Vector3(-1.f, -1.f,-1.f),
-	Vector3(-1.f, -1.f,1.f),
-	Vector3(-1.f, 1.f,1.f),
+	Vector3(-1.f,  1.f,  1.f),
+	Vector3(-1.f,  1.f, -1.f),
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3(-1.f, -1.f,  1.f),
+	Vector3(-1.f,  1.f,  1.f),
 
 	// right
-	Vector3(1.f, 1.f,1.f),
-	Vector3(1.f, 1.f,-1.f),
-	Vector3(1.f, -1.f,-1.f),
-	Vector3(1.f, -1.f,-1.f),
-	Vector3(1.f, -1.f,1.f),
-	Vector3(1.f, 1.f,1.f),
+	Vector3(1.f,  1.f,  1.f),
+	Vector3(1.f,  1.f, -1.f),
+	Vector3(1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f,  1.f),
+	Vector3(1.f,  1.f,  1.f),
 
 	// bottom
 	Vector3(-1.f, -1.f, -1.f),
-	Vector3(1.f, -1.f, -1.f),
-	Vector3(1.f, -1.f,  1.f),
-	Vector3(1.f, -1.f,  1.f),
+	Vector3( 1.f, -1.f, -1.f),
+	Vector3( 1.f, -1.f,  1.f),
+	Vector3( 1.f, -1.f,  1.f),
 	Vector3(-1.f, -1.f,  1.f),
 	Vector3(-1.f, -1.f, -1.f),
 
 	// top
 	Vector3(-1.f,  1.f, -1.f),
-	Vector3(1.f,  1.f, -1.f),
-	Vector3(1.f,  1.f,  1.f),
-	Vector3(1.f,  1.f,  1.f),
+	Vector3( 1.f,  1.f, -1.f),
+	Vector3( 1.f,  1.f,  1.f),
+	Vector3( 1.f,  1.f,  1.f),
 	Vector3(-1.f,  1.f,  1.f),
 	Vector3(-1.f,  1.f, -1.f)
 };
@@ -167,7 +168,7 @@ void Chunk::buildMesh()
 					int memOffset = (x * 36) + (m_chunkSize * ((y * 36) + m_chunkSize * (z * 36)));
 
 					std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
-					std::memset(m_blockMesh->chunkUVs.data() + memOffset, 0, 36 * sizeof(float));
+					std::memset(m_blockMesh->chunkTexLayers.data() + memOffset, 0, 36 * sizeof(int));
 					std::memcpy(m_blockMesh->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
 
 					if (m_chunkBlocks[x][y][z]->getBlockType() == BlockType::GAS)
@@ -241,14 +242,10 @@ void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 		texLayer = m_textureArray->getTexLayer(blockTex[static_cast<int>(face)]);
 	}
 
-	std::memset(m_blockMesh->chunkTexLayers.data() + memOffset + memOffsetOffest,	// Position in memory to copy to. So... original memory location + memory offset for that block + memory offset for that face.
-		(float)texLayer,															// Data to copy, PLUS, the memory offset, so the correct portion of the block is copied.
-		6 * sizeof(float)															// Size of Data to copy.
-	);
-
 	// Set block positions in world space
 	for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
 	{
+		m_blockMesh->chunkTexLayers[q] = texLayer; // Set the texture layer
 		m_blockMesh->chunkVertices[q].x += (x * 2) + (m_chunkPos.x * 2); // Multiply by 2, as that is the size of the actual cube edges, indicated by the cube vertices.
 		m_blockMesh->chunkVertices[q].y += (y * 2) + (m_chunkPos.y * 2);
 		m_blockMesh->chunkVertices[q].z += (z * 2) + (m_chunkPos.z * 2);
@@ -334,6 +331,9 @@ void Chunk::setBlockAt(phx::Vector3 position, Block* block)
 			}
 		}
 	}
+
+	std::cout << "Dirt Texture Layer: " << m_textureArray->getTexLayer("assets/images/dirt.png") << std::endl;
+	std::cout << "Side Grass Texture Layer: " << m_textureArray->getTexLayer("assets/images/grass_side.png") << std::endl;
 }
 
 void Chunk::bufferData()
@@ -374,6 +374,9 @@ void Chunk::bufferData()
 	texLayers.enable();
 
 	m_chunkFlags &= ~NEEDS_BUFFERING;
+
+	//for (auto layer : m_blockMesh->chunkTexLayers)
+	//	std::cout << layer << std::endl;
 }
 
 void Chunk::render(int* counter)

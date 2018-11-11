@@ -36,7 +36,7 @@ namespace phx
 				unsigned int m_textureID;
 				int m_textureNumber = 0;
 			};
-		
+
 		}
 	}
 }

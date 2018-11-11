@@ -35,13 +35,12 @@ int main(int argc, char *argv[])
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
 	std::vector<std::string> texForGrass;
-	//texForGrass.push_back("assets/images/grass_side.png");
+	texForGrass.push_back("assets/images/grass_side.png");
+	texForGrass.push_back("assets/images/grass_side.png");
+	texForGrass.push_back("assets/images/grass_side.png");
 	texForGrass.push_back("assets/images/grass_side.png");
 	texForGrass.push_back("assets/images/dirt.png");
-	texForGrass.push_back("assets/images/dirt.png");
-	texForGrass.push_back("assets/images/dirt.png");
-	texForGrass.push_back("assets/images/dirt.png");
-	texForGrass.push_back("assets/images/dirt.png");
+	texForGrass.push_back("assets/images/grass_top.png");
 	block->setTextures(texForGrass);
 
 	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);

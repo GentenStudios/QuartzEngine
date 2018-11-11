@@ -85,13 +85,12 @@ void TextureArray::add(const std::string& path)
 
 	if (m_texNames.find(path) == m_texNames.end())
 	{
-		RENDER_DEBUG("[TEXTURING]", "TEXTURE NOT FOUND, LOADING...");
 		int width, height, nbChannels;
 		unsigned char* image = stbi_load(path.c_str(), &width, &height, &nbChannels, 0);
 		if (image != nullptr)
 		{
 			GLCheck(glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, m_textureNumber, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image));
-			
+
 			m_texNames[path] = m_textureNumber;
 			m_textureNumber++;
 		}
