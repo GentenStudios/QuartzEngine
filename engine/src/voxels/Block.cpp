@@ -25,17 +25,21 @@ Block::~Block()
 	// empty
 }
 
-std::string Block::getID()
+/////////////////////////////////////////////
+// Getters for Block Data ///////////////////
+/////////////////////////////////////////////
+
+const std::string& Block::getID() const
 {
 	return m_id;
 }
 
-std::string Block::getName()
+const std::string& Block::getName() const
 {
 	return m_name;
 }
 
-BlockType Block::getBlockType()
+BlockType Block::getBlockType() const
 {
 	return m_blockType;
 }
@@ -45,16 +49,16 @@ BlockType Block::getBlockType()
 /////////////////////////////////////////////
 
 void Block::setOnPlaceCallback(BlockCallback callback) { m_onPlaceCallback = callback; }
-const BlockCallback& Block::getOnPlaceCallback() { return m_onPlaceCallback; }
+const BlockCallback& Block::getOnPlaceCallback() const { return m_onPlaceCallback; }
 
 void Block::setOnBreakCallback(BlockCallback callback) { m_onBreakCallback = callback; }
-const BlockCallback& Block::getOnBreakCallback() { return m_onBreakCallback; }
+const BlockCallback& Block::getOnBreakCallback() const { return m_onBreakCallback; }
 
 void Block::setOnInteractLeftCallback(BlockCallback callback) { m_onInteractLeftCallback = callback; }
-const BlockCallback& Block::getOnInteractLeftCallback() { return m_onInteractLeftCallback; }
+const BlockCallback& Block::getOnInteractLeftCallback() const { return m_onInteractLeftCallback; }
 
 void Block::setOnInteractRightCallback(BlockCallback callback) { m_onInteractRightCallback = callback; }
-const BlockCallback& Block::getOnInteractRightCallback() { return m_onInteractRightCallback; }
+const BlockCallback& Block::getOnInteractRightCallback() const { return m_onInteractRightCallback; }
 
 
 /////////////////////////////////////////////////////////////////

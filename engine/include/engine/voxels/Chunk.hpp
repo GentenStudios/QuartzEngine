@@ -10,6 +10,8 @@
 #include "engine/graphics/opengl/VertexArray.hpp"
 #include "engine/graphics/opengl/VertexAttrib.hpp"
 
+#include "engine/graphics/opengl/TextureArray.hpp"
+
 namespace phx
 {
 	namespace voxels
@@ -18,6 +20,7 @@ namespace phx
 		{
 			NEEDS_BUFFERING	= 1 << 0,
 			NEEDS_MESHING	= 1 << 1,
+			NEEDS_TEXTURING	= 1 << 2,
 		};
 
 		enum class BlockFace : int
@@ -36,9 +39,6 @@ namespace phx
 			std::vector<phx::Vector3> chunkNormals;
 			std::vector<phx::Vector2> chunkUVs;
 			std::vector<int> chunkTexLayers;
-
-			void reset();
-			void update(const Mesh& mesh);
 		};
 
 		class Chunk
@@ -54,6 +54,7 @@ namespace phx
 			void buildMesh();  // should update the meshes
 			void rebuildMeshAt(phx::Vector3 position);
 
+
 			void addBlockFace(BlockFace face, int memOffset, int x, int y, int z);
 
 			void breakBlockAt(phx::Vector3 position, Block* replaceBlock);
@@ -62,6 +63,7 @@ namespace phx
 			const Block* getBlockAt(phx::Vector3 position);
 			void setBlockAt(phx::Vector3 position, Block* block);
 
+			void buildTextureArray();
 			void bufferData();
 			void render(int* counter);
 
@@ -79,6 +81,8 @@ namespace phx
 
 			Block* m_defaultBlock;
 			std::vector<std::vector<std::vector<Block*>>> m_chunkBlocks;
+
+			phx::gfx::gl::TextureArray* m_textureArray = nullptr;
 			
 			Mesh* m_blockMesh;
 			Mesh* m_objectMesh;
@@ -87,6 +91,7 @@ namespace phx
 			phx::gfx::gl::VertexArray* m_vao = nullptr;
 			phx::gfx::gl::VertexBuffer* m_vbo = nullptr;
 			phx::gfx::gl::VertexBuffer* m_uvbo = nullptr;
+			phx::gfx::gl::VertexBuffer* m_tlbo = nullptr; // Texture Layer Buffer Object
 
 			unsigned int m_vertInChunk;
 			unsigned int m_normalInChunk;

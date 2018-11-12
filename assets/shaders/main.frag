@@ -1,15 +1,14 @@
 #version 330 core
 
+
+in vec3 TexCoord;
+
+uniform sampler2DArray u_TexArray;
+
 out vec4 FragColor;
-
-in vec2 TexCoord;
-
-uniform int TexLayer;
-
-uniform sampler2DArray TexArray;
 
 void main()
 {
-	vec4 texel = texture(TexArray, vec3(TexCoord, TexLayer));
+	vec4 texel = texture(u_TexArray, TexCoord);
 	FragColor = texel;
 }

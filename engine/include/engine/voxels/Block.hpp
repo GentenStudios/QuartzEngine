@@ -37,21 +37,22 @@ namespace phx
 			 * @brief getID - getID of Block
 			 * @return Return a string for the ID of the block
 			 */
-			std::string getID();
+			const std::string& getID() const;
 
 			/**
 			 * @brief getName - Get name of block
 			 * @return Return a string of the name of the block
 			 */
-			std::string getName();
+			const std::string& getName() const;
 
 			/**
 			 * @brief getBlockType - Get the matter state type of the block
 			 * @return Return the state of matter the block is
 			 */
-			BlockType getBlockType();
+			BlockType getBlockType() const;
 
-			//  ??????? getTextures();
+			const std::vector<std::string>& getTextures() const { return m_textures; };
+			void setTextures(const std::vector<std::string>& texNames) { m_textures = texNames; };
 
 			/////////////////////////////////////////////
 			// Getters and setters for event callbacks //
@@ -60,22 +61,22 @@ namespace phx
 			/// @brief Setter: Sets the function executed when a block is placed
 			void setOnPlaceCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is placed
-			const BlockCallback& getOnPlaceCallback();
+			const BlockCallback& getOnPlaceCallback() const;
 
 			/// @brief Setter: Sets the function executed when a block is broken
 			void setOnBreakCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is broken
-			const BlockCallback& getOnBreakCallback();
+			const BlockCallback& getOnBreakCallback() const;
 
 			/// @brief Setter: Sets the function executed when a block is left clicked
 			void setOnInteractLeftCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is left clicked
-			const BlockCallback& getOnInteractLeftCallback();
+			const BlockCallback& getOnInteractLeftCallback() const;
 
 			/// @brief Setter: Sets the function executed when a block is right clicked
 			void setOnInteractRightCallback(BlockCallback callback);
 			/// @brief Getter: Gets the function executed when a block is right clicked
-			const BlockCallback& getOnInteractRightCallback();
+			const BlockCallback& getOnInteractRightCallback() const;
 
 		private:
 			/// @brief Unique id using the convention mod:name
@@ -84,7 +85,9 @@ namespace phx
 			std::string m_name;
 			/// @brief State of matter of the block
 			BlockType m_blockType;
-			//  ??????? m_textures; //String? Array of strings? Array of file pointers? Image class?
+
+			/// @brief Vector of textures, should be in order: front, back, right, left, bottom, top.   
+			std::vector<std::string> m_textures;
 
 			/// @brief Lambda callback for when the block is placed (well, hopefully lambdas if we can)
 			BlockCallback m_onPlaceCallback;

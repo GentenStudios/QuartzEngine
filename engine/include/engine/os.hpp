@@ -28,5 +28,6 @@
 #   define PHX_OS_LINUX
 #endif
 
-// FOR TESTING PURPOSES ONLY
-#define PHX_GL_DEBUG
+#ifdef _DEBUG
+#	define PHX_DEBUG
+#endif

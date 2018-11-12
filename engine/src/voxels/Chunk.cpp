@@ -2,42 +2,43 @@
 
 #include <cstring>
 #include <functional>
+#include <numeric>
 
 using namespace phx::voxels;
 using namespace phx;
 
 static const Vector2 CubeUV[] = {
 	// front
-	Vector2(0.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 1.f),
 	Vector2(0.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 0.f),
 	Vector2(0.f, 0.f),
+	Vector2(0.f, 1.f),
 
 	// back
-	Vector2(0.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 1.f),
 	Vector2(0.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 0.f),
+	Vector2(1.f, 0.f),
 	Vector2(0.f, 0.f),
+	Vector2(0.f, 1.f),
 
 	// left
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(0.f, 1.f),
-	Vector2(0.f, 1.f),
 	Vector2(0.f, 0.f),
 	Vector2(1.f, 0.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 0.f),
 
 	// right
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(0.f, 1.f),
-	Vector2(0.f, 1.f),
 	Vector2(0.f, 0.f),
 	Vector2(1.f, 0.f),
+	Vector2(1.f, 1.f),
+	Vector2(1.f, 1.f),
+	Vector2(0.f, 1.f),
+	Vector2(0.f, 0.f),
 
 	// bottom
 	Vector2(0.f, 1.f),
@@ -53,55 +54,55 @@ static const Vector2 CubeUV[] = {
 	Vector2(1.f, 0.f),
 	Vector2(1.f, 0.f),
 	Vector2(0.f, 0.f),
-	Vector2(0.f, 1.f)
+	Vector2(0.f, 1.f),
 };
 
 static const Vector3 CubeVerts[] = {
 	// front
-	Vector3(-1.f,-1.f,-1.f),
-	Vector3(1.f,-1.f,-1.f),
-	Vector3(1.f,1.f,-1.f),
-	Vector3(1.f,1.f,-1.f),
-	Vector3(-1.f,1.f,-1.f),
-	Vector3(-1.f,-1.f,-1.f),
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3( 1.f, -1.f, -1.f),
+	Vector3( 1.f,  1.f, -1.f),
+	Vector3( 1.f,  1.f, -1.f),
+	Vector3(-1.f,  1.f, -1.f),
+	Vector3(-1.f, -1.f, -1.f),
 
 	// back
-	Vector3(-1.f,-1.f,1.f),
-	Vector3(1.f,-1.f,1.f),
-	Vector3(1.f, 1.f,1.f),
-	Vector3(1.f, 1.f,1.f),
-	Vector3(-1.f, 1.f,1.f),
-	Vector3(-1.f, -1.f,1.f),
+	Vector3(-1.f, -1.f, 1.f),
+	Vector3( 1.f, -1.f, 1.f),
+	Vector3( 1.f,  1.f, 1.f),
+	Vector3( 1.f,  1.f, 1.f),
+	Vector3(-1.f,  1.f, 1.f),
+	Vector3(-1.f, -1.f, 1.f),
 
 	// left
-	Vector3(-1.f, 1.f,1.f),
-	Vector3(-1.f, 1.f,-1.f),
-	Vector3(-1.f, -1.f,-1.f),
-	Vector3(-1.f, -1.f,-1.f),
-	Vector3(-1.f, -1.f,1.f),
-	Vector3(-1.f, 1.f,1.f),
+	Vector3(-1.f,  1.f,  1.f),
+	Vector3(-1.f,  1.f, -1.f),
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3(-1.f, -1.f,  1.f),
+	Vector3(-1.f,  1.f,  1.f),
 
 	// right
-	Vector3(1.f, 1.f,1.f),
-	Vector3(1.f, 1.f,-1.f),
-	Vector3(1.f, -1.f,-1.f),
-	Vector3(1.f, -1.f,-1.f),
-	Vector3(1.f, -1.f,1.f),
-	Vector3(1.f, 1.f,1.f),
+	Vector3(1.f,  1.f,  1.f),
+	Vector3(1.f,  1.f, -1.f),
+	Vector3(1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f,  1.f),
+	Vector3(1.f,  1.f,  1.f),
 
 	// bottom
 	Vector3(-1.f, -1.f, -1.f),
-	Vector3(1.f, -1.f, -1.f),
-	Vector3(1.f, -1.f,  1.f),
-	Vector3(1.f, -1.f,  1.f),
+	Vector3( 1.f, -1.f, -1.f),
+	Vector3( 1.f, -1.f,  1.f),
+	Vector3( 1.f, -1.f,  1.f),
 	Vector3(-1.f, -1.f,  1.f),
 	Vector3(-1.f, -1.f, -1.f),
 
 	// top
 	Vector3(-1.f,  1.f, -1.f),
-	Vector3(1.f,  1.f, -1.f),
-	Vector3(1.f,  1.f,  1.f),
-	Vector3(1.f,  1.f,  1.f),
+	Vector3( 1.f,  1.f, -1.f),
+	Vector3( 1.f,  1.f,  1.f),
+	Vector3( 1.f,  1.f,  1.f),
 	Vector3(-1.f,  1.f,  1.f),
 	Vector3(-1.f,  1.f, -1.f)
 };
@@ -114,6 +115,8 @@ Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock)
 	m_objectMesh = new Mesh();
 	m_waterMesh = new Mesh();
 
+	m_textureArray = new gfx::gl::TextureArray();
+
 	m_chunkPos = chunkPos;
 	m_chunkSize = chunkSize;
 
@@ -122,9 +125,11 @@ Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock)
 	m_uvInChunk = sizeCubed * 36;
 
 	m_blockMesh->chunkVertices.resize(m_vertInChunk);
+	m_blockMesh->chunkTexLayers.resize(m_vertInChunk);
 	m_blockMesh->chunkUVs.resize(m_uvInChunk);
 
 	m_chunkFlags = NEEDS_BUFFERING | NEEDS_MESHING;
+
 }
 
 void Chunk::populateData()
@@ -163,6 +168,7 @@ void Chunk::buildMesh()
 					int memOffset = (x * 36) + (m_chunkSize * ((y * 36) + m_chunkSize * (z * 36)));
 
 					std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
+					std::memset(m_blockMesh->chunkTexLayers.data() + memOffset, 0, 36 * sizeof(int));
 					std::memcpy(m_blockMesh->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
 
 					if (m_chunkBlocks[x][y][z]->getBlockType() == BlockType::GAS)
@@ -227,9 +233,19 @@ void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 		bytesInFace																	// Size of Data to copy.
 	);
 
+	auto& blockTex = m_chunkBlocks[x][y][z]->getTextures();
+	int texLayer = 0;
+
+	if (static_cast<int>(face) < blockTex.size())
+	{
+		m_textureArray->add(blockTex[static_cast<int>(face)]);
+		texLayer = m_textureArray->getTexLayer(blockTex[static_cast<int>(face)]);
+	}
+
 	// Set block positions in world space
 	for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
 	{
+		m_blockMesh->chunkTexLayers[q] = texLayer; // Set the texture layer
 		m_blockMesh->chunkVertices[q].x += (x * 2) + (m_chunkPos.x * 2); // Multiply by 2, as that is the size of the actual cube edges, indicated by the cube vertices.
 		m_blockMesh->chunkVertices[q].y += (y * 2) + (m_chunkPos.y * 2);
 		m_blockMesh->chunkVertices[q].z += (z * 2) + (m_chunkPos.z * 2);
@@ -333,19 +349,31 @@ void Chunk::bufferData()
 	if (m_uvbo == nullptr)
 		m_uvbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
 
+	if (m_tlbo == nullptr)
+		m_tlbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
+
 	m_vbo->bind();
 	m_vbo->setData(static_cast<void*>(m_blockMesh->chunkVertices.data()), sizeof(m_blockMesh->chunkVertices[0]) * m_blockMesh->chunkVertices.size());	
 
-	gfx::gl::VertexAttrib test(0, 3, 3, 0, gfx::gl::GLType::FLOAT);
-	test.enable();
+	gfx::gl::VertexAttrib vertices(0, 3, 3, 0, gfx::gl::GLType::FLOAT);
+	vertices.enable();
 
 	m_uvbo->bind();
 	m_uvbo->setData(static_cast<void*>(m_blockMesh->chunkUVs.data()), sizeof(m_blockMesh->chunkUVs[0]) * m_blockMesh->chunkUVs.size());
 
-	gfx::gl::VertexAttrib test2(1, 2, 2, 0, gfx::gl::GLType::FLOAT);
-	test2.enable();
+	gfx::gl::VertexAttrib uvs(1, 2, 2, 0, gfx::gl::GLType::FLOAT);
+	uvs.enable();
+
+	m_tlbo->bind();
+	m_tlbo->setData(static_cast<void*>(m_blockMesh->chunkTexLayers.data()), sizeof(m_blockMesh->chunkTexLayers[0]) * m_blockMesh->chunkTexLayers.size());
+
+	gfx::gl::VertexAttrib texLayers(2, 1, 1, 0, gfx::gl::GLType::FLOAT);
+	texLayers.enable();
 
 	m_chunkFlags &= ~NEEDS_BUFFERING;
+
+	//for (auto layer : m_blockMesh->chunkTexLayers)
+	//	std::cout << layer << std::endl;
 }
 
 void Chunk::render(int* counter)
@@ -369,7 +397,9 @@ void Chunk::render(int* counter)
 		(*counter)--;
 	}
 
+	m_textureArray->bind(10);
 	m_vao->bind();
 	glDrawArrays(GL_TRIANGLES, 0, m_vertInChunk);
+	m_textureArray->unbind();
 	m_vao->unbind();
 }

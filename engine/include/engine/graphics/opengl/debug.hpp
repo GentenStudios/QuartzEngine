@@ -5,9 +5,15 @@
 #include <GL/glew.h>
 
 #define RENDER_ERROR(subSectors, message)		phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::ERROR)
-#define RENDER_WARNING(subSectors, message)		phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::WARNING)
 #define RENDER_INFO(subSectors, message)		phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::INFO)
-#define RENDER_DEBUG(subSectors, message)		phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::DEBUG)
+
+#ifdef PHX_DEBUG
+#	define RENDER_WARNING(subSectors, message)	phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::WARNING)
+#	define RENDER_DEBUG(subSectors, message)	phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::DEBUG)
+#else
+#	define RENDER_wARNING(subSectors, message)
+#	define RENDER_DEBUG(subSectors, message)
+#endif
 
 // MACRO FOR OPENGL DEBUGGING
 #ifdef PHX_GL_DEBUG
@@ -35,7 +41,7 @@ namespace phx
 			 */
 			inline void checkError(const char* file, int line)
 			{
-#ifdef PHX_GL_DEBUG
+#ifdef PHX_DEBUG
 				GLenum errorCode;
 				while ((errorCode = glGetError()) != GL_NO_ERROR)
 				{
@@ -54,7 +60,7 @@ namespace phx
 					}
 					RENDER_WARNING("", error.c_str());
 				}
-#endif  // PHX_GL_DEBUG
+#endif  // PHX_DEBUG
 			}
 
 			inline void __stdcall glDebugOutput(GLenum source,
@@ -65,7 +71,7 @@ namespace phx
 				const GLchar* message,
 				const void* userParam)
 			{
-#ifdef PHX_GL_DEBUG
+#ifdef PHX_DEBUG
 				// ignore non-significant error/warning codes
 				if (id == 131169 || id == 131185 || id == 131218 || id == 131204) return;
 
@@ -103,7 +109,7 @@ namespace phx
 				case GL_DEBUG_SEVERITY_LOW:          RENDER_WARNING("[LOW SEVERITY]", errorOutput.str()); break;
 				case GL_DEBUG_SEVERITY_NOTIFICATION: RENDER_DEBUG("[NOTIFICATION]", errorOutput.str()); break;
 				}
-#endif // PHX_GL_DEBUG
+#endif // PHX_DEBUG
 			}
 
 		}
