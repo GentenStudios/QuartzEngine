@@ -13,6 +13,12 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.major);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minor);
 
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
+
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
+
 	uint32_t SDLProfile = SDL_GL_CONTEXT_PROFILE_CORE;
 	switch (profile)
 	{
@@ -63,6 +69,7 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 	SDL_ShowWindow(m_window);
 
 	GLCheck(glEnable(GL_DEPTH_TEST));
+	GLCheck(glEnable(GL_MULTISAMPLE));
 
 	m_running = true;
 }
