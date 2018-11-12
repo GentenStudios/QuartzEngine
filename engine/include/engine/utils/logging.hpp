@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include "engine/os.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,9 +16,15 @@
 #define DESTROYLOGGER()	phx::Logger::destroy()
 
 #define ERROR(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::ERROR)
-#define WARNING(message)	phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::WARNING)
 #define INFO(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::INFO)
-#define DEBUG(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::DEBUG)
+
+#ifdef PHX_DEBUG
+#	define DEBUG(message)		phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::DEBUG)
+#	define WARNING(message)	phx::Logger::logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::WARNING)
+#else
+#	define DEBUG(message)
+#	define WARNING(message)
+#endif
 
 namespace phx
 {

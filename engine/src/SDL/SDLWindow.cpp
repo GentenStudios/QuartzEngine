@@ -29,9 +29,10 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDLProfile);
 
-#ifdef PHX_GL_DEBUG
+#ifdef PHX_DEBUG
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 #endif
+
 	m_window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 	if (m_window == nullptr)
 	{
@@ -48,7 +49,7 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 		exit(EXIT_FAILURE);
 	}
 
-#ifdef PHX_GL_DEBUG
+#ifdef PHX_DEBUG
 	GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
 	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
 	{
