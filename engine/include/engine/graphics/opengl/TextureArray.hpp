@@ -20,8 +20,6 @@ namespace phx
 				TextureArray();
 				~TextureArray();
 
-				
-				void add(const std::vector<std::string>& paths);
 				void add(const std::string& path);
 
 				void bind(int index = -1);

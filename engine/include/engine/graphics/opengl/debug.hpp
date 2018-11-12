@@ -5,9 +5,15 @@
 #include <GL/glew.h>
 
 #define RENDER_ERROR(subSectors, message)		phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::ERROR)
-#define RENDER_WARNING(subSectors, message)		phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::WARNING)
 #define RENDER_INFO(subSectors, message)		phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::INFO)
-#define RENDER_DEBUG(subSectors, message)		phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::DEBUG)
+
+#ifdef PHX_DEBUG
+#	define RENDER_WARNING(subSectors, message)	phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::WARNING)
+#	define RENDER_DEBUG(subSectors, message)	phx::Logger::logMessage(__FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, phx::LogVerbosity::DEBUG)
+#else
+#	define RENDER_wARNING(subSectors, message)
+#	define RENDER_DEBUG(subSectors, message)
+#endif
 
 // MACRO FOR OPENGL DEBUGGING
 #ifdef PHX_GL_DEBUG

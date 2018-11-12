@@ -331,9 +331,6 @@ void Chunk::setBlockAt(phx::Vector3 position, Block* block)
 			}
 		}
 	}
-
-	std::cout << "Dirt Texture Layer: " << m_textureArray->getTexLayer("assets/images/dirt.png") << std::endl;
-	std::cout << "Side Grass Texture Layer: " << m_textureArray->getTexLayer("assets/images/grass_side.png") << std::endl;
 }
 
 void Chunk::bufferData()
