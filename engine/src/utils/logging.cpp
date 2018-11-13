@@ -12,10 +12,8 @@
 
 #include "engine/utils/logging.hpp"
 #include <cstdio>
-#include <ctime>
 
 using namespace phx;
-
 
 namespace phx { namespace os_terminal {
 
@@ -55,6 +53,7 @@ void Logger::init(std::string logFile = "logs/phoenix.log", LogVerbosity verbosi
 
 	m_vbLevel = verbosityLevel;
 	m_currentDuplicates = 1;
+
 	// Creating the files
 	m_logFileHandle.open(Logger::m_logFile, std::ios::app);
 	
