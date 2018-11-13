@@ -22,7 +22,7 @@ using namespace phx;
 int main(int argc, char *argv[])
 {
 	INITLOGGER("logs/phoenix.log", phx::LogVerbosity::DEBUG);
-
+	
 	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE GLFW FOR WINDOWING
 		"Phoenix!",				// WINDOW TITLE IS PHOENIX
 		1280,					// WINDOW WIDTH IS 1280px
