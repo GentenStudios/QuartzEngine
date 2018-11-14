@@ -19,11 +19,11 @@
 #define LINFO(message)               phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::INFO)
 
 #ifdef PHX_DEBUG
-#	define LDEBUG(message)           phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::DEBUG)
-#	define LWARNING(message)         phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::WARNING)
+	#define LDEBUG(message)          phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::DEBUG)
+	#define LWARNING(message)        phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::WARNING)
 #else
-#	define LDEBUG(message)
-#	define LWARNING(message)
+	#define LDEBUG(message)
+	#define LWARNING(message)
 #endif
 
 // These are here for "backward compatability" aka I can't be arsed & some people may prefer the shorter version
