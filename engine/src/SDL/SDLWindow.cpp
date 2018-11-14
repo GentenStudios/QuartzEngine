@@ -66,10 +66,12 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 	}
 #endif
 	
-	INFO((const char*)glGetString(GL_VENDOR));
-	INFO((const char*)glGetString(GL_RENDERER));
-	INFO((const char*)glGetString(GL_VERSION));
-	
+	INFO("---------- OpenGL Details ----------");
+	INFO("Vendor:   ", (const char*)glGetString(GL_VENDOR));
+	INFO("Renderer: ", (const char*)glGetString(GL_RENDERER));
+	INFO("Version:  ", (const char*)glGetString(GL_VERSION));
+	INFO("------------------------------------");
+
 	SDL_ShowWindow(m_window);
 
 	GLCheck(glEnable(GL_DEPTH_TEST));
