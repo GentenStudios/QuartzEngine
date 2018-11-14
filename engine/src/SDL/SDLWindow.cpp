@@ -9,16 +9,16 @@ using namespace phx;
 SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
-
+	
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.major);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minor);
-
+	
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
-
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
-
+	
 	uint32_t SDLProfile = SDL_GL_CONTEXT_PROFILE_CORE;
 	switch (profile)
 	{
@@ -65,6 +65,12 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 	}
 #endif
+	
+	INFO("---------- OpenGL Details ----------");
+	INFO("Vendor:   ", glGetString(GL_VENDOR));
+	INFO("Renderer: ", glGetString(GL_RENDERER));
+	INFO("Version:  ", glGetString(GL_VERSION));
+	INFO("------------------------------------");
 
 	SDL_ShowWindow(m_window);
 
@@ -97,7 +103,6 @@ void SDLWindow::pollEvents()
 				{
 					if (event.key.keysym.scancode == static_cast<SDL_Scancode>(e.key))
 					{
-						std::cout << "Key Pressed!" << std::endl;
 						e.callback();
 					}
 				}
