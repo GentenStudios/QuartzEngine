@@ -14,15 +14,20 @@ ConfigManager* ConfigManager::get()
 
 ConfigFile *ConfigManager::registerConfig(const std::string & name)
 {
-	m_configfiles[name] = ConfigFile(name + ".ini");
-	ConfigFile *f = &m_configfiles[name];
+	m_configfiles.insert(std::make_pair(name, ConfigFile(name + ".ini")));
+	
+	ConfigFile *configFile = &m_configfiles[name];
+	configFile->reload(); // do inital load
 
-	f->reload(); // do inital load
-	return f;
+	return configFile;
 }
 
 ConfigFile * ConfigManager::getConfigFile(const std::string & name)
 {
+	// Config file has not been registered so return nullptr.
+	if (m_configfiles.find(name) == m_configfiles.end())
+		return nullptr;
+
 	return &m_configfiles[name];
 }
 
@@ -33,6 +38,7 @@ int ConfigFile::getInteger(const std::string & section, const std::string & key,
 
 char ConfigFile::getChar(const std::string & section, const std::string & key, char default)
 {
+	// INI has no concept of single characters only strings, so parse the first letter of the value string as the character.
 	return m_inifile.Get(section, key, std::string(default, 1))[0];
 }
 
@@ -48,6 +54,8 @@ float ConfigFile::getFloat(const std::string & section, const std::string & key,
 
 SDL_Scancode phx::ConfigFile::getScancode(const std::string & section, const std::string & key, SDL_Scancode default)
 {
+	// See https://wiki.libsdl.org/SDL_Keycode for a full map of Key Names -> Key Codes -> Scancodes
+
 	SDL_Keycode defaultKey = SDL_GetKeyFromScancode(default);
 	const char* defaultName = SDL_GetKeyName(defaultKey);
 	
@@ -63,6 +71,7 @@ bool ConfigFile::existsOnDisk() const
 void ConfigFile::reload()
 {
 	m_inifile = INIReader(m_filepath);
+
 	if (!existsOnDisk())
 	{
 		LWARNING("Config file \"", m_filepath, "\" does not exist on disk. Default's will be used instead.");
