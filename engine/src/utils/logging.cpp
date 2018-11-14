@@ -134,19 +134,19 @@ void Logger::logMessage(std::string errorFile, int lineNumber, std::string subSe
 
 	std::string logMessageString = logMessageStream.str();
 
-	if (logMessageString == m_prevMessage)
+	if (message == m_prevMessage)
 	{
 		m_currentDuplicates++;
 
 		// Append the `(<number of times this message has been logged>)` to the end of the log message
 		// - done by overwriting the previous message, and then rewriting it will the added `(...)` at the end.
 		m_logFileHandle << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")";
-		std::cout       << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")";
+		std::cout       << '\r' << logMessageString << " (" << m_currentDuplicates << ")";
 	}
 	else 
 	{
 		m_currentDuplicates = 1;
-		m_prevMessage       = logMessageString;
+		m_prevMessage       = message;
 
 		m_logFileHandle << '\n' << logMessageString;
 		std::cout       << '\n' << logMessageString;

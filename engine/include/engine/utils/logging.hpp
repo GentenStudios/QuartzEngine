@@ -15,23 +15,23 @@
 #define INITLOGGER(logFile, vbLevel) phx::Logger::get()->init( logFile, vbLevel )
 #define DESTROYLOGGER()              phx::Logger::get()->destroy()
 
-#define LERROR(message)              phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::ERROR)
-#define LINFO(message)               phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::INFO)
+#define LERROR(message, ...)              phx::Logger::get()->log(phx::LogVerbosity::ERROR, __FILE__, __LINE__, "", message, __VA_ARGS__)
+#define LINFO(message, ...)               phx::Logger::get()->log(phx::LogVerbosity::INFO, __FILE__, __LINE__, "", message, __VA_ARGS__)
 
 #ifdef PHX_DEBUG
-	#define LDEBUG(message)          phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::DEBUG)
-	#define LWARNING(message)        phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::WARNING)
+	#define LDEBUG(message, ...)          phx::Logger::get()->log(phx::LogVerbosity::DEBUG, __FILE__, __LINE__, "", message, __VA_ARGS__)
+	#define LWARNING(message, ...)        phx::Logger::get()->log(phx::LogVerbosity::WARNING, __FILE__, __LINE__, "", message, __VA_ARGS__)
 #else
-	#define LDEBUG(message)
-	#define LWARNING(message)
+	#define LDEBUG(message, ...)
+	#define LWARNING(message, ...)
 #endif
 
 // These are here for "backward compatability" aka I can't be arsed & some people may prefer the shorter version
 // (at the risk of conflicts)
-#define ERROR(message)   LERROR(message)
-#define INFO(message)    LINFO(message)
-#define DEBUG(message)   LDEBUG(message)
-#define WARNING(message) LWARNING(message)
+#define ERROR(message, ...)   LERROR(message, __VA_ARGS__)
+#define INFO(message, ...)    LINFO(message, __VA_ARGS__)
+#define DEBUG(message, ...)   LDEBUG(message, __VA_ARGS__)
+#define WARNING(message, ...) LWARNING(message, __VA_ARGS__)
 
 namespace phx
 {
@@ -79,6 +79,15 @@ namespace phx
 
 	class Logger
 	{
+	private:
+		template <typename T, typename... Args>
+		void log(std::stringstream& sstream, const T& msg, const Args&... args) {
+			sstream << msg;
+			log(sstream, args...);
+		}
+
+		void log(std::stringstream& sstream) {}
+
 	public:
 		/**
 		 * @brief Fetches the static instance of the Logger (yes it's a singleton...)
@@ -99,15 +108,33 @@ namespace phx
 		void destroy();
 
 		/**
-		 * @brief logMessage is to actually log the message to the console and the file opened by init();
+		 * @brief Processes the string and the concatenates the varadics args.
+		 * @param verbosity     The verbosity of the message, dictates whether the message is outputted or not.
 		 * @param errorFile     The file from which the error is occurring
 		 * @param lineNumber    The line from which the error is occurring
 		 * @param message       The actual message to be logged.
-		 * @param verbosity     The verbosity of the message, dictates whether the message is outputted or not.
+		 * @param Args...		A series of 0 or more different types to be added to the end of `message`
 		 */
-		void logMessage(std::string errorFile, int lineNumber, std::string subSectors, std::string message, LogVerbosity verbosity);
+		template <typename... Args>
+		void log(LogVerbosity verbosity, const std::string& errorFile, int lineNumber, const std::string& subSectors, const std::string& message, const Args&... args)
+		{
+			std::stringstream ss;
+			ss << message;
+			log(ss, args...);
+			logMessage(errorFile, lineNumber, subSectors, ss.str(), verbosity);
+		}
+
 
 	private:
+		/**
+		* @brief logMessage is to actually log the message to the console and the file opened by init();
+		* @param errorFile     The file from which the error is occurring
+		* @param lineNumber    The line from which the error is occurring
+		* @param message       The actual message to be logged.
+		* @param verbosity     The verbosity of the message, dictates whether the message is outputted or not.
+		*/
+		void logMessage(std::string errorFile, int lineNumber, std::string subSectors, std::string message, LogVerbosity verbosity);
+		
 		Logger() {}
 		~Logger() {}
 
