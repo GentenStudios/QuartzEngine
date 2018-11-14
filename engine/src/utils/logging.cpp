@@ -7,10 +7,11 @@
 
 #ifdef PHX_OS_WINDOWS
 	#include <Windows.h>
-#undef ERROR
+	#undef ERROR // Windows is a dick
 #endif
 
 #include "engine/utils/logging.hpp"
+
 #include <cstdio>
 
 using namespace phx;
@@ -18,6 +19,7 @@ using namespace phx;
 namespace phx { namespace os_terminal {
 
 #ifdef PHX_OS_WINDOWS
+	// WARNING: Do not change the order of this array, (it needs to match the order of `phx::Console::Color`)
 	static WORD s_win32TerminalColors[] =
 	{
 		FOREGROUND_INTENSITY | FOREGROUND_RED, // red
@@ -29,13 +31,14 @@ namespace phx { namespace os_terminal {
 		FOREGROUND_RED | FOREGROUND_GREEN, // dark yellow
 		FOREGROUND_RED, // dark red
 		FOREGROUND_GREEN, // dark green
-		FOREGROUND_BLUE // dark blue
+		FOREGROUND_BLUE, // dark blue
+		FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_BLUE // magenta
 	};
 #endif
 
 #ifdef PHX_OS_LINUX
+	// TODO: Gonna need a lookup table of ANSI color codes.
 #endif
-
 }}
 
 void Console::setTextColor(const Console::Color& color)
@@ -43,6 +46,10 @@ void Console::setTextColor(const Console::Color& color)
 #ifdef PHX_OS_WINDOWS
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console, os_terminal::s_win32TerminalColors[static_cast<size_t>(color)]);
+#endif
+
+#ifdef PHX_OS_LINUX
+	// TODO: You should just be able to insert the appropriate ANSI color code into stdout.
 #endif
 }
 
@@ -52,12 +59,12 @@ void Logger::init(std::string logFile = "logs/phoenix.log", LogVerbosity verbosi
 	m_logFile = logFile;
 
 	m_vbLevel = verbosityLevel;
+
 	m_currentDuplicates = 1;
 
 	// Creating the files
 	m_logFileHandle.open(Logger::m_logFile, std::ios::app);
-	
-	m_lastTwoWereEqual = false;
+
 	LogVerbosityLookup[0] = "ERROR";
 	LogVerbosityLookup[1] = "WARNING";
 	LogVerbosityLookup[2] = "INFO";
@@ -86,12 +93,14 @@ Logger* Logger::get()
 static Console::Color getColorFromVerbosity(LogVerbosity vb)
 {
 	Console::Color col;
+
 	switch (vb)
 	{
-	case LogVerbosity::ERROR: col = Console::Color::RED; break;
-	case LogVerbosity::WARNING: col = Console::Color::YELLOW; break;
-	case LogVerbosity::INFO: col = Console::Color::GREEN; break;
-	case LogVerbosity::DEBUG: col = Console::Color::DARK_GREEN; break;
+	case LogVerbosity::ERROR:   col = Console::Color::RED;        break;
+	case LogVerbosity::WARNING: col = Console::Color::YELLOW;     break;
+	case LogVerbosity::INFO:    col = Console::Color::GREEN;      break;
+	case LogVerbosity::DEBUG:   col = Console::Color::DARK_GREEN; break;
+	default:                    col = Console::Color::MAGENTA;    break; // shit's hit the fan - this shouldn't happen.
 	}
 
 	return col;
@@ -99,33 +108,47 @@ static Console::Color getColorFromVerbosity(LogVerbosity vb)
 
 void Logger::logMessage(std::string errorFile, int lineNumber, std::string subSectors, std::string message, LogVerbosity verbosity)
 {
-	if (verbosity <= Logger::m_vbLevel) // Make sure the logging call has a verbosity level below the defined level set at initialisation.
+	if (verbosity > m_vbLevel)
+		return;
+
+	Console::setTextColor(getColorFromVerbosity(verbosity));
+
+	const char* verbosityString = LogVerbosityLookup[static_cast<size_t>(verbosity)];
+	
+	/*
+		Log messages are in the format:
+			[ERROR/INFO/DEBUG/WARNING] <file of log>: <line number> <message>
+			             ^                          ^                   ^
+			Verbosity of message          If verbosity != INFO    The message to log
+	*/
+
+	std::stringstream logMessageStream;
+	logMessageStream << "[" << verbosityString << "] " << subSectors;
+	
+	if (verbosity != LogVerbosity::INFO) // Print the erroring file and line number if the message is not classed as INFO
 	{
-		Console::setTextColor(getColorFromVerbosity(verbosity));
+		logMessageStream << errorFile << ":" << lineNumber << " ";
+	}
 
-		std::stringstream logMessage;
-		logMessage << "[" << Logger::LogVerbosityLookup[static_cast<int>(verbosity)] << "] "; // Add the [INFO]/etc... at the beginning, via the use of a lookup table.
-		logMessage << subSectors;
-		if (verbosity != LogVerbosity::INFO) // Print the erroring file and line number if the message is not classed as INFO
-		{
-			logMessage << errorFile << ":" << lineNumber << " ";
-		}
+	logMessageStream << message;
 
-		logMessage << message;
+	std::string logMessageString = logMessageStream.str();
 
-		if (logMessage.str() == m_prevMessage)
-		{
-			m_currentDuplicates++;
-			m_logFileHandle << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")";
-			std::cout << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")";
-			m_lastTwoWereEqual = true;
-			return;
-		}
-		else {
-			m_currentDuplicates = 1;
-			m_prevMessage = logMessage.str();
-		}
-		m_logFileHandle << '\n' << logMessage.str();
-		std::cout << '\n' << logMessage.str();
+	if (logMessageString == m_prevMessage)
+	{
+		m_currentDuplicates++;
+
+		// Append the `(<number of times this message has been logged>)` to the end of the log message
+		// - done by overwriting the previous message, and then rewriting it will the added `(...)` at the end.
+		m_logFileHandle << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")";
+		std::cout       << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")";
+	}
+	else 
+	{
+		m_currentDuplicates = 1;
+		m_prevMessage       = logMessageString;
+
+		m_logFileHandle << '\n' << logMessageString;
+		std::cout       << '\n' << logMessageString;
 	}
 }

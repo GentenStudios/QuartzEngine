@@ -13,14 +13,14 @@
 #include <sstream>
 
 #define INITLOGGER(logFile, vbLevel) phx::Logger::get()->init( logFile, vbLevel )
-#define DESTROYLOGGER()	phx::Logger::get()->destroy()
+#define DESTROYLOGGER()              phx::Logger::get()->destroy()
 
-#define LERROR(message)		phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::ERROR)
-#define LINFO(message)		phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::INFO)
+#define LERROR(message)              phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::ERROR)
+#define LINFO(message)               phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::INFO)
 
 #ifdef PHX_DEBUG
-#	define LDEBUG(message)		phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::DEBUG)
-#	define LWARNING(message)	phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::WARNING)
+#	define LDEBUG(message)           phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::DEBUG)
+#	define LWARNING(message)         phx::Logger::get()->logMessage( __FILE__, __LINE__, "", message, phx::LogVerbosity::WARNING)
 #else
 #	define LDEBUG(message)
 #	define LWARNING(message)
@@ -28,9 +28,9 @@
 
 // These are here for "backward compatability" aka I can't be arsed & some people may prefer the shorter version
 // (at the risk of conflicts)
-#define ERROR(message) LERROR(message)
-#define INFO(message) LINFO(message)
-#define DEBUG(message) LDEBUG(message)
+#define ERROR(message)   LERROR(message)
+#define INFO(message)    LINFO(message)
+#define DEBUG(message)   LDEBUG(message)
 #define WARNING(message) LWARNING(message)
 
 namespace phx
@@ -38,26 +38,35 @@ namespace phx
 	class Console
 	{
 	public:
+		/**
+		 * @enum  phx::Console::Color
+		 * @brief The fixed list colors that text can be set to in the console. 
+		 */
 		enum class Color
 		{
-			RED = 0,
-			GREEN = 1,
-			BLUE = 2,
-			YELLOW = 3,
-			WHITE = 4,
-			BLACK = 5,
+			RED         = 0,
+			GREEN       = 1,
+			BLUE        = 2,
+			YELLOW      = 3,
+			WHITE       = 4,
+			BLACK       = 5,
 			DARK_YELLOW = 6,
-			DARK_RED = 7,
-			DARK_GREEN = 8,
-			DARK_BLUE = 9
+			DARK_RED    = 7,
+			DARK_GREEN  = 8,
+			DARK_BLUE   = 9,
+			MAGENTA     = 10
 		};
 
+		/**
+		 * @brief Set the text color for any preceding text (stdout). The color will remain as set here until it is changed by another `setTextColor` call.
+		 * @param[in] The color to set any preceding text to.
+		 */
 		static void setTextColor(const Color& color);
 	private:
 	};
 
 	/**
-	 * @enum	phoenix::LogVerbosity
+	 * @enum	phx::LogVerbosity
 	 * @brief	This is what will define whether certain messages are low enough a verbosity to be outputted.
 	 */
 	enum class LogVerbosity
@@ -71,6 +80,10 @@ namespace phx
 	class Logger
 	{
 	public:
+		/**
+		 * @brief Fetches the static instance of the Logger (yes it's a singleton...)
+		 * @return A pointer to the static instance of the logger. Don't try to `delete` or `free` this pointer, please.
+		 */
 		static Logger* get();
 
 		/**
@@ -110,9 +123,11 @@ namespace phx
 		/// @brief The lookup table for ENUM, so something can get outputted like "[ERROR]"
 		const char* LogVerbosityLookup[4];
 
+		/// @brief The previous message that has been logged.
 		std::string m_prevMessage;
+
+		/// @brief The number of times the current message has tried to be logged
 		size_t m_currentDuplicates;
-		bool m_lastTwoWereEqual;
 	};
 
 }

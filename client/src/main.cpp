@@ -61,10 +61,12 @@ int main(int argc, char *argv[])
 
 	window->addKeyCallback(static_cast<int>(EventType::PRESSED), static_cast<int>(events::Keys::KEY_ESCAPE), [&cam, &window]() {
 		cam->enabled = !cam->enabled;
-		if (cam->enabled) {
+		if (cam->enabled) 
+		{
 			window->setCursorState(gfx::CursorState::DISABLED);
 		}
-		else {
+		else 
+		{
 			window->setCursorState(gfx::CursorState::NORMAL);
 		}
 	});
