@@ -67,9 +67,9 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 #endif
 	
 	INFO("---------- OpenGL Details ----------");
-	INFO("Vendor:   ", (const char*)glGetString(GL_VENDOR));
-	INFO("Renderer: ", (const char*)glGetString(GL_RENDERER));
-	INFO("Version:  ", (const char*)glGetString(GL_VERSION));
+	INFO("Vendor:   ", glGetString(GL_VENDOR));
+	INFO("Renderer: ", glGetString(GL_RENDERER));
+	INFO("Version:  ", glGetString(GL_VERSION));
 	INFO("------------------------------------");
 
 	SDL_ShowWindow(m_window);
