@@ -180,9 +180,9 @@ void SDLWindow::addMouseMoveCallback(std::function<void(double, double)> callbac
 	m_mouseMoveEvents.push_back({ callback });
 }
 
-bool SDLWindow::isKeyDown(int key)
+bool SDLWindow::isKeyDown(events::Keys key)
 {
-	return SDL_GetKeyboardState(NULL)[key];
+	return SDL_GetKeyboardState(NULL)[static_cast<SDL_Scancode>(key)];
 }
 
 TVector2<int> SDLWindow::getMousePosition()

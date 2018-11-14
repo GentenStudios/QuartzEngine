@@ -65,10 +65,10 @@ void FPSCam::update(float dt)
 		m_position += right * dt * moveSpeed;
 	}
 
-	if (m_window->isKeyDown(SDL_SCANCODE_Q)) {
+	if (m_window->isKeyDown(events::Keys::KEY_Q)) {
 		m_position.y -= moveSpeed * dt;
 	}
-	else if (m_window->isKeyDown(SDL_SCANCODE_E)) {
+	else if (m_window->isKeyDown(events::Keys::KEY_E)) {
 		m_position.y += moveSpeed * dt;
 	}
 }
@@ -102,24 +102,24 @@ void CameraControls::load()
 const std::string CAMERA_KEYBOARD_SECTION = "CameraKeyboard";
 const std::string CAMERA_MISC_SECTION = "CameraMisc";
 
-SDL_Scancode CameraControls::moveForward()
+events::Keys CameraControls::moveForward()
 {
-	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveForward", SDL_SCANCODE_W);
+	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveForward", events::Keys::KEY_W);
 }
 
-SDL_Scancode CameraControls::moveBackwards()
+events::Keys CameraControls::moveBackwards()
 {
-	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveBackwards", SDL_SCANCODE_S);
+	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveBackwards", events::Keys::KEY_S);
 }
 
-SDL_Scancode CameraControls::strafeLeft()
+events::Keys CameraControls::strafeLeft()
 {
-	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeLeft", SDL_SCANCODE_A);
+	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeLeft", events::Keys::KEY_A);
 }
 
-SDL_Scancode CameraControls::strafeRight()
+events::Keys CameraControls::strafeRight()
 {
-	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeRight", SDL_SCANCODE_D);
+	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeRight", events::Keys::KEY_D);
 }
 
 float CameraControls::mouseSensitivity()

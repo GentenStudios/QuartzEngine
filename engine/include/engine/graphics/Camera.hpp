@@ -9,6 +9,7 @@
 #include "engine/math/Matrix4x4.hpp"
 
 #include "engine/utils/Config.hpp"
+#include "engine/events/Keys.hpp"
 
 namespace phx
 {
@@ -19,10 +20,10 @@ namespace phx
 		public:
 			void load();
 
-			SDL_Scancode moveForward();
-			SDL_Scancode moveBackwards();
-			SDL_Scancode strafeLeft();
-			SDL_Scancode strafeRight();
+			events::Keys moveForward();
+			events::Keys moveBackwards();
+			events::Keys strafeLeft();
+			events::Keys strafeRight();
 
 			float mouseSensitivity();
 			float moveSpeed();

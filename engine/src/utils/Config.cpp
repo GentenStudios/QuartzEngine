@@ -52,15 +52,15 @@ float ConfigFile::getFloat(const std::string & section, const std::string & key,
 	return static_cast<float>(m_inifile.GetReal(section, key, static_cast<float>(default)));
 }
 
-SDL_Scancode phx::ConfigFile::getScancode(const std::string & section, const std::string & key, SDL_Scancode default)
+events::Keys ConfigFile::getScancode(const std::string & section, const std::string & key, events::Keys default)
 {
 	// See https://wiki.libsdl.org/SDL_Keycode for a full map of Key Names -> Key Codes -> Scancodes
 
-	SDL_Keycode defaultKey = SDL_GetKeyFromScancode(default);
+	SDL_Keycode defaultKey = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(default));
 	const char* defaultName = SDL_GetKeyName(defaultKey);
 	
 	std::string value = m_inifile.Get(section, key, defaultName);
-	return SDL_GetScancodeFromName(value.c_str());
+	return static_cast<events::Keys>(SDL_GetScancodeFromName(value.c_str()));
 }
 
 bool ConfigFile::existsOnDisk() const
