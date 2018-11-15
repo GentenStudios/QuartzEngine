@@ -79,11 +79,13 @@ set(voxelsSrc
 set(utilHeaders
     ${header_dir}/engine/utils/logging.hpp
 	${header_dir}/engine/utils/io.hpp
+	${header_dir}/engine/utils/Config.hpp
     )
 
 set(utilSrc
     ${source_dir}/utils/logging.cpp
     ${source_dir}/utils/io.cpp
+	${source_dir}/utils/Config.cpp
     )
 
 set(commonHeaders
@@ -131,6 +133,7 @@ set(include_dirs
     ${dependencies}/SDL2/include
     ${dependencies}/glew/include
     ${dependencies}/stb_image/
+	${dependencies}/inih
     ${header_dir}
     )
 

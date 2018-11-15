@@ -8,8 +8,6 @@
 using namespace phx::gfx;
 using namespace phx;
 
-const float MOUSE_SENSITIVITY = 0.00005f;
-const float MOVE_SPEED = 0.1f;
 const float HALF_PI = MathUtils::PI / 2;
 
 static Vector2 lastMousePos = { 0, 0 };
@@ -17,6 +15,7 @@ static Vector2 lastMousePos = { 0, 0 };
 FPSCam::FPSCam(IWindow* window) : m_window(window), enabled(true)
 {
 	window->setCursorState(CursorState::DISABLED);
+	m_controls.load();
 }
 
 void FPSCam::update(float dt)
@@ -24,15 +23,17 @@ void FPSCam::update(float dt)
 	if (!enabled)
 		return;
 
-	TVector2<int> mousePos = m_window->getMousePosition();
+	const TVector2<int> mousePos = m_window->getMousePosition();
 	
 	int windowW, windowH;
 	m_window->getSize(windowW, windowH);
 
 	m_window->setMousePosition({ windowW / 2, windowH / 2 });
 
-	m_rotation.x += MOUSE_SENSITIVITY * dt * (windowW / 2.f - mousePos.x);
-	m_rotation.y += MOUSE_SENSITIVITY * dt * (windowH / 2.f - mousePos.y);
+	const float sensitivity = m_controls.mouseSensitivity();
+
+	m_rotation.x += sensitivity * dt * (windowW / 2.f - mousePos.x);
+	m_rotation.y += sensitivity * dt * (windowH / 2.f - mousePos.y);
 	
 	m_rotation.y = MathUtils::clamp(m_rotation.y, -HALF_PI, HALF_PI);
 
@@ -40,7 +41,7 @@ void FPSCam::update(float dt)
 	m_direction.y = std::sin(m_rotation.y);
 	m_direction.z = std::cos(m_rotation.y) * std::cos(m_rotation.x);
 
-	Vector3 right(
+	const Vector3 right(
 		std::sin(m_rotation.x - HALF_PI),
 		0.f,
 		std::cos(m_rotation.x - HALF_PI)
@@ -48,25 +49,27 @@ void FPSCam::update(float dt)
 
 	m_up = Vector3::cross(right, m_direction);
 
-	if (m_window->isKeyDown(SDL_SCANCODE_W)) {
-		m_position += m_direction * dt * MOVE_SPEED;
+	const float moveSpeed = m_controls.moveSpeed();
+
+	if (m_window->isKeyDown(m_controls.moveForward())) {
+		m_position += m_direction * dt * moveSpeed;
 	}
-	else if (m_window->isKeyDown(SDL_SCANCODE_S)) {
-		m_position -= m_direction * dt * MOVE_SPEED;
+	else if (m_window->isKeyDown(m_controls.moveBackwards())) {
+		m_position -= m_direction * dt * moveSpeed;
 	}
 
-	if (m_window->isKeyDown(SDL_SCANCODE_A)) {
-		m_position -= right * dt * MOVE_SPEED;
+	if (m_window->isKeyDown(m_controls.strafeLeft())) {
+		m_position -= right * dt * moveSpeed;
 	}
-	else if (m_window->isKeyDown(SDL_SCANCODE_D)) {
-		m_position += right * dt * MOVE_SPEED;
+	else if (m_window->isKeyDown(m_controls.strafeRight())) {
+		m_position += right * dt * moveSpeed;
 	}
 
-	if (m_window->isKeyDown(SDL_SCANCODE_Q)) {
-		m_position.y -= MOVE_SPEED * dt;
+	if (m_window->isKeyDown(events::Keys::KEY_Q)) {
+		m_position.y -= moveSpeed * dt;
 	}
-	else if (m_window->isKeyDown(SDL_SCANCODE_E)) {
-		m_position.y += MOVE_SPEED * dt;
+	else if (m_window->isKeyDown(events::Keys::KEY_E)) {
+		m_position.y += moveSpeed * dt;
 	}
 }
 
@@ -85,4 +88,46 @@ Vector3 FPSCam::getPosition()
 Vector3 FPSCam::getDirection()
 {
 	return m_direction;
+}
+
+void CameraControls::load()
+{
+	m_controlsConfig = PHX_GET_CONFIG("Controls");
+}
+
+/*
+ * Camera controls configuration & Defaults.
+ */
+
+const std::string CAMERA_KEYBOARD_SECTION = "CameraKeyboard";
+const std::string CAMERA_MISC_SECTION = "CameraMisc";
+
+events::Keys CameraControls::moveForward()
+{
+	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveForward", events::Keys::KEY_W);
+}
+
+events::Keys CameraControls::moveBackwards()
+{
+	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveBackwards", events::Keys::KEY_S);
+}
+
+events::Keys CameraControls::strafeLeft()
+{
+	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeLeft", events::Keys::KEY_A);
+}
+
+events::Keys CameraControls::strafeRight()
+{
+	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeRight", events::Keys::KEY_D);
+}
+
+float CameraControls::mouseSensitivity()
+{
+	return m_controlsConfig->getFloat(CAMERA_MISC_SECTION, "mouseSensitivty", 0.00005f);
+}
+
+float CameraControls::moveSpeed()
+{
+	return m_controlsConfig->getFloat(CAMERA_MISC_SECTION, "moveSpeed", 0.1f);
 }

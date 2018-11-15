@@ -5,6 +5,8 @@
 
 #include "engine/math/Vector2.hpp"
 
+#include "engine/events/Keys.hpp"
+
 #include <cinttypes>
 #include <tuple>
 #include <vector>
@@ -54,7 +56,7 @@ namespace phx
 			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback) = 0;
 			virtual void addMouseMoveCallback(std::function<void(double, double)> callback) = 0;
 
-			virtual bool isKeyDown(int key) = 0;
+			virtual bool isKeyDown(events::Keys key) = 0;
 			virtual TVector2<int> getMousePosition() = 0;
 			virtual void setMousePosition(TVector2<int> newPos) = 0;
 		};

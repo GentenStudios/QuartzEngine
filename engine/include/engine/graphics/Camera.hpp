@@ -8,10 +8,30 @@
 #include "engine/math/Vector3.hpp"
 #include "engine/math/Matrix4x4.hpp"
 
+#include "engine/utils/Config.hpp"
+#include "engine/events/Keys.hpp"
+
 namespace phx
 {
 	namespace gfx
 	{
+		class CameraControls
+		{
+		public:
+			void load();
+
+			events::Keys moveForward();
+			events::Keys moveBackwards();
+			events::Keys strafeLeft();
+			events::Keys strafeRight();
+
+			float mouseSensitivity();
+			float moveSpeed();
+
+		private:
+			ConfigFile * m_controlsConfig;
+		};
+
 		class FPSCam
 		{
 		public:
@@ -33,6 +53,8 @@ namespace phx
 			Vector3 m_direction;
 
 			IWindow* m_window;
+
+			CameraControls m_controls;
 		};
 
 	}
