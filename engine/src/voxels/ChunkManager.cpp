@@ -1,4 +1,4 @@
-#include "engine/voxels/ChunkManager.hpp"
+#include <engine/voxels/ChunkManager.cpp>
 
 using namespace phx::voxels;
 

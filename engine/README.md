@@ -1,2 +1,2 @@
-# Pheonix Engine
-This is the Engine for the Pheonix Project.
+# Phoenix Engine
+This is the Engine for the Phoenix Project.

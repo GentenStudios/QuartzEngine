@@ -15,9 +15,3 @@ add_subdirectory(engine)
 
 # Add the subdirectory for our Client.
 add_subdirectory(client)
-
-# Add the subdirectory for our Launcher.
-#add_subdirectory(launcher)
-
-# Add the subdirectory for our Server.
-#add_subdirectory(server)

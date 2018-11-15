@@ -1,16 +1,16 @@
 #pragma once
 
-#include "engine/common.hpp"
-#include "engine/math/Vector3.hpp"
-#include "engine/math/Vector2.hpp"
+#include <engine/core/Core.hpp>
 
-#include "engine/voxels/Block.hpp"
+#include <engine/core/math/Vector2.hpp>
+#include <engine/core/math/Vector3.hpp>
 
-#include "engine/graphics/opengl/VertexBuffer.hpp"
-#include "engine/graphics/opengl/VertexArray.hpp"
-#include "engine/graphics/opengl/VertexAttrib.hpp"
+#include <engine/voxels/Block.hpp>
 
-#include "engine/graphics/opengl/TextureArray.hpp"
+#include <engine/core/graphics/gl/VertexBuffer.hpp>
+#include <engine/core/graphics/gl/VertexArray.hpp>
+#include <engine/core/graphics/gl/VertexAttrib.hpp>
+#include <engine/core/graphics/gl/TextureArray.hpp>
 
 namespace phx
 {

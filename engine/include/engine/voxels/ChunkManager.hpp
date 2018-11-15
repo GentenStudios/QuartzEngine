@@ -1,9 +1,9 @@
 #pragma once
 
-#include "engine/common.hpp"
+#include <engine/core/Core.hpp>
 
-#include "engine/voxels/Block.hpp"
-#include "engine/voxels/Chunk.hpp"
+#include <engine/voxels/Block.hpp>
+#include <engine/voxels/Chunk.hpp>
 
 namespace phx
 {
