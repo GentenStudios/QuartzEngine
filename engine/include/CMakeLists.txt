@@ -1,5 +1,5 @@
 set(engineHeaders
-    include/Phoenix.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Phoenix.hpp
     CACHE INTERNAL "Global Engine Headers"
 )
 

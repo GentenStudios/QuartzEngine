@@ -49,3 +49,23 @@ endif()
 add_library(${PROJECT_NAME} STATIC ${engineSources} ${engineHeaders})
 target_link_libraries(${PROJECT_NAME} ${libraries})
 target_include_directories(${PROJECT_NAME} PRIVATE ${include_dirs})
+
+foreach(FILE ${engineSources}) 
+    get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
+
+    string(REPLACE "/" "\\" GROUP "${GROUP}")
+
+    set(GROUP "Source Files${GROUP}")
+    source_group("${GROUP}" FILES "${FILE}")
+endforeach()
+
+foreach(FILE ${engineHeaders})
+    get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
+
+    string(REPLACE "/" "\\" GROUP "${GROUP}")
+
+    set(GROUP "Header Files${GROUP}")
+    source_group("${GROUP}" FILES "${FILE}")
+endforeach()

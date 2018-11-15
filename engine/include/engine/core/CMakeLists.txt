@@ -1,7 +1,7 @@
 set(engineHeaders
     ${engineHeaders}
-    include/engine/core/Core.hpp
-    include/engine/core/os.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Core.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/os.hpp
     CACHE INTERNAL "Global Engine Headers"
 )
 
