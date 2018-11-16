@@ -18,6 +18,7 @@ set(include_dirs
     ${dependencies}/SDL2/include
     ${dependencies}/glew/include
     ${dependencies}/../engine/include
+	${dependencies}/inih
 )
 
 set(libraries

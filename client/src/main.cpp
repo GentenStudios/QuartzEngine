@@ -13,6 +13,8 @@
 #include <engine/voxels/Chunk.hpp>
 #include <engine/voxels/ChunkManager.hpp>
 
+#include <engine/utils/Config.hpp>
+
 #include <chrono>
 #include <thread>
 
@@ -23,6 +25,8 @@ int main(int argc, char *argv[])
 {
 	INITLOGGER("logs/phoenix.log", phx::LogVerbosity::DEBUG);
 	
+	PHX_REGISTER_CONFIG("Controls");
+
 	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE GLFW FOR WINDOWING
 		"Phoenix!",				// WINDOW TITLE IS PHOENIX
 		1280,					// WINDOW WIDTH IS 1280px

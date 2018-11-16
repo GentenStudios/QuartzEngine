@@ -41,7 +41,7 @@ namespace phx
 
 			inline SDL_Window* getSDLWindow() const { return m_window; }
 
-			virtual bool isKeyDown(int key);
+			virtual bool isKeyDown(events::Keys key);
 			virtual TVector2<int> getMousePosition();
 
 			virtual void setMousePosition(TVector2<int> newPos);

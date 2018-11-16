@@ -12,11 +12,11 @@ add_subdirectory(include)
 add_subdirectory(src)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
-
 set(include_dirs
     ${dependencies}/SDL2/include
     ${dependencies}/glew/include
     ${dependencies}/stb_image/
+	${dependencies}/inih
     ${header_dir}
 )
 
