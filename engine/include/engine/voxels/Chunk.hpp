@@ -52,8 +52,6 @@ namespace phx
 			void populateData();  // should update the chunk mesh for the chunk renderer
 
 			void buildMesh();  // should update the meshes
-			void rebuildMeshAt(phx::Vector3 position);
-
 
 			void addBlockFace(BlockFace face, int memOffset, int x, int y, int z);
 
@@ -94,9 +92,7 @@ namespace phx
 			phx::gfx::gl::VertexBuffer* m_tlbo = nullptr; // Texture Layer Buffer Object
 
 			unsigned int m_vertInChunk;
-			unsigned int m_normalInChunk;
 			unsigned int m_uvInChunk;
-			unsigned int m_layersInChunk;
 		};
 
 	}

@@ -203,26 +203,6 @@ void Chunk::buildMesh()
 		m_chunkFlags |= NEEDS_BUFFERING;
 }
 
-void Chunk::rebuildMeshAt(phx::Vector3 position)
-{
-	if (position.x != 0 && position.y != 0 && position.z != 0)
-	{
-		if (position.x < m_chunkSize && position.y < m_chunkSize && position.z < m_chunkSize)
-		{
-			int memOffsetAbove = (position.x * 36) + (m_chunkSize * (((position.y + 1) * 36) + m_chunkSize * (position.z * 36)));
-			int memOffsetBelow = (position.x * 36) + (m_chunkSize * (((position.y - 1) * 36) + m_chunkSize * (position.z * 36)));
-
-			int memOffsetRight = ((position.x + 1) * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
-			int memOffsetLeft =  ((position.x - 1) * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
-
-			int memOffsetBack =	 (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * ((position.z + 1) * 36)));
-			int memOffsetFront = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * ((position.z - 1) * 36)));
-
-			// TODO: THE REST OF THIS.
-		}
-	}
-}
-
 void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 {
 	int bytesInFace = 6 * sizeof(Vector3);

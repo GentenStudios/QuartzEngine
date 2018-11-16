@@ -72,7 +72,7 @@ void BlockLibrary::registerBlock(Block* block)
 
 Block BlockLibrary::getBlockByID(std::string id)
 {
-	for (int i = 1; i < m_blockLibrary.size(); i++)
+	for (unsigned int i = 1; i < m_blockLibrary.size(); i++)
 	{
 		Block* block = m_blockLibrary[i];
 		if (block->getID() == id)

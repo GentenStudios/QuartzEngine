@@ -12,7 +12,7 @@ ConfigManager* ConfigManager::get()
 	return &m;
 }
 
-ConfigFile *ConfigManager::registerConfig(const std::string & name)
+ConfigFile* ConfigManager::registerConfig(const std::string & name)
 {
 	m_configfiles.insert(std::make_pair(name, ConfigFile(name + ".ini")));
 	
@@ -22,7 +22,7 @@ ConfigFile *ConfigManager::registerConfig(const std::string & name)
 	return configFile;
 }
 
-ConfigFile * ConfigManager::getConfigFile(const std::string & name)
+ConfigFile* ConfigManager::getConfigFile(const std::string & name)
 {
 	// Config file has not been registered so return nullptr.
 	if (m_configfiles.find(name) == m_configfiles.end())
