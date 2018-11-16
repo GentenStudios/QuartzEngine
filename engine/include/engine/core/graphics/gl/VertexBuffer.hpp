@@ -2,7 +2,8 @@
 
 #include <engine/core/Core.hpp>
 
-#include <engine/core/graphics/gl/GLEnums.hpp
+#include <engine/core/graphics/gl/GLEnums.hpp>
+#include <engine/core/graphics/gl/GLDebug.hpp>
 #include <GL/glew.h>
 
 namespace phx

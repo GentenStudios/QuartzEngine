@@ -1,19 +1,4 @@
-#include <engine/common.hpp>
-#include <engine/utils/io.hpp>
-
-#include <engine/graphics/IWindow.hpp>
-
-#include <engine/graphics/opengl/ShaderPipeline.hpp>
-#include <engine/graphics/opengl/TextureArray.hpp>
-#include <engine/graphics/Camera.hpp>
-
-#include <engine/events/Keys.hpp>
-
-#include <engine/voxels/Block.hpp>
-#include <engine/voxels/Chunk.hpp>
-#include <engine/voxels/ChunkManager.hpp>
-
-#include <engine/utils/Config.hpp>
+#include <Phoenix.hpp>
 
 #include <chrono>
 #include <thread>

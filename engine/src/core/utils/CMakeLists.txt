@@ -1,8 +1,9 @@
 set(utilsSourceDir ${CMAKE_CURRENT_LIST_DIR})
 
-set(utilsSources
-    ${utilsSourceDir}/IO.hpp
-    ${utilsSourceDir}/Logging.hpp
+set(utilSources
+    ${utilsSourceDir}/IO.cpp
+    ${utilsSourceDir}/Logging.cpp
+    ${utilsSourceDir}/Config.cpp
 )
 
 source_group("Source Files\\Core\\Utils" FILES ${utilSources})

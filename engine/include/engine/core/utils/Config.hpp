@@ -6,7 +6,7 @@
 
 #include <inih/INIReader.h>
 
-#include "engine/events/Keys.hpp"
+#include <engine/core/events/Keys.hpp>
 
 #define PHX_REGISTER_CONFIG(filenameStr) \
 	phx::ConfigManager::get()->registerConfig(filenameStr)
@@ -56,7 +56,7 @@ namespace phx
 		float getFloat(const std::string& section, const std::string& key, float default);
 
 		/**
-		* @brief Load's a SDL_Scandcode from the config .ini file, using the specfied default value if the value doesn't exist.
+                * @brief Load's a event::Keys enumumator value from the config .ini file, using the specfied default value if the value doesn't exist.
 		*        This will parse the key names into a events::Keys value. See https://wiki.libsdl.org/SDL_Keycode for a list of all possible key names
 		* @param section The ini section that the key/value belongs to.
 		* @param key The integers key (ini key/value pairs are in the format `key=value`

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "engine/math/Vector3.hpp"
+#include <engine/core/math/Vector3.hpp>
+#include <engine/core/math/MathUtils.hpp>
 
 namespace phx {
 

@@ -10,8 +10,8 @@
 #include <engine/core/graphics/IWindow.hpp>
 #include <SDL.h>
 
-#include "engine/utils/Config.hpp"
-#include "engine/events/Keys.hpp"
+#include <engine/core/utils/Config.hpp>
+#include "engine/core/events/Keys.hpp"
 
 namespace phx
 {
