@@ -1,14 +1,27 @@
+/**
+ * @file Keys.hpp
+ * @brief File for declaring the API for Keys.
+ */
+
 #pragma once
 
 #include <engine/core/Core.hpp>
 #include <SDL.h>
 
-namespace phx
-{
-	namespace events
-	{
-		enum class Keys : int
-		{
+namespace phx {
+	namespace events {
+
+		/**
+		 * @brief Enum for Key aliases, from API to SDL.
+		 *
+		 * @details This enum is for the Key interface. A key from here can be passed into a function, where it can be casted to INT,
+		 *			to get the SDL_Scancode. This is abstract enough that it can be swapped out to another library easily if required at a later date.
+		 *
+		 *			The underlying type is int, therefore, when writing functions interfacing with this enum, you shouldn't have to cast it if registering the key as an input.
+		 *			The casting of the key is already done in SDLWindow.cpp, so it is unnecessary. However, if using the Key differently and require the Scancode for some reason,
+		 *			getting the scancode number should be as easy as ``static_cast<int>(events::Keys::KEY_A) (or whatever key...)``
+		 */
+		enum class Keys : int {
 			KEY_A = SDL_SCANCODE_A,
 			KEY_B = SDL_SCANCODE_B,
 			KEY_C = SDL_SCANCODE_C,

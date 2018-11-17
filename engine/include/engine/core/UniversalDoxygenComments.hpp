@@ -21,7 +21,7 @@ namespace phx
 	 * @details This namespace should only contain code related to the graphical part of the engine, so things like the OpenGL
 	 *			Abstraction Layer should go in here, along with something like a HUD system, etc...
 	 */
-	namespace graphics
+	namespace gfx
 	{
 		/**
 		 * @brief The Namesapce for	specifically OpenGL related code.
