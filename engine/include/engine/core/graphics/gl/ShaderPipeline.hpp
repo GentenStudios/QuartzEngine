@@ -18,30 +18,107 @@ namespace phx
 		namespace gl
 		{
 
+			/**
+			 * @brief The class to compile and link shader programs, as well as send uniforms to the GPU, for use in shaders. 
+			 * 
+			 */
 			class ShaderPipeline
 			{
 			public:
 				ShaderPipeline();
 				~ShaderPipeline();
 
+				/**
+				 * @brief Add a stage to the shader pipeline.
+				 * 
+				 * @param stage The type of shader which is being added, often VERTEX and FRAGMENT shaders.
+				 * @param shaderSource The actual SOURCE of the shader, sent as a const char*, could be changed to a stringstream or string if required.
+				 */
 				void addStage(ShaderType stage, const char* shaderSource);
+
+				/**
+				 * @brief Compile the shaders and link them to the usable shader program.
+				 * 
+				 */
 				void build();
 
+				/**
+				 * @brief Use the shader program, often called just before render calls.
+				 * 
+				 */
 				void use() const;
 
+				/**
+				 * @brief Send a single number/piece of data to the graphics card. 
+				 * 
+				 * @tparam T 	The type of data that needs to be sent to the GPU. EACH ONE NEEDS TO BE DONE DIFFERENTLY.
+				 * @param name 	The name of the uniform that is being set.
+				 * @param a		The actual variable to send. 
+				 */
 				template <typename T> void setUniform1(const std::string& name, T a) const;
-        		template <typename T> void setUniform2(const std::string& name, T a, T b) const;
-        		template <typename T> void setUniform3(const std::string& name, T a, T b, T c) const;
-        		template <typename T> void setUniform4(const std::string& name, T a, T b, T c, T d) const;
 
-				void setVec2(const std::string& name, phx::Vector2 &value) const;
-				void setVec2(const std::string& name, float x, float y) const;
+				/**
+				 * @brief Send two numbers/pieces of data to the graphics card. 
+				 * 
+				 * @tparam T 	The type of data that needs to be sent to the GPU. EACH ONE NEEDS TO BE DONE DIFFERENTLY.
+				 * @param name 	The name of the uniform that is being set.
+				 * @param a		The actual variable to send (FIRST PART). 
+				 * @param b		The actual variable to send (SECOND PART). 
+				 */
+				template <typename T> void setUniform2(const std::string& name, T a, T b) const;
 
-				void setVec3(const std::string& name, phx::Vector3 &value) const;
-				void setVec3(const std::string& name, float x, float y, float z) const;
+				/**
+				 * @brief Send three numbers/pieces of data to the graphics card. 
+				 * 
+				 * @tparam T 	The type of data that needs to be sent to the GPU. EACH ONE NEEDS TO BE DONE DIFFERENTLY.
+				 * @param name 	The name of the uniform that is being set.
+				 * @param a		The actual variable to send (FIRST PART). 
+				 * @param b		The actual variable to send (SECOND PART). 
+				 * @param c		The actual variable to send (THIRD PART). 
+				 */
+				template <typename T> void setUniform3(const std::string& name, T a, T b, T c) const;
 
-				void setMat4(const std::string &name, const Matrix4x4& mat) const;
+				/**
+				 * @brief Send four numbers/pieces of data to the graphics card. 
+				 * 
+				 * @tparam T 	The type of data that needs to be sent to the GPU. EACH ONE NEEDS TO BE DONE DIFFERENTLY.
+				 * @param name 	The name of the uniform that is being set.
+				 * @param a		The actual variable to send (FIRST PART). 
+				 * @param b		The actual variable to send (SECOND PART). 
+				 * @param c		The actual variable to send (THIRD PART). 
+				 * @param d		The actual variable to send (FOURTH PART). 
+				 */
+				template <typename T> void setUniform4(const std::string& name, T a, T b, T c, T d) const;
 
+				/**
+				 * @brief Send a phx::Vector2 to the graphics card.
+				 * 
+				 * @param name 	The name of the uniform that is being set.
+				 * @param value The actual Vector2 to send.
+				 */
+				void setVec2(const std::string& name, phx::Vector2& value) const;
+
+				/**
+				 * @brief Send a phx::Vector3 to the graphics card.
+				 * 
+				 * @param name 	The name of the uniform that is being set.
+				 * @param value The actual Vector3 to send.
+				 */
+				void setVec3(const std::string& name, phx::Vector3& value) const;
+
+				/**
+				 * @brief Send a phx::Matrix4x4 to the graphics card.
+				 * 
+				 * @param name 	The name of the uniform that is being set.
+				 * @param value The actual Matrix4x4 to send.
+				 */
+				void setMat4(const std::string& name, const Matrix4x4& mat) const;
+
+				/**
+				 * @brief Get the Shader Program that is made.
+				 * 
+				 * @return The ID of the Shader Program, for easy use wherever required.
+				 */
 				unsigned int getShaderProgram() const;
 
 			private:
