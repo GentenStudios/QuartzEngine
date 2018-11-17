@@ -74,9 +74,13 @@ namespace phx
 				int getTexLayer(const std::string& path);
 
 			private:
+				/// @brief Unordered Map for mapping paths with Texture Layers.
 				TexCache m_texNames;
 
+				/// @brief Unique ID for the Texture Array, set by OpenGL.
 				unsigned int m_textureID;
+
+				/// @brief The number of textures that exist in the Chunk at this point in time.
 				int m_textureNumber = 0;
 			};
 

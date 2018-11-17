@@ -29,7 +29,7 @@ namespace phx
 				~ShaderPipeline();
 
 				/**
-				 * @brief Add a stage to the shader pipeline.
+				 * @brief Adds a stage to the shader pipeline.
 				 * 
 				 * @param stage The type of shader which is being added, often VERTEX and FRAGMENT shaders.
 				 * @param shaderSource The actual SOURCE of the shader, sent as a const char*, could be changed to a stringstream or string if required.
@@ -37,19 +37,19 @@ namespace phx
 				void addStage(ShaderType stage, const char* shaderSource);
 
 				/**
-				 * @brief Compile the shaders and link them to the usable shader program.
+				 * @brief Compiles the shaders and links them to the usable shader program.
 				 * 
 				 */
 				void build();
 
 				/**
-				 * @brief Use the shader program, often called just before render calls.
+				 * @brief Uses the shader program, often called just before render calls.
 				 * 
 				 */
 				void use() const;
 
 				/**
-				 * @brief Send a single number/piece of data to the graphics card. 
+				 * @brief Sends a single number/piece of data to the graphics card. 
 				 * 
 				 * @tparam T 	The type of data that needs to be sent to the GPU. EACH ONE NEEDS TO BE DONE DIFFERENTLY.
 				 * @param name 	The name of the uniform that is being set.
@@ -58,7 +58,7 @@ namespace phx
 				template <typename T> void setUniform1(const std::string& name, T a) const;
 
 				/**
-				 * @brief Send two numbers/pieces of data to the graphics card. 
+				 * @brief Sends two numbers/pieces of data to the graphics card. 
 				 * 
 				 * @tparam T 	The type of data that needs to be sent to the GPU. EACH ONE NEEDS TO BE DONE DIFFERENTLY.
 				 * @param name 	The name of the uniform that is being set.
@@ -68,7 +68,7 @@ namespace phx
 				template <typename T> void setUniform2(const std::string& name, T a, T b) const;
 
 				/**
-				 * @brief Send three numbers/pieces of data to the graphics card. 
+				 * @brief Sends three numbers/pieces of data to the graphics card. 
 				 * 
 				 * @tparam T 	The type of data that needs to be sent to the GPU. EACH ONE NEEDS TO BE DONE DIFFERENTLY.
 				 * @param name 	The name of the uniform that is being set.
@@ -79,7 +79,7 @@ namespace phx
 				template <typename T> void setUniform3(const std::string& name, T a, T b, T c) const;
 
 				/**
-				 * @brief Send four numbers/pieces of data to the graphics card. 
+				 * @brief Sends four numbers/pieces of data to the graphics card. 
 				 * 
 				 * @tparam T 	The type of data that needs to be sent to the GPU. EACH ONE NEEDS TO BE DONE DIFFERENTLY.
 				 * @param name 	The name of the uniform that is being set.
@@ -91,7 +91,7 @@ namespace phx
 				template <typename T> void setUniform4(const std::string& name, T a, T b, T c, T d) const;
 
 				/**
-				 * @brief Send a phx::Vector2 to the graphics card.
+				 * @brief Sends a phx::Vector2 to the graphics card.
 				 * 
 				 * @param name 	The name of the uniform that is being set.
 				 * @param value The actual Vector2 to send.
@@ -99,7 +99,7 @@ namespace phx
 				void setVec2(const std::string& name, phx::Vector2& value) const;
 
 				/**
-				 * @brief Send a phx::Vector3 to the graphics card.
+				 * @brief Sends a phx::Vector3 to the graphics card.
 				 * 
 				 * @param name 	The name of the uniform that is being set.
 				 * @param value The actual Vector3 to send.
@@ -107,7 +107,7 @@ namespace phx
 				void setVec3(const std::string& name, phx::Vector3& value) const;
 
 				/**
-				 * @brief Send a phx::Matrix4x4 to the graphics card.
+				 * @brief Sends a phx::Matrix4x4 to the graphics card.
 				 * 
 				 * @param name 	The name of the uniform that is being set.
 				 * @param value The actual Matrix4x4 to send.
@@ -115,14 +115,17 @@ namespace phx
 				void setMat4(const std::string& name, const Matrix4x4& mat) const;
 
 				/**
-				 * @brief Get the Shader Program that is made.
+				 * @brief Gets the Shader Program that is made.
 				 * 
 				 * @return The ID of the Shader Program, for easy use wherever required.
 				 */
 				unsigned int getShaderProgram() const;
 
 			private:
+				/// @brief Vector for storing shader specific IDs, is cleared after build() is called.
 				std::vector<unsigned int> m_shaders;
+
+				/// @brief Shader Program ID variable.
 				unsigned int m_shaderProgram;
 				
 			};

@@ -34,7 +34,7 @@ namespace phx
 		{
 
 			/**
-			 * @brief This function is checking for OpenGL errors and prints a message when one is spotted.
+			 * @brief Checks for OpenGL errors and prints a message when one is spotted.
 			 * @param file The file from which the function was called (should be __FILE__)
 			 * @param line The line where the function was called (should be __LINE__)
 			 * @return A boolean, to know if we got an error or not

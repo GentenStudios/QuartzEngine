@@ -19,14 +19,14 @@ namespace phx
 	namespace sdl
 	{
 		/**
-		 * @brief A Class to use SDL as a Windowing Library. See IWindow documentation for further information.
+		 * @brief Class to use SDL as a Windowing Library. See IWindow documentation for further information.
 		 * 
 		 */
 		class SDLWindow : public phx::gfx::IWindow
 		{
 		public:
 		  	/**
-			 * @brief Create the actual window
+			 * @brief Creates the actual window
 			 * 
 			 * @param title 	Refer to IWindow documentation
 			 * @param width 	Refer to IWindow documentation
@@ -59,22 +59,32 @@ namespace phx
 		  	virtual void setMousePosition(TVector2<int> newPos);
 
 		private:
+
+			/// @brief The pointer to the window's data.
 			SDL_Window* m_window;
+
+			/// @brief The OpenGL context for the data.
 			SDL_GLContext m_context;
 
+			/// @brief Boolean to see if it is "still running".
 			bool m_running;
-			
+
+			/// @brief Struct for storing KeyEvent callbacks and related data with it.
 			struct KeyEvent_t {
 				int eventType;
 				int key;
 				std::function<void()> callback;
 			};
 
+			/// @brief MouseMoveEvent callback "holder". Makes handling the data in the function definitions much easier.
 			struct MouseMoveEvent_t {
 				std::function<void(double,double)> callback;
 			};
 
+			/// @brief Vector for storing KeyEvents, is cycled through when a key event is recieved.
 			std::vector<KeyEvent_t> m_keyEvents;
+
+			/// @brief Vector for storing MouseMoveEvents, is cycled through when the mouse is moved.
 			std::vector<MouseMoveEvent_t> m_mouseMoveEvents;
 		};
 
