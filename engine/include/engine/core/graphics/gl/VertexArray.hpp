@@ -12,13 +12,26 @@ namespace phx
 		namespace gl
 		{
 
+			/**
+			 * @brief Class for VertexArrays. Very simple with just binding and unbinding.
+			 * 
+			 */
 			class VertexArray
 			{
 			public:
 				VertexArray();
 				~VertexArray();
 
+				/**
+				 * @brief BIND THE ARRAY!
+				 * 
+				 */
 				void bind();
+
+				/**
+				 * @brief unbind the array, like a wuss.
+				 * 
+				 */
 				void unbind();
 
 			private:
