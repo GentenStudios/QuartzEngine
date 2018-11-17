@@ -1,5 +1,5 @@
 /**
- *  @file logging.hpp
+ *  @file Logging.hpp
  *  @brief Class and #defines for the logger.
  */
 
@@ -39,7 +39,6 @@ namespace phx
 	{
 	public:
 		/**
-		 * @enum  phx::Console::Color
 		 * @brief The fixed list colors that text can be set to in the console. 
 		 */
 		enum class Color
@@ -59,14 +58,13 @@ namespace phx
 
 		/**
 		 * @brief Set the text color for any preceding text (stdout). The color will remain as set here until it is changed by another `setTextColor` call.
-		 * @param[in] The color to set any preceding text to.
+		 * @param The color to set any preceding text to.
 		 */
 		static void setTextColor(const Color& color);
 	private:
 	};
 
 	/**
-	 * @enum	phx::LogVerbosity
 	 * @brief	This is what will define whether certain messages are low enough a verbosity to be outputted.
 	 */
 	enum class LogVerbosity
@@ -77,6 +75,10 @@ namespace phx
 		DEBUG	= 3, ///< DEBUG For absolutely everything, like entering a function to exiting the function.
 	};
 
+	/**
+	 * @brief Class for Logging. Literally.
+	 * 
+	 */
 	class Logger
 	{
 	private:
@@ -97,8 +99,8 @@ namespace phx
 
 		/**
 		 * @brief Initialise the Logger, open file and set the initial logging verbosity level.
-		 * @param[in] logFile The file in which log messages should be outputted to, as well as the console.
-		 * @param[in] vbLevel The initial logging verbosity, dictates what should and shouldn't be outputted, by referring to LogVerbosity.
+		 * @param logFile The file in which log messages should be outputted to, as well as the console.
+		 * @param vbLevel The initial logging verbosity, dictates what should and shouldn't be outputted, by referring to LogVerbosity.
 		 */
 		void init(std::string logFile, LogVerbosity vbLevel);
 
@@ -127,12 +129,12 @@ namespace phx
 
 	private:
 		/**
-		* @brief logMessage is to actually log the message to the console and the file opened by init();
-		* @param errorFile     The file from which the error is occurring
-		* @param lineNumber    The line from which the error is occurring
-		* @param message       The actual message to be logged.
-		* @param verbosity     The verbosity of the message, dictates whether the message is outputted or not.
-		*/
+		 * @brief logMessage is to actually log the message to the console and the file opened by init();
+		 * @param errorFile     The file from which the error is occurring
+		 * @param lineNumber    The line from which the error is occurring
+		 * @param message       The actual message to be logged.
+		 * @param verbosity     The verbosity of the message, dictates whether the message is outputted or not.
+		 */
 		void logMessage(std::string errorFile, int lineNumber, std::string subSectors, std::string message, LogVerbosity verbosity);
 		
 		Logger() {}

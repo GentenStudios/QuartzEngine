@@ -25,9 +25,9 @@ namespace phx
 		public:
 			/**
 			 * @brief Initialise a block
-			 * @param[in] The unique id for the block, should be in format mod:id to eliminate conflict
-			 * @param[in] The player friendly name of the block
-			 * @param[in] The block type (SOLID, LIQUID, GAS)
+			 * @param The unique id for the block, should be in format mod:id to eliminate conflict
+			 * @param The player friendly name of the block
+			 * @param The block type (SOLID, LIQUID, GAS)
 			 */
 			Block(std::string id, std::string name, BlockType type);
 			Block(const Block& other);
