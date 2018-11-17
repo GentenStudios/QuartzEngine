@@ -35,6 +35,7 @@ namespace phx
 				void unbind();
 
 			private:
+				/// @brief Unique ID for the Vertex Array, set by OpenGL
 				unsigned int m_arrayID;
 			};
 
