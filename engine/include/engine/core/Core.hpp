@@ -1,3 +1,9 @@
+/**
+ * @file Core.hpp
+ * @brief Core includes for the Project. Yay!
+ * 
+ */
+
 #pragma once
 
 /// INCLUDE STREAMS ///
