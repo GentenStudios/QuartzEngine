@@ -29,47 +29,47 @@ namespace phx
 		{
 		public:
 			/**
-			 * @brief Get configuration from Camera Controls INI file. 
+			 * @brief Gets configuration from Camera Controls INI file. 
 			 */
 			void load();
 
 			/**
-			 * @brief Get the key assigned to moving forward.
+			 * @brief Gets the key assigned to moving forward.
 			 * 
 			 * @return An events::Keys ENUM value to use straight away in the camera classes.
 			 */
 			events::Keys moveForward();
 
 			/**
-			 * @brief Get the key assigned to moving backwards.
+			 * @brief Gets the key assigned to moving backwards.
 			 * 
 			 * @return An events::Keys ENUM value to use straight away in the camera classes.
 			 */
 			events::Keys moveBackwards();
 
 			/**
-			 * @brief Get the key assigned to strafing left.
+			 * @brief Gets the key assigned to strafing left.
 			 * 
 			 * @return An events::Keys ENUM value to use straight away in the camera classes.
 			 */
 			events::Keys strafeLeft();
 
 			/**
-			 * @brief Get the key assigned to strafing right.
+			 * @brief Gets the key assigned to strafing right.
 			 * 
 			 * @return An events::Keys ENUM value to use straight away in the camera classes.
 			 */
 			events::Keys strafeRight();
 
 			/**
-			 * @brief Get the mouse sensitivity from the Config file.
+			 * @brief Gets the mouse sensitivity from the Config file.
 			 * 
 			 * @return The mouse sensitivity, as a float, ready to use wherever necessary.
 			 */
 			float mouseSensitivity();
 
 			/**
-			 * @brief Get the move speed from the Config file.
+			 * @brief Gets the move speed from the Config file.
 			 * 
 			 * @return The move speed, as a float, ready to use wherever necessary.
 			 */
@@ -84,7 +84,7 @@ namespace phx
 		{
 		public:
 			/**
-			 * @brief Construct a new FPSCam object
+			 * @brief Constructs a new FPSCam object
 			 * 
 			 * @param A window object, mainly used to check for key presses.
 			 */
@@ -92,21 +92,21 @@ namespace phx
 			~FPSCam() {};
 
 			/**
-			 * @brief Calculate the view matrix for use in the graphics shaders.
+			 * @brief Calculates the view matrix for use in the graphics shaders.
 			 * 
 			 * @return A 4x4 Matrix containing the required information to send into shaders.
 			 */
 			Matrix4x4 calculateViewMatrix();
 
 			/**
-			 * @brief Get the Position of the Camera, in world space.
+			 * @brief Gets the Position of the Camera, in world space.
 			 * 
 			 * @return A Vector3 containing the position of the camera.
 			 */
 			Vector3 getPosition();
 
 			/**
-			 * @brief Get the Direction of the Camera, in world space.
+			 * @brief Gets the Direction of the Camera, in world space.
 			 * 
 			 * @return A Vector3 containing the direction of the camera.
 			 */
@@ -115,7 +115,7 @@ namespace phx
 			bool enabled;
 
 			/**
-			 * @brief Update things like position and direction dependant on whether the mouse has moved, or a key has been pressed.
+			 * @brief Updates things like position and direction dependant on whether the mouse has moved, or a key has been pressed.
 			 * 
 			 * @param dt The Delta Time, the time between each frame, so the player moves at the same speed regardless of if they're playing at 100fps or 10fps. 
 			 */
