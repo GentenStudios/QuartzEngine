@@ -1,3 +1,8 @@
+/**
+ * @file Vector3.hpp
+ * @brief 3 Component Vector, for even more Mathematical FuN! HaS eVeN mOrE MaThS fUNctIoNs!
+ */
+
 #pragma once
 
 namespace phx {

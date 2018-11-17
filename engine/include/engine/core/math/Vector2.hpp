@@ -1,3 +1,9 @@
+/**
+ * @file Vector2.hpp
+ * @brief 2 Component Vector for absolute fun. Yay?
+ * 
+ */
+
 #pragma once
 
 namespace phx {

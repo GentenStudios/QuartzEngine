@@ -1,3 +1,9 @@
+/**
+ * @file Matrix4x4.hpp
+ * @brief 4 by 4 Matrix for fun maths! :/ or :) depending on the day.
+ * 
+ */
+
 #pragma once
 
 #include <engine/core/math/Vector3.hpp>

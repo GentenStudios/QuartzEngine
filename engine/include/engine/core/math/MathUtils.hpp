@@ -1,3 +1,9 @@
+/**
+ * @file MahthsUtils.hpp
+ * @brief MathUtils struct for useful things in life to do with maths :)
+ * 
+ */
+
 #pragma once
 
 namespace phx {
