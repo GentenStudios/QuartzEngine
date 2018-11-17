@@ -18,33 +18,45 @@ namespace phx
 {
 	namespace sdl
 	{
-
+		/**
+		 * @brief A Class to use SDL as a Windowing Library. See IWindow documentation for further information.
+		 * 
+		 */
 		class SDLWindow : public phx::gfx::IWindow
 		{
 		public:
-			SDLWindow(const char* title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile);
+		  	/**
+			 * @brief Create the actual window
+			 * 
+			 * @param title 	Refer to IWindow documentation
+			 * @param width 	Refer to IWindow documentation
+			 * @param height 	Refer to IWindow documentation
+			 * @param version 	Refer to IWindow documentation
+			 * @param profile 	Refer to IWindow documentation
+			 */
+			SDLWindow(const char *title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile);
 
 			virtual void pollEvents();
 			virtual void swapBuffers();
 			virtual bool isRunning();
 			virtual void close();
-			
-			virtual void setTitle(const char* title);
-			virtual void getSize(int& width, int& height);
+
+			virtual void setTitle(const char *title);
+			virtual void getSize(int &width, int &height);
 			virtual void setFullscreen(bool enabled);
 			virtual void setResizable(bool enabled);
 			virtual void setCursorState(phx::gfx::CursorState cursorState);
-
+	
 			virtual void setVSync(bool value);
 			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback);
 			virtual void addMouseMoveCallback(std::function<void(double, double)> callback);
-
+	
 			inline SDL_Window* getSDLWindow() const { return m_window; }
 
-			virtual bool isKeyDown(events::Keys key);
-			virtual TVector2<int> getMousePosition();
+		  	virtual bool isKeyDown(events::Keys key);
+		 	virtual TVector2<int> getMousePosition();
 
-			virtual void setMousePosition(TVector2<int> newPos);
+		  	virtual void setMousePosition(TVector2<int> newPos);
 
 		private:
 			SDL_Window* m_window;
