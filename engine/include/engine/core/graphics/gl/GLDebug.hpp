@@ -62,7 +62,19 @@ namespace phx
 				}
 #endif  // PHX_DEBUG
 			}
-
+			/**
+			 * @brief OpenGL Debugging output function. THIS FUNCTION IS HANDLED BY OPENGL, AND DOES NOT NEED *ANY* INTERVENTION FROM PROGRAMMERS.
+			 * 
+			 * @param source 		The source of the error, whether it be an API error, or WINDOW SYSTEM error, or maybe even a THIRD PARTY error.
+			 * @param type 			The type of error, as in ERROR, or DEPRECATED BEHAVIOUR, or other types of errors that OpenGL recognises.
+			 * @param id 			The ID of the error, this is often very vague and can be quite useless.
+			 * @param severity 		The severity of the error, whether it be HGIH, MEDIUM, or LOW severity, or even just a notificataion.
+			 * @param length 		The length of the message. (not used by us.)
+			 * @param message 		The message itself.
+			 * @param userParam 	Any Parameters we decide to make OpenGL send.
+			 * 
+			 * ALL THESE PARAMETERS ARE SET BY OPENGL, AND ALL FUNCTION CALLS ARE DONE BY OPENGL, DO NOT INTERFERE WITH THIS, OR YOU MAY BREAK DEBUGGING OF OPENGL.
+			 */
 			inline void __stdcall glDebugOutput(GLenum source,
 				GLenum type,
 				GLuint id,
