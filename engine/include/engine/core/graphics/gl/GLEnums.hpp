@@ -11,6 +11,10 @@ namespace phx
 		namespace gl
 		{
 
+			/**
+			 * @brief An ENUM for converting types to OpenGL types, just a top layer to avoid ugly code in things like the client.
+			 * 
+			 */
 			enum class GLType
 			{
 				FLOAT	= GL_FLOAT,
@@ -20,6 +24,10 @@ namespace phx
 				BYTE	= GL_BYTE,
 			};
 
+			/**
+			 * @brief An ENUM for converting wanted buffer targets to actual OpenGL Buffer Targets.
+			 * 
+			 */
 			enum class BufferTarget
 			{
 				ARRAY_BUFFER			= GL_ARRAY_BUFFER,
@@ -33,6 +41,10 @@ namespace phx
 				UNIFORM_BUFFER			= GL_UNIFORM_BUFFER
 			};
 
+			/**
+			 * @brief An ENUM for converting wanted buffer usages to actual OpenGL Buffer Usages.
+			 * 
+			 */
 			enum class BufferUsage
 			{
 				DYNAMIC_COPY = GL_DYNAMIC_COPY,
@@ -43,6 +55,10 @@ namespace phx
 				STATIC_READ = GL_STATIC_READ,
 			};
 
+			/**
+			 * @brief An ENUM for Shader types, this mainly makes it easier for adding shader stages, as not a function is required for each type of shader.
+			 * 
+			 */
 			enum class ShaderType {
 				VERTEX_SHADER = GL_VERTEX_SHADER,
 				FRAGMENT_SHADER = GL_FRAGMENT_SHADER,
