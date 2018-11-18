@@ -26,8 +26,11 @@ ConfigFile * ConfigManager::getConfigFile(const std::string & name)
 {
 	// Config file has not been registered so return nullptr.
 	if (m_configfiles.find(name) == m_configfiles.end())
-		return nullptr;
-
+	{
+		static ConfigFile file;
+		LWARNING("Config file \"", name, "\" has not been registered. Returning default config file.");
+		return &file;
+	}
 	return &m_configfiles[name];
 }
 
