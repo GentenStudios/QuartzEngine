@@ -30,6 +30,14 @@ namespace phx
 		struct GLVersion {
 			int major;
 			int minor;
+
+			GLVersion(int a, int b) :
+				major(a),
+				minor(b)
+			{}
+
+			GLVersion()
+			{}
 		};
 
 	}
