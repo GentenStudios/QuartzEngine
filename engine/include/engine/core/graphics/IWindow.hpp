@@ -74,7 +74,7 @@ namespace phx
 			 * @param profile 	The OpenGL profile, such as the Compatability profile, or Core profile.
 			 * @return IWindow* The respective object for the class depicted by the WindowingAPI parameter.
 			 */
-			static IWindow* createWindow(WindowingAPI windowApi, std::string& title, int width, int height, GLVersion version, GLProfile profile);
+			static IWindow* createWindow(WindowingAPI windowApi, const std::string& title, int width, int height, GLVersion version, GLProfile profile);
 
 			/**
 			 * @brief Polls events that occur during the game loop.

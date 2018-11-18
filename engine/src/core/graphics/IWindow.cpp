@@ -3,7 +3,7 @@
 
 using namespace phx::gfx;
 
-IWindow* IWindow::createWindow(WindowingAPI windowingAPI, std::string& title, int width, int height, GLVersion version, GLProfile profile)
+IWindow* IWindow::createWindow(WindowingAPI windowingAPI, const std::string& title, int width, int height, GLVersion version, GLProfile profile)
 {
 	switch (windowingAPI)
 	{

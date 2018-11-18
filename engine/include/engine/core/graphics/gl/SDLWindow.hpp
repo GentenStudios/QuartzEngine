@@ -34,7 +34,7 @@ namespace phx
 			 * @param version 	Refer to IWindow documentation
 			 * @param profile 	Refer to IWindow documentation
 			 */
-			SDLWindow(std::string& title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile);
+			SDLWindow(const std::string& title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile);
 
 			virtual void pollEvents();
 			virtual void swapBuffers();

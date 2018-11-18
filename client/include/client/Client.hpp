@@ -12,7 +12,9 @@ namespace client
 		Sandbox();
 		~Sandbox();
 
-		void setup(phx::Application::SetupCallback setupCallback);
+		const phx::ApplicationRequirements* getRequirements() { return m_appRequirements; }
+		void setAppData(phx::ApplicationData* appData) { m_appData = appData; }
+
 		void run();
 
 	private:

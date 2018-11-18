@@ -12,21 +12,20 @@ int main(int argc, char** argv)
 {
 	phx::Application* application = phx::createApplication();
 
-	application->setup(
-		[](phx::ApplicationRequirements* requirements, phx::ApplicationData* data)
-		{
-			INITLOGGER(requirements->logFile, requirements->logVerbosity);
+	const phx::ApplicationRequirements* requirements = application->getRequirements();
 
-			data->window = phx::gfx::IWindow::createWindow(
-				phx::gfx::WindowingAPI::SDL,
-				requirements->windowTitle,
-				requirements->windowWidth,
-				requirements->windowHeight,
-				requirements->glVersion,
-				requirements->glProfile
-			);
-		}
+	phx::ApplicationData* appData = new ApplicationData();
+
+	appData->window = phx::gfx::IWindow::createWindow(
+		phx::gfx::WindowingAPI::SDL,
+		requirements->windowTitle,
+		requirements->windowWidth,
+		requirements->windowHeight,
+		requirements->glVersion,
+		requirements->glProfile
 	);
+
+	application->setAppData(appData);
 
 	application->run();
 

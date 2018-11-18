@@ -30,13 +30,11 @@ namespace phx
 	class Application
 	{
 	public:
-
-		using SetupCallback = std::function<void(ApplicationRequirements*, ApplicationData*)>;
-
 		Application() {};
 		virtual ~Application() {};
 
-		virtual void setup(SetupCallback setupCallback) = 0;
+		virtual const ApplicationRequirements* getRequirements() = 0;
+		virtual void setAppData(ApplicationData* appData) = 0;
 
 		virtual void run() = 0;
 	};

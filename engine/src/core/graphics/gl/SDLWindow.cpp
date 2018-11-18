@@ -3,7 +3,7 @@
 using namespace phx::sdl;
 using namespace phx;
 
-SDLWindow::SDLWindow(std::string& title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
+SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	

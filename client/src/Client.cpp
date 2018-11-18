@@ -31,11 +31,6 @@ Sandbox::~Sandbox()
 
 }
 
-void Sandbox::setup(phx::Application::SetupCallback setupCallback)
-{
-	setupCallback(m_appRequirements, m_appData);
-}
-
 void Sandbox::run()
 {
 	PHX_REGISTER_CONFIG("Controls");
