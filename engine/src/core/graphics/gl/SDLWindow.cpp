@@ -3,7 +3,7 @@
 using namespace phx::sdl;
 using namespace phx;
 
-SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
+SDLWindow::SDLWindow(std::string& title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	
@@ -36,7 +36,7 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 #endif
 
-	m_window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+	m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 	if (m_window == nullptr)
 	{
 		SDL_Quit();

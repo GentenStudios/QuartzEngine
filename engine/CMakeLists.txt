@@ -48,7 +48,7 @@ endif()
 # Link the library
 add_library(${PROJECT_NAME} STATIC ${engineSources} ${engineHeaders})
 target_link_libraries(${PROJECT_NAME} ${libraries})
-target_include_directories(${PROJECT_NAME} PRIVATE ${include_dirs})
+target_include_directories(${PROJECT_NAME} PUBLIC ${include_dirs})
 
 foreach(FILE ${engineSources}) 
     get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)

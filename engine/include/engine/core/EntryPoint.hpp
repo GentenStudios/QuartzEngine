@@ -10,19 +10,31 @@ extern phx::Application* phx::createApplication();
 #ifndef PHX_MAIN_HANDLED
 int main(int argc, char** argv)
 {
-	// ENGINE INITIALISAITON
-
-
-	ApplicationData* appData = new ApplicationData();
-	appData->window = phx::gfx::IWindow::createWindow(gfx::WindowingAPI::SDL, "Can't set the fucking title yet.", 1280, 720, { 3, 3 }, phx::gfx::GLProfile::CORE);
-
 	phx::Application* application = phx::createApplication();
 
-	application->setup(appData);
+	application->setup(
+		[](phx::ApplicationRequirements* requirements, phx::ApplicationData* data)
+		{
+			INITLOGGER(requirements->logFile, requirements->logVerbosity);
+
+			data->window = phx::gfx::IWindow::createWindow(
+				phx::gfx::WindowingAPI::SDL,
+				requirements->windowTitle,
+				requirements->windowWidth,
+				requirements->windowHeight,
+				requirements->glVersion,
+				requirements->glProfile
+			);
+		}
+	);
+
 	application->run();
 
 	delete application;
 
 	// ENGINE DE-INITIALISAITON
+	DESTROYLOGGER();
+
+	return 0;
 }
 #endif

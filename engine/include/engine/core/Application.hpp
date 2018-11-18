@@ -7,6 +7,21 @@
 namespace phx
 {
 
+	struct ApplicationRequirements
+	{
+		ApplicationRequirements() {}
+
+		phx::gfx::GLProfile glProfile;
+		phx::gfx::GLVersion glVersion;
+
+		int windowWidth;
+		int windowHeight;
+		std::string windowTitle;
+
+		std::string logFile;
+		phx::LogVerbosity logVerbosity;
+	};
+
 	struct ApplicationData
 	{
 		phx::gfx::IWindow* window;
@@ -15,10 +30,13 @@ namespace phx
 	class Application
 	{
 	public:
-		Application();
-		virtual ~Application() = 0;
 
-		virtual void setup(ApplicationData* data) = 0;
+		using SetupCallback = std::function<void(ApplicationRequirements*, ApplicationData*)>;
+
+		Application() {};
+		virtual ~Application() {};
+
+		virtual void setup(SetupCallback setupCallback) = 0;
 
 		virtual void run() = 0;
 	};

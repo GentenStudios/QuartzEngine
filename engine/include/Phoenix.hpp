@@ -2,6 +2,9 @@
 
 #include <engine/core/Core.hpp>
 
+#include <engine/core/Application.hpp>
+#include <engine/core/EntryPoint.hpp>
+
 // ----------- GRAPHICS ------------------------------------- //
 #include <engine/core/graphics/IWindow.hpp>
 #include <engine/core/graphics/gl/ShaderPipeline.hpp>

@@ -1,4 +1,4 @@
-#include <Phoenix.hpp>
+#include <client/Client.hpp>
 
 #include <chrono>
 #include <thread>
@@ -6,21 +6,41 @@
 using namespace phx::gfx;
 using namespace phx;
 
-int main(int argc, char *argv[])
+
+using namespace client;
+
+Sandbox::Sandbox() :
+	m_appRequirements(new phx::ApplicationRequirements()),
+	m_appData(new phx::ApplicationData)
 {
-	INITLOGGER("logs/phoenix.log", phx::LogVerbosity::DEBUG);
-	
+	using namespace phx::gfx;
+	using namespace phx;
+
+	m_appRequirements->glProfile = GLProfile::CORE;
+	m_appRequirements->glVersion = GLVersion(3, 3);
+	m_appRequirements->logFile = "log/PhoenixClient.log";
+	m_appRequirements->logVerbosity = LogVerbosity::DEBUG;
+
+	m_appRequirements->windowWidth = 1280;
+	m_appRequirements->windowHeight = 720;
+	m_appRequirements->windowTitle = "Phoenix!";
+}
+
+Sandbox::~Sandbox()
+{
+
+}
+
+void Sandbox::setup(phx::Application::SetupCallback setupCallback)
+{
+	setupCallback(m_appRequirements, m_appData);
+}
+
+void Sandbox::run()
+{
 	PHX_REGISTER_CONFIG("Controls");
 
-	gfx::IWindow* window = gfx::IWindow::createWindow(gfx::WindowingAPI::SDL,	// USE GLFW FOR WINDOWING
-		"Phoenix!",				// WINDOW TITLE IS PHOENIX
-		1280,					// WINDOW WIDTH IS 1280px
-		720,					// WINDOW HEIGHT is 720px
-		{ 3,3 },				// OPENGL VERSION IS 3.3
-		gfx::GLProfile::CORE	// OPENGL PROFILE IS "CORE"
-	);
-
-	window->setVSync(true);
+	auto window = m_appData->window;
 
 	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
 	std::vector<std::string> texForGrass;
@@ -50,11 +70,11 @@ int main(int argc, char *argv[])
 
 	window->addKeyCallback(static_cast<int>(EventType::PRESSED), static_cast<int>(events::Keys::KEY_ESCAPE), [&cam, &window]() {
 		cam->enabled = !cam->enabled;
-		if (cam->enabled) 
+		if (cam->enabled)
 		{
 			window->setCursorState(gfx::CursorState::DISABLED);
 		}
-		else 
+		else
 		{
 			window->setCursorState(gfx::CursorState::NORMAL);
 		}
@@ -110,8 +130,9 @@ int main(int argc, char *argv[])
 		world->render(10);
 		window->swapBuffers();
 	}
+}
 
-	DESTROYLOGGER();
-
-	return 0;
+phx::Application* phx::createApplication()
+{
+	return new Sandbox();
 }
