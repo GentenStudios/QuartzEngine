@@ -31,11 +31,11 @@ namespace phx
 			void unloadRedundant() { /* TODO this. */ }
 
 			void setBlockAt(phx::Vector3 position, Block* block);
-			void getBlockAt();
+			Block* getBlockAt(phx::Vector3 position);
 
 
-			void breakBlockAt();
-			void placeBlockAt();
+			void breakBlockAt(phx::Vector3 position);
+			void placeBlockAt(phx::Vector3 position, Block* block);
 						
 			void render(int bufferCounter);
 

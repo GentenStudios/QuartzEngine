@@ -58,7 +58,7 @@ namespace phx
 			void breakBlockAt(phx::Vector3 position, Block* replaceBlock);
 			void placeBlockAt(phx::Vector3 position, Block* placeBlock);
 
-			const Block* getBlockAt(phx::Vector3 position);
+			Block* getBlockAt(phx::Vector3 position);
 			void setBlockAt(phx::Vector3 position, Block* block);
 
 			void buildTextureArray();

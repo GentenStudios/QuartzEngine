@@ -18,18 +18,17 @@ Sandbox::Sandbox() :
 
 	m_appRequirements->glProfile = GLProfile::CORE;
 	m_appRequirements->glVersion = GLVersion(3, 3);
-	m_appRequirements->logFile = "log/PhoenixClient.log";
-	m_appRequirements->logVerbosity = LogVerbosity::DEBUG;
 
 	m_appRequirements->windowWidth = 1280;
 	m_appRequirements->windowHeight = 720;
 	m_appRequirements->windowTitle = "Phoenix!";
+
+	m_appRequirements->logFile = "log/PhoenixClient.log";
+	m_appRequirements->logVerbosity = LogVerbosity::DEBUG;
 }
 
 Sandbox::~Sandbox()
-{
-
-}
+{}
 
 void Sandbox::run()
 {
@@ -46,11 +45,16 @@ void Sandbox::run()
 	texForGrass.push_back("assets/images/dirt.png");
 	texForGrass.push_back("assets/images/grass_top.png");
 	block->setTextures(texForGrass);
+	block->setOnPlaceCallback(
+		[]() {
+			std::cout << "Cool Kid!" << std::endl;
+		}
+	);
 
 	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
 
 	voxels::ChunkManager* world = new voxels::ChunkManager();
-	world->setDefaultBlock(block);
+	world->setDefaultBlock(blockAir);
 	world->testGeneration(10);
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
@@ -104,23 +108,14 @@ void Sandbox::run()
 		shaderProgram->setMat4("u_model", model);
 		shaderProgram->setUniform1<int>("u_TexArray", 10);
 
-		if (i < 100)
+		if (i > 50)
 		{
-			shaderProgram->setUniform1<int>("TexLayer", 0);
-			i++;
-		}
-		else if (i >= 100 && i < 200)
-		{
-			shaderProgram->setUniform1<int>("TexLayer", 1);
-			i++;
-		}
-		else
-		{
-			i = 0;
-
-			world->setBlockAt({ (float)breakTest, 0, 1 }, blockAir);
+			world->placeBlockAt({ (float)breakTest, 0.f, 0.f }, block);
 			breakTest++;
+			i = 0;
 		}
+
+		i++;
 
 		world->render(10);
 		window->swapBuffers();

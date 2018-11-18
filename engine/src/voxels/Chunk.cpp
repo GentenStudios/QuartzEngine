@@ -280,7 +280,7 @@ void Chunk::placeBlockAt(phx::Vector3 position, Block* placeBlock)
 	}
 }
 
-const Block* Chunk::getBlockAt(phx::Vector3 position)
+Block* Chunk::getBlockAt(phx::Vector3 position)
 {
 	if (position.x < m_chunkBlocks.size())
 	{
