@@ -1,8 +1,9 @@
 set(engineHeaders
     ${engineHeaders}
     ${CMAKE_CURRENT_LIST_DIR}/Core.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/os.hpp
-	${CMAKE_CURRENT_LIST_DIR}/UniversalDoxygenComments.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/UniversalDoxygenComments.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/Application.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/EntryPoint.hpp
     CACHE INTERNAL "Global Engine Headers"
 )
 

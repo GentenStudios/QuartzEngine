@@ -1,5 +1,7 @@
 #pragma once
 
+#include <engine/core/Core.hpp>
+
 // ----------- GRAPHICS ------------------------------------- //
 #include <engine/core/graphics/IWindow.hpp>
 #include <engine/core/graphics/gl/ShaderPipeline.hpp>
