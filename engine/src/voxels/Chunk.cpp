@@ -362,7 +362,7 @@ void Chunk::render(int* counter)
 	{
 		if ((*counter) == 0)
 			return;
-		DEBUG("BUILDING MESH!");
+		LDEBUG("BUILDING MESH!");
 		buildMesh();
 		(*counter)--;
 		return;
@@ -372,7 +372,7 @@ void Chunk::render(int* counter)
 	{
 		if ((*counter) == 0)
 			return;
-		DEBUG("BUFFERING MESH DATA!");
+		LDEBUG("BUFFERING MESH DATA!");
 		bufferData();
 		(*counter)--;
 	}

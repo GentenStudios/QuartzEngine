@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include <engine/core/os.hpp>
+#include <engine/core/Core.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -26,12 +26,12 @@
 	#define LWARNING(message, ...)
 #endif
 
-// These are here for "backward compatability" aka I can't be arsed & some people may prefer the shorter version
-// (at the risk of conflicts)
-#define ERROR(message, ...)   LERROR(message, __VA_ARGS__)
-#define INFO(message, ...)    LINFO(message, __VA_ARGS__)
-#define DEBUG(message, ...)   LDEBUG(message, __VA_ARGS__)
-#define WARNING(message, ...) LWARNING(message, __VA_ARGS__)
+//// These are here for "backward compatability" aka I can't be arsed & some people may prefer the shorter version
+//// (at the risk of conflicts)
+//#define ERROR(message, ...)   LERROR(message, __VA_ARGS__)
+//#define INFO(message, ...)    LINFO(message, __VA_ARGS__)
+//#define DEBUG(message, ...)   LDEBUG(message, __VA_ARGS__)
+//#define WARNING(message, ...) LWARNING(message, __VA_ARGS__)
 
 namespace phx
 {
@@ -65,7 +65,7 @@ namespace phx
 	};
 
 	/**
-	 * @brief	This is what will define whether certain messages are low enough a verbosity to be outputted.
+	 * @brief This is what will define whether certain messages are low enough a verbosity to be outputted.
 	 */
 	enum class LogVerbosity
 	{

@@ -70,7 +70,7 @@ void Logger::init(std::string logFile = "logs/phoenix.log", LogVerbosity verbosi
 
 	std::ios::sync_with_stdio(false);
 
-	// This has to go at the end, as logging capabilitys are not actually ready until now :D
+	// This has to go at the end, as logging capabilities are not actually ready until now :D
 	if (!m_logFileHandle.is_open())
 	{
 		LERROR("Could not open log file");

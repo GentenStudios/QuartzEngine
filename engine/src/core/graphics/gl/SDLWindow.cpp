@@ -40,7 +40,7 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 	if (m_window == nullptr)
 	{
 		SDL_Quit();
-		ERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.major) + "." + std::to_string(version.minor));
+		LERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.major) + "." + std::to_string(version.minor));
 		exit(EXIT_FAILURE);
 	}
 
@@ -48,7 +48,7 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 
 	if (glewInit() != GLEW_OK)
 	{
-		ERROR("Uh Oh! There was a booboo, and we can't fix it :(. Tell the pros that an OpenGL context could not be created. Sorry for the inconvenience!");
+		LERROR("Uh Oh! There was a booboo, and we can't fix it :(. Tell the pros that an OpenGL context could not be created. Sorry for the inconvenience!");
 		exit(EXIT_FAILURE);
 	}
 
@@ -63,11 +63,11 @@ SDLWindow::SDLWindow(const char* title, int width, int height, phx::gfx::GLVersi
 	}
 #endif
 	
-	INFO("---------- OpenGL Details ----------");
-	INFO("Vendor:   ", glGetString(GL_VENDOR));
-	INFO("Renderer: ", glGetString(GL_RENDERER));
-	INFO("Version:  ", glGetString(GL_VERSION));
-	INFO("------------------------------------");
+	LINFO("---------- OpenGL Details ----------");
+	LINFO("Vendor:   ", glGetString(GL_VENDOR));
+	LINFO("Renderer: ", glGetString(GL_RENDERER));
+	LINFO("Version:  ", glGetString(GL_VERSION));
+	LINFO("------------------------------------");
 
 	SDL_ShowWindow(m_window);
 
