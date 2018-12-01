@@ -34,11 +34,26 @@ void Sandbox::run()
 {
 	using namespace phx::voxels;
 
-	RegistryBlock block("core:grass", "Grass", 100);
+	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
 	
-	BlockLibrary::get()->init(block);
+	BlockLibrary::get()->init();
 
 	BlockLibrary::get()->registerBlock(block);
+
+	Chunk* chunk = new Chunk({ 0,0,0 }, 16, "core:grass");
+	chunk->populateData();
+	chunk->buildMesh();
+
+	while (m_appData->window->isRunning())
+	{
+		m_appData->window->pollEvents();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
+
+		int i = 2;
+		chunk->render(&i);
+		m_appData->window->swapBuffers();
+	}
 }
 
 phx::Application* phx::createApplication()

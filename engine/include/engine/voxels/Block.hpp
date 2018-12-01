@@ -10,6 +10,7 @@ namespace phx
 	namespace voxels
 	{
 		using BlockCallback = std::function<void()>;
+		using InteractionCallback = std::function<void(int hp)>;
 
 		/// @brief This defines what state of matter the block is
 		enum class BlockType
@@ -25,30 +26,75 @@ namespace phx
 		{
 		public:
 			RegistryBlock();
-			RegistryBlock(std::string blockID, std::string blockName, int initialHP);
+			RegistryBlock(std::string blockID, std::string blockName, int initialHP, BlockType blockType);
 			RegistryBlock(const RegistryBlock& other) = default;
 
 			~RegistryBlock();
 
-			const std::string& getBlockID() const { return m_blockID; }
-			const std::string& getBlockName() const { return m_blockName; }
+			const std::string& getBlockID() const;
+			const std::string& getBlockName() const;
+			BlockType getBlockType() const;
 
-			void setPlaceCallback(BlockCallback& callback);
-			void setBreakCallback(BlockCallback callback);
+			void setPlaceCallback(const BlockCallback& callback);
+			void setBreakCallback(const BlockCallback& callback);
+			void setInteractLeftCallback(const InteractionCallback& callback);
+			void setInteractRightCallback(const InteractionCallback& callback);
 
-			const BlockCallback& getPlaceCallback() const { return m_onPlaceCallback; }
-			const BlockCallback& getBreakCallback() const { return m_onBreakCallback; }
+			const BlockCallback& getPlaceCallback() const;
+			const BlockCallback& getBreakCallback() const;
+			const InteractionCallback& getInteractLeftCallback() const;
+			const InteractionCallback& getInteractRightCallback() const;
 
-			int initialHP() const { return m_initialHealthPoints; }
-			
+			const std::vector<std::string>& getBlockTextures() const;
+			void setBlockTextures(const std::vector<std::string>& textures);
+
+			int initialHP() const;
+
 		private:
 			std::string m_blockID;
 			std::string m_blockName;
+			BlockType m_blockType;
+
+			std::vector<std::string> m_blockTextures;
 
 			BlockCallback m_onPlaceCallback;
 			BlockCallback m_onBreakCallback;
 
+			InteractionCallback m_interactLeftCallback;
+			InteractionCallback m_interactRightCallback;
+
 			unsigned int m_initialHealthPoints;
+		};
+
+		class BlockInstance
+		{
+		public:
+			BlockInstance();
+			BlockInstance(const BlockInstance& other) = default;
+
+			BlockInstance(const std::string& blockID);
+			~BlockInstance() {}
+
+			unsigned int getHitpoints() const;
+			void setHitpoints(unsigned int hitpoints);
+
+			const std::string& getBlockName() const;
+			void setBlockName(const std::string& name);
+
+			const std::string& getBlockID() const;
+			BlockType getBlockType() const;
+
+			const std::vector<std::string>& getBlockTextures() const;
+			void setBlockTextures(const std::vector<std::string>& newTextures);
+
+		private:
+			unsigned int m_hitpoints;
+
+			std::vector<std::string> m_blockTextures;
+
+			std::string m_blockID;
+			std::string m_blockName;
+			BlockType m_blockType;
 		};
 
 		class BlockLibrary
@@ -56,15 +102,22 @@ namespace phx
 		public:
 			static BlockLibrary* get();
 			
-			void init(const RegistryBlock& unknownBlock);
+			void init();
 
 			void registerBlock(const RegistryBlock& block);
 			
-			const RegistryBlock& requestBlock(const std::string& blockID);
+			const RegistryBlock& requestBlock(const std::string& blockID) const;
 
-		private:
+			RegistryBlock getUnknownRegistryBlock() const;
+			BlockInstance getUnknownBlockInstance() const;
+
+
 			BlockLibrary() {}
 			~BlockLibrary() {}
+		private:
+
+			RegistryBlock m_unknownRegistryBlock;
+			BlockInstance m_unknownBlockInstance;
 
 			std::unordered_map<std::string, RegistryBlock> m_registeredBlocks;
 		};

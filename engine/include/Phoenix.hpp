@@ -31,4 +31,4 @@
 
 // ----------- VOXELS ------------------------------------- //
 #include <engine/voxels/Block.hpp>
-#include <engine/voxels/ChunkManager.hpp>
+#include <engine/voxels/Chunk.hpp>
