@@ -14,6 +14,8 @@ int main(int argc, char** argv)
 
 	const phx::ApplicationRequirements* requirements = application->getRequirements();
 
+	INITLOGGER(requirements->logFile, requirements->logVerbosity);
+
 	phx::ApplicationData* appData = new ApplicationData();
 
 	appData->window = phx::gfx::IWindow::createWindow(
