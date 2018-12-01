@@ -149,4 +149,6 @@ void Logger::logMessage(std::string errorFile, int lineNumber, std::string subSe
 		m_logFileHandle << '\n' << logMessageString;
 		std::cout       << '\n' << logMessageString;
 	}
+
+	Console::setTextColor(Console::Color::WHITE);
 }
