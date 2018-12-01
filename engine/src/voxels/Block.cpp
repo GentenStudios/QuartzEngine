@@ -79,15 +79,15 @@ void BlockInstance::setBlockTextures(const std::vector<std::string>& newTextures
 
 BlockLibrary* BlockLibrary::get()
 {
-	BlockLibrary library;
+	static BlockLibrary library;
 	return &library;
 }
 
 void BlockLibrary::init()
 {
 	m_registeredBlocks["core:unknown"] = RegistryBlock("core:unknown", "Unkown Block", 1, BlockType::SOLID);
-	m_unknownRegistryBlock = requestBlock("core:unknown");
-	m_unknownBlockInstance = BlockInstance("core:unknown");
+	//m_unknownRegistryBlock = requestBlock("core:unknown");
+	//m_unknownBlockInstance = BlockInstance("core:unknown");
 }
 
 void BlockLibrary::registerBlock(const RegistryBlock& block)
@@ -103,15 +103,15 @@ void BlockLibrary::registerBlock(const RegistryBlock& block)
 	m_registeredBlocks[blockID] = block;
 }
 
-RegistryBlock BlockLibrary::getUnknownRegistryBlock() const
-{
-	return m_unknownRegistryBlock;
-}
-
-BlockInstance BlockLibrary::getUnknownBlockInstance() const
-{
-	return m_unknownBlockInstance;
-}
+//RegistryBlock BlockLibrary::getUnknownRegistryBlock() const
+//{
+//	return m_unknownRegistryBlock;
+//}
+//
+//BlockInstance BlockLibrary::getUnknownBlockInstance() const
+//{
+//	return m_unknownBlockInstance;
+//}
 
 const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) const
 {
@@ -120,7 +120,7 @@ const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) cons
 	if (it == m_registeredBlocks.end())
 	{
 		LWARNING("The Block: ", blockID, " cannot be found, but is being requested, please take action!");
-		return m_unknownRegistryBlock;
+		return m_registeredBlocks.at("core:unknown");
 	}
 
 	return it->second;

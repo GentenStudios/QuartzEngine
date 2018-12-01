@@ -108,16 +108,15 @@ namespace phx
 			
 			const RegistryBlock& requestBlock(const std::string& blockID) const;
 
-			RegistryBlock getUnknownRegistryBlock() const;
-			BlockInstance getUnknownBlockInstance() const;
-
+			//RegistryBlock getUnknownRegistryBlock() const;
+			//BlockInstance getUnknownBlockInstance() const;
 
 			BlockLibrary() {}
 			~BlockLibrary() {}
 		private:
 
-			RegistryBlock m_unknownRegistryBlock;
-			BlockInstance m_unknownBlockInstance;
+			//RegistryBlock m_unknownRegistryBlock;
+			//BlockInstance m_unknownBlockInstance;
 
 			std::unordered_map<std::string, RegistryBlock> m_registeredBlocks;
 		};

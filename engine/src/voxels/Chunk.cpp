@@ -293,7 +293,8 @@ BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
 		}
 	}
 
-	return BlockLibrary::get()->getUnknownBlockInstance();
+	static BlockInstance unknownBlockInstance = BlockInstance("core:unknown");
+	return unknownBlockInstance;
 }
 
 void Chunk::setBlockAt(phx::Vector3 position, const BlockInstance& newBlock)
