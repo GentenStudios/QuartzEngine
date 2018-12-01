@@ -3,6 +3,7 @@
 #include <engine/core/Core.hpp>
 
 #include <functional>
+#include <unordered_map>
 
 namespace phx
 {
@@ -13,107 +14,59 @@ namespace phx
 		/// @brief This defines what state of matter the block is
 		enum class BlockType
 		{
-			GAS,    ///< Gas Blocks are, for example, Air, or Oxygen if implemented.
-			LIQUID, ///< Fluid Liquid Dynamics are applied to these blocks.
-			SOLID,  ///< Generic Stable Block, used for most things.
-			WATER, ///< Water as a fundamental type as it needs to be specially done.
-			OBJECT, ///< Things like Entities and objects that like transparent turds.
+			GAS,		///< Gas Blocks are, for example, Air, or Oxygen if implemented.
+			LIQUID,		///< Fluid Liquid Dynamics are applied to these blocks.
+			SOLID,		///< Generic Stable Block, used for most things.
+			WATER,		///< Water as a fundamental type as it needs to be specially done.
+			OBJECT,		///< Things like Entities and objects that like transparent turds.
 		};
 
-		class Block
+		class RegistryBlock
 		{
 		public:
-			/**
-			 * @brief Initialise a block
-			 * @param The unique id for the block, should be in format mod:id to eliminate conflict
-			 * @param The player friendly name of the block
-			 * @param The block type (SOLID, LIQUID, GAS)
-			 */
-			Block(std::string id, std::string name, BlockType type);
-			Block(const Block& other);
-			~Block();
+			RegistryBlock();
+			RegistryBlock(std::string blockID, std::string blockName, int initialHP);
+			RegistryBlock(const RegistryBlock& other) = default;
 
-			/**
-			 * @brief getID - getID of Block
-			 * @return Return a string for the ID of the block
-			 */
-			const std::string& getID() const;
+			~RegistryBlock();
 
-			/**
-			 * @brief getName - Get name of block
-			 * @return Return a string of the name of the block
-			 */
-			const std::string& getName() const;
+			const std::string& getBlockID() const { return m_blockID; }
+			const std::string& getBlockName() const { return m_blockName; }
 
-			/**
-			 * @brief getBlockType - Get the matter state type of the block
-			 * @return Return the state of matter the block is
-			 */
-			BlockType getBlockType() const;
+			void setPlaceCallback(BlockCallback& callback);
+			void setBreakCallback(BlockCallback callback);
 
-			const std::vector<std::string>& getTextures() const { return m_textures; };
-			void setTextures(const std::vector<std::string>& texNames) { m_textures = texNames; };
+			const BlockCallback& getPlaceCallback() const { return m_onPlaceCallback; }
+			const BlockCallback& getBreakCallback() const { return m_onBreakCallback; }
 
-			/////////////////////////////////////////////
-			// Getters and setters for event callbacks //
-			/////////////////////////////////////////////
-
-			/// @brief Setter: Sets the function executed when a block is placed
-			void setOnPlaceCallback(BlockCallback callback);
-			/// @brief Getter: Gets the function executed when a block is placed
-			const BlockCallback& getOnPlaceCallback() const;
-
-			/// @brief Setter: Sets the function executed when a block is broken
-			void setOnBreakCallback(BlockCallback callback);
-			/// @brief Getter: Gets the function executed when a block is broken
-			const BlockCallback& getOnBreakCallback() const;
-
-			/// @brief Setter: Sets the function executed when a block is left clicked
-			void setOnInteractLeftCallback(BlockCallback callback);
-			/// @brief Getter: Gets the function executed when a block is left clicked
-			const BlockCallback& getOnInteractLeftCallback() const;
-
-			/// @brief Setter: Sets the function executed when a block is right clicked
-			void setOnInteractRightCallback(BlockCallback callback);
-			/// @brief Getter: Gets the function executed when a block is right clicked
-			const BlockCallback& getOnInteractRightCallback() const;
-
+			int initialHP() const { return m_initialHealthPoints; }
+			
 		private:
-			/// @brief Unique id using the convention mod:name
-			std::string m_id;
-			/// @brief Name that will display to the user
-			std::string m_name;
-			/// @brief State of matter of the block
-			BlockType m_blockType;
+			std::string m_blockID;
+			std::string m_blockName;
 
-			/// @brief Vector of textures, should be in order: front, back, right, left, bottom, top.   
-			std::vector<std::string> m_textures;
-
-			/// @brief Lambda callback for when the block is placed (well, hopefully lambdas if we can)
 			BlockCallback m_onPlaceCallback;
-			/// @brief Lambda callback for when the block is broken (well, hopefully lambdas if we can)
 			BlockCallback m_onBreakCallback;
-			/// @brief Lambda callback for when the block is interacted with by left arm (well, hopefully lambdas if we can)
-			BlockCallback m_onInteractLeftCallback;
-			/// @brief Lambda callback for when the block is interacted with by right arm (well, hopefully lambdas if we can)
-			BlockCallback m_onInteractRightCallback;
+
+			unsigned int m_initialHealthPoints;
 		};
 
 		class BlockLibrary
 		{
 		public:
-			/**
-			 * @brief getBlockByID - Get a block object based off its unique ID
-			 * @param[in] The unique ID of the block you are trying to find
-			 * @return Returns a Block matching the supplied ID
-			 */
-			static Block getBlockByID(std::string id);
+			static BlockLibrary* get();
+			
+			void init(const RegistryBlock& unknownBlock);
 
-			static void registerBlock(Block* block);
+			void registerBlock(const RegistryBlock& block);
+			
+			const RegistryBlock& requestBlock(const std::string& blockID);
 
 		private:
-			/// @brief A registry to keep track of all the registered blocks
-			static std::vector<Block*> m_blockLibrary;
+			BlockLibrary() {}
+			~BlockLibrary() {}
+
+			std::unordered_map<std::string, RegistryBlock> m_registeredBlocks;
 		};
 	}
 }

@@ -23,7 +23,7 @@ Sandbox::Sandbox() :
 	m_appRequirements->windowHeight = 720;
 	m_appRequirements->windowTitle = "Phoenix!";
 
-	m_appRequirements->logFile = "log/PhoenixClient.log";
+	m_appRequirements->logFile = "PhoenixClient.log";
 	m_appRequirements->logVerbosity = LogVerbosity::DEBUG;
 }
 
@@ -32,94 +32,13 @@ Sandbox::~Sandbox()
 
 void Sandbox::run()
 {
-	PHX_REGISTER_CONFIG("Controls");
+	using namespace phx::voxels;
 
-	auto window = m_appData->window;
+	RegistryBlock block("core:grass", "Grass", 100);
+	
+	BlockLibrary::get()->init(block);
 
-	voxels::Block* block = new voxels::Block("core:grass", "Grass", voxels::BlockType::SOLID);
-	std::vector<std::string> texForGrass;
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/dirt.png");
-	texForGrass.push_back("assets/images/grass_top.png");
-	block->setTextures(texForGrass);
-	block->setOnPlaceCallback(
-		[]() {
-			std::cout << "Cool Kid!" << std::endl;
-		}
-	);
-
-	voxels::Block* blockAir = new voxels::Block("core:air", "Air", voxels::BlockType::GAS);
-
-	voxels::ChunkManager* world = new voxels::ChunkManager();
-	world->setDefaultBlock(blockAir);
-	world->testGeneration(10);
-
-	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
-	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
-	shaderProgram->addStage(gl::ShaderType::FRAGMENT_SHADER, File::readFile("assets/shaders/main.frag").c_str());
-	shaderProgram->build();
-
-	Matrix4x4 projection = Matrix4x4::perspective(1280.f / 720.f, 45.f, 1000.f, 0.1f);
-	Matrix4x4 model;
-
-	FPSCam* cam = new FPSCam(window);
-
-	window->addKeyCallback(static_cast<int>(EventType::PRESSED), static_cast<int>(events::Keys::KEY_ESCAPE), [&cam, &window]() {
-		cam->enabled = !cam->enabled;
-		if (cam->enabled)
-		{
-			window->setCursorState(gfx::CursorState::DISABLED);
-		}
-		else
-		{
-			window->setCursorState(gfx::CursorState::NORMAL);
-		}
-	});
-
-	window->addKeyCallback(static_cast<int>(EventType::PRESSED), static_cast<int>(events::Keys::KEY_1), [&world]() {
-		world->toggleWireframe();
-	});
-
-	cam->enabled = true;
-
-	int i = 0;
-	int breakTest = 0;
-
-	float last = SDL_GetTicks();
-
-	while (window->isRunning())
-	{
-		float now = SDL_GetTicks();
-		float dt = now - last;
-		last = now;
-		window->pollEvents();
-		cam->update(dt);
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
-
-		shaderProgram->use();
-
-		shaderProgram->setMat4("u_projection", projection);
-		shaderProgram->setMat4("u_view", cam->calculateViewMatrix());
-		shaderProgram->setMat4("u_model", model);
-		shaderProgram->setUniform1<int>("u_TexArray", 10);
-
-		if (i > 50)
-		{
-			world->placeBlockAt({ (float)breakTest, 0.f, 0.f }, block);
-			breakTest++;
-			i = 0;
-		}
-
-		i++;
-
-		world->render(10);
-		window->swapBuffers();
-	}
+	BlockLibrary::get()->registerBlock(block);
 }
 
 phx::Application* phx::createApplication()

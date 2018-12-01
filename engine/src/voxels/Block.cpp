@@ -1,85 +1,61 @@
 #include <engine/voxels/Block.hpp>
+#include <algorithm>
 
 using namespace phx::voxels;
 
-std::vector<Block*> BlockLibrary::m_blockLibrary;
-
-Block::Block(std::string id, std::string name, BlockType type)
+RegistryBlock::RegistryBlock()
 {
-	m_id = id;
-	m_name = name;
-	m_blockType = type;
-	BlockLibrary::registerBlock(this);
+	m_blockID = "Unknown";
+	m_blockName = "Unknown";
+	m_initialHealthPoints = 1;
 }
 
-Block::Block(const Block& other)
+RegistryBlock::RegistryBlock(std::string blockID, std::string blockName, int initialHP)
 {
-	m_id = other.m_id;
-	m_name = other.m_name;
-	m_blockType = other.m_blockType;
-	// no need to register the block again
+	m_blockID = blockID;
+	m_blockName = blockName;
+	m_initialHealthPoints = initialHP;
 }
 
-Block::~Block()
+RegistryBlock::~RegistryBlock()
+{}
+
+void RegistryBlock::setPlaceCallback(BlockCallback& callback) { m_onPlaceCallback = callback; }
+void RegistryBlock::setBreakCallback(BlockCallback callback) { m_onBreakCallback = callback; }
+
+BlockLibrary* BlockLibrary::get()
 {
-	// empty
+	static BlockLibrary library;
+	return &library;
 }
 
-/////////////////////////////////////////////
-// Getters for Block Data ///////////////////
-/////////////////////////////////////////////
-
-const std::string& Block::getID() const
+void BlockLibrary::init(const RegistryBlock& unkownBlock)
 {
-	return m_id;
+	m_registeredBlocks["core:unknown"] = unkownBlock;
 }
 
-const std::string& Block::getName() const
+void BlockLibrary::registerBlock(const RegistryBlock& block)
 {
-	return m_name;
-}
+	const char* blockID = block.getBlockID().c_str();
 
-BlockType Block::getBlockType() const
-{
-	return m_blockType;
-}
-
-/////////////////////////////////////////////
-// Getters and setters for event callbacks //
-/////////////////////////////////////////////
-
-void Block::setOnPlaceCallback(BlockCallback callback) { m_onPlaceCallback = callback; }
-const BlockCallback& Block::getOnPlaceCallback() const { return m_onPlaceCallback; }
-
-void Block::setOnBreakCallback(BlockCallback callback) { m_onBreakCallback = callback; }
-const BlockCallback& Block::getOnBreakCallback() const { return m_onBreakCallback; }
-
-void Block::setOnInteractLeftCallback(BlockCallback callback) { m_onInteractLeftCallback = callback; }
-const BlockCallback& Block::getOnInteractLeftCallback() const { return m_onInteractLeftCallback; }
-
-void Block::setOnInteractRightCallback(BlockCallback callback) { m_onInteractRightCallback = callback; }
-const BlockCallback& Block::getOnInteractRightCallback() const { return m_onInteractRightCallback; }
-
-
-/////////////////////////////////////////////////////////////////
-/////////////////// Block Library Code //////////////////////////
-/////////////////////////////////////////////////////////////////
-
-void BlockLibrary::registerBlock(Block* block)
-{
-	m_blockLibrary.push_back(block);
-}
-
-Block BlockLibrary::getBlockByID(std::string id)
-{
-	for (unsigned int i = 1; i < m_blockLibrary.size(); i++)
+	if (m_registeredBlocks.find(blockID) != m_registeredBlocks.end())
 	{
-		Block* block = m_blockLibrary[i];
-		if (block->getID() == id)
-		{
-			return *block;
-		}
-	};
+		LWARNING("The Block: ", blockID, " has already been registered, please take action!");
+		return;
+	}
 
-	return *(m_blockLibrary[0]);
+	m_registeredBlocks[blockID] = block;
+}
+
+const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID)
+{
+	auto it = m_registeredBlocks.find(blockID);
+
+	if (it == m_registeredBlocks.end())
+	{
+		LWARNING("The Block: ", blockID, " cannot be found, but is being requested, please take action!");
+		return m_registeredBlocks["core:unknown"];
+	}
+
+	return it->second;
 }
