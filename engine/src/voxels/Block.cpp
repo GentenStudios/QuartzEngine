@@ -86,8 +86,7 @@ BlockLibrary* BlockLibrary::get()
 void BlockLibrary::init()
 {
 	m_registeredBlocks["core:unknown"] = RegistryBlock("core:unknown", "Unkown Block", 1, BlockType::SOLID);
-	//m_unknownRegistryBlock = requestBlock("core:unknown");
-	//m_unknownBlockInstance = BlockInstance("core:unknown");
+	m_registeredBlocks["core:out_of_bounds"] = RegistryBlock("core:out_of_bounds", "Out Of Bounds Block", 1, BlockType::SOLID);
 }
 
 void BlockLibrary::registerBlock(const RegistryBlock& block)
@@ -103,16 +102,6 @@ void BlockLibrary::registerBlock(const RegistryBlock& block)
 	m_registeredBlocks[blockID] = block;
 }
 
-//RegistryBlock BlockLibrary::getUnknownRegistryBlock() const
-//{
-//	return m_unknownRegistryBlock;
-//}
-//
-//BlockInstance BlockLibrary::getUnknownBlockInstance() const
-//{
-//	return m_unknownBlockInstance;
-//}
-
 const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) const
 {
 	auto it = m_registeredBlocks.find(blockID);
@@ -120,7 +109,7 @@ const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) cons
 	if (it == m_registeredBlocks.end())
 	{
 		LWARNING("The Block: ", blockID, " cannot be found, but is being requested, please take action!");
-		return m_registeredBlocks.at("core:unknown");
+		return RegistryBlock("core:unknown", "Unknown Block", 1, BlockType::SOLID);
 	}
 
 	return it->second;

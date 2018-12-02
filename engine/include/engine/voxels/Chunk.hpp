@@ -55,8 +55,8 @@ namespace phx
 
 			void addBlockFace(BlockFace face, int memOffset, int x, int y, int z);
 
-			void breakBlockAt(phx::Vector3 position, const std::string& newBlockID);
-			void placeBlockAt(phx::Vector3 position, const std::string& newBlockID);
+			void breakBlockAt(phx::Vector3 position, const BlockInstance& block);
+			void placeBlockAt(phx::Vector3 position, const BlockInstance& block);
 
 			BlockInstance getBlockAt(phx::Vector3 position) const;
 			void setBlockAt(phx::Vector3 position, const BlockInstance& newBlock);
@@ -64,7 +64,7 @@ namespace phx
 			void bufferData();
 			void render(int* counter);
 
-			inline const Vector3& getChunkPos() { return m_chunkPos; }
+			inline const Vector3& getChunkPos() const { return m_chunkPos; }
 
 			Mesh* getBlocksMesh();
 			Mesh* getObjectsMesh();

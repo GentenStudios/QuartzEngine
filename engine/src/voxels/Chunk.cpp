@@ -232,7 +232,7 @@ void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 	}
 }
 
-void Chunk::breakBlockAt(phx::Vector3 position, const std::string& newBlockID)
+void Chunk::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
 {
 	if (position.x < m_chunkBlocks.size())
 	{
@@ -247,7 +247,7 @@ void Chunk::breakBlockAt(phx::Vector3 position, const std::string& newBlockID)
 				if (breakCallback != nullptr)
 					breakCallback();
 
-				m_chunkBlocks[position.x][position.y][position.z] = BlockInstance(newBlockID);
+				m_chunkBlocks[position.x][position.y][position.z] = block;
 				
 				if (!(m_chunkFlags & NEEDS_MESHING))
 					m_chunkFlags |= NEEDS_MESHING;
@@ -256,7 +256,7 @@ void Chunk::breakBlockAt(phx::Vector3 position, const std::string& newBlockID)
 	}
 }
 
-void Chunk::placeBlockAt(phx::Vector3 position, const std::string& newBlockID)
+void Chunk::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
 {
 	if (position.x < m_chunkBlocks.size())
 	{
@@ -267,11 +267,11 @@ void Chunk::placeBlockAt(phx::Vector3 position, const std::string& newBlockID)
 				int memOffset = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
 				std::memcpy(m_blockMesh->chunkVertices.data() + memOffset, CubeVerts, sizeof(CubeVerts));
 
-				auto& placeCallback = BlockLibrary::get()->requestBlock(m_chunkBlocks[position.x][position.y][position.z].getBlockID()).getPlaceCallback();
+				auto& placeCallback = BlockLibrary::get()->requestBlock(block.getBlockID()).getPlaceCallback();
 				if (placeCallback != nullptr)
 					placeCallback();
 
-				m_chunkBlocks[position.x][position.y][position.z] = BlockInstance(newBlockID);
+				m_chunkBlocks[position.x][position.y][position.z] = block;
 
 				if (!(m_chunkFlags & NEEDS_MESHING))
 					m_chunkFlags |= NEEDS_MESHING;
@@ -293,8 +293,7 @@ BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
 		}
 	}
 
-	static BlockInstance unknownBlockInstance = BlockInstance("core:unknown");
-	return unknownBlockInstance;
+	return BlockInstance("core:out_of_bounds");
 }
 
 void Chunk::setBlockAt(phx::Vector3 position, const BlockInstance& newBlock)
