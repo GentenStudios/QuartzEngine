@@ -121,9 +121,9 @@ namespace phx
 		ConfigFile* registerConfig(const std::string& name);
 
 		/**
-		 * @brief Fetches a pointer to the registered config file. nullptr if the file has not been registered yet.
+		 * @brief Fetches a pointer to the registered config file. Default config object if the file has not been registered yet.
 		 * @param name The filename of the config file (excluding the .ini extension). Must be the same as the one used in the corresponding REGISTER_CONFIG call. 
-		 * @return A pointer to the ConfigFile of the specified name. nullptr if the config file has not been registered. 
+		 * @return A pointer to the ConfigFile of the specified name. Default config object if the file has not been registered. 
 		 */
 		ConfigFile* getConfigFile(const std::string& name);
 
