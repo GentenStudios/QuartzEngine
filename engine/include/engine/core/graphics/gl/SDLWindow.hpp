@@ -14,6 +14,8 @@
 
 #include <engine/core/events/Keys.hpp>
 
+#include <engine/core/utils/Config.hpp>
+
 namespace phx
 {
 	namespace sdl
@@ -42,14 +44,16 @@ namespace phx
 			virtual void close();
 
 			virtual void setTitle(const char *title);
-			virtual void getSize(int &width, int &height);
+			virtual void getSize(int& width, int& height);
+			virtual void setSize(int width, int height);
 			virtual void setFullscreen(bool enabled);
 			virtual void setResizable(bool enabled);
 			virtual void setCursorState(phx::gfx::CursorState cursorState);
 	
 			virtual void setVSync(bool value);
-			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback);
+			virtual void addKeyCallback(events::KeyEventType eventType, events::Keys key, std::function<void()> callback);
 			virtual void addMouseMoveCallback(std::function<void(double, double)> callback);
+			virtual void addWindowEventCallback(events::WindowEventType eventType, std::function<void()> callback);
 	
 			inline SDL_Window* getSDLWindow() const { return m_window; }
 
@@ -59,6 +63,8 @@ namespace phx
 		  	virtual void setMousePosition(TVector2<int> newPos);
 
 		private:
+			/// @brief A Vector2 to store what size the window was before it was made fullscreen.
+			TVector2<int> m_preFullScreenSize = TVector2<int>(0, 0);
 
 			/// @brief The pointer to the window's data.
 			SDL_Window* m_window;
@@ -70,15 +76,24 @@ namespace phx
 			bool m_running;
 
 			/// @brief Struct for storing KeyEvent callbacks and related data with it.
-			struct KeyEvent_t {
+			struct KeyEvent_t
+			{
 				int eventType;
 				int key;
 				std::function<void()> callback;
 			};
 
 			/// @brief MouseMoveEvent callback "holder". Makes handling the data in the function definitions much easier.
-			struct MouseMoveEvent_t {
+			struct MouseMoveEvent_t
+			{
 				std::function<void(double,double)> callback;
+			};
+
+			/// @brief Window Event callback "holder". Makes handling the data in the function definitions much easier.
+			struct WindowEvent_t
+			{
+				int eventType;
+				std::function<void()> callback;
 			};
 
 			/// @brief Vector for storing KeyEvents, is cycled through when a key event is recieved.
@@ -86,6 +101,9 @@ namespace phx
 
 			/// @brief Vector for storing MouseMoveEvents, is cycled through when the mouse is moved.
 			std::vector<MouseMoveEvent_t> m_mouseMoveEvents;
+
+			/// @brief Vector for storing WindowEvents, is cycled through when there is a window event.
+			std::vector<WindowEvent_t> m_windowEvents;
 		};
 
 	}

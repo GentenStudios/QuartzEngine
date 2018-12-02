@@ -44,17 +44,6 @@ namespace phx
 		};
 
 		/**
-		 * @brief An enum describing the type of EVENT happens when a key is pressed.
-		 * 
-		 */
-		enum class EventType : int
-		{
-			PRESSED,	///< When the key is just *pressed*
-			RELEASED,	///< When the key is released.
-			REPEAT		///< When the key is pressed repeatedly.
-		};
-
-		/**
 		 * @brief The interfacing class for creating a window.
 		 * 
 		 * @details THIS class in particular just returns a pointer to a new window created and allocated on the heap. The window created isn't really a "window", but more like an
@@ -115,6 +104,13 @@ namespace phx
 			virtual void getSize(int& width, int& height) = 0;
 
 			/**
+			 * @brief Sets the size of the window
+			 * 
+			 * @param resolution The new size that the window needs to be set to.
+			 */
+			virtual void setSize(int width, int height) = 0;
+
+			/**
 			 * @brief Sets the title of the window.
 			 * 
 			 * @param title The new title that the window should be given
@@ -156,7 +152,7 @@ namespace phx
 			 * @param key The key that is pressed.
 			 * @param callback The callback, in the form of a Lambda, which CANNOT have any parameters.
 			 */
-			virtual void addKeyCallback(int eventType, int key, std::function<void()> callback) = 0;
+			virtual void addKeyCallback(events::KeyEventType eventType, events::Keys key, std::function<void()> callback) = 0;
 
 			/**
 			 * @brief Adds a mouse move callback to the window. Callback is called - whenever the mouse is moved.
@@ -164,6 +160,13 @@ namespace phx
 			 * @param callback The actual callback, in the form of a Lambda, has two required parameters as doubles, the new mouse x, and mouse y position.
 			 */
 			virtual void addMouseMoveCallback(std::function<void(double, double)> callback) = 0;
+
+			/**
+			 * @brief Adds a Window Event callback to the window. Callback is called - whenever the window is resized, focused, or unfocused.
+			 *
+			 * @param callback The actual callback, in the form of a Lambda.
+			 */
+			virtual void addWindowEventCallback(events::WindowEventType eventType, std::function<void()> callback) = 0;
 
 			/**
 			 * @brief Checks whether a specific key has been pressed down or not.

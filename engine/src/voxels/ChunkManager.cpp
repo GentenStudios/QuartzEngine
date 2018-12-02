@@ -88,6 +88,8 @@ BlockInstance ChunkManager::getBlockAt(phx::Vector3 position)
 			break;
 		}
 	}
+
+	return BlockInstance("core:out_of_bounds");
 }
 
 void ChunkManager::breakBlockAt(phx::Vector3 position, const BlockInstance& block)

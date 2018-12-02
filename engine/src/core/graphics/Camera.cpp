@@ -1,6 +1,7 @@
 #pragma once
 
 #include <engine/core/graphics/Camera.hpp>
+#include <GL/glew.h>
 
 using namespace phx::gfx;
 using namespace phx;
@@ -13,6 +14,20 @@ FPSCam::FPSCam(IWindow* window) : m_window(window), enabled(true)
 {
 	window->setCursorState(CursorState::DISABLED);
 	m_controls.load();
+
+	int w = 0, h = 0;
+	window->getSize(w, h);
+	m_projection = Matrix4x4::perspective(static_cast<float>(w) / static_cast<float>(h), 45.f, 1000.f, 0.1f);
+	
+	m_windowCentre = { w / 2, h / 2 };
+
+	window->addWindowEventCallback(events::WindowEventType::RESIZED, [this]() {
+		int w = 0, h = 0;
+		this->m_window->getSize(w, h);
+	
+		this->setProjection(Matrix4x4::perspective(static_cast<float>(w) / static_cast<float>(h), 45.f, 1000.f, 0.1f));
+		this->m_windowCentre = { w / 2, h / 2 };
+	});
 }
 
 void FPSCam::update(float dt)
@@ -22,15 +37,12 @@ void FPSCam::update(float dt)
 
 	const TVector2<int> mousePos = m_window->getMousePosition();
 	
-	int windowW, windowH;
-	m_window->getSize(windowW, windowH);
-
-	m_window->setMousePosition({ windowW / 2, windowH / 2 });
+	m_window->setMousePosition(m_windowCentre);
 
 	const float sensitivity = m_controls.mouseSensitivity();
 
-	m_rotation.x += sensitivity * dt * (windowW / 2.f - mousePos.x);
-	m_rotation.y += sensitivity * dt * (windowH / 2.f - mousePos.y);
+	m_rotation.x += sensitivity * dt * (m_windowCentre.x - mousePos.x);
+	m_rotation.y += sensitivity * dt * (m_windowCentre.y - mousePos.y);
 	
 	m_rotation.y = MathUtils::clamp(m_rotation.y, -HALF_PI, HALF_PI);
 
@@ -85,6 +97,16 @@ Vector3 FPSCam::getPosition()
 Vector3 FPSCam::getDirection()
 {
 	return m_direction;
+}
+
+Matrix4x4 FPSCam::getProjection()
+{
+	return m_projection;
+}
+
+void phx::gfx::FPSCam::setProjection(const Matrix4x4 & projection)
+{
+	m_projection = projection;
 }
 
 void CameraControls::load()

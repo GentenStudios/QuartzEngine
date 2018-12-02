@@ -44,6 +44,8 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 		exit(EXIT_FAILURE);
 	}
 
+	m_preFullScreenSize = { width, height };
+
 	m_context = SDL_GL_CreateContext(m_window);
 
 	if (glewInit() != GLEW_OK)
@@ -96,7 +98,7 @@ void SDLWindow::pollEvents()
 		case SDL_KEYDOWN:
 			for (auto& e : m_keyEvents)
 			{
-				if (e.eventType == static_cast<int>(gfx::EventType::PRESSED))
+				if (e.eventType == static_cast<int>(events::KeyEventType::PRESSED))
 				{
 					if (event.key.keysym.scancode == static_cast<SDL_Scancode>(e.key))
 					{
@@ -108,9 +110,41 @@ void SDLWindow::pollEvents()
 		case SDL_KEYUP:
 			for (auto& e : m_keyEvents)
 			{
-				if (e.eventType == static_cast<int>(gfx::EventType::RELEASED))
+				if (e.eventType == static_cast<int>(events::KeyEventType::RELEASED))
 				{
 					if (event.key.keysym.scancode == static_cast<SDL_Scancode>(e.key))
+					{
+						e.callback();
+					}
+				}
+			}
+			break;
+		case SDL_WINDOWEVENT:
+			for (auto& e : m_windowEvents)
+			{
+				if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+				{
+					if (e.eventType == static_cast<int>(events::WindowEventType::RESIZED))
+					{
+						e.callback();
+
+						int w, h;
+						getSize(w, h);
+						glViewport(0, 0, w, h);
+					}
+				}
+				
+				if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+				{
+					if (e.eventType == static_cast<int>(events::WindowEventType::FOCUS_GAINED))
+					{
+						e.callback();
+					}
+				}
+
+				if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+				{
+					if (e.eventType == static_cast<int>(events::WindowEventType::FOCUS_LOST))
 					{
 						e.callback();
 					}
@@ -146,9 +180,38 @@ void SDLWindow::getSize(int& width, int& height)
 	SDL_GetWindowSize(m_window, &width, &height);
 }
 
+void SDLWindow::setSize(int width, int height)
+{
+	SDL_SetWindowSize(m_window, width, height);
+}
+
 void SDLWindow::setFullscreen(bool enabled)
 {
-	SDL_SetWindowFullscreen(m_window, enabled ? SDL_WINDOW_FULLSCREEN : 0);
+	if (enabled)
+	{
+		SDL_DisplayMode current;
+		int check = SDL_GetCurrentDisplayMode(0, &current);
+
+		if (check != 0)
+		{
+			LERROR("Something went wrong, and we could not make your game fullscreen! Tell the Devs that the error was: ", SDL_GetError());
+		}
+		else
+		{
+			getSize(m_preFullScreenSize.x, m_preFullScreenSize.y);
+			setSize(current.w, current.h);
+			SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN);
+
+			glViewport(0, 0, current.w, current.h);
+		}
+	}
+	else
+	{
+		SDL_SetWindowFullscreen(m_window, 0);
+		setSize(m_preFullScreenSize.x, m_preFullScreenSize.y);
+
+		glViewport(0, 0, m_preFullScreenSize.x, m_preFullScreenSize.y);
+	}
 }
 
 void SDLWindow::setResizable(bool enabled)
@@ -167,14 +230,19 @@ void SDLWindow::setVSync(bool enabled)
 	SDL_GL_SetSwapInterval(enabled ? 1 : 0);
 }
 
-void SDLWindow::addKeyCallback(int eventType, int key, std::function<void()> callback)
+void SDLWindow::addKeyCallback(events::KeyEventType eventType, events::Keys key, std::function<void()> callback)
 {
-	m_keyEvents.push_back({ eventType, key, callback });
+	m_keyEvents.push_back({ static_cast<int>(eventType), static_cast<int>(key), callback });
 }
 
 void SDLWindow::addMouseMoveCallback(std::function<void(double, double)> callback)
 {
 	m_mouseMoveEvents.push_back({ callback });
+}
+
+void SDLWindow::addWindowEventCallback(events::WindowEventType eventType, std::function<void()> callback)
+{
+	m_windowEvents.push_back({ static_cast<int>(eventType), callback });
 }
 
 bool SDLWindow::isKeyDown(events::Keys key)

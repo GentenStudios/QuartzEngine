@@ -112,6 +112,15 @@ namespace phx
 			 */
 			Vector3 getDirection();
 
+			/**
+			 * @brief Gets the projection of the Camera.
+			 * 
+			 * @return A Matrix4x4 containing the camera projection.
+			 */
+			Matrix4x4 getProjection();
+
+			void setProjection(const Matrix4x4& projection);
+
 			bool enabled;
 
 			/**
@@ -133,6 +142,12 @@ namespace phx
 
 			/// @brief The direction of the camera.
 			Vector3 m_direction;
+
+			/// @brief Last position of the mouse.
+			TVector2<int> m_windowCentre = TVector2<int>(0, 0);
+
+			/// @brief The projection of the camera.
+			Matrix4x4 m_projection;
 
 			/// @brief A pointer to the window object passed as a parameter in the constructor.
 			IWindow* m_window;

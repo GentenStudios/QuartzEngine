@@ -12,6 +12,24 @@ namespace phx {
 	namespace events {
 
 		/**
+		 * @brief An enum describing the type of EVENT happens when a key is pressed.
+		 *
+		 */
+		enum class KeyEventType : int
+		{
+			PRESSED,	///< When the key is just *pressed*
+			RELEASED,	///< When the key is released.
+			REPEAT		///< When the key is pressed repeatedly.
+		};
+
+		enum class WindowEventType : int
+		{
+			RESIZED,
+			FOCUS_LOST,
+			FOCUS_GAINED,
+		};
+
+		/**
 		 * @brief Enum for Key aliases, from API to SDL.
 		 *
 		 * @details This enum is for the Key interface. A key from here can be passed into a function, where it can be casted to INT,
