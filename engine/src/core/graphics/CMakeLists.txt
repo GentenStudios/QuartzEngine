@@ -1,7 +1,6 @@
 set(graphicsSourceDir ${CMAKE_CURRENT_LIST_DIR})
 
 set(openglSources
-    ${graphicsSourceDir}/gl/SDLWindow.cpp
     ${graphicsSourceDir}/gl/ShaderPipeline.cpp
     ${graphicsSourceDir}/gl/TextureArray.cpp
     ${graphicsSourceDir}/gl/VertexArray.cpp

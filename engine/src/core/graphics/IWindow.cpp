@@ -1,5 +1,5 @@
 #include <engine/core/graphics/IWindow.hpp>
-#include <engine/core/graphics/gl/SDLWindow.hpp>
+#include <engine/core/platform/SDL/SDLWindow.hpp>
 
 using namespace phx::gfx;
 

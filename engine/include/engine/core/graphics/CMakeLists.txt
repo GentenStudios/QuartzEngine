@@ -4,7 +4,6 @@ set(openglHeaders
     ${graphicsIncludeDir}/gl/Context.hpp
     ${graphicsIncludeDir}/gl/GLDebug.hpp
     ${graphicsIncludeDir}/gl/GLEnums.hpp
-    ${graphicsIncludeDir}/gl/SDLWindow.hpp
     ${graphicsIncludeDir}/gl/ShaderPipeline.hpp
     ${graphicsIncludeDir}/gl/TextureArray.hpp
     ${graphicsIncludeDir}/gl/VertexArray.hpp

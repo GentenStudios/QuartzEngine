@@ -1,4 +1,4 @@
-#include <engine/core/graphics/gl/SDLWindow.hpp>
+#include <engine/core/platform/SDL/SDLWindow.hpp>
 
 using namespace phx::sdl;
 using namespace phx;

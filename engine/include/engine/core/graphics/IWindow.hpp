@@ -38,7 +38,7 @@ namespace phx
 		 * @brief The interfacing class for creating a window.
 		 * 
 		 * @details THIS class in particular just returns a pointer to a new window created and allocated on the heap. The window created isn't really a "window", but more like an
-		 * 			object of a class, such as SDLWindow. The object returned will create the window using the indicated windowing API.
+		 * 			object of a class, such as SDLWindow.
 		 */
 		class IWindow
 		{
