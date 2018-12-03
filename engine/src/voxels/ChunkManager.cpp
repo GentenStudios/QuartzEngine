@@ -2,7 +2,9 @@
 
 using namespace phx::voxels;
 
-ChunkManager::ChunkManager() : m_wireframe(false)
+ChunkManager::ChunkManager(const std::string& blockID) : 
+	m_wireframe(false), 
+	m_defaultBlockID(blockID)
 {
 	m_managerData = new ChunkContainer();
 }
@@ -10,12 +12,7 @@ ChunkManager::ChunkManager() : m_wireframe(false)
 ChunkManager::~ChunkManager()
 {}
 
-void ChunkManager::setDefaultBlock(const std::string& block)
-{
-	m_defaultBlockID = block;
-}
-
-void phx::voxels::ChunkManager::toggleWireframe()
+void ChunkManager::toggleWireframe()
 {
 	m_wireframe = !m_wireframe;
 	glPolygonMode(GL_FRONT_AND_BACK, m_wireframe ? GL_LINE : GL_FILL);
@@ -49,9 +46,11 @@ void ChunkManager::setBlockAt(phx::Vector3 position, const BlockInstance& block)
 	int pos_y = (position.y / 16);
 	int pos_z = (position.z / 16);
 
+	phx::Vector3 temp = phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f);
+
 	for (auto& chunk : m_managerData->chunks)
 	{
-		if (chunk.getChunkPos() == phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f))
+		if (chunk.getChunkPos() == temp)
 		{
 			chunk.setBlockAt(
 				{ // "INLINE" VECTOR 3 DECLARATION
@@ -73,9 +72,11 @@ BlockInstance ChunkManager::getBlockAt(phx::Vector3 position)
 	int pos_y = (position.y / 16);
 	int pos_z = (position.z / 16);
 
+	phx::Vector3 temp = phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f);
+
 	for (auto& chunk : m_managerData->chunks)
 	{
-		if (chunk.getChunkPos() == phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f))
+		if (chunk.getChunkPos() == temp)
 		{
 			return chunk.getBlockAt(
 				{ // "INLINE" VECTOR 3 DECLARATION
@@ -98,9 +99,11 @@ void ChunkManager::breakBlockAt(phx::Vector3 position, const BlockInstance& bloc
 	int pos_y = (position.y / 16);
 	int pos_z = (position.z / 16);
 
+	phx::Vector3 temp = phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f);
+
 	for (auto& chunk : m_managerData->chunks)
 	{
-		if (chunk.getChunkPos() == phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f))
+		if (chunk.getChunkPos() == temp)
 		{
 			chunk.breakBlockAt(
 				{ // "INLINE" VECTOR 3 DECLARATION
@@ -122,9 +125,11 @@ void ChunkManager::placeBlockAt(phx::Vector3 position, const BlockInstance& bloc
 	int pos_y = (position.y / 16);
 	int pos_z = (position.z / 16);
 
+	phx::Vector3 temp = phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f);
+
 	for (auto& chunk : m_managerData->chunks)
 	{
-		if (chunk.getChunkPos() == phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f))
+		if (chunk.getChunkPos() == temp)
 		{
 			chunk.placeBlockAt(
 				{ // "INLINE" VECTOR 3 DECLARATION

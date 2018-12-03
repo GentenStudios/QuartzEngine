@@ -18,10 +18,8 @@ namespace phx
 		class ChunkManager
 		{
 		public:
-			ChunkManager();
+			ChunkManager(const std::string& blockID);
 			~ChunkManager();
-
-			void setDefaultBlock(const std::string& blockID);
 
 			void toggleWireframe();
 			bool isWireframe() { return m_wireframe; };

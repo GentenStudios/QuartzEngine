@@ -3,13 +3,7 @@
 
 using namespace phx::gfx;
 
-IWindow* IWindow::createWindow(WindowingAPI windowingAPI, const std::string& title, int width, int height, GLVersion version, GLProfile profile)
+IWindow* IWindow::createWindow(const std::string& title, int width, int height, GLVersion version, GLProfile profile)
 {
-	switch (windowingAPI)
-	{
-	case WindowingAPI::SDL:
-		return new phx::sdl::SDLWindow(title, width, height, version, profile);
-	}
-
-	return nullptr;
+	return new phx::sdl::SDLWindow(title, width, height, version, profile);
 }

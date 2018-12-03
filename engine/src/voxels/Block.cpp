@@ -35,7 +35,7 @@ const std::vector<std::string>& RegistryBlock::getBlockTextures() const { return
 
 void phx::voxels::RegistryBlock::setBlockTextures(const std::vector<std::string>& textures) { m_blockTextures = textures; }
 
-int RegistryBlock::initialHP() const { return m_initialHealthPoints; }
+int RegistryBlock::getInitialHP() const { return m_initialHealthPoints; }
 
 void RegistryBlock::setPlaceCallback(const BlockCallback& callback) { m_onPlaceCallback = callback; }
 void RegistryBlock::setBreakCallback(const BlockCallback& callback) { m_onBreakCallback = callback; }
@@ -47,7 +47,7 @@ BlockInstance::BlockInstance()
 	m_blockID = "core:unknown";
 
 	auto& it = BlockLibrary::get()->requestBlock(m_blockID);
-	m_hitpoints = it.initialHP();
+	m_hitpoints = it.getInitialHP();
 	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();
 	m_blockTextures = it.getBlockTextures();
@@ -59,7 +59,7 @@ BlockInstance::BlockInstance(const std::string& blockID)
 	m_blockID = blockID;
 
 	auto& it = BlockLibrary::get()->requestBlock(blockID);
-	m_hitpoints = it.initialHP();
+	m_hitpoints = it.getInitialHP();
 	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();
 	m_blockTextures = it.getBlockTextures();
@@ -102,13 +102,13 @@ void BlockLibrary::registerBlock(const RegistryBlock& block)
 	m_registeredBlocks[blockID] = block;
 }
 
-const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) const
+RegistryBlock BlockLibrary::requestBlock(const std::string& blockID) const
 {
 	auto it = m_registeredBlocks.find(blockID);
 
 	if (it == m_registeredBlocks.end())
 	{
-		LWARNING("The Block: ", blockID, " cannot be found, but is being requested, please take action!");
+		LWARNING("The Block: ", blockID, " cannot be found, but is being requested. Using core:unknown block type instead. Please take action!");
 		return RegistryBlock("core:unknown", "Unknown Block", 1, BlockType::SOLID);
 	}
 

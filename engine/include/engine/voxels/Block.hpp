@@ -48,7 +48,7 @@ namespace phx
 			const std::vector<std::string>& getBlockTextures() const;
 			void setBlockTextures(const std::vector<std::string>& textures);
 
-			int initialHP() const;
+			int getInitialHP() const;
 
 		private:
 			std::string m_blockID;
@@ -106,7 +106,7 @@ namespace phx
 
 			void registerBlock(const RegistryBlock& block);
 			
-			const RegistryBlock& requestBlock(const std::string& blockID) const;
+			RegistryBlock requestBlock(const std::string& blockID) const;
 
 		private:
 			BlockLibrary() {}

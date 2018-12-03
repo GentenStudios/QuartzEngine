@@ -19,7 +19,6 @@ int main(int argc, char** argv)
 	phx::ApplicationData* appData = new ApplicationData();
 
 	appData->window = phx::gfx::IWindow::createWindow(
-		phx::gfx::WindowingAPI::SDL,
 		requirements->windowTitle,
 		requirements->windowWidth,
 		requirements->windowHeight,

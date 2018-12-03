@@ -24,15 +24,6 @@ namespace phx
 	namespace gfx
 	{
 		/**
-		 * @brief An enum to choose which windowing library (such as SDL2 or GLFW) the Window should be created with.
-		 * 
-		 */
-		enum class WindowingAPI
-		{
-			SDL,
-		};
-
-		/**
 		 * @brief The state of the cursor.
 		 * 
 		 */
@@ -55,7 +46,6 @@ namespace phx
 			/**
 			 * @brief Creates an object to create a window dependant on the Windowing library specified.
 			 * 
-			 * @param windowApi The windowing library preferred for use.
 			 * @param title 	The title of the window, can be changed afterwards.
 			 * @param width 	The width of the window, can be changed afterwards
 			 * @param height 	The height of the window, can be changed afterwards.
@@ -63,7 +53,7 @@ namespace phx
 			 * @param profile 	The OpenGL profile, such as the Compatability profile, or Core profile.
 			 * @return IWindow* The respective object for the class depicted by the WindowingAPI parameter.
 			 */
-			static IWindow* createWindow(WindowingAPI windowApi, const std::string& title, int width, int height, GLVersion version, GLProfile profile);
+			static IWindow* createWindow(const std::string& title, int width, int height, GLVersion version, GLProfile profile);
 
 			/**
 			 * @brief Polls events that occur during the game loop.
