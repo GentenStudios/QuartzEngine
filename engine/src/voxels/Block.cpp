@@ -1,85 +1,116 @@
-#include "engine/voxels/Block.hpp"
+#include <engine/voxels/Block.hpp>
+#include <algorithm>
 
 using namespace phx::voxels;
 
-std::vector<Block*> BlockLibrary::m_blockLibrary;
-
-Block::Block(std::string id, std::string name, BlockType type)
+RegistryBlock::RegistryBlock()
 {
-	m_id = id;
-	m_name = name;
-	m_blockType = type;
-	BlockLibrary::registerBlock(this);
+	m_blockID = "core:unknown";
+	m_blockName = "Unknown Block";
+	m_initialHealthPoints = 1;
+	m_blockType = BlockType::SOLID;
 }
 
-Block::Block(const Block& other)
+RegistryBlock::RegistryBlock(std::string blockID, std::string blockName, int initialHP, BlockType blockType)
 {
-	m_id = other.m_id;
-	m_name = other.m_name;
-	m_blockType = other.m_blockType;
-	// no need to register the block again
+	m_blockID = blockID;
+	m_blockName = blockName;
+	m_initialHealthPoints = initialHP;
+	m_blockType = blockType;
 }
 
-Block::~Block()
+RegistryBlock::~RegistryBlock()
+{}
+
+const std::string& RegistryBlock::getBlockID() const { return m_blockID; }
+const std::string& RegistryBlock::getBlockName() const { return m_blockName; }
+BlockType RegistryBlock::getBlockType() const { return m_blockType; }
+
+const BlockCallback& RegistryBlock::getPlaceCallback() const { return m_onPlaceCallback; }
+const BlockCallback& RegistryBlock::getBreakCallback() const { return m_onBreakCallback; }
+const InteractionCallback& RegistryBlock::getInteractLeftCallback() const { return m_interactLeftCallback; }
+const InteractionCallback& RegistryBlock::getInteractRightCallback() const { return m_interactRightCallback; }
+
+const std::vector<std::string>& RegistryBlock::getBlockTextures() const { return m_blockTextures; }
+
+void phx::voxels::RegistryBlock::setBlockTextures(const std::vector<std::string>& textures) { m_blockTextures = textures; }
+
+int RegistryBlock::getInitialHP() const { return m_initialHealthPoints; }
+
+void RegistryBlock::setPlaceCallback(const BlockCallback& callback) { m_onPlaceCallback = callback; }
+void RegistryBlock::setBreakCallback(const BlockCallback& callback) { m_onBreakCallback = callback; }
+void RegistryBlock::setInteractLeftCallback(const InteractionCallback& callback) { m_interactLeftCallback = callback; }
+void RegistryBlock::setInteractRightCallback(const InteractionCallback& callback) { m_interactRightCallback = callback; }
+
+BlockInstance::BlockInstance()
 {
-	// empty
+	m_blockID = "core:unknown";
+
+	auto& it = BlockLibrary::get()->requestBlock(m_blockID);
+	m_hitpoints = it.getInitialHP();
+	m_blockName = it.getBlockName();
+	m_blockType = it.getBlockType();
+	m_blockTextures = it.getBlockTextures();
+
 }
 
-/////////////////////////////////////////////
-// Getters for Block Data ///////////////////
-/////////////////////////////////////////////
-
-const std::string& Block::getID() const
+BlockInstance::BlockInstance(const std::string& blockID)
 {
-	return m_id;
+	m_blockID = blockID;
+
+	auto& it = BlockLibrary::get()->requestBlock(blockID);
+	m_hitpoints = it.getInitialHP();
+	m_blockName = it.getBlockName();
+	m_blockType = it.getBlockType();
+	m_blockTextures = it.getBlockTextures();
 }
 
-const std::string& Block::getName() const
+const std::string& BlockInstance::getBlockName() const { return m_blockName; }
+void BlockInstance::setBlockName(const std::string& name) { m_blockName = name; }
+
+unsigned int BlockInstance::getHitpoints() const { return m_hitpoints; }
+void BlockInstance::setHitpoints(unsigned int hitpoints) { m_hitpoints = hitpoints; }
+
+const std::string& BlockInstance::getBlockID() const { return m_blockID; }
+BlockType BlockInstance::getBlockType() const { return m_blockType; }
+
+const std::vector<std::string>& BlockInstance::getBlockTextures() const { return m_blockTextures; }
+void BlockInstance::setBlockTextures(const std::vector<std::string>& newTextures) { m_blockTextures = newTextures; }
+
+BlockLibrary* BlockLibrary::get()
 {
-	return m_name;
+	static BlockLibrary library;
+	return &library;
 }
 
-BlockType Block::getBlockType() const
+void BlockLibrary::init()
 {
-	return m_blockType;
+	m_registeredBlocks["core:unknown"] = RegistryBlock("core:unknown", "Unkown Block", 1, BlockType::SOLID);
+	m_registeredBlocks["core:out_of_bounds"] = RegistryBlock("core:out_of_bounds", "Out Of Bounds Block", 1, BlockType::SOLID);
 }
 
-/////////////////////////////////////////////
-// Getters and setters for event callbacks //
-/////////////////////////////////////////////
-
-void Block::setOnPlaceCallback(BlockCallback callback) { m_onPlaceCallback = callback; }
-const BlockCallback& Block::getOnPlaceCallback() const { return m_onPlaceCallback; }
-
-void Block::setOnBreakCallback(BlockCallback callback) { m_onBreakCallback = callback; }
-const BlockCallback& Block::getOnBreakCallback() const { return m_onBreakCallback; }
-
-void Block::setOnInteractLeftCallback(BlockCallback callback) { m_onInteractLeftCallback = callback; }
-const BlockCallback& Block::getOnInteractLeftCallback() const { return m_onInteractLeftCallback; }
-
-void Block::setOnInteractRightCallback(BlockCallback callback) { m_onInteractRightCallback = callback; }
-const BlockCallback& Block::getOnInteractRightCallback() const { return m_onInteractRightCallback; }
-
-
-/////////////////////////////////////////////////////////////////
-/////////////////// Block Library Code //////////////////////////
-/////////////////////////////////////////////////////////////////
-
-void BlockLibrary::registerBlock(Block* block)
+void BlockLibrary::registerBlock(const RegistryBlock& block)
 {
-	m_blockLibrary.push_back(block);
-}
+	const char* blockID = block.getBlockID().c_str();
 
-Block BlockLibrary::getBlockByID(std::string id)
-{
-	for (int i = 1; i < m_blockLibrary.size(); i++)
+	if (m_registeredBlocks.find(blockID) != m_registeredBlocks.end())
 	{
-		Block* block = m_blockLibrary[i];
-		if (block->getID() == id)
-		{
-			return *block;
-		}
-	};
+		LWARNING("The Block: ", blockID, " has already been registered, please take action!");
+		return;
+	}
 
-	return *(m_blockLibrary[0]);
+	m_registeredBlocks[blockID] = block;
+}
+
+RegistryBlock BlockLibrary::requestBlock(const std::string& blockID) const
+{
+	auto it = m_registeredBlocks.find(blockID);
+
+	if (it == m_registeredBlocks.end())
+	{
+		LWARNING("The Block: ", blockID, " cannot be found, but is being requested. Using core:unknown block type instead. Please take action!");
+		return RegistryBlock("core:unknown", "Unknown Block", 1, BlockType::SOLID);
+	}
+
+	return it->second;
 }

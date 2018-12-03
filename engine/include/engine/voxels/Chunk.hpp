@@ -1,16 +1,16 @@
 #pragma once
 
-#include "engine/common.hpp"
-#include "engine/math/Vector3.hpp"
-#include "engine/math/Vector2.hpp"
+#include <engine/core/Core.hpp>
 
-#include "engine/voxels/Block.hpp"
+#include <engine/core/math/Vector2.hpp>
+#include <engine/core/math/Vector3.hpp>
 
-#include "engine/graphics/opengl/VertexBuffer.hpp"
-#include "engine/graphics/opengl/VertexArray.hpp"
-#include "engine/graphics/opengl/VertexAttrib.hpp"
+#include <engine/voxels/Block.hpp>
 
-#include "engine/graphics/opengl/TextureArray.hpp"
+#include <engine/core/graphics/gl/VertexBuffer.hpp>
+#include <engine/core/graphics/gl/VertexArray.hpp>
+#include <engine/core/graphics/gl/VertexAttrib.hpp>
+#include <engine/core/graphics/gl/TextureArray.hpp>
 
 namespace phx
 {
@@ -46,28 +46,25 @@ namespace phx
 		public:
 			Chunk(const Chunk&) = default;
 
-			Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock);
+			Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID);
 			~Chunk() {}
 
-			void populateData();  // should update the chunk mesh for the chunk renderer
+			void populateData();
 
-			void buildMesh();  // should update the meshes
-			void rebuildMeshAt(phx::Vector3 position);
-
+			void buildMesh(); 
 
 			void addBlockFace(BlockFace face, int memOffset, int x, int y, int z);
 
-			void breakBlockAt(phx::Vector3 position, Block* replaceBlock);
-			void placeBlockAt(phx::Vector3 position, Block* placeBlock);
+			void breakBlockAt(phx::Vector3 position, const BlockInstance& block);
+			void placeBlockAt(phx::Vector3 position, const BlockInstance& block);
 
-			const Block* getBlockAt(phx::Vector3 position);
-			void setBlockAt(phx::Vector3 position, Block* block);
+			BlockInstance getBlockAt(phx::Vector3 position) const;
+			void setBlockAt(phx::Vector3 position, const BlockInstance& newBlock);
 
-			void buildTextureArray();
 			void bufferData();
 			void render(int* counter);
 
-			const Vector3& getChunkPos() { return m_chunkPos; }
+			inline const Vector3& getChunkPos() const { return m_chunkPos; }
 
 			Mesh* getBlocksMesh();
 			Mesh* getObjectsMesh();
@@ -79,8 +76,8 @@ namespace phx
 
 			unsigned char m_chunkFlags = 0;
 
-			Block* m_defaultBlock;
-			std::vector<std::vector<std::vector<Block*>>> m_chunkBlocks;
+			std::string m_defaultBlockID;
+			std::vector<std::vector<std::vector<BlockInstance>>> m_chunkBlocks;
 
 			phx::gfx::gl::TextureArray* m_textureArray = nullptr;
 			
@@ -94,9 +91,7 @@ namespace phx
 			phx::gfx::gl::VertexBuffer* m_tlbo = nullptr; // Texture Layer Buffer Object
 
 			unsigned int m_vertInChunk;
-			unsigned int m_normalInChunk;
 			unsigned int m_uvInChunk;
-			unsigned int m_layersInChunk;
 		};
 
 	}

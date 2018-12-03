@@ -5,143 +5,22 @@ project(Phoenix_Engine)
 set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(header_dir ${PROJECT_SOURCE_DIR}/include)
 
-set(mathSrc
-    ${source_dir}/math/Vector3.cpp
-    ${source_dir}/math/Matrix4x4.cpp
-    ${source_dir}/math/Vector2.cpp
-    )
+unset(engineSources CACHE)
+unset(engineHeaders CACHE)
 
-set(mathHeaders
-    ${header_dir}/engine/math/Vector3.hpp
-    ${header_dir}/engine/math/Matrix4x4.hpp
-    ${header_dir}/engine/math/MathUtils.hpp
-    ${header_dir}/engine/math/Vector2.hpp
-    )
-
-set(platformHeaders
-    ${header_dir}/engine/os.hpp
-
-    ${header_dir}/engine/SDL/SDLWindow.hpp
-    ${header_dir}/engine/graphics/IWindow.hpp
-    ${header_dir}/engine/graphics/Context.hpp
-
-    ${header_dir}/engine/events/Keys.hpp
-    )
-
-set(platformSrc
-    ${source_dir}/SDL/SDLWindow.cpp
-    ${source_dir}/graphics/IWindow.cpp
-    )
-
-set(graphicsHeaders
-    ${header_dir}/engine/graphics/opengl/opengl.hpp
-    ${header_dir}/engine/graphics/opengl/debug.hpp
-
-    ${header_dir}/engine/graphics/opengl/GLEnums.hpp
-    ${header_dir}/engine/graphics/opengl/VertexArray.hpp
-    ${header_dir}/engine/graphics/opengl/VertexBuffer.hpp
-    ${header_dir}/engine/graphics/opengl/VertexAttrib.hpp
-    ${header_dir}/engine/graphics/opengl/ShaderPipeline.hpp
-    ${header_dir}/engine/graphics/opengl/TextureArray.hpp
-
-    ${header_dir}/engine/graphics/Camera.hpp
-    )
-
-set(graphicsSrc
-    ${source_dir}/graphics/opengl/VertexArray.cpp
-    ${source_dir}/graphics/opengl/VertexBuffer.cpp
-    ${source_dir}/graphics/opengl/ShaderPipeline.cpp
-    ${source_dir}/graphics/opengl/TextureArray.cpp
-
-    ${source_dir}/graphics/Camera.cpp
-    )
-
-set(voxelsHeaders
-    ${header_dir}/engine/voxels/Block.hpp
-    ${header_dir}/engine/voxels/MapBlock.hpp
-    ${header_dir}/engine/voxels/Chunk.hpp
-    ${header_dir}/engine/voxels/ChunkManager.hpp
-
-    ${header_dir}/engine/entities/Item.hpp
-    ${header_dir}/engine/entities/ItemInstance.hpp
-    )
-
-set(voxelsSrc
-    ${source_dir}/voxels/Block.cpp
-    ${source_dir}/voxels/MapBlock.cpp
-    ${source_dir}/voxels/Chunk.cpp
-    ${source_dir}/voxels/ChunkManager.cpp
-
-    ${source_dir}/entities/Item.cpp
-    ${source_dir}/entities/ItemInstance.cpp
-    )
-
-set(utilHeaders
-    ${header_dir}/engine/utils/logging.hpp
-	${header_dir}/engine/utils/io.hpp
-	${header_dir}/engine/utils/Config.hpp
-    )
-
-set(utilSrc
-    ${source_dir}/utils/logging.cpp
-    ${source_dir}/utils/io.cpp
-	${source_dir}/utils/Config.cpp
-    )
-
-set(commonHeaders
-    ${header_dir}/engine/common.hpp
-    ${header_dir}/engine/types.hpp
-    )
-
-set(sources
-    ${graphicsSrc}
-    ${mathSrc}
-    ${platformSrc}
-    ${utilSrc}
-    ${voxelsSrc}
-    )
-
-set(headers
-    ${commonHeaders}
-    ${graphicsHeaders}
-    ${mathHeaders}
-    ${platformHeaders}
-    ${utilHeaders}
-    ${voxelsHeaders}
-    )
-
-source_group("Source Files\\Math" FILES ${mathSrc})
-source_group("Header Files\\Math" FILES ${mathHeaders})
-
-source_group("Source Files\\Platform" FILES ${platformSrc})
-source_group("Header Files\\Platform" FILES ${platformHeaders})
-
-source_group("Source Files\\Graphics" FILES ${graphicsSrc})
-source_group("Header Files\\Graphics" FILES ${graphicsHeaders})
-
-source_group("Source Files\\Utils" FILES ${utilSrc})
-source_group("Header Files\\Utils" FILES ${utilHeaders})
-
-source_group("Source Files\\Voxels" FILES ${voxelsSrc})
-source_group("Header Files\\Voxels" FILES ${voxelsHeaders})
-
-source_group("Header Files\\Common" FILES ${commonHeaders})
+add_subdirectory(include)
+add_subdirectory(src)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
-
 set(include_dirs
     ${dependencies}/SDL2/include
     ${dependencies}/glew/include
     ${dependencies}/stb_image/
 	${dependencies}/inih
     ${header_dir}
-    )
+)
 
-set(libraries
-    SDL2-static
-    SDL2main
-    glew_s
-    )
+set(libraries SDL2-static SDL2main glew_s)
 
 if(WIN32)
     set(libraries
@@ -152,7 +31,7 @@ if(WIN32)
         opengl32.lib
         version.lib
         winmm.lib
-        )
+    )
 endif()
 
 if(UNIX AND NOT APPLE)
@@ -163,11 +42,30 @@ if(UNIX AND NOT APPLE)
         ${X11_LIBRARIES}
         ${X11_Xxf86vm_LIB}
         GL
-        )
+    )
 endif()
 
 # Link the library
-add_library(${PROJECT_NAME} STATIC ${sources} ${headers})
+add_library(${PROJECT_NAME} STATIC ${engineSources} ${engineHeaders})
 target_link_libraries(${PROJECT_NAME} ${libraries})
-include_directories(${include_dirs})
+target_include_directories(${PROJECT_NAME} PUBLIC ${include_dirs})
 
+foreach(FILE ${engineSources}) 
+    get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
+
+    string(REPLACE "/" "\\" GROUP "${GROUP}")
+
+    set(GROUP "Source Files${GROUP}")
+    source_group("${GROUP}" FILES "${FILE}")
+endforeach()
+
+foreach(FILE ${engineHeaders})
+    get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
+    string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
+
+    string(REPLACE "/" "\\" GROUP "${GROUP}")
+
+    set(GROUP "Header Files${GROUP}")
+    source_group("${GROUP}" FILES "${FILE}")
+endforeach()

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "engine/common.hpp"
+#include <engine/core/Core.hpp>
 
-#include "engine/voxels/Block.hpp"
-#include "engine/voxels/Chunk.hpp"
+#include <engine/voxels/Block.hpp>
+#include <engine/voxels/Chunk.hpp>
 
 namespace phx
 {
@@ -18,10 +18,8 @@ namespace phx
 		class ChunkManager
 		{
 		public:
-			ChunkManager();
+			ChunkManager(const std::string& blockID);
 			~ChunkManager();
-
-			void setDefaultBlock(Block* block);
 
 			void toggleWireframe();
 			bool isWireframe() { return m_wireframe; };
@@ -30,18 +28,17 @@ namespace phx
 			void testGeneration(int test);
 			void unloadRedundant() { /* TODO this. */ }
 
-			void setBlockAt(phx::Vector3 position, Block* block);
-			void getBlockAt();
+			void setBlockAt(phx::Vector3 position, const BlockInstance& block);
+			BlockInstance getBlockAt(phx::Vector3 position);
 
-
-			void breakBlockAt();
-			void placeBlockAt();
+			void breakBlockAt(phx::Vector3 position, const BlockInstance& block);
+			void placeBlockAt(phx::Vector3 position, const BlockInstance& block);
 						
 			void render(int bufferCounter);
 
 		private:
 			ChunkContainer* m_managerData;
-			Block* m_defaultBlock;
+			std::string m_defaultBlockID;
 
 			bool m_wireframe;
 		};

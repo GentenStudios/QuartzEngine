@@ -1,4 +1,4 @@
-#include "engine/voxels/Chunk.hpp"
+#include <engine/voxels/Chunk.hpp>
 
 #include <cstring>
 #include <functional>
@@ -107,9 +107,9 @@ static const Vector3 CubeVerts[] = {
 	Vector3(-1.f,  1.f, -1.f)
 };
 
-Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, Block* defaultBlock)
+Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlock)
 {
-	m_defaultBlock = defaultBlock;
+	m_defaultBlockID = defaultBlock;
 	
 	m_blockMesh = new Mesh();
 	m_objectMesh = new Mesh();
@@ -148,7 +148,7 @@ void Chunk::populateData()
 			for (unsigned int z = 0; z < m_chunkBlocks[x][y].size(); z++)
 			{
 				// Set the Z (first vector part, of the trio) to have the actual value of the blocks data. So, you can have m_chunkBlocks[x][y][z] = BlockType::SOLID
-				m_chunkBlocks[x][y][z] = m_defaultBlock;
+				m_chunkBlocks[x][y][z] = BlockInstance(m_defaultBlockID);
 			}
 		}
 	}
@@ -162,7 +162,7 @@ void Chunk::buildMesh()
 		{
 			for (unsigned int x = 0; x < m_chunkSize; x++)
 			{
-				if (m_chunkBlocks[x][y][z]->getBlockType() != BlockType::OBJECT && m_chunkBlocks[x][y][z]->getBlockType() != BlockType::WATER)
+				if (m_chunkBlocks[x][y][z].getBlockType() != BlockType::OBJECT && m_chunkBlocks[x][y][z].getBlockType() != BlockType::WATER)
 				{
 
 					int memOffset = (x * 36) + (m_chunkSize * ((y * 36) + m_chunkSize * (z * 36)));
@@ -171,26 +171,26 @@ void Chunk::buildMesh()
 					std::memset(m_blockMesh->chunkTexLayers.data() + memOffset, 0, 36 * sizeof(int));
 					std::memcpy(m_blockMesh->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
 
-					if (m_chunkBlocks[x][y][z]->getBlockType() == BlockType::GAS)
+					if (m_chunkBlocks[x][y][z].getBlockType() == BlockType::GAS)
 						continue;
 
-					if (x == 0 || m_chunkBlocks[x - 1][y][z]->getBlockType() != BlockType::SOLID)
+					if (x == 0 || m_chunkBlocks[x - 1][y][z].getBlockType() != BlockType::SOLID)
 						addBlockFace(BlockFace::RIGHT, memOffset, x, y, z);
-					if (x == m_chunkSize - 1 || m_chunkBlocks[x + 1][y][z]->getBlockType() != BlockType::SOLID)
+					if (x == m_chunkSize - 1 || m_chunkBlocks[x + 1][y][z].getBlockType() != BlockType::SOLID)
 						addBlockFace(BlockFace::LEFT, memOffset, x, y, z);
 
-					if (y == 0 || m_chunkBlocks[x][y - 1][z]->getBlockType() != BlockType::SOLID)
+					if (y == 0 || m_chunkBlocks[x][y - 1][z].getBlockType() != BlockType::SOLID)
 						addBlockFace(BlockFace::BOTTOM, memOffset, x, y, z);
-					if (y == m_chunkSize - 1 || m_chunkBlocks[x][y + 1][z]->getBlockType() != BlockType::SOLID)
+					if (y == m_chunkSize - 1 || m_chunkBlocks[x][y + 1][z].getBlockType() != BlockType::SOLID)
 						addBlockFace(BlockFace::TOP, memOffset, x, y, z);
 
-					if (z == 0 || m_chunkBlocks[x][y][z - 1]->getBlockType() != BlockType::SOLID)
+					if (z == 0 || m_chunkBlocks[x][y][z - 1].getBlockType() != BlockType::SOLID)
 						addBlockFace(BlockFace::FRONT, memOffset, x, y, z);
-					if (z == m_chunkSize - 1 || m_chunkBlocks[x][y][z + 1]->getBlockType() != BlockType::SOLID)
+					if (z == m_chunkSize - 1 || m_chunkBlocks[x][y][z + 1].getBlockType() != BlockType::SOLID)
 						addBlockFace(BlockFace::BACK, memOffset, x, y, z);
 
 				}
-				else if (m_chunkBlocks[x][y][z]->getBlockType() == BlockType::WATER)
+				else if (m_chunkBlocks[x][y][z].getBlockType() == BlockType::WATER)
 				{
 					//TODO: all of this shit.
 				}
@@ -203,26 +203,6 @@ void Chunk::buildMesh()
 		m_chunkFlags |= NEEDS_BUFFERING;
 }
 
-void Chunk::rebuildMeshAt(phx::Vector3 position)
-{
-	if (position.x != 0 && position.y != 0 && position.z != 0)
-	{
-		if (position.x < m_chunkSize && position.y < m_chunkSize && position.z < m_chunkSize)
-		{
-			int memOffsetAbove = (position.x * 36) + (m_chunkSize * (((position.y + 1) * 36) + m_chunkSize * (position.z * 36)));
-			int memOffsetBelow = (position.x * 36) + (m_chunkSize * (((position.y - 1) * 36) + m_chunkSize * (position.z * 36)));
-
-			int memOffsetRight = ((position.x + 1) * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
-			int memOffsetLeft =  ((position.x - 1) * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
-
-			int memOffsetBack =	 (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * ((position.z + 1) * 36)));
-			int memOffsetFront = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * ((position.z - 1) * 36)));
-
-			// TODO: THE REST OF THIS.
-		}
-	}
-}
-
 void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 {
 	int bytesInFace = 6 * sizeof(Vector3);
@@ -233,7 +213,7 @@ void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 		bytesInFace																	// Size of Data to copy.
 	);
 
-	auto& blockTex = m_chunkBlocks[x][y][z]->getTextures();
+	auto& blockTex = m_chunkBlocks[x][y][z].getBlockTextures();
 	int texLayer = 0;
 
 	if (static_cast<int>(face) < blockTex.size())
@@ -252,7 +232,7 @@ void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 	}
 }
 
-void Chunk::breakBlockAt(phx::Vector3 position, Block* blockReplace)
+void Chunk::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
 {
 	if (position.x < m_chunkBlocks.size())
 	{
@@ -263,11 +243,11 @@ void Chunk::breakBlockAt(phx::Vector3 position, Block* blockReplace)
 				int memOffset = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
 				std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
 
-				auto& breakCallback = m_chunkBlocks[position.x][position.y][position.z]->getOnBreakCallback();
+				auto& breakCallback =  BlockLibrary::get()->requestBlock(m_chunkBlocks[position.x][position.y][position.z].getBlockID()).getBreakCallback();
 				if (breakCallback != nullptr)
 					breakCallback();
 
-				m_chunkBlocks[position.x][position.y][position.z] = blockReplace;
+				m_chunkBlocks[position.x][position.y][position.z] = block;
 				
 				if (!(m_chunkFlags & NEEDS_MESHING))
 					m_chunkFlags |= NEEDS_MESHING;
@@ -276,7 +256,7 @@ void Chunk::breakBlockAt(phx::Vector3 position, Block* blockReplace)
 	}
 }
 
-void Chunk::placeBlockAt(phx::Vector3 position, Block* placeBlock)
+void Chunk::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
 {
 	if (position.x < m_chunkBlocks.size())
 	{
@@ -287,11 +267,11 @@ void Chunk::placeBlockAt(phx::Vector3 position, Block* placeBlock)
 				int memOffset = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
 				std::memcpy(m_blockMesh->chunkVertices.data() + memOffset, CubeVerts, sizeof(CubeVerts));
 
-				auto& placeCallback = m_chunkBlocks[position.x][position.y][position.z]->getOnPlaceCallback();
+				auto& placeCallback = BlockLibrary::get()->requestBlock(block.getBlockID()).getPlaceCallback();
 				if (placeCallback != nullptr)
 					placeCallback();
 
-				m_chunkBlocks[position.x][position.y][position.z] = placeBlock;
+				m_chunkBlocks[position.x][position.y][position.z] = block;
 
 				if (!(m_chunkFlags & NEEDS_MESHING))
 					m_chunkFlags |= NEEDS_MESHING;
@@ -300,7 +280,7 @@ void Chunk::placeBlockAt(phx::Vector3 position, Block* placeBlock)
 	}
 }
 
-const Block* Chunk::getBlockAt(phx::Vector3 position)
+BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
 {
 	if (position.x < m_chunkBlocks.size())
 	{
@@ -313,10 +293,10 @@ const Block* Chunk::getBlockAt(phx::Vector3 position)
 		}
 	}
 
-	return nullptr;
+	return BlockInstance("core:out_of_bounds");
 }
 
-void Chunk::setBlockAt(phx::Vector3 position, Block* block)
+void Chunk::setBlockAt(phx::Vector3 position, const BlockInstance& newBlock)
 {
 	if (position.x < m_chunkBlocks.size())
 	{
@@ -324,7 +304,7 @@ void Chunk::setBlockAt(phx::Vector3 position, Block* block)
 		{
 			if (position.z < m_chunkBlocks[position.y].size())
 			{
-				m_chunkBlocks[position.x][position.y][position.z] = block;
+				m_chunkBlocks[position.x][position.y][position.z] = newBlock;
 
 				if (!(m_chunkFlags & NEEDS_MESHING))
 					m_chunkFlags |= NEEDS_MESHING;
@@ -382,7 +362,7 @@ void Chunk::render(int* counter)
 	{
 		if ((*counter) == 0)
 			return;
-		DEBUG("BUILDING MESH!");
+		LDEBUG("BUILDING MESH!");
 		buildMesh();
 		(*counter)--;
 		return;
@@ -392,7 +372,7 @@ void Chunk::render(int* counter)
 	{
 		if ((*counter) == 0)
 			return;
-		DEBUG("BUFFERING MESH DATA!");
+		LDEBUG("BUFFERING MESH DATA!");
 		bufferData();
 		(*counter)--;
 	}

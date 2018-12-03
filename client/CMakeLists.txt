@@ -6,36 +6,14 @@ set(source_dir ${PROJECT_SOURCE_DIR}/src)
 set(header_dir ${PROJECT_SOURCE_DIR}/include/client)
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 
-set(sources
-    ${source_dir}/main.cpp
-)
+unset(clientSources CACHE)
+unset(clientHeaders CACHE)
 
-set(headers
+add_subdirectory(include)
+add_subdirectory(src)
 
-)
-
-set(include_dirs
-    ${dependencies}/SDL2/include
-    ${dependencies}/glew/include
-    ${dependencies}/../engine/include
-	${dependencies}/inih
-)
-
-set(libraries
-    Phoenix_Engine
-)
-
-if(WIN32)
-    set(libraries
-        ${libraries}
-        imm32.lib
-        ole32.lib
-        oleaut32.lib
-        opengl32.lib
-        version.lib
-        winmm.lib
-        )
-endif()
+set(include_dirs ${dependencies}/SDL2/include ${dependencies}/../engine/include ${CMAKE_CURRENT_LIST_DIR}/include)
+set(libraries Phoenix_Engine)
 
 set(AssetsPath ${CMAKE_CURRENT_SOURCE_DIR}/../assets)
 
@@ -49,8 +27,7 @@ add_custom_target(Phoenix_Client-Assets
 				   SOURCES ${shaders} ${scripts} ${images}
 )
 
-
-add_executable(${PROJECT_NAME} ${sources} ${headers})
+add_executable(${PROJECT_NAME} ${clientSources} ${clientHeaders})
 target_link_libraries(${PROJECT_NAME} ${libraries})
 include_directories(${include_dirs})
 
