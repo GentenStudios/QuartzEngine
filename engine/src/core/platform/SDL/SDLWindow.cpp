@@ -3,6 +3,11 @@
 using namespace phx::sdl;
 using namespace phx;
 
+void SDLWindow::addMouseActionCallback(std::function<void(TVector2<int>, events::MouseAction, events::MouseButton)> callback)
+{
+	m_mouseActionEvents.push_back({callback});
+}
+
 SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -89,6 +94,26 @@ void SDLWindow::pollEvents()
 		case SDL_QUIT:
 			m_running = false;
 			break;
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+		{
+			events::MouseAction action = event.type == SDL_MOUSEBUTTONDOWN ? events::MouseAction::DOWN : events::MouseAction::UP;
+			
+			events::MouseButton butt = 
+				(event.button.button == SDL_BUTTON_LEFT) ? events::MouseButton::LEFT : 
+				(event.button.button == SDL_BUTTON_RIGHT) ? events::MouseButton::RIGHT : 
+				(event.button.button == SDL_BUTTON_MIDDLE) ? events::MouseButton::MIDDLE :
+				events::MouseButton::LEFT;
+
+			TVector2<int> pos(event.button.x, event.button.y);
+
+			for (auto& e : m_mouseActionEvents)
+			{
+				e.callback(pos, action, butt);
+			}
+			break;
+		}
+
 		case SDL_MOUSEMOTION:
 			for (auto& e : m_mouseMoveEvents)
 			{
