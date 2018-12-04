@@ -20,24 +20,72 @@ void ChunkManager::toggleWireframe()
 
 void ChunkManager::testGeneration(int test)
 {
-	if (m_managerData->chunks.size() == 0)
+	for (unsigned int z = 0; z < test; z++)
 	{
-		Vector3 position = { 0, 0, 0 };
-		m_managerData->chunks.push_back(Chunk(position, 16, m_defaultBlockID));
-		m_managerData->positions.push_back(position);
+		for (unsigned int y = 0; y < test; y++)
+		{
+			for (unsigned int x = 0; x < test; x++)
+			{
+				if (sqrt(static_cast<float>((x - test / 2) * (x - test / 2) + (y - test / 2) * (y - test / 2) + (z - test / 2) * (z - test / 2))) < test / 2)
+				{
+					int pos_x = (x / 16);
+					int pos_y = (y / 16);
+					int pos_z = (z / 16);
+
+					phx::Vector3 temp = phx::Vector3(pos_x * 16.f, pos_y * 16.f, pos_z * 16.f);
+
+					bool found = false;
+
+					for (auto& chunk : m_managerData->chunks)
+					{
+						if (chunk.getChunkPos() == temp)
+						{
+							chunk.setBlockAt(
+								{ // "INLINE" VECTOR 3 DECLARATION
+								static_cast<float>(static_cast<int>(x) % 16), // x position IN the chunk, not overall 
+								static_cast<float>(static_cast<int>(y) % 16), // y position IN the chunk, not overall 
+								static_cast<float>(static_cast<int>(z) % 16)  // z position IN the chunk, not overall 
+								},
+								BlockInstance("core:grass")
+							);
+
+							found = true;
+
+							break;
+						}
+					}
+
+					if (found == false)
+					{
+						m_managerData->chunks.push_back(Chunk(temp, 16, m_defaultBlockID));
+
+						for (auto& chunk : m_managerData->chunks)
+						{
+							if (chunk.getChunkPos() == temp)
+							{
+								chunk.populateData();
+
+								chunk.setBlockAt(
+									{ // "INLINE" VECTOR 3 DECLARATION
+									static_cast<float>(static_cast<int>(x) % 16), // x position IN the chunk, not overall 
+									static_cast<float>(static_cast<int>(y) % 16), // y position IN the chunk, not overall 
+									static_cast<float>(static_cast<int>(z) % 16)  // z position IN the chunk, not overall 
+									},
+									BlockInstance("core:grass")
+								);
+
+								found = true;
+
+								break;
+							}
+						}
+
+					}
+				}
+			}
+		}
 	}
 
-	for (int i = 1; i < test + 1; i++)
-	{
-		Vector3 position = { i * 16.f, 0, 0 };
-		m_managerData->chunks.push_back(Chunk({position.x, position.y, position.z}, 16, m_defaultBlockID));
-		m_managerData->positions.push_back(position);
-	}
-
-	for (auto& chunk : m_managerData->chunks)
-	{
-		chunk.populateData();
-	}
 }
 
 void ChunkManager::setBlockAt(phx::Vector3 position, const BlockInstance& block)

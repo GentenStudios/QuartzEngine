@@ -48,6 +48,7 @@ void Sandbox::run()
 	block.setBreakCallback([]() { LDEBUG("Broken a grass block!"); });
 
 	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
+	air.setBreakCallback([]() { LDEBUG("Broken an air block somehow"); });
 	
 	BlockLibrary::get()->init();
 
@@ -55,7 +56,7 @@ void Sandbox::run()
 	BlockLibrary::get()->registerBlock(air);
 
 	ChunkManager* world = new ChunkManager("core:air");
-	world->testGeneration(5);
+	world->testGeneration(16);
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
 	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
@@ -67,12 +68,22 @@ void Sandbox::run()
 	FPSCam* cam = new FPSCam(m_appData->window);
 	cam->enabled = true;
 
-	LDEBUG(world->getBlockAt({ 1, 100, 1 }).getBlockID());
-	world->breakBlockAt({0,0,0}, BlockInstance(air.getBlockID()));
-
 	phx::gfx::IWindow* window = m_appData->window;
 
+	int sphereSize = 16;
+
 	window->setResizable(true);
+
+	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_3, [&sphereSize, &world]() {
+		sphereSize += 16;
+		world->testGeneration(sphereSize);
+	});
+
+	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_4, [&sphereSize, &world]() {
+		sphereSize -= 16;
+		world->testGeneration(sphereSize);
+	});
+
 
 	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_ESCAPE, [&cam, &window]() {
 		cam->enabled = !cam->enabled;
