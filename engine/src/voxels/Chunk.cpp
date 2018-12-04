@@ -129,7 +129,6 @@ Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, const std::string& defaul
 	m_blockMesh->chunkUVs.resize(m_uvInChunk);
 
 	m_chunkFlags = NEEDS_BUFFERING | NEEDS_MESHING;
-
 }
 
 void Chunk::populateData()
@@ -164,31 +163,39 @@ void Chunk::buildMesh()
 			{
 				if (m_chunkBlocks[x][y][z].getBlockType() != BlockType::OBJECT && m_chunkBlocks[x][y][z].getBlockType() != BlockType::WATER)
 				{
-
 					int memOffset = (x * 36) + (m_chunkSize * ((y * 36) + m_chunkSize * (z * 36)));
 
 					std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
 					std::memset(m_blockMesh->chunkTexLayers.data() + memOffset, 0, 36 * sizeof(int));
 					std::memcpy(m_blockMesh->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
 
-					if (m_chunkBlocks[x][y][z].getBlockType() == BlockType::GAS)
-						continue;
+					//if (m_chunkBlocks[x][y][z].getBlockType() == BlockType::GAS)
+					//	continue;
 
-					if (x == 0 || m_chunkBlocks[x - 1][y][z].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::RIGHT, memOffset, x, y, z);
-					if (x == m_chunkSize - 1 || m_chunkBlocks[x + 1][y][z].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::LEFT, memOffset, x, y, z);
+					if (sqrt(static_cast<float>((x - m_chunkSize / 2) * (x - m_chunkSize / 2) + (y - m_chunkSize / 2) * (y - m_chunkSize / 2) + (z - m_chunkSize / 2) * (z - m_chunkSize / 2))) < m_chunkSize / 2)
+					{
+						m_chunkBlocks[x][y][z] = BlockInstance("core:grass");
 
-					if (y == 0 || m_chunkBlocks[x][y - 1][z].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::BOTTOM, memOffset, x, y, z);
-					if (y == m_chunkSize - 1 || m_chunkBlocks[x][y + 1][z].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::TOP, memOffset, x, y, z);
+						for (int i = 0; i < 6; i++)
+						{
+							addBlockFace(static_cast<BlockFace>(i), memOffset, x, y, z);
+						}
 
-					if (z == 0 || m_chunkBlocks[x][y][z - 1].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::FRONT, memOffset, x, y, z);
-					if (z == m_chunkSize - 1 || m_chunkBlocks[x][y][z + 1].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::BACK, memOffset, x, y, z);
+						if (x == 0 || m_chunkBlocks[x - 1][y][z].getBlockType() != BlockType::SOLID)
+							addBlockFace(BlockFace::RIGHT, memOffset, x, y, z);
+						if (x == m_chunkSize - 1 || m_chunkBlocks[x + 1][y][z].getBlockType() != BlockType::SOLID)
+							addBlockFace(BlockFace::LEFT, memOffset, x, y, z);
 
+						if (y == 0 || m_chunkBlocks[x][y - 1][z].getBlockType() != BlockType::SOLID)
+							addBlockFace(BlockFace::BOTTOM, memOffset, x, y, z);
+						if (y == m_chunkSize - 1 || m_chunkBlocks[x][y + 1][z].getBlockType() != BlockType::SOLID)
+							addBlockFace(BlockFace::TOP, memOffset, x, y, z);
+
+						if (z == 0 || m_chunkBlocks[x][y][z - 1].getBlockType() != BlockType::SOLID)
+							addBlockFace(BlockFace::FRONT, memOffset, x, y, z);
+						if (z == m_chunkSize - 1 || m_chunkBlocks[x][y][z + 1].getBlockType() != BlockType::SOLID)
+							addBlockFace(BlockFace::BACK, memOffset, x, y, z);
+					}
 				}
 				else if (m_chunkBlocks[x][y][z].getBlockType() == BlockType::WATER)
 				{

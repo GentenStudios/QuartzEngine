@@ -54,7 +54,7 @@ void Sandbox::run()
 	BlockLibrary::get()->registerBlock(block);
 	BlockLibrary::get()->registerBlock(air);
 
-	ChunkManager* world = new ChunkManager("core:grass");
+	ChunkManager* world = new ChunkManager("core:air");
 	world->testGeneration(5);
 
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
