@@ -351,23 +351,10 @@ void Chunk::bufferData()
 	texLayers.enable();
 
 	m_chunkFlags &= ~NEEDS_BUFFERING;
-
-	//for (auto layer : m_blockMesh->chunkTexLayers)
-	//	std::cout << layer << std::endl;
 }
 
 void Chunk::render(int* counter)
 {
-	if (m_chunkFlags & NEEDS_MESHING)
-	{
-		if ((*counter) == 0)
-			return;
-		LDEBUG("BUILDING MESH!");
-		buildMesh();
-		(*counter)--;
-		return;
-	}
-	
 	if (m_chunkFlags & NEEDS_BUFFERING)
 	{
 		if ((*counter) == 0)
@@ -376,6 +363,15 @@ void Chunk::render(int* counter)
 		bufferData();
 		(*counter)--;
 	}
+
+	if (m_chunkFlags & NEEDS_MESHING)
+	{
+		if ((*counter) == 0)
+			return;
+		LDEBUG("BUILDING MESH!");
+		buildMesh();
+		(*counter)--;
+	}	
 
 	m_textureArray->bind(10);
 	m_vao->bind();
