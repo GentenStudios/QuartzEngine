@@ -13,6 +13,7 @@
 #include <GL/glew.h>
 
 #include <engine/core/events/Keys.hpp>
+#include <engine/core/events/Mouse.hpp>
 
 #include <engine/core/utils/Config.hpp>
 
@@ -55,6 +56,8 @@ namespace phx
 			virtual void addMouseMoveCallback(std::function<void(double, double)> callback);
 			virtual void addWindowEventCallback(events::WindowEventType eventType, std::function<void()> callback);
 	
+			virtual void addMouseActionCallback(std::function<void(TVector2<int>, events::MouseAction, events::MouseButton)> callback);
+
 			inline SDL_Window* getSDLWindow() const { return m_window; }
 
 		  	virtual bool isKeyDown(events::Keys key);
@@ -83,6 +86,11 @@ namespace phx
 				std::function<void()> callback;
 			};
 
+			struct MouseActionEvent_t
+			{
+				std::function<void(TVector2<int>, phx::events::MouseAction, phx::events::MouseButton)> callback;
+			};
+
 			/// @brief MouseMoveEvent callback "holder". Makes handling the data in the function definitions much easier.
 			struct MouseMoveEvent_t
 			{
@@ -104,6 +112,8 @@ namespace phx
 
 			/// @brief Vector for storing WindowEvents, is cycled through when there is a window event.
 			std::vector<WindowEvent_t> m_windowEvents;
+
+			std::vector<MouseActionEvent_t> m_mouseActionEvents;
 		};
 
 	}

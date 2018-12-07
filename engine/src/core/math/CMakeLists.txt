@@ -4,6 +4,7 @@ set(mathSources
     ${mathSourceDir}/Vector2.cpp
     ${mathSourceDir}/Vector3.cpp
     ${mathSourceDir}/Matrix4x4.cpp
+	${mathSourceDir}/Ray.cpp
 )
 
 source_group("Source Files\\Core\\Math" FILES ${mathSources})
