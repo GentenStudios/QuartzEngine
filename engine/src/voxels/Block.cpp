@@ -46,7 +46,7 @@ BlockInstance::BlockInstance()
 {
 	m_blockID = "core:unknown";
 
-	auto& it = BlockLibrary::get()->requestBlock(m_blockID);
+	auto it = BlockLibrary::get()->requestBlock(m_blockID);
 	m_hitpoints = it.getInitialHP();
 	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();
@@ -58,7 +58,7 @@ BlockInstance::BlockInstance(const std::string& blockID)
 {
 	m_blockID = blockID;
 
-	auto& it = BlockLibrary::get()->requestBlock(blockID);
+	auto it = BlockLibrary::get()->requestBlock(blockID);
 	m_hitpoints = it.getInitialHP();
 	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();

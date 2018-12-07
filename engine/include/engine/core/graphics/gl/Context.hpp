@@ -28,12 +28,12 @@ namespace phx
 		 * 			We will be supported OpenGLES at a later date, but will be sticking with normal, desktop OpenGL for now, due to ease of development.
 		 */
 		struct GLVersion {
-			int major;
-			int minor;
+			int GLmajor;
+			int GLminor;
 
 			GLVersion(int a, int b) :
-				major(a),
-				minor(b)
+				GLmajor(a),
+				GLminor(b)
 			{}
 
 			GLVersion()

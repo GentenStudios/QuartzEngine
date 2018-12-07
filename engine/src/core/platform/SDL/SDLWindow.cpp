@@ -7,8 +7,8 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.major);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minor);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.GLmajor);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.GLminor);
 	
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -40,7 +40,7 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 	if (m_window == nullptr)
 	{
 		SDL_Quit();
-		LERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.major) + "." + std::to_string(version.minor));
+		LERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.GLmajor) + "." + std::to_string(version.GLminor));
 		exit(EXIT_FAILURE);
 	}
 

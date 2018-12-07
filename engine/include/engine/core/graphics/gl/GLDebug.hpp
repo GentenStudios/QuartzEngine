@@ -4,15 +4,26 @@
 
 #include <GL/glew.h>
 
-#define RENDER_ERROR(subSectors, message, ...)		phx::Logger::get()->log(phx::LogVerbosity::ERROR, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
-#define RENDER_INFO(subSectors, message, ...)		phx::Logger::get()->log(phx::LogVerbosity::INFO, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
-
-#ifdef PHX_DEBUG
-#	define RENDER_WARNING(subSectors, message, ...)	phx::Logger::get()->log(phx::LogVerbosity::WARNING, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
-#	define RENDER_DEBUG(subSectors, message, ...)	phx::Logger::get()->log(phx::LogVerbosity::DEBUG, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
+#ifdef PHX_OS_WINDOWS
+#	define RENDER_ERROR(subSectors, message, ...)		phx::Logger::get()->log(phx::LogVerbosity::ERROR, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
+#	define RENDER_INFO(subSectors, message, ...)		phx::Logger::get()->log(phx::LogVerbosity::INFO, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
+#	ifdef PHX_DEBUG
+#		define RENDER_WARNING(subSectors, message, ...)	phx::Logger::get()->log(phx::LogVerbosity::WARNING, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
+#		define RENDER_DEBUG(subSectors, message, ...)	phx::Logger::get()->log(phx::LogVerbosity::DEBUG, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
+#	else
+#		define RENDER_WARNING(subSectors, message, ...)
+#		define RENDER_DEBUG(subSectors, message, ...)
+#	endif
 #else
-#	define RENDER_WARNING(subSectors, message, ...)
-#	define RENDER_DEBUG(subSectors, message, ...)
+#	define RENDER_ERROR(subSectors, message, ...)		phx::Logger::get()->log(phx::LogVerbosity::ERROR, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, ##__VA_ARGS__)
+#	define RENDER_INFO(subSectors, message, ...)		phx::Logger::get()->log(phx::LogVerbosity::INFO, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, ##__VA_ARGS__)
+#	ifdef PHX_DEBUG
+#		define RENDER_WARNING(subSectors, message, ...)	phx::Logger::get()->log(phx::LogVerbosity::WARNING, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, ##__VA_ARGS__)
+#		define RENDER_DEBUG(subSectors, message, ...)	phx::Logger::get()->log(phx::LogVerbosity::DEBUG, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, ##__VA_ARGS__)
+#	else
+#		define RENDER_WARNING(subSectors, message, ...)
+#		define RENDER_DEBUG(subSectors, message, ...)
+#	endif
 #endif
 
 // MACRO FOR OPENGL DEBUGGING
