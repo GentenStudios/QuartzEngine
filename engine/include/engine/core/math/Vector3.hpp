@@ -40,6 +40,11 @@ namespace phx {
 		 */
 		void set(const float& a);
 
+		/*
+		 * @brief Floors each component of the vector.
+		 */
+		void floor();
+
 		/**
 		 * @brief Calculates the cross product of `a` and `b`
 		 * @param a Left hand side of the calculation
