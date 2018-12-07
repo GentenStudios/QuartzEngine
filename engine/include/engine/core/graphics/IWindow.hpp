@@ -159,6 +159,11 @@ namespace phx
 			 */
 			virtual void addWindowEventCallback(events::WindowEventType eventType, std::function<void()> callback) = 0;
 
+			/*
+			 * @brief Adds a mouse action event to the window, a mouse action is a button being clicke or released. Callback is called when the mouse is pressed or released.
+			 *
+			 * @param callback The function to call when a mouse button is pressed or released.
+			 */
 			virtual void addMouseActionCallback(std::function<void(TVector2<int>, events::MouseAction, events::MouseButton)> callback) = 0;
 
 			/**

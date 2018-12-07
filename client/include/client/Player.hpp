@@ -14,11 +14,13 @@ namespace client
 
 		void tick(float dt);
 		void applyTo(phx::gfx::gl::ShaderPipeline* shader);
+	
 	private:
 		void onMouseClick(TVector2<int> position, events::MouseAction action, events::MouseButton button);
+	
 	private:
 		std::unique_ptr<phx::gfx::FPSCam> m_camera;
-		phx::gfx::IWindow *m_window;
-		phx::voxels::ChunkManager* m_world;
+		phx::gfx::IWindow*                m_window;
+		phx::voxels::ChunkManager*        m_world;
 	};
 }

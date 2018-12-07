@@ -3,11 +3,6 @@
 using namespace phx::sdl;
 using namespace phx;
 
-void SDLWindow::addMouseActionCallback(std::function<void(TVector2<int>, events::MouseAction, events::MouseButton)> callback)
-{
-	m_mouseActionEvents.push_back({callback});
-}
-
 SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -268,6 +263,11 @@ void SDLWindow::addMouseMoveCallback(std::function<void(double, double)> callbac
 void SDLWindow::addWindowEventCallback(events::WindowEventType eventType, std::function<void()> callback)
 {
 	m_windowEvents.push_back({ static_cast<int>(eventType), callback });
+}
+
+void SDLWindow::addMouseActionCallback(std::function<void(TVector2<int>, events::MouseAction, events::MouseButton)> callback)
+{
+	m_mouseActionEvents.push_back({ callback });
 }
 
 bool SDLWindow::isKeyDown(events::Keys key)

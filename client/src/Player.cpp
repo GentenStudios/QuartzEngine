@@ -4,7 +4,7 @@
 
 using namespace client;
 
-Player::Player(phx::gfx::IWindow * window,phx::voxels::ChunkManager* world)
+Player::Player(phx::gfx::IWindow* window,phx::voxels::ChunkManager* world)
 	: m_window(window), m_world(world)
 {
 	m_camera = std::make_unique<phx::gfx::FPSCam>(window);
@@ -30,7 +30,7 @@ void Player::tick(float dt)
 	m_camera->update(dt);
 }
 
-void Player::applyTo(phx::gfx::gl::ShaderPipeline * shader)
+void Player::applyTo(phx::gfx::gl::ShaderPipeline* shader)
 {
 	shader->setMat4("u_projection", m_camera->getProjection());
 	shader->setMat4("u_view", m_camera->calculateViewMatrix());
@@ -52,13 +52,6 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 		return pos.x > 0.f && pos.y > 0.f && pos.z > 0.f;
 	};
 
-	auto floorVector = [](Vector3 pos) -> Vector3 {
-		pos.x = std::floor(pos.x);
-		pos.y = std::floor(pos.y);
-		pos.z = std::floor(pos.z);
-		return pos;
-	};
-
 	if (action == MouseAction::DOWN)
 	{
 		Vector3 pos = playerCoordsToBlockCoords(m_camera->getPosition());
@@ -71,24 +64,28 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 		case MouseButton::LEFT:
 		{
 			Ray ray(pos, m_camera->getDirection());
+			
 			while (ray.getLength() < MAX_PICKING_DISTANCE)
 			{
 				if (canPlaceBlockAtPos(pos)) 
 				{
 					BlockInstance block = m_world->getBlockAt(pos);
+
 					if (block.getBlockType() != BlockType::GAS)
 					{
-						pos = floorVector(pos);
+						pos.floor();
 
-						m_world->setBlockAt(pos, BlockInstance("core:air"));
+						m_world->breakBlockAt(pos, BlockInstance("core:air"));
 						break;
 					}
 				}
 
 				pos = ray.advance(RAY_INCREMENT);
 			}
+
 			break;
 		}
+
 		case MouseButton::RIGHT:
 			Ray ray(pos, m_camera->getDirection());
 
@@ -97,12 +94,13 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 				if (canPlaceBlockAtPos(pos))
 				{
 					BlockInstance block = m_world->getBlockAt(pos);
+
 					if (block.getBlockType() != BlockType::GAS)
 					{
 						pos = ray.backtrace(RAY_INCREMENT);
-						pos = floorVector(pos);
+						pos.floor();
 
-						m_world->setBlockAt(pos, BlockInstance("core:grass"));
+						m_world->placeBlockAt(pos, BlockInstance("core:grass"));
 						break;
 					}
 				}
