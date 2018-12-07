@@ -371,7 +371,7 @@ void Chunk::render(int* counter)
 		LDEBUG("BUILDING MESH!");
 		buildMesh();
 		(*counter)--;
-	}	
+	}
 
 	m_textureArray->bind(10);
 	m_vao->bind();
