@@ -86,7 +86,7 @@ BlockLibrary* BlockLibrary::get()
 void BlockLibrary::init()
 {
 	m_registeredBlocks["core:unknown"] = RegistryBlock("core:unknown", "Unkown Block", 1, BlockType::SOLID);
-	m_registeredBlocks["core:out_of_bounds"] = RegistryBlock("core:out_of_bounds", "Out Of Bounds Block", 1, BlockType::SOLID);
+	m_registeredBlocks["core:out_of_bounds"] = RegistryBlock("core:out_of_bounds", "Out Of Bounds Block", 1, BlockType::GAS);
 }
 
 void BlockLibrary::registerBlock(const RegistryBlock& block)
