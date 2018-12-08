@@ -35,7 +35,20 @@ namespace phx { namespace os_terminal {
 #endif
 
 #ifdef PHX_OS_LINUX
-	// TODO: Gonna need a lookup table of ANSI color codes.
+	static const char *s_linuxTerminalColors[] =
+		{
+			"\033[1;31m",
+			"\033[1;32m",
+			"\033[1;34m",
+			"\033[0;33m",
+			"\033[1;37m",
+			"\033[1;30m",
+			"\033[0;33m",
+			"\033[0;31m",
+			"\033[0;32m",
+			"\033[0;34m",
+			"\033[1;35m",
+	};
 #endif
 }}
 
@@ -47,11 +60,11 @@ void Console::setTextColor(const Console::Color& color)
 #endif
 
 #ifdef PHX_OS_LINUX
-	// TODO: You should just be able to insert the appropriate ANSI color code into stdout.
+	std::cout << os_terminal::s_linuxTerminalColors[static_cast<size_t>(color)];
 #endif
 }
 
-void Logger::init(std::string logFile = "logs/phoenix.log", LogVerbosity verbosityLevel = LogVerbosity::INFO)
+void Logger::init(const std::string& logFile, LogVerbosity verbosityLevel = LogVerbosity::INFO)
 {
 	// Setting the file names
 	m_logFile = logFile;
@@ -68,7 +81,7 @@ void Logger::init(std::string logFile = "logs/phoenix.log", LogVerbosity verbosi
 	LogVerbosityLookup[2] = "INFO";
 	LogVerbosityLookup[3] = "DEBUG";
 
-	std::ios::sync_with_stdio(false);
+	std::ios::sync_with_stdio(true);
 
 	// This has to go at the end, as logging capabilities are not actually ready until now :D
 	if (!m_logFileHandle.is_open())
