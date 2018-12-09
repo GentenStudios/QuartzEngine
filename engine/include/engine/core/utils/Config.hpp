@@ -36,7 +36,7 @@ namespace phx
 		 * @param default The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		int getInteger(const std::string& section, const std::string& key, int default);
+		int getInteger(const std::string& section, const std::string& key, int defaultReturn);
 
 		/**
 		 * @brief Load's a single character value from the config .ini file, using the specfied default value if the value doesn't exist
@@ -45,7 +45,7 @@ namespace phx
 		 * @param default The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		char getChar(const std::string& section, const std::string& key, char default);
+		char getChar(const std::string& section, const std::string& key, char defaultReturn);
 
 		/**
 		 * @brief Load's a boolean value from the config .ini file, using the specfied default value if the value doesn't exist
@@ -54,7 +54,7 @@ namespace phx
 		 * @param default The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		bool getBool(const std::string& section, const std::string& key, bool default);
+		bool getBool(const std::string& section, const std::string& key, bool defaultReturn);
 
 		/**
 		 * @brief Load's a 32 bit real value (float) from the config .ini file, using the specfied default value if the value doesn't exist
@@ -63,7 +63,7 @@ namespace phx
 		 * @param default The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		float getFloat(const std::string& section, const std::string& key, float default);
+		float getFloat(const std::string& section, const std::string& key, float defaultReturn);
 
 		/**
          * @brief Load's a event::Keys enumumator value from the config .ini file, using the specfied default value if the value doesn't exist.
@@ -73,7 +73,7 @@ namespace phx
 		 * @param default The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		events::Keys getScancode(const std::string& section, const std::string& key, events::Keys default);
+		events::Keys getScancode(const std::string& section, const std::string& key, events::Keys defaultReturn);
 		
 		/**
 	 	 * @brief Return's if the .ini file for this config file exists on disk. This allows for cleaner handling of the file not existing.

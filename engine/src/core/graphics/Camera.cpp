@@ -1,5 +1,3 @@
-#pragma once
-
 #include <engine/core/graphics/Camera.hpp>
 #include <GL/glew.h>
 

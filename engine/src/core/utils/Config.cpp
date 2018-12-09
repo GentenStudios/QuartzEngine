@@ -34,32 +34,32 @@ ConfigFile* ConfigManager::getConfigFile(const std::string & name)
 	return &m_configfiles[name];
 }
 
-int ConfigFile::getInteger(const std::string & section, const std::string & key, int default)
+int ConfigFile::getInteger(const std::string & section, const std::string & key, int defaultReturn)
 {
-	return m_inifile.GetInteger(section, key, default);
+	return m_inifile.GetInteger(section, key, defaultReturn);
 }
 
-char ConfigFile::getChar(const std::string & section, const std::string & key, char default)
+char ConfigFile::getChar(const std::string & section, const std::string & key, char defaultReturn)
 {
 	// INI has no concept of single characters only strings, so parse the first letter of the value string as the character.
-	return m_inifile.Get(section, key, std::string(default, 1))[0];
+	return m_inifile.Get(section, key, std::string(defaultReturn, 1))[0];
 }
 
-bool ConfigFile::getBool(const std::string & section, const std::string & key, bool default)
+bool ConfigFile::getBool(const std::string & section, const std::string & key, bool defaultReturn)
 {
-	return m_inifile.GetBoolean(section, key, default);
+	return m_inifile.GetBoolean(section, key, defaultReturn);
 }
 
-float ConfigFile::getFloat(const std::string & section, const std::string & key, float default)
+float ConfigFile::getFloat(const std::string & section, const std::string & key, float defaultReturn)
 {
-	return static_cast<float>(m_inifile.GetReal(section, key, static_cast<float>(default)));
+	return static_cast<float>(m_inifile.GetReal(section, key, static_cast<float>(defaultReturn)));
 }
 
-events::Keys ConfigFile::getScancode(const std::string & section, const std::string & key, events::Keys default)
+events::Keys ConfigFile::getScancode(const std::string & section, const std::string & key, events::Keys defaultReturn)
 {
 	// See https://wiki.libsdl.org/SDL_Keycode for a full map of Key Names -> Key Codes -> Scancodes
 
-	SDL_Keycode defaultKey = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(default));
+	SDL_Keycode defaultKey = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(defaultReturn));
 	const char* defaultName = SDL_GetKeyName(defaultKey);
 	
 	std::string value = m_inifile.Get(section, key, defaultName);

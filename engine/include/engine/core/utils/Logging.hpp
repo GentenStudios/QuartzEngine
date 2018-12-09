@@ -15,15 +15,26 @@
 #define INITLOGGER(logFile, vbLevel) 	phx::Logger::get()->init( logFile, vbLevel )
 #define DESTROYLOGGER()              	phx::Logger::get()->destroy()
 
-#define LERROR(message, ...)            phx::Logger::get()->log(phx::LogVerbosity::ERROR, __FILE__, __LINE__, "", message, __VA_ARGS__)
-#define LINFO(message, ...)             phx::Logger::get()->log(phx::LogVerbosity::INFO, __FILE__, __LINE__, "", message, __VA_ARGS__)
-
-#ifdef PHX_DEBUG
-	#define LDEBUG(message, ...)        phx::Logger::get()->log(phx::LogVerbosity::DEBUG, __FILE__, __LINE__, "", message, __VA_ARGS__)
-	#define LWARNING(message, ...)      phx::Logger::get()->log(phx::LogVerbosity::WARNING, __FILE__, __LINE__, "", message, __VA_ARGS__)
+#ifdef PHX_OS_WINDOWS
+#	define LERROR(message, ...)            phx::Logger::get()->log(phx::LogVerbosity::ERROR, __FILE__, __LINE__, "", message, __VA_ARGS__)
+#	define LINFO(message, ...)             phx::Logger::get()->log(phx::LogVerbosity::INFO, __FILE__, __LINE__, "", message, __VA_ARGS__)
+#	ifdef PHX_DEBUG
+#		define LDEBUG(message, ...)        phx::Logger::get()->log(phx::LogVerbosity::DEBUG, __FILE__, __LINE__, "", message, __VA_ARGS__)
+#		define LWARNING(message, ...)      phx::Logger::get()->log(phx::LogVerbosity::WARNING, __FILE__, __LINE__, "", message, __VA_ARGS__)
+#	else
+#		define LDEBUG(message, ...)
+#		define LWARNING(message, ...)
+#	endif
 #else
-	#define LDEBUG(message, ...)
-	#define LWARNING(message, ...)
+#	define LERROR(message, ...)            phx::Logger::get()->log(phx::LogVerbosity::ERROR, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
+#	define LINFO(message, ...)             phx::Logger::get()->log(phx::LogVerbosity::INFO, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
+#	ifdef PHX_DEBUG
+#		define LDEBUG(message, ...)        phx::Logger::get()->log(phx::LogVerbosity::DEBUG, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
+#		define LWARNING(message, ...)      phx::Logger::get()->log(phx::LogVerbosity::WARNING, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
+#	else
+#		define LDEBUG(message, ...)
+#		define LWARNING(message, ...)
+#	endif
 #endif
 
 namespace phx

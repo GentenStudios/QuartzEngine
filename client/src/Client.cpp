@@ -6,7 +6,6 @@
 using namespace phx::gfx;
 using namespace phx;
 
-
 using namespace client;
 
 Sandbox::Sandbox() :
@@ -34,6 +33,7 @@ void Sandbox::run()
 {
 	PHX_REGISTER_CONFIG("Controls");
 
+
 	using namespace phx::voxels;
 
 	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
@@ -58,6 +58,8 @@ void Sandbox::run()
 	ChunkManager* world = new ChunkManager("core:air");
 	world->testGeneration(16);
 
+	m_player = std::make_unique<Player>(m_appData->window, world);
+
 	gl::ShaderPipeline* shaderProgram = new gl::ShaderPipeline();
 	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
 	shaderProgram->addStage(gl::ShaderType::FRAGMENT_SHADER, File::readFile("assets/shaders/main.frag").c_str());
@@ -65,14 +67,9 @@ void Sandbox::run()
 	
 	Matrix4x4 model;
 
-	FPSCam* cam = new FPSCam(m_appData->window);
-	cam->enabled = true;
-
 	phx::gfx::IWindow* window = m_appData->window;
 
 	int sphereSize = 16;
-
-	window->setResizable(true);
 
 	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_3, [&sphereSize, &world]() {
 		sphereSize += 16;
@@ -84,36 +81,6 @@ void Sandbox::run()
 		world->testGeneration(sphereSize);
 	});
 
-
-	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_ESCAPE, [&cam, &window]() {
-		cam->enabled = !cam->enabled;
-		if (cam->enabled)
-		{
-			window->setCursorState(gfx::CursorState::DISABLED);
-		}
-		else
-		{
-			window->setCursorState(gfx::CursorState::NORMAL);
-		}
-	});
-
-	bool preFocusLostCamEnabled = true;
-	window->addWindowEventCallback(events::WindowEventType::FOCUS_LOST, [&cam, &window, &preFocusLostCamEnabled]() {
-		preFocusLostCamEnabled = cam->enabled;
-		cam->enabled = false;
-		window->setCursorState(gfx::CursorState::NORMAL);
-	});
-	window->addWindowEventCallback(events::WindowEventType::FOCUS_GAINED, [&cam, &window, &preFocusLostCamEnabled]() {
-		cam->enabled = preFocusLostCamEnabled;
-		if (cam->enabled)
-		{
-			window->setCursorState(gfx::CursorState::DISABLED);
-		}
-		else
-		{
-			window->setCursorState(gfx::CursorState::NORMAL);
-		}
-	});
 
 	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_F11, [&window]() {
 		window->setFullscreen(true);
@@ -139,7 +106,7 @@ void Sandbox::run()
 		last = now;
 
 		m_appData->window->pollEvents();
-		cam->update(dt);
+		m_player->tick(dt);
 
 		// ONLY HERE TEMPORARILY.
 		fps_frames++;
@@ -156,8 +123,7 @@ void Sandbox::run()
 
 		shaderProgram->use();
 
-		shaderProgram->setMat4("u_projection", cam->getProjection());
-		shaderProgram->setMat4("u_view", cam->calculateViewMatrix());
+		m_player->applyTo(shaderProgram);
 		shaderProgram->setMat4("u_model", model);
 		shaderProgram->setUniform1<int>("u_TexArray", 10);
 

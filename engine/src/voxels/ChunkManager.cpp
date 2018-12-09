@@ -20,6 +20,7 @@ void ChunkManager::toggleWireframe()
 
 void ChunkManager::testGeneration(int test)
 {
+#pragma omp parallel
 	for (unsigned int z = 0; z < test; z++)
 	{
 		for (unsigned int y = 0; y < test; y++)

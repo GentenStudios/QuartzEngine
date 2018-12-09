@@ -44,6 +44,13 @@ float Vector3::dot(const Vector3& a, const Vector3& b)
 	return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
+void Vector3::floor()
+{
+	x = std::floor(x);
+	y = std::floor(y);
+	z = std::floor(z);
+}
+
 void Vector3::set(const float& a)
 {
 	this->x = a;

@@ -3,6 +3,9 @@
 //#define PHX_MAIN_HANDLED
 #include <Phoenix.hpp>
 
+#include <client/Player.hpp>
+#include <memory>
+
 namespace client
 {
 	
@@ -20,6 +23,8 @@ namespace client
 	private:
 		phx::ApplicationRequirements* m_appRequirements = nullptr;
 		phx::ApplicationData* m_appData = nullptr;
+
+		std::unique_ptr<Player> m_player;
 	};
 
 }

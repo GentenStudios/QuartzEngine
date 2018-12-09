@@ -7,8 +7,8 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.major);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.minor);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.GLmajor);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.GLminor);
 	
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -40,7 +40,7 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 	if (m_window == nullptr)
 	{
 		SDL_Quit();
-		LERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.major) + "." + std::to_string(version.minor));
+		LERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.GLmajor) + "." + std::to_string(version.GLminor));
 		exit(EXIT_FAILURE);
 	}
 
@@ -89,6 +89,26 @@ void SDLWindow::pollEvents()
 		case SDL_QUIT:
 			m_running = false;
 			break;
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+		{
+			events::MouseAction action = event.type == SDL_MOUSEBUTTONDOWN ? events::MouseAction::DOWN : events::MouseAction::UP;
+			
+			events::MouseButton butt = 
+				(event.button.button == SDL_BUTTON_LEFT) ? events::MouseButton::LEFT : 
+				(event.button.button == SDL_BUTTON_RIGHT) ? events::MouseButton::RIGHT : 
+				(event.button.button == SDL_BUTTON_MIDDLE) ? events::MouseButton::MIDDLE :
+				events::MouseButton::LEFT;
+
+			TVector2<int> pos(event.button.x, event.button.y);
+
+			for (auto& e : m_mouseActionEvents)
+			{
+				e.callback(pos, action, butt);
+			}
+			break;
+		}
+
 		case SDL_MOUSEMOTION:
 			for (auto& e : m_mouseMoveEvents)
 			{
@@ -243,6 +263,11 @@ void SDLWindow::addMouseMoveCallback(std::function<void(double, double)> callbac
 void SDLWindow::addWindowEventCallback(events::WindowEventType eventType, std::function<void()> callback)
 {
 	m_windowEvents.push_back({ static_cast<int>(eventType), callback });
+}
+
+void SDLWindow::addMouseActionCallback(std::function<void(TVector2<int>, events::MouseAction, events::MouseButton)> callback)
+{
+	m_mouseActionEvents.push_back({ callback });
 }
 
 bool SDLWindow::isKeyDown(events::Keys key)

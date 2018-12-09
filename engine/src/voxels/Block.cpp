@@ -46,7 +46,7 @@ BlockInstance::BlockInstance()
 {
 	m_blockID = "core:unknown";
 
-	auto& it = BlockLibrary::get()->requestBlock(m_blockID);
+	auto it = BlockLibrary::get()->requestBlock(m_blockID);
 	m_hitpoints = it.getInitialHP();
 	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();
@@ -58,7 +58,7 @@ BlockInstance::BlockInstance(const std::string& blockID)
 {
 	m_blockID = blockID;
 
-	auto& it = BlockLibrary::get()->requestBlock(blockID);
+	auto it = BlockLibrary::get()->requestBlock(blockID);
 	m_hitpoints = it.getInitialHP();
 	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();
@@ -86,7 +86,7 @@ BlockLibrary* BlockLibrary::get()
 void BlockLibrary::init()
 {
 	m_registeredBlocks["core:unknown"] = RegistryBlock("core:unknown", "Unkown Block", 1, BlockType::SOLID);
-	m_registeredBlocks["core:out_of_bounds"] = RegistryBlock("core:out_of_bounds", "Out Of Bounds Block", 1, BlockType::SOLID);
+	m_registeredBlocks["core:out_of_bounds"] = RegistryBlock("core:out_of_bounds", "Out Of Bounds Block", 1, BlockType::GAS);
 }
 
 void BlockLibrary::registerBlock(const RegistryBlock& block)

@@ -5,6 +5,7 @@ set(mathHeaders
     ${mathIncludeDir}/Vector3.hpp
     ${mathIncludeDir}/Matrix4x4.hpp
     ${mathIncludeDir}/MathUtils.hpp
+	${mathIncludeDir}/Ray.hpp
 )
 
 source_group("Header Files\\Core\\Math" FILES ${mathHeaders})
