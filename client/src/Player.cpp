@@ -52,7 +52,7 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 		return pos.x > 0.f && pos.y > 0.f && pos.z > 0.f;
 	};
 
-	if (action == MouseAction::DOWN && m_camera->enabled == true)
+	if (action == MouseAction::DOWN && m_camera->enabled)
 	{
 		Vector3 pos = playerCoordsToBlockCoords(m_camera->getPosition());
 
