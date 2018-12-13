@@ -10,6 +10,8 @@ set(openglSources
 set(graphicsSources
     ${graphicsSourceDir}/Camera.cpp
     ${graphicsSourceDir}/IWindow.cpp
+
+	${graphicsSourceDir}/BatchRenderer.cpp
 )
 
 source_group("Source Files\\Core\\Graphics" FILES ${graphicsSources})

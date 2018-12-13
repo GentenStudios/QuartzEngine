@@ -1,6 +1,5 @@
 #pragma once
 
-//#define PHX_MAIN_HANDLED
 #include <Phoenix.hpp>
 
 #include <client/Player.hpp>
@@ -8,7 +7,6 @@
 
 namespace client
 {
-	
 	class Sandbox : public phx::Application
 	{
 	public:
