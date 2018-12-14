@@ -128,11 +128,8 @@ void Sandbox::run()
 
 		world->render(10);
 		
-		const float size = 5.f;
-
 		renderer.begin();
-		renderer.fillRectangle({ ww/2 - size/2, wh/2 - size/2 }, size, size, { 1.f, 1.f, 1.f });
-
+		renderer.fillCircle({ ww / 2.f, wh / 2.f }, 3, 7, { 1.f, 1.f, 1.f });
 		renderer.end();
 		renderer.draw();
 		

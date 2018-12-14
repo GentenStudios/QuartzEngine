@@ -18,6 +18,7 @@ namespace phx
 			void end();
 
 			void fillRectangle(const Vector2& position, float width, float height, const Color3& color);
+			void fillCircle(const Vector2& position, float radius, size_t noPoints, const Color3& color);
 
 		private:
 			BatchRenderer m_batchRenderer;

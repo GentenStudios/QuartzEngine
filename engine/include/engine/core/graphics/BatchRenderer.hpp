@@ -44,6 +44,8 @@ namespace phx
 
 			void addVertex(const Vertex3D& vertex);
 			void addIndex(unsigned index);
+
+			bool isReadyForDrawing() const { return m_bufferIsOpen; }
 		};
 	}
 }
