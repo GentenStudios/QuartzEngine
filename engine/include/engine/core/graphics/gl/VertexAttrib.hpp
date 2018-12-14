@@ -37,8 +37,8 @@ namespace phx
 						components,
 						static_cast<GLenum>(type),
 						GL_FALSE,
-						attribStride * sizeof(static_cast<GLenum>(type)),
-						reinterpret_cast<void*>(offset * sizeof(static_cast<GLenum>(type)))
+						attribStride,
+						reinterpret_cast<void*>(offset)
 					));
 				}
 

@@ -25,15 +25,14 @@ void BatchRenderer::create(int numVertices, int numIndices, gl::ShaderPipeline& 
 	m_vbo->setData(nullptr, bufferSize);
 
 	m_ibo = new gl::VertexBuffer(gl::BufferTarget::ELEMENT_ARRAY_BUFFER, gl::BufferUsage::DYNAMIC_DRAW);
-	unsigned* indices = new unsigned[numIndices];
 	m_ibo->bind();
-	m_ibo->setData(indices, numIndices);
+	m_ibo->setData(nullptr, numIndices);
 	
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void*)0);
+	gl::VertexAttrib posAttrib(0, 3, sizeof(Vertex3D), 0, gl::GLType::FLOAT);
+	posAttrib.enable();
 
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void*)offsetof(Vertex3D, color));
+	gl::VertexAttrib colorAttrib(1, 3, sizeof(Vertex3D), offsetof(Vertex3D, color), gl::GLType::FLOAT);
+	colorAttrib.enable();
 
 	m_indexCount = 0;
 	m_bufferIsOpen = false;
