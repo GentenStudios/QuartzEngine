@@ -2,6 +2,7 @@
 
 #include <engine/core/graphics/gl/VertexArray.hpp>
 #include <engine/core/graphics/gl/VertexBuffer.hpp>
+#include <engine/core/graphics/gl/ShaderPipeline.hpp>
 
 #include <engine/core/math/Vector3.hpp>
 
@@ -11,8 +12,11 @@ namespace phx
 	{
 		struct Vertex3D 
 		{
-			Vector3 Position;
-			Color3 Color;
+			Vector3 position;
+			Color3 color;
+
+			Vertex3D(const Vector3& pos, const Color3& col)
+				: position(pos), color(col) {}
 		};
 
 		class BatchRenderer
@@ -23,16 +27,23 @@ namespace phx
 			gl::VertexBuffer *m_vbo;
 			gl::VertexBuffer *m_ibo;
 
-			bool m_bufferIsOpen;
+			Vertex3D *m_vertexBuffer;
+			unsigned *m_indexBuffer;
 
+			size_t m_indexCount;
+
+			bool m_bufferIsOpen;
 		public:
-			void create(int numVertices);
+			void create(int numVertices, int numIndices, gl::ShaderPipeline& shader);
 			void destroy();
 
 			void openBuffer();
 			void closeBuffer();
 
+			void draw();
 
+			void addVertex(const Vertex3D& vertex);
+			void addIndex(unsigned index);
 		};
 	}
 }

@@ -12,6 +12,7 @@ set(graphicsSources
     ${graphicsSourceDir}/IWindow.cpp
 
 	${graphicsSourceDir}/BatchRenderer.cpp
+	${graphicsSourceDir}/Renderer2D.cpp
 )
 
 source_group("Source Files\\Core\\Graphics" FILES ${graphicsSources})

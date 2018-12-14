@@ -25,6 +25,7 @@ void VertexBuffer::unbind()
 void VertexBuffer::setData(void* buffer, int size)
 {
 	GLCheck(glBufferData(static_cast<GLenum>(m_target), size, buffer, static_cast<GLenum>(m_usage)));
+	m_size = size;
 }
 
 void VertexBuffer::subData(void* buffer, int offset, int size)

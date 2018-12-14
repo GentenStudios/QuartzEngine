@@ -34,6 +34,22 @@ Matrix4x4 Matrix4x4::perspective(float aspect, float fov, float far, float near)
 	return mat4;
 }
 
+Matrix4x4 Matrix4x4::ortho(float left, float right, float top, float bottom, float far, float near)
+{
+	Matrix4x4 out;
+	for (int i = 0; i < 16; i++) out.elements[i] = 0.f;
+
+	out.elements[0] = 2.f / (right - left);
+	out.elements[INDEX2D(1, 1)] = 2.f / (top - bottom);
+	out.elements[INDEX2D(2, 2)] = -2.f / (far - near);
+	out.elements[INDEX2D(3, 3)] = 1.f;
+	out.elements[INDEX2D(0, 3)] = -((right + left) / (right - left));
+	out.elements[INDEX2D(1, 3)] = -((top + bottom) / (top - bottom));
+	out.elements[INDEX2D(2, 3)] = -((far + near) / (far - near));
+
+	return out;
+}
+
 Matrix4x4::Matrix4x4(
 	float m00, float m10, float m20, float m30,
 	float m01, float m11, float m21, float m31,

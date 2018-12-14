@@ -65,6 +65,41 @@ namespace phx
 				 */
 				unsigned int getID() const;
 
+				/*
+				 * @brief Get (map) a pointer to the writable location of this GPU buffer. This pointer should be released with `unmapPointer` when it is used.
+				 *
+				 * @return A pointer to the writable GPU memory represented by this buffer. Unmap this pointer with `unmapPointer`. Can return null
+				 */
+				template <typename T>
+				T* mapPointer()
+				{
+					bind();
+
+					T* data = (T*)GLCheck(glMapBuffer(static_cast<GLenum>(m_target), GL_WRITE_ONLY));
+
+					return data;
+				}
+
+				/*
+				 * @brief Unmap the pointer that has been mapped by `mapPointer`. Do not call if `mapPointer` has not already been called.
+				 */
+				void unmapPointer()
+				{
+					bind();
+					
+					GLCheck(glUnmapBuffer(static_cast<GLenum>(m_target)));
+				}
+
+				/*
+				 * @brief Get the size of this buffer (in bytes)
+				 * 
+				 * @return The size of this buffer, in bytes.
+				 */
+				int getSize() const
+				{
+					return m_size;
+				}
+
 			private:
 				/// @brief Unique ID for the Vertex Buffer, set by OpenGL.
 				unsigned int m_bufferID;
