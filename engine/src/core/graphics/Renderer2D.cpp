@@ -10,11 +10,11 @@ static const int MAX_RENDERABLES = 10000;
 static const int MAX_VERTICES    = MAX_RENDERABLES * 4;
 static const int MAX_INDICES     = MAX_RENDERABLES * 6;
 
-Renderer2D::Renderer2D(const Matrix4x4& projectionMatrix)
+Renderer2D::Renderer2D(const Matrix4x4& projectionMatrix, const std::string& vertexShader, const std::string& fragmentShader)
 	: m_indexOffset(0)
 {
-	m_shader.addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/ui.vert").c_str());
-	m_shader.addStage(gl::ShaderType::FRAGMENT_SHADER, File::readFile("assets/shaders/ui.frag").c_str());
+	m_shader.addStage(gl::ShaderType::VERTEX_SHADER, File::readFile(vertexShader).c_str());
+	m_shader.addStage(gl::ShaderType::FRAGMENT_SHADER, File::readFile(fragmentShader).c_str());
 	m_shader.build();
 	m_shader.use();
 	m_shader.setMat4("u_projection", projectionMatrix);

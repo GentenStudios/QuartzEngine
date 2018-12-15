@@ -4,6 +4,8 @@
 #include <engine/core/math/Matrix4x4.hpp>
 #include <engine/core/math/Vector2.hpp>
 
+#include <string>
+
 namespace phx
 {
 	namespace gfx
@@ -19,7 +21,7 @@ namespace phx
 			 *
 			 * @param projectionMatrix The projection matrix for the renderer. Normally for 2D this is a orthographic projection.
 			 */
-			Renderer2D(const Matrix4x4& projectionMatrix);
+			Renderer2D(const Matrix4x4& projectionMatrix, const std::string& vertexShader, const std::string& fragmentShader);
 
 			/**
 			 * @brief Makes the renderer ready for any draw calls.

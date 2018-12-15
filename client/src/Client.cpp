@@ -94,7 +94,11 @@ void Sandbox::run()
 	int fps_current; //the current FPS.
 	int fps_frames = 0; //frames passed since the last recorded fps.
 	
-	gfx::Renderer2D renderer(Matrix4x4::ortho(0.f, ww, 0.f, wh, 1.f, -1.f));
+	gfx::Renderer2D renderer(
+		Matrix4x4::ortho(0.f, ww, 0.f, wh, 1.f, -1.f),
+		"assets/shaders/ui.vert",
+		"assets/shaders/ui.frag"
+	);
 
 	float last = SDL_GetTicks();
 	while (m_appData->window->isRunning())

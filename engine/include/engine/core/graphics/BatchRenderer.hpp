@@ -36,27 +36,28 @@ namespace phx
 		{
 		private:
 			/// @brief The VAO for this renderer.
-			gl::VertexArray *m_vao;
+			gl::VertexArray* m_vao;
 
 			/// @brief The VBO for this renderer. The VBO contains all packed data (e.g. position, color etc..).
-			gl::VertexBuffer *m_vbo;
+			gl::VertexBuffer* m_vbo;
 
 			/// @brief The element buffer object for this renderer.
-			gl::VertexBuffer *m_ibo;
+			gl::VertexBuffer* m_ibo;
 
 			/// @brief Points to the valid memory location of the vertex buffer data, ONLY IF it is accessed and the buffer is open (e.g. isReadyForDrawing() returns true)
-			Vertex3D *m_vertexBuffer;
+			Vertex3D* m_vertexBuffer;
 
 			/// @brief Points to the valid memory location of the element buffer data, ONLY IF it is accessed and the buffer is open (e.g. isReadyForDrawing() returns true)
-			unsigned *m_indexBuffer;
+			unsigned* m_indexBuffer;
 
 			/// @brief The number of indices that have been added to this batch.
 			size_t m_indexCount;
 
 			/// @brief Have the VBO and IBO been mapped to `m_vertexBuffer` and `m_indexBuffer`? If so the buffer is open. (set to true in openBuffer() and set to false in closeBuffer())
 			bool m_bufferIsOpen;
+
+
 		public:
-			
 			/**
 			 * @brief Initalize all CPU and GPU resources for this batch renderer - once this has been called, all other methods are safe to call.
 			 *

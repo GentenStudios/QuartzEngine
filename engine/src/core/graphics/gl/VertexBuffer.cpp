@@ -37,3 +37,10 @@ unsigned int VertexBuffer::getID() const
 {
 	return m_bufferID;
 }
+
+void VertexBuffer::unmapPointer()
+{
+	bind();
+
+	GLCheck(glUnmapBuffer(static_cast<GLenum>(m_target)));
+}

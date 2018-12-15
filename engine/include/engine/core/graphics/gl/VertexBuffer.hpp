@@ -83,12 +83,7 @@ namespace phx
 				/*
 				 * @brief Unmap the pointer that has been mapped by `mapPointer`. Do not call if `mapPointer` has not already been called.
 				 */
-				void unmapPointer()
-				{
-					bind();
-					
-					GLCheck(glUnmapBuffer(static_cast<GLenum>(m_target)));
-				}
+				void unmapPointer();
 
 				/*
 				 * @brief Get the size of this buffer (in bytes)
