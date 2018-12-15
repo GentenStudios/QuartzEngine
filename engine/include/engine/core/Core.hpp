@@ -14,9 +14,11 @@
 #   define PHX_OS_LINUX
 #endif
 
-#ifdef _DEBUG
-#	define PHX_DEBUG
-#endif
+#define PHX_DEBUG
+
+// #ifdef DEBUG
+// #	define PHX_DEBUG
+// #endif
 
 /// INCLUDE STREAMS ///
 #include <iostream>

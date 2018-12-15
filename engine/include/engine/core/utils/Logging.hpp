@@ -106,7 +106,7 @@ namespace phx
 		 * @param logFile The file in which log messages should be outputted to, as well as the console.
 		 * @param vbLevel The initial logging verbosity, dictates what should and shouldn't be outputted, by referring to LogVerbosity.
 		 */
-		void init(std::string logFile, LogVerbosity vbLevel);
+		void init(const std::string& logFile, LogVerbosity vbLevel);
 
 		/**
 		 * @brief Destroy the logger, by closing the log file.
