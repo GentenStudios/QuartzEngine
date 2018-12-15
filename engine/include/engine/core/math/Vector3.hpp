@@ -11,9 +11,27 @@ namespace phx {
 	 * @brief Represents a vector with 3 float components: x, y, z
 	 */
 	struct Vector3 {
-		float x; ///< The X component of this vector
-		float y; ///< The Y component of this vector
-		float z; ///< The Z component of this vector
+		
+		/// The X component of this vector
+		union
+		{
+			float x;
+			float r;
+		};
+
+		/// The Y component of this vector
+		union
+		{
+			float y; 
+			float g;
+		};
+
+		/// The Z component of this vector
+		union
+		{
+			float z;
+			float b;
+		};
 
 		/**
 		 * @brief Constructs the Vector3 with the specified x, y and z components.
@@ -81,6 +99,8 @@ namespace phx {
 		void operator-=(const Vector3& other);
 
 	};
+
+	typedef Vector3 Color3;
 
 	/**
 	 * @brief Adds two vectors - the equation is `p + q` where `p` and `q` are both 3 component vectors. Add's `left` to `right`

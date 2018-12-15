@@ -14,6 +14,9 @@ set(openglHeaders
 set(graphicsHeaders
     ${graphicsIncludeDir}/Camera.hpp
     ${graphicsIncludeDir}/IWindow.hpp
+
+	${graphicsIncludeDir}/BatchRenderer.hpp
+	${graphicsIncludeDir}/Renderer2D.hpp
 )
 
 source_group("Header Files\\Core\\Graphics" FILES ${graphicsHeaders})

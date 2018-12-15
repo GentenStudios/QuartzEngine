@@ -3,6 +3,8 @@
 #include <chrono>
 #include <thread>
 
+#include <engine/core/graphics/Renderer2D.hpp>
+
 using namespace phx::gfx;
 using namespace phx;
 
@@ -35,7 +37,7 @@ void Sandbox::run()
 
 
 	using namespace phx::voxels;
-
+	
 	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
 	std::vector<std::string> texForGrass;
 	texForGrass.push_back("assets/images/grass_side.png");
@@ -71,26 +73,10 @@ void Sandbox::run()
 	world->breakBlockAt({0,0,0}, BlockInstance(air.getBlockID()));
 
 	phx::gfx::IWindow* window = m_appData->window;
+	int ww, wh;
+	window->getSize(ww, wh);
 
 	window->setResizable(true);
-	/*
-	bool preFocusLostCamEnabled = true;
-	window->addWindowEventCallback(events::WindowEventType::FOCUS_LOST, [&cam, &window, &preFocusLostCamEnabled]() {
-		preFocusLostCamEnabled = cam->enabled;
-		cam->enabled = false;
-		window->setCursorState(gfx::CursorState::NORMAL);
-	});
-	window->addWindowEventCallback(events::WindowEventType::FOCUS_GAINED, [&cam, &window, &preFocusLostCamEnabled]() {
-		cam->enabled = preFocusLostCamEnabled;
-		if (cam->enabled)
-		{
-			window->setCursorState(gfx::CursorState::DISABLED);
-		}
-		else
-		{
-			window->setCursorState(gfx::CursorState::NORMAL);
-		}
-	});*/
 
 	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_F11, [&window]() {
 		window->setFullscreen(true);
@@ -107,15 +93,21 @@ void Sandbox::run()
 	int fps_lasttime = SDL_GetTicks(); //the last recorded time.
 	int fps_current; //the current FPS.
 	int fps_frames = 0; //frames passed since the last recorded fps.
+	
+	gfx::Renderer2D renderer(
+		Matrix4x4::ortho(0.f, ww, 0.f, wh, 1.f, -1.f),
+		"assets/shaders/ui.vert",
+		"assets/shaders/ui.frag"
+	);
 
 	float last = SDL_GetTicks();
 	while (m_appData->window->isRunning())
 	{
+		m_appData->window->pollEvents();
 		float now = SDL_GetTicks();
 		float dt = now - last;
 		last = now;
 
-		m_appData->window->pollEvents();
 		m_player->tick(dt);
 
 		// ONLY HERE TEMPORARILY.
@@ -128,9 +120,10 @@ void Sandbox::run()
 			fps_frames = 0;
 		}
 
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
-
+		
 		shaderProgram->use();
 
 		m_player->applyTo(shaderProgram);
@@ -138,6 +131,12 @@ void Sandbox::run()
 		shaderProgram->setUniform1<int>("u_TexArray", 10);
 
 		world->render(10);
+		
+		renderer.begin();
+		renderer.fillCircle({ ww / 2.f, wh / 2.f }, 3, 7, { 1.f, 1.f, 1.f });
+		renderer.end();
+		renderer.draw();
+		
 		m_appData->window->swapBuffers();
 	}
 }

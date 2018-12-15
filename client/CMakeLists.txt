@@ -21,6 +21,10 @@ file(GLOB shaders ${AssetsPath}/shaders/*.vert ${AssetsPath}/shaders/*.frag)
 file(GLOB scripts ${AssetsPath}/scripts/*.wren)
 file(GLOB images ${AssetsPath}/images/*.png)
 
+source_group("Shaders" FILES ${shaders})
+source_group("Scripts" FILES ${scripts})
+source_group("Images" FILES ${images})
+
 add_custom_target(Phoenix_Client-Assets
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${AssetsPath} ${CMAKE_CURRENT_BINARY_DIR}/assets
