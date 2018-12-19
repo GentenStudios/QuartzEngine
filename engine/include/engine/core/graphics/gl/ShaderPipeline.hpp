@@ -121,6 +121,14 @@ namespace phx
 				 */
 				unsigned int getShaderProgram() const;
 
+				/*
+				 * @brief Bind the attribute of name `attribName` to attribute slot index `index` for this shader.
+				 *
+				 * @param attribName The name of the attribute
+				 * @param index      The attribute slot/index to bind to.
+				 */
+				void bindAttributeLocation(const char* attribName, int index);
+
 			private:
 				/// @brief Vector for storing shader specific IDs, is cleared after build() is called.
 				std::vector<unsigned int> m_shaders;

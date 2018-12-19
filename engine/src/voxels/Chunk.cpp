@@ -8,7 +8,15 @@ using namespace phx::voxels;
 using namespace phx;
 
 static const Vector2 CubeUV[] = {
-	// front
+	// front north
+	Vector2(-0.f, 1.f),
+	Vector2(-1.f, 1.f),
+	Vector2(-1.f, 0.f),
+	Vector2(-1.f, 0.f),
+	Vector2(-0.f, 0.f),
+	Vector2(-0.f, 1.f),
+
+	// back south
 	Vector2(0.f, 1.f),
 	Vector2(1.f, 1.f),
 	Vector2(1.f, 0.f),
@@ -16,23 +24,15 @@ static const Vector2 CubeUV[] = {
 	Vector2(0.f, 0.f),
 	Vector2(0.f, 1.f),
 
-	// back
-	Vector2(0.f, 1.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(0.f, 0.f),
-	Vector2(0.f, 1.f),
+	// left west
+	Vector2(-0.f, 0.f),
+	Vector2(-1.f, 0.f),
+	Vector2(-1.f, 1.f),
+	Vector2(-1.f, 1.f),
+	Vector2(-0.f, 1.f),
+	Vector2(-0.f, 0.f),
 
-	// left
-	Vector2(0.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 1.f),
-	Vector2(0.f, 1.f),
-	Vector2(0.f, 0.f),
-
-	// right
+	// right east
 	Vector2(0.f, 0.f),
 	Vector2(1.f, 0.f),
 	Vector2(1.f, 1.f),
@@ -49,12 +49,12 @@ static const Vector2 CubeUV[] = {
 	Vector2(0.f, 1.f),
 
 	// top
-	Vector2(0.f, 1.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(0.f, 0.f),
-	Vector2(0.f, 1.f),
+	Vector2(0.f, -1.f),
+	Vector2(1.f, -1.f),
+	Vector2(1.f, -0.f),
+	Vector2(1.f, -0.f),
+	Vector2(0.f, -0.f),
+	Vector2(0.f, -1.f),
 };
 
 static const Vector3 CubeVerts[] = {
@@ -325,19 +325,19 @@ void Chunk::bufferData()
 	m_vbo->bind();
 	m_vbo->setData(static_cast<void*>(m_blockMesh->chunkVertices.data()), sizeof(m_blockMesh->chunkVertices[0]) * m_blockMesh->chunkVertices.size());
 
-	gfx::gl::VertexAttrib vertices(0, 3, 3, 0, gfx::gl::GLType::FLOAT);
+	gfx::gl::VertexAttrib vertices(0, 3, 3*sizeof(float), 0, gfx::gl::GLType::FLOAT);
 	vertices.enable();
 
 	m_uvbo->bind();
 	m_uvbo->setData(static_cast<void*>(m_blockMesh->chunkUVs.data()), sizeof(m_blockMesh->chunkUVs[0]) * m_blockMesh->chunkUVs.size());
 
-	gfx::gl::VertexAttrib uvs(1, 2, 2, 0, gfx::gl::GLType::FLOAT);
+	gfx::gl::VertexAttrib uvs(1, 2, 2*sizeof(float), 0, gfx::gl::GLType::FLOAT);
 	uvs.enable();
 
 	m_tlbo->bind();
 	m_tlbo->setData(static_cast<void*>(m_blockMesh->chunkTexLayers.data()), sizeof(m_blockMesh->chunkTexLayers[0]) * m_blockMesh->chunkTexLayers.size());
 
-	gfx::gl::VertexAttrib texLayers(2, 1, 1, 0, gfx::gl::GLType::FLOAT);
+	gfx::gl::VertexAttrib texLayers(2, 1, sizeof(float), 0, gfx::gl::GLType::FLOAT);
 	texLayers.enable();
 
 	m_chunkFlags &= ~NEEDS_BUFFERING;

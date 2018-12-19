@@ -40,6 +40,8 @@ namespace phx {
 		 */
 		static Matrix4x4 perspective(float aspect, float fov, float far, float near);
 
+		static Matrix4x4 ortho(float left, float right, float top, float bottom, float far, float near);
+
 		static Matrix4x4 lookAt(const Vector3& eye, const Vector3& centre, const Vector3& up);
 	};
 

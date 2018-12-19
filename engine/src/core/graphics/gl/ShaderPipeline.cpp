@@ -164,3 +164,8 @@ unsigned int ShaderPipeline::getShaderProgram() const
 {
 	return m_shaderProgram;
 }
+
+void ShaderPipeline::bindAttributeLocation(const char* attribName, int index)
+{
+	GLCheck(glBindAttribLocation(m_shaderProgram, index, attribName));
+}
