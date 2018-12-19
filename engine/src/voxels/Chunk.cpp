@@ -8,7 +8,15 @@ using namespace phx::voxels;
 using namespace phx;
 
 static const Vector2 CubeUV[] = {
-	// front
+	// front north
+	Vector2(-0.f, 1.f),
+	Vector2(-1.f, 1.f),
+	Vector2(-1.f, 0.f),
+	Vector2(-1.f, 0.f),
+	Vector2(-0.f, 0.f),
+	Vector2(-0.f, 1.f),
+
+	// back south
 	Vector2(0.f, 1.f),
 	Vector2(1.f, 1.f),
 	Vector2(1.f, 0.f),
@@ -16,23 +24,15 @@ static const Vector2 CubeUV[] = {
 	Vector2(0.f, 0.f),
 	Vector2(0.f, 1.f),
 
-	// back
-	Vector2(0.f, 1.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(0.f, 0.f),
-	Vector2(0.f, 1.f),
+	// left west
+	Vector2(-0.f, 0.f),
+	Vector2(-1.f, 0.f),
+	Vector2(-1.f, 1.f),
+	Vector2(-1.f, 1.f),
+	Vector2(-0.f, 1.f),
+	Vector2(-0.f, 0.f),
 
-	// left
-	Vector2(0.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 1.f),
-	Vector2(0.f, 1.f),
-	Vector2(0.f, 0.f),
-
-	// right
+	// right east
 	Vector2(0.f, 0.f),
 	Vector2(1.f, 0.f),
 	Vector2(1.f, 1.f),
@@ -49,12 +49,12 @@ static const Vector2 CubeUV[] = {
 	Vector2(0.f, 1.f),
 
 	// top
-	Vector2(0.f, 1.f),
-	Vector2(1.f, 1.f),
-	Vector2(1.f, 0.f),
-	Vector2(1.f, 0.f),
-	Vector2(0.f, 0.f),
-	Vector2(0.f, 1.f),
+	Vector2(0.f, -1.f),
+	Vector2(1.f, -1.f),
+	Vector2(1.f, -0.f),
+	Vector2(1.f, -0.f),
+	Vector2(0.f, -0.f),
+	Vector2(0.f, -1.f),
 };
 
 static const Vector3 CubeVerts[] = {
