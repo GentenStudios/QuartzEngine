@@ -40,12 +40,12 @@ void Sandbox::run()
 	
 	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
 	std::vector<std::string> texForGrass;
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/grass_side.png");
-	texForGrass.push_back("assets/images/dirt.png");
-	texForGrass.push_back("assets/images/grass_top.png");
+	texForGrass.push_back("assets/textures/grass_side.png");
+	texForGrass.push_back("assets/textures/grass_side.png");
+	texForGrass.push_back("assets/textures/grass_side.png");
+	texForGrass.push_back("assets/textures/grass_side.png");
+	texForGrass.push_back("assets/textures/dirt.png");
+	texForGrass.push_back("assets/textures/grass_top.png");
 	block.setBlockTextures(texForGrass);
 	block.setBreakCallback([]() { LDEBUG("Broken a grass block!"); });
 
