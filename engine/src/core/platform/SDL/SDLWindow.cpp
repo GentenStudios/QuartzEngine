@@ -142,7 +142,7 @@ void SDLWindow::pollEvents()
 		case SDL_WINDOWEVENT:
 			for (auto& e : m_windowEvents)
 			{
-				if (event.window.event == SDL_WINDOWEVENT_RESIZED)
+				if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 				{
 					if (e.eventType == static_cast<int>(events::WindowEventType::RESIZED))
 					{
