@@ -58,7 +58,7 @@ void Sandbox::run()
 	BlockLibrary::get()->registerBlock(air);
 
 	ChunkManager* world = new ChunkManager("core:air");
-	world->testGeneration(16);
+	//world->testGeneration(5);
 
 	m_player = std::make_unique<Player>(m_appData->window, world);
 
@@ -72,18 +72,6 @@ void Sandbox::run()
 	phx::gfx::IWindow* window = m_appData->window;
 	int ww, wh;
 	window->getSize(ww, wh);
-
-	int sphereSize = 16;
-
-	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_3, [&sphereSize, &world]() {
-		sphereSize += 16;
-		world->testGeneration(sphereSize);
-	});
-
-	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_4, [&sphereSize, &world]() {
-		sphereSize -= 16;
-		world->testGeneration(sphereSize);
-	});
 
 	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_F11, [&window]() {
 		window->setFullscreen(true);
@@ -116,6 +104,7 @@ void Sandbox::run()
 		last = now;
 
 		m_player->tick(dt);
+		world->determineGeneration(m_player->getPosition());
 
 		// ONLY HERE TEMPORARILY.
 		fps_frames++;

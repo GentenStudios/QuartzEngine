@@ -30,6 +30,11 @@ void Player::tick(float dt)
 	m_camera->update(dt);
 }
 
+phx::Vector3 Player::getPosition() 
+{
+	return m_camera->getPosition();
+}
+
 void Player::applyTo(phx::gfx::gl::ShaderPipeline* shader)
 {
 	shader->setMat4("u_projection", m_camera->getProjection());

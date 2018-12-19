@@ -24,7 +24,7 @@ namespace phx
 			void toggleWireframe();
 			bool isWireframe() { return m_wireframe; };
 
-			void determineGeneration(int test);
+			void determineGeneration(phx::Vector3 cameraPosition);
 			void testGeneration(int test);
 			void unloadRedundant() { /* TODO this. */ }
 

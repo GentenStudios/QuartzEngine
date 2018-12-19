@@ -13,6 +13,8 @@ namespace client
 		Player(phx::gfx::IWindow* window, phx::voxels::ChunkManager* world);
 
 		void tick(float dt);
+		phx::Vector3 getPosition();
+
 		void applyTo(phx::gfx::gl::ShaderPipeline* shader);
 	
 	private:
