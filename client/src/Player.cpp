@@ -96,20 +96,16 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 
 			while (ray.getLength() < MAX_PICKING_DISTANCE)
 			{
-				if (canPlaceBlockAtPos(pos))
+				BlockInstance block = m_world->getBlockAt(pos);
+
+				if (block.getBlockType() != BlockType::GAS)
 				{
-					BlockInstance block = m_world->getBlockAt(pos);
+					pos = ray.backtrace(RAY_INCREMENT);
+					pos.floor();
 
-					if (block.getBlockType() != BlockType::GAS)
-					{
-						pos = ray.backtrace(RAY_INCREMENT);
-						pos.floor();
-
-						m_world->placeBlockAt(pos, BlockInstance("core:grass"));
-						break;
-					}
+					m_world->placeBlockAt(pos, BlockInstance("core:grass"));
+					break;
 				}
-
 				pos = ray.advance(RAY_INCREMENT);
 			}
 

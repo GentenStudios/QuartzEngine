@@ -234,7 +234,7 @@ void Chunk::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
 	{
 		if (position.y < m_chunkBlocks[position.x].size())
 		{
-			if (position.z < m_chunkBlocks[position.z].size())
+			if (position.z < m_chunkBlocks[position.y].size())
 			{
 				int memOffset = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
 				std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
@@ -258,7 +258,7 @@ void Chunk::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
 	{
 		if (position.y < m_chunkBlocks[position.x].size())
 		{
-			if (position.z < m_chunkBlocks[position.z].size())
+			if (position.z < m_chunkBlocks[position.y].size())
 			{
 				int memOffset = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
 				std::memcpy(m_blockMesh->chunkVertices.data() + memOffset, CubeVerts, sizeof(CubeVerts));
@@ -282,7 +282,7 @@ BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
 	{
 		if (position.y < m_chunkBlocks[position.x].size())
 		{
-			if (position.z < m_chunkBlocks[position.z].size())
+			if (position.z < m_chunkBlocks[position.y].size())
 			{
 				return m_chunkBlocks[position.x][position.y][position.z];
 			}
