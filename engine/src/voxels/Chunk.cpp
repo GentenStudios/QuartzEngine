@@ -204,19 +204,19 @@ void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
 	int bytesInFace = 6 * sizeof(Vector3);
 	int memOffsetOffest = static_cast<int>(face) * 6;
 
-	//std::memcpy(m_blockMesh->chunkVertices.data() + memOffset + memOffsetOffest,	// Position in memory to copy to. So... original memory location + memory offset for that block + memory offset for that face.
-	//	CubeVerts + memOffsetOffest,												// Data to copy, PLUS, the memory offset, so the correct portion of the block is copied.
-	//	bytesInFace																	// Size of Data to copy.
-	//);
+	std::memcpy(m_blockMesh->chunkVertices.data() + memOffset + memOffsetOffest,	// Position in memory to copy to. So... original memory location + memory offset for that block + memory offset for that face.
+		CubeVerts + memOffsetOffest,												// Data to copy, PLUS, the memory offset, so the correct portion of the block is copied.
+		bytesInFace																	// Size of Data to copy.
+	);
 
 	auto& blockTex = m_chunkBlocks[x][y][z].getBlockTextures();
 	int texLayer = 0;
 
-	//if (static_cast<int>(face) < blockTex.size())
-	//{
-	//	m_textureArray->add(blockTex[static_cast<int>(face)]);
-	//	texLayer = m_textureArray->getTexLayer(blockTex[static_cast<int>(face)]);
-	//}
+	if (static_cast<int>(face) < blockTex.size())
+	{
+		m_textureArray->add(blockTex[static_cast<int>(face)]);
+		texLayer = m_textureArray->getTexLayer(blockTex[static_cast<int>(face)]);
+	}
 
 	// Set block positions in world space
 	for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
