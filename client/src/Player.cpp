@@ -101,11 +101,14 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 				if (block.getBlockType() != BlockType::GAS)
 				{
 					pos = ray.backtrace(RAY_INCREMENT);
-					pos.floor();
+					pos.toFloorOrNotToFloorThatIsTheQuestion();
 
+					LDEBUG("Ray is at: ", pos.x, " ", pos.y, " ", pos.z);
 					m_world->placeBlockAt(pos, BlockInstance("core:grass"));
+
 					break;
 				}
+
 				pos = ray.advance(RAY_INCREMENT);
 			}
 

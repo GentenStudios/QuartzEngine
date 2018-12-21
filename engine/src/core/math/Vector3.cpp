@@ -51,6 +51,24 @@ void Vector3::floor()
 	z = std::floor(z);
 }
 
+void Vector3::toFloorOrNotToFloorThatIsTheQuestion()
+{
+	if (x < 0)
+		x = std::ceil(x);
+	else
+		x = std::floor(x);
+
+	if (x < 0)
+		y = std::ceil(y);
+	else
+		y = std::floor(y);
+
+	if (z < 0)
+		z = std::ceil(z);
+	else
+		z = std::floor(z);
+}
+
 void Vector3::set(const float& a)
 {
 	this->x = a;
