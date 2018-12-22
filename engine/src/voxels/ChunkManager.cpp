@@ -4,11 +4,11 @@
 
 using namespace phx::voxels;
 
-ChunkManager::ChunkManager(const std::string& blockID) : 
-	m_wireframe(false), 
+ChunkManager::ChunkManager(const std::string& blockID) :
 	m_defaultBlockID(blockID)
 {
 	m_managerData = new ChunkContainer();
+	m_terrainGenerator = new PerlinNoise();
 }
 
 ChunkManager::~ChunkManager()
@@ -54,7 +54,7 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 					LDEBUG("Chunk Position at:", chunkToCheck.x, " ", chunkToCheck.y, " ", chunkToCheck.z);
 					LDEBUG("CHUNK DOES NOT EXIST. GENERATING NEW CHUNK AT POSITION");
 					m_managerData->chunks.push_back(Chunk(chunkToCheck, 16, m_defaultBlockID));
-					m_managerData->chunks.back().populateData();
+					m_managerData->chunks.back().populateData(m_terrainGenerator);
 					m_managerData->positions.push_back(chunkToCheck);
 				}
 			}
@@ -68,7 +68,7 @@ void ChunkManager::testGeneration(int test)
 	{
 		phx::Vector3 position = { 0, i * 16.f, 0 };
 		m_managerData->chunks.push_back(Chunk(position, 16, m_defaultBlockID));
-		m_managerData->chunks.back().populateData();
+		m_managerData->chunks.back().populateData(m_terrainGenerator);
 		m_managerData->positions.push_back(position);
 	}
 }

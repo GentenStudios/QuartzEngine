@@ -4,6 +4,7 @@
 
 #include <engine/voxels/Block.hpp>
 #include <engine/voxels/Chunk.hpp>
+#include "terrain/PerlinNoise.hpp"
 
 namespace phx
 {
@@ -25,6 +26,7 @@ namespace phx
 			bool isWireframe() { return m_wireframe; };
 
 			void determineGeneration(phx::Vector3 cameraPosition);
+			void generateChunkAt(phx::Vector3 chunkPos);
 			void testGeneration(int test);
 			void unloadRedundant() { /* TODO this. */ }
 
@@ -37,10 +39,12 @@ namespace phx
 			void render(int bufferCounter);
 
 		private:
+			PerlinNoise* m_terrainGenerator;
+
 			ChunkContainer* m_managerData;
 			std::string m_defaultBlockID;
 
-			bool m_wireframe;
+			bool m_wireframe = false;
 		};
 
 	}

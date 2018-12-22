@@ -11,12 +11,19 @@ set(entityHeaders
     ${voxelIncludeDir}/entities/ItemInstance.hpp
 )
 
+set(terrainHeaders
+    ${voxelIncludeDir}/terrain/ITerrainGenerator.hpp
+    ${voxelIncludeDir}/terrain/PerlinNoise.hpp
+)
+
 source_group("Header Files\\Voxels" FILES ${voxelHeaders})
 source_group("Header Files\\Voxels\\Entities" FILES ${entityHeaders})
+source_group("Header Files\\Voxels\\Terrain" FILES ${terrainHeaders})
 
 set(engineHeaders
     ${engineHeaders}
     ${voxelHeaders}
     ${entityHeaders}
+    ${terrainHeaders}
     CACHE INTERNAL "Global Engine Headers"
 )

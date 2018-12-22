@@ -1,5 +1,7 @@
 #include <engine/voxels/Chunk.hpp>
 
+#include <engine/voxels/terrain/PerlinNoise.hpp>
+
 #include <cstring>
 #include <functional>
 #include <numeric>
@@ -131,7 +133,7 @@ Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, const std::string& defaul
 	m_chunkFlags = NEEDS_BUFFERING | NEEDS_MESHING;
 }
 
-void Chunk::populateData()
+void Chunk::populateData(PerlinNoise* terrainGenerator)
 {
 	// Set whole array to have, for example, 16 elements inside the vector.
 	m_chunkBlocks.resize(m_chunkSize);
@@ -146,17 +148,13 @@ void Chunk::populateData()
 			m_chunkBlocks[x][y].resize(m_chunkSize);
 			for (unsigned int z = 0; z < m_chunkBlocks[x][y].size(); z++)
 			{
-				if ((y + m_chunkPos.y) < 3)
-				{
-					m_chunkBlocks[x][y][z] = BlockInstance("core:grass");
-					continue;
-				}
-
 				// Set the Z (first vector part, of the trio) to have the actual value of the blocks data. So, you can have m_chunkBlocks[x][y][z] = BlockInstance("blah:blah")
 				m_chunkBlocks[x][y][z] = BlockInstance("core:air");
 			}
 		}
 	}
+
+	terrainGenerator->generateFor(m_chunkBlocks, m_chunkPos);
 }
 
 void Chunk::buildMesh()

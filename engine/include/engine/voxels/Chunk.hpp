@@ -6,6 +6,7 @@
 #include <engine/core/math/Vector3.hpp>
 
 #include <engine/voxels/Block.hpp>
+#include <engine/voxels/terrain/PerlinNoise.hpp>
 
 #include <engine/core/graphics/gl/VertexBuffer.hpp>
 #include <engine/core/graphics/gl/VertexArray.hpp>
@@ -49,7 +50,7 @@ namespace phx
 			Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID);
 			~Chunk() {}
 
-			void populateData();
+			void populateData(PerlinNoise* terrainGenerator);
 
 			void buildMesh(); 
 

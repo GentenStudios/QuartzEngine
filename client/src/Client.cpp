@@ -35,7 +35,6 @@ void Sandbox::run()
 {
 	PHX_REGISTER_CONFIG("Controls");
 
-
 	using namespace phx::voxels;
 	
 	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
@@ -49,12 +48,24 @@ void Sandbox::run()
 	block.setBlockTextures(texForGrass);
 	block.setBreakCallback([]() { LDEBUG("Broken a grass block!"); });
 
+	RegistryBlock blockDirt("core:dirt", "dirt", 100, BlockType::SOLID);
+	std::vector<std::string> texForDirt;
+	texForDirt.push_back("assets/textures/dirt.png");
+	texForDirt.push_back("assets/textures/dirt.png");
+	texForDirt.push_back("assets/textures/dirt.png");
+	texForDirt.push_back("assets/textures/dirt.png");
+	texForDirt.push_back("assets/textures/dirt.png");
+	texForDirt.push_back("assets/textures/dirt.png");
+	blockDirt.setBlockTextures(texForDirt);
+	blockDirt.setBreakCallback([]() { LDEBUG("Broken a dirt block!"); });
+
 	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
 	air.setBreakCallback([]() { LDEBUG("Broken an air block somehow"); });
 	
 	BlockLibrary::get()->init();
 
 	BlockLibrary::get()->registerBlock(block);
+	BlockLibrary::get()->registerBlock(blockDirt);
 	BlockLibrary::get()->registerBlock(air);
 
 	ChunkManager* world = new ChunkManager("core:air");
@@ -95,6 +106,7 @@ void Sandbox::run()
 		"assets/shaders/ui.frag"
 	);
 
+	world->determineGeneration(m_player->getPosition());
 	float last = SDL_GetTicks();
 	while (m_appData->window->isRunning())
 	{
@@ -104,7 +116,6 @@ void Sandbox::run()
 		last = now;
 
 		m_player->tick(dt);
-		world->determineGeneration(m_player->getPosition());
 
 		// ONLY HERE TEMPORARILY.
 		fps_frames++;
