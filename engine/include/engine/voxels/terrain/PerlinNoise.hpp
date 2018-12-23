@@ -5,6 +5,11 @@
 
 #include <engine/voxels/Block.hpp>
 
+#include <array>
+
+#define PERLIN_XMAX 256
+#define PERLIN_YMAX 256
+
 namespace phx
 {
 	namespace voxels
@@ -14,22 +19,33 @@ namespace phx
 		{
 		public:
 			PerlinNoise();
-			PerlinNoise(const PerlinNoise&) = default;
-			~PerlinNoise();
+			PerlinNoise(unsigned int seed);
+			~PerlinNoise() = default;
 
-			void init();
 			void generateFor(std::vector<std::vector<std::vector<BlockInstance>>>& blockArray, phx::Vector3 chunkPos);
-
-			float perlin(phx::Vector3 pos);
+			float at(float x, float z);
 
 		private:
-			float fade(float t);
-			int inc(int num);
-			float grad(int hash, float x, float y, float z);
-			float lerp(float a, float b, float x);
+			std::array<
+				std::array<
+				std::tuple<float, float>, PERLIN_XMAX
+				>, PERLIN_YMAX
+			> m_gradient;
 
-			int m_p[512];
-			int m_repeat;
+			// w should be in range [0.0f, 1.0f]
+			inline float lerp(float a0, float a1, float w)
+			{
+				return (1.0f - w) * a0 + w * a1;
+			}
+
+			inline float getRand()
+			{
+				return -1.0f + 2.0f * ((float)rand()) / RAND_MAX;
+			}
+
+			float dotGridGradient(int ix, int iy, float x, float y);
+
+			void createDistribution(unsigned int seed);
 		};
 
 	}
