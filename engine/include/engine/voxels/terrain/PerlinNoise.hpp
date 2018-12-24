@@ -23,30 +23,17 @@ namespace phx
 			~PerlinNoise() = default;
 
 			void generateFor(std::vector<std::vector<std::vector<BlockInstance>>>& blockArray, phx::Vector3 chunkPos);
-			float at(float x, float z);
-			float atOctave(float x, float z, float octaves, float persistance);
+			float at(phx::Vector3 pos);
+			float atOctave(phx::Vector3 pos, int octaves, float persitance);
 
 		private:
-			std::array<
-				std::array<
-				std::tuple<float, float>, PERLIN_XMAX
-				>, PERLIN_YMAX
-			> m_gradient;
+			std::vector<int> m_p;
+			int m_repeat;
 
-			// w should be in range [0.0f, 1.0f]
-			inline float lerp(float a0, float a1, float w)
-			{
-				return (1.0f - w) * a0 + w * a1;
-			}
-
-			inline float getRand()
-			{
-				return -1.0f + 2.0f * ((float)rand()) / RAND_MAX;
-			}
-
-			float dotGridGradient(int ix, int iy, float x, float y);
-
-			void createDistribution(unsigned int seed);
+			float fade(float t);
+			int	  inc(int num);
+			float grad(int hash, float x, float y, float z);
+			float lerp(float a, float b, float x);
 		};
 
 	}
