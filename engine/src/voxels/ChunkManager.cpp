@@ -31,7 +31,7 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 
 	const int VIEW_DISTANCE = 16; // 96 blocks, 6 chunks.
 
-	int chunkViewDistance = (VIEW_DISTANCE / 16) * 2; 
+	int chunkViewDistance = (VIEW_DISTANCE / 16);
 
 	for (int x = -chunkViewDistance; x <= chunkViewDistance; x++)
 	{
@@ -53,7 +53,7 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 				{
 					LDEBUG("Chunk Position at:", chunkToCheck.x, " ", chunkToCheck.y, " ", chunkToCheck.z);
 					LDEBUG("CHUNK DOES NOT EXIST. GENERATING NEW CHUNK AT POSITION");
-					m_managerData->chunks.push_back(Chunk(chunkToCheck, 16, m_defaultBlockID));
+					m_managerData->chunks.emplace_back(chunkToCheck, 16, m_defaultBlockID);
 					m_managerData->chunks.back().populateData(m_terrainGenerator);
 					m_managerData->positions.push_back(chunkToCheck);
 				}
@@ -64,12 +64,14 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 
 void ChunkManager::testGeneration(int test)
 {
-	for (int i = 0; i < test; i++)
+	for (int x = 0; x < test; x++)
 	{
-		phx::Vector3 position = { 0, i * 16.f, 0 };
-		m_managerData->chunks.push_back(Chunk(position, 16, m_defaultBlockID));
-		m_managerData->chunks.back().populateData(m_terrainGenerator);
-		m_managerData->positions.push_back(position);
+		for (int z = 0; z < test; z++)
+		{
+			m_managerData->chunks.emplace_back(Chunk({ x * 16.f, 0.f, z * 16.f }, 16, "core:air"));
+			m_managerData->chunks.back().populateData(m_terrainGenerator);
+			LDEBUG("Generating chunk.");
+		}
 	}
 }
 

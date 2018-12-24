@@ -29,9 +29,9 @@ void PerlinNoise::createDistribution(unsigned int seed)
 
 void PerlinNoise::generateFor(std::vector<std::vector<std::vector<BlockInstance>>>& blockArray, phx::Vector3 chunkPos)
 {
-	for (int x = 0; x < blockArray.size(); x++)
+	for (size_t x = 0; x < blockArray.size(); x++)
 	{
-		for (int y = 0; y < blockArray[x].size(); y++)
+		for (size_t y = 0; y < blockArray[x].size(); y++)
 		{
 			if (chunkPos.y + y >= 16)
 			{
@@ -51,18 +51,17 @@ void PerlinNoise::generateFor(std::vector<std::vector<std::vector<BlockInstance>
 				continue;
 			}
 
-			for (int z = 0; z < blockArray[x][y].size(); z++)
+			for (size_t z = 0; z < blockArray[x][y].size(); z++)
 			{
 				int x1 = x,
 					z1 = z;
 
 				float noise = at(
-					((static_cast<float>(x1) + chunkPos.x) * 16) / 256.f,
-					((static_cast<float>(z1) + chunkPos.z) * 16) / 256.f
+					((static_cast<float>(x1) + chunkPos.x) * 8) / 512.f,
+					((static_cast<float>(z1) + chunkPos.z) * 8) / 512.f
 				) + 1.0f;
 
-				int newY = static_cast<int>(noise * 16.f);
-				newY = std::max(0, std::min(newY, 15));
+				int newY = static_cast<int>(noise * 8) % 16;
 
 				blockArray[x][newY][z] = BlockInstance("core:grass");
 
@@ -83,20 +82,25 @@ float PerlinNoise::dotGridGradient(int ix, int iy, float x, float y)
 	float dy = y - static_cast<float>(iy);
 
 	// be sure to stay in range
-	return dx * std::get<0>(m_gradient[abs(iy) % PERLIN_YMAX][abs(ix) % PERLIN_XMAX]) +
-		dy * std::get<1>(m_gradient[abs(iy) % PERLIN_YMAX][abs(ix) % PERLIN_XMAX]);
+	return dx * std::get<0>(m_gradient[iy % PERLIN_YMAX][ix % PERLIN_XMAX]) +
+		dy * std::get<1>(m_gradient[iy % PERLIN_YMAX][ix % PERLIN_XMAX]);
 }
 
 float PerlinNoise::at(float x, float z)
 {
-	// grid cell coords
-	int x0 = static_cast<int>(x), x1 = x0 + 1,
-		z0 = static_cast<int>(z), z1 = z0 + 1;
+	if (x < 0)
+		x = -x;
 
-	// interpolation weights
-	// (could use higher order polynomial/s-curve)
-	float sx = x - static_cast<float>(x0),
-		sz = z - static_cast<float>(z0);
+	if (z < 0)
+		z = -z;
+
+	int x0 = static_cast<int>(x);
+	int x1 = x0 + 1;
+	int z0 = static_cast<int>(z);
+	int z1 = z0 + 1;
+
+	float sx = x - static_cast<float>(x0);
+	float sz = z - static_cast<float>(z0);
 
 	// interpolation between grid point gradients
 	float n0{}, n1{}, ix0{}, ix1{};
@@ -109,4 +113,20 @@ float PerlinNoise::at(float x, float z)
 	ix1 = lerp(n0, n1, sx);
 
 	return lerp(ix0, ix1, sz);
+}
+
+float PerlinNoise::atOctave(float x, float z, float octaves, float persitance)
+{
+	float tot = 0;
+	float f = 1;
+	float a = 1;
+	float maxValue = 0;
+	for (int i = 0; i < octaves; ++i)
+	{
+		tot += at(x * f, z * f) * a;
+		maxValue += a;
+		a *= persitance;
+		f *= 2;
+	}
+	return tot / maxValue;
 }

@@ -24,6 +24,7 @@ namespace phx
 
 			void generateFor(std::vector<std::vector<std::vector<BlockInstance>>>& blockArray, phx::Vector3 chunkPos);
 			float at(float x, float z);
+			float atOctave(float x, float z, float octaves, float persistance);
 
 		private:
 			std::array<
