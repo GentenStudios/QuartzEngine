@@ -19,16 +19,17 @@ namespace phx
 		class ChunkManager
 		{
 		public:
-			ChunkManager(const std::string& blockID);
-			~ChunkManager();
+			ChunkManager(const std::string& blockID, unsigned int seed);
+			ChunkManager(const ChunkManager&) = default;
+
+			~ChunkManager() = default;
 
 			void toggleWireframe();
-			bool isWireframe() { return m_wireframe; };
+			bool isWireframe();;
 
 			void determineGeneration(phx::Vector3 cameraPosition);
-			void generateChunkAt(phx::Vector3 chunkPos);
 			void testGeneration(int test);
-			void unloadRedundant() { /* TODO this. */ }
+			void unloadRedundant();
 
 			void setBlockAt(phx::Vector3 position, const BlockInstance& block);
 			BlockInstance getBlockAt(phx::Vector3 position);
@@ -39,7 +40,7 @@ namespace phx
 			void render(int bufferCounter);
 
 		private:
-			PerlinNoise* m_terrainGenerator;
+			unsigned int m_seed;
 
 			ChunkContainer* m_managerData;
 			std::string m_defaultBlockID;

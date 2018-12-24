@@ -89,10 +89,10 @@ float PerlinNoise::dotGridGradient(int ix, int iy, float x, float y)
 float PerlinNoise::at(float x, float z)
 {
 	if (x < 0)
-		x = -x;
+		x = fabs(x);
 
 	if (z < 0)
-		z = -z;
+		z = fabs(z);
 
 	int x0 = static_cast<int>(x);
 	int x1 = x0 + 1;

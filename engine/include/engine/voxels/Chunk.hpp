@@ -45,16 +45,18 @@ namespace phx
 		class Chunk
 		{
 		public:
+			Chunk() = delete;
 			Chunk(const Chunk&) = default;
-
+			Chunk(Chunk&& o) = default;
 			Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID);
-			~Chunk() {}
 
-			void populateData(PerlinNoise* terrainGenerator);
+			~Chunk() = default;
+
+			void populateData(unsigned int seed);
 
 			void buildMesh(); 
 
-			void addBlockFace(BlockFace face, int memOffset, int x, int y, int z);
+			void addBlockFace(BlockFace face, int x, int y, int z);
 
 			void breakBlockAt(phx::Vector3 position, const BlockInstance& block);
 			void placeBlockAt(phx::Vector3 position, const BlockInstance& block);
@@ -66,10 +68,6 @@ namespace phx
 			void render(int* counter);
 
 			inline const Vector3& getChunkPos() const { return m_chunkPos; }
-
-			Mesh* getBlocksMesh();
-			Mesh* getObjectsMesh();
-			Mesh* getWaterMesh();
 
 		private:
 			phx::Vector3 m_chunkPos;
@@ -90,9 +88,6 @@ namespace phx
 			phx::gfx::gl::VertexBuffer* m_vbo = nullptr;
 			phx::gfx::gl::VertexBuffer* m_uvbo = nullptr;
 			phx::gfx::gl::VertexBuffer* m_tlbo = nullptr; // Texture Layer Buffer Object
-
-			unsigned int m_vertInChunk;
-			unsigned int m_uvInChunk;
 		};
 
 	}
