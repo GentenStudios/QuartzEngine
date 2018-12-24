@@ -31,7 +31,7 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 
 	const int VIEW_DISTANCE = 16; // 96 blocks, 6 chunks.
 
-	int chunkViewDistance = (VIEW_DISTANCE / 16);
+	int chunkViewDistance = (VIEW_DISTANCE / 16) * 2;
 
 	for (int x = -chunkViewDistance; x <= chunkViewDistance; x++)
 	{
