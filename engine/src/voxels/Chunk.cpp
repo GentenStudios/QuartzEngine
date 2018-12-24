@@ -2,7 +2,6 @@
 
 #include <engine/voxels/terrain/PerlinNoise.hpp>
 
-#include <cstring>
 #include <functional>
 #include <numeric>
 
@@ -109,7 +108,10 @@ static const Vector2 CUBE_UV[] = {
 	Vector2(0.f, -1.f),
 };
 
-Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID)
+Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID) :
+	m_chunkPos(chunkPos), 
+	m_chunkSize(chunkSize), 
+	m_defaultBlockID(defaultBlockID)
 {
 	m_defaultBlockID = defaultBlockID;
 
@@ -157,11 +159,11 @@ void Chunk::buildMesh()
 	m_blockMesh->chunkTexLayers.clear();
 	m_blockMesh->chunkUVs.clear();
 
-	for (unsigned int z = 0; z < m_chunkSize; z++)
+	for (unsigned int z = 0; z < m_chunkSize; ++z)
 	{
-		for (unsigned int y = 0; y < m_chunkSize; y++)
+		for (unsigned int y = 0; y < m_chunkSize; ++y)
 		{
-			for (unsigned int x = 0; x < m_chunkSize; x++)
+			for (unsigned int x = 0; x < m_chunkSize; ++x)
 			{
 				if (m_chunkBlocks[x][y][z].getBlockType() == BlockType::GAS)
 					continue;
@@ -200,7 +202,7 @@ void Chunk::addBlockFace(BlockFace face, int x, int y, int z)
 		texLayer = m_textureArray->getTexLayer(blockTex[static_cast<int>(face)]);
 	}
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 6; ++i)
 	{
 		phx::Vector3 temp = CUBE_VERTS[(static_cast<int>(face) * 6) + i];
 		temp.x += (x * 2) + (m_chunkPos.x * 2); // Multiply by 2, as that is the size of the actual cube edges, indicated by the cube vertices.

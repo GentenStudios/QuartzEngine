@@ -68,8 +68,7 @@ void Sandbox::run()
 	BlockLibrary::get()->registerBlock(blockDirt);
 	BlockLibrary::get()->registerBlock(air);
 
-	ChunkManager* world = new ChunkManager("core:air");
-	//world->testGeneration(5);
+	ChunkManager* world = new ChunkManager("core:air", time(nullptr));
 
 	m_player = std::make_unique<Player>(m_appData->window, world);
 
@@ -106,8 +105,6 @@ void Sandbox::run()
 		"assets/shaders/ui.frag"
 	);
 
-	//world->testGeneration(10);
-
 	float last = SDL_GetTicks();
 	while (m_appData->window->isRunning())
 	{
@@ -128,8 +125,7 @@ void Sandbox::run()
 			LDEBUG("FPS: ", fps_current);
 			fps_frames = 0;
 		}
-
-
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 		

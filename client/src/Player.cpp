@@ -72,17 +72,14 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 			
 			while (ray.getLength() < MAX_PICKING_DISTANCE)
 			{
-				if (canPlaceBlockAtPos(pos)) 
+				pos.floor();
+				BlockInstance block = m_world->getBlockAt(pos);
+
+				if (block.getBlockType() != BlockType::GAS)
 				{
-					BlockInstance block = m_world->getBlockAt(pos);
-
-					if (block.getBlockType() != BlockType::GAS)
-					{
-						pos.floor();
-
-						m_world->breakBlockAt(pos, BlockInstance("core:air"));
-						break;
-					}
+					LDEBUG("Ray is at: ", pos.x, " ", pos.y, " ", pos.z, "Block Type is: ", block.getBlockID().c_str());
+					m_world->breakBlockAt(pos, BlockInstance("core:air"));
+					break;
 				}
 
 				pos = ray.advance(RAY_INCREMENT);
@@ -96,12 +93,12 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 
 			while (ray.getLength() < MAX_PICKING_DISTANCE)
 			{
+				pos.floor();
 				BlockInstance block = m_world->getBlockAt(pos);
 
 				if (block.getBlockType() != BlockType::GAS)
 				{
 					pos = ray.backtrace(RAY_INCREMENT);
-					pos.toFloorOrNotToFloorThatIsTheQuestion();
 
 					LDEBUG("Ray is at: ", pos.x, " ", pos.y, " ", pos.z);
 					m_world->placeBlockAt(pos, BlockInstance("core:grass"));
