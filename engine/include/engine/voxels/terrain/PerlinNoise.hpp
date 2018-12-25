@@ -31,9 +31,8 @@ namespace phx
 			int m_repeat;
 
 			float fade(float t);
-			int	  inc(int num);
 			float grad(int hash, float x, float y, float z);
-			float lerp(float a, float b, float x);
+			float lerp(float t, float a, float b);
 		};
 
 	}

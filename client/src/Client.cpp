@@ -105,6 +105,7 @@ void Sandbox::run()
 		"assets/shaders/ui.frag"
 	);
 
+	world->determineGeneration(m_player->getPosition());
 	float last = SDL_GetTicks();
 	while (m_appData->window->isRunning())
 	{
@@ -114,7 +115,6 @@ void Sandbox::run()
 		last = now;
 
 		m_player->tick(dt);
-		world->determineGeneration(m_player->getPosition());
 
 		// ONLY HERE TEMPORARILY.
 		fps_frames++;

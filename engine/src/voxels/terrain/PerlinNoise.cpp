@@ -1,7 +1,8 @@
 #include <engine/voxels/terrain/PerlinNoise.hpp>
 
 #include <algorithm>
-#include <ctime>
+#include <random>
+#include <numeric>
 
 using namespace phx::voxels;
 
@@ -22,21 +23,23 @@ static int s_permutation[] = {
 
 PerlinNoise::PerlinNoise()
 {
-	for (int i = 0; i < 512; ++i)
-		m_p.push_back(s_permutation[i % 256]);
+	for (int i = 0; i < 256; ++i)
+	{
+		m_p.push_back(s_permutation[i]);
+	}
+
+	m_p.insert(m_p.end(), m_p.begin(), m_p.end());
 }
 
 PerlinNoise::PerlinNoise(unsigned int seed)
 {
-	std::srand(seed);
+	m_p.resize(256);
 
-	for (int i = 0; i < 256; ++i)
-	{
-		m_p.push_back(i);
-		m_p.push_back(i);
-	}
+	std::iota(m_p.begin(), m_p.end(), 0);
 
-	std::random_shuffle(m_p.begin(), m_p.end());
+	std::default_random_engine engine(seed);
+	std::shuffle(m_p.begin(), m_p.end(), engine);
+	m_p.insert(m_p.end(), m_p.begin(), m_p.end());
 }
 
 void PerlinNoise::generateFor(std::vector<std::vector<std::vector<BlockInstance>>>& blockArray, phx::Vector3 chunkPos)
@@ -68,13 +71,13 @@ void PerlinNoise::generateFor(std::vector<std::vector<std::vector<BlockInstance>
 				int x1 = x,
 					z1 = z;
 
-				float noise = at(
-					{
+				phx::Vector3 temp = { 
 					((static_cast<float>(x1) + chunkPos.x) * 2) / 64.f,
 					((static_cast<float>(z1) + chunkPos.z) * 2) / 64.f,
-					((static_cast<float>(0)  + chunkPos.y) * 2) / 64.f
-					}
-				);
+					((static_cast<float>(0) + chunkPos.y) * 2) / 64.f
+				};
+
+				float noise = at(temp);
 
 				int newY = static_cast<int>(noise * 16) % 16;
 
@@ -84,8 +87,6 @@ void PerlinNoise::generateFor(std::vector<std::vector<std::vector<BlockInstance>
 				{
 					blockArray[x][y][z] = BlockInstance("core:dirt");
 				}
-
-				//LDEBUG("Let's See: ", newY);
 			}
 		}
 	}
@@ -96,124 +97,49 @@ float PerlinNoise::fade(float t)
 	return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
-int PerlinNoise::inc(int num)
-{
-	num++;
-	if (m_repeat > 0)
-		num %= m_repeat;
-	return num;
-}
-
 float PerlinNoise::grad(int hash, float x, float y, float z)
 {
-	switch (hash & 0xF)
-	{
-	case 0x0:
-		return x + y;
-	case 0x1:
-		return -x + y;
-	case 0x2:
-		return x - y;
-	case 0x3:
-		return -x - y;
-	case 0x4:
-		return x + z;
-	case 0x5:
-		return -x + z;
-	case 0x6:
-		return x - z;
-	case 0x7:
-		return -x - z;
-	case 0x8:
-		return y + z;
-	case 0x9:
-		return -y + z;
-	case 0xA:
-		return y - z;
-	case 0xB:
-		return -y - z;
-	case 0xC:
-		return y + x;
-	case 0xD:
-		return -y + z;
-	case 0xE:
-		return y - x;
-	case 0xF:
-		return -y - z;
-	default:
-		return 0;
-	}
+	int h = hash & 15;
+
+	float u = h < 8 ? x : y,
+		v = h < 4 ? y : h == 12 || h == 14 ? x : z;
+	return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }
 
-float PerlinNoise::lerp(float a, float b, float x)
+float PerlinNoise::lerp(float t, float a, float b)
 {
-	return a + x * (b - a);
+	return a + t * (b - a);
 }
 
 float PerlinNoise::at(phx::Vector3 pos)
 {
-	if (m_repeat > 0)
-	{
-		pos.x = static_cast<float>((int)pos.x % m_repeat);
-		pos.y = static_cast<float>((int)pos.y % m_repeat);
-		pos.z = static_cast<float>((int)pos.z % m_repeat);
-	}
+	int X = static_cast<int>(std::floor(pos.x)) & 255;
+	int Y = static_cast<int>(std::floor(pos.y)) & 255;
+	int Z = static_cast<int>(std::floor(pos.z)) & 255;
 
-	phx::Vector3 posi(
-		static_cast<float>(static_cast<int>(pos.x) & 255),
-		static_cast<float>(static_cast<int>(pos.y) & 255),
-		static_cast<float>(static_cast<int>(pos.z) & 255)
-	);
+	pos.x -= std::floor(pos.x);
+	pos.y -= std::floor(pos.y);
+	pos.z -= std::floor(pos.z);
 
-	phx::Vector3 posf(
-		pos.x - static_cast<int>(pos.x),
-		pos.y - static_cast<int>(pos.y),
-		pos.z - static_cast<int>(pos.z));
+	float u = fade(pos.x);
+	float v = fade(pos.y);
+	float w = fade(pos.z);
 
-	float u = fade(posf.x);
-	float v = fade(posf.y);
-	float w = fade(posf.z);
+	int A = m_p[X] + Y;
+	int AA = m_p[A] + Z;
+	int AB = m_p[A + 1] + Z;
+	int B = m_p[X + 1] + Y;
+	int BA = m_p[B] + Z;
+	int BB = m_p[B + 1] + Z;
 
-	int xi = posi.x;
-	int yi = posi.y;
-	int zi = posi.z;
+	float res = lerp(
+		w, lerp(v, lerp(u, grad(m_p[AA], pos.x, pos.y, pos.z), grad(m_p[BA], pos.x - 1, pos.y, pos.z)),
+				lerp(u, grad(m_p[AB], pos.x, pos.y - 1, pos.z), grad(m_p[BB], pos.x - 1, pos.y - 1, pos.z))), lerp(
+			v, lerp(u, grad(m_p[AA + 1], pos.x, pos.y, pos.z - 1), grad(m_p[BA + 1], pos.x - 1, pos.y, pos.z - 1)),
+			lerp(u, grad(m_p[AB + 1], pos.x, pos.y - 1, pos.z - 1),
+				grad(m_p[BB + 1], pos.x - 1, pos.y - 1, pos.z - 1))));
 
-	float xf = posf.x;
-	float yf = posf.y;
-	float zf = posf.z;
-
-	int aaa = m_p[m_p[m_p[xi] + yi] + zi];
-	int aba = m_p[m_p[m_p[xi] + inc(yi)] + zi];
-	int aab = m_p[m_p[m_p[xi] + yi] + inc(zi)];
-	int abb = m_p[m_p[m_p[xi] + inc(yi)] + inc(zi)];
-	int baa = m_p[m_p[m_p[inc(xi)] + yi] + zi];
-	int bba = m_p[m_p[m_p[inc(xi)] + inc(yi)] + zi];
-	int bab = m_p[m_p[m_p[inc(xi)] + yi] + inc(zi)];
-	int bbb = m_p[m_p[m_p[inc(xi)] + inc(yi)] + inc(zi)];
-
-	float x1 = lerp(grad(aaa, xf, yf, zf),
-					grad(baa, xf - 1, yf, zf),
-					u);
-	float x2 = lerp(grad(aba, xf, yf - 1, zf),
-					grad(bba, xf - 1, yf - 1, zf),
-					u);
-	float y1 = lerp(x1, x2, v);
-
-	x1 = lerp(
-		grad(aab, xf, yf, zf - 1),
-		grad(bab, xf - 1, yf, zf - 1),
-		u
-	);
-	
-	x2 = lerp(
-		grad(abb, xf, yf - 1, zf - 1),
-		grad(bbb, xf - 1, yf - 1, zf - 1),
-		u
-	);
-	
-	float y2 = lerp(x1, x2, v);
-
-	return (lerp(y1, y2, w) + 1) / 2;
+	return (res + 1.f) / 2.f;
 }
 
 float PerlinNoise::atOctave(phx::Vector3 pos, int octaves, float persitance)
