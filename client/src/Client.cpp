@@ -84,9 +84,22 @@ void Sandbox::run()
 	window->getSize(ww, wh);
 
 	bool fullscreen = false;
-	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_F11, [&window, &fullscreen]() {
+	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_F11, [&window, &fullscreen]()
+	{
 		fullscreen = !fullscreen;
 		window->setFullscreen(fullscreen);
+	});
+
+	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_RETURN, [&window, &fullscreen]()
+	{
+		LDEBUG("ENTER!");
+		window->pollEvents();
+		bool isPressed = window->isKeyDown(events::Keys::KEY_LALT);
+		if (window->isKeyDown(events::Keys::KEY_LALT))
+		{
+			fullscreen = !fullscreen;
+			window->setFullscreen(fullscreen);
+		}
 	});
 
 	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_1, [&world]() {
