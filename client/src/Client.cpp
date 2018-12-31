@@ -68,7 +68,7 @@ void Sandbox::run()
 	BlockLibrary::get()->registerBlock(blockDirt);
 	BlockLibrary::get()->registerBlock(air);
 
-	ChunkManager* world = new ChunkManager("core:air", time(nullptr));
+	ChunkManager* world = new ChunkManager("core:dirt", time(nullptr));
 
 	m_player = std::make_unique<Player>(m_appData->window, world);
 
