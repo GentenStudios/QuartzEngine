@@ -14,7 +14,7 @@ namespace phx
 	{
 		namespace gl
 		{
-			/// @brief Alias TexCache to an unordered_map, primarily just for easier use, because i'm lazy and i ain't gunna type out the whole thing like 50 times.
+			/// @brief Alias TexCache to an unordered_map, primarily just for easier use, because i'm lazy and i ain't gonna type out the whole thing like 50 times.
 			using TexCache = std::unordered_map<std::string, int>;
 
 			/**
@@ -32,7 +32,7 @@ namespace phx
 				TextureArray();
 
 				/**
-				 * @brief Destroy the Texture Array object, and delete the texture.
+				 * @brief Destroy the Texture Array object, and delete the texture object from OpenGL.
 				 * 
 				 */
 				~TextureArray();
@@ -40,14 +40,26 @@ namespace phx
 				/**
 				 * @brief Add a texture to the array, until the array is out of places, which is another reason we need a ShaderFactory.
 				 * 
-				 * @param path The path to the array, will be loaded by stb_image, unless we create something faster... one day, we will, and then we will party 
+				 * @param path The path to the te, will be loaded by stb_image, unless we create something faster... one day, we will, and then we will party
 				 */
 				void add(const std::string& path);
 
 				/**
+				 * @brief Reserve a texture for the array, until the array is out of places, which is another reason we need a ShaderFactory.
+				 *
+				 * @param path The path to the texture, will be stored in another map, for reservations, unless we create something faster... one day, we will, and then we will party
+				 */
+				void reserve(const std::string& path);
+
+				/**
+				 * @brief Resolve and add all textures that have been reserved.
+				 */
+				void resolveReservations();
+
+				/**
 				 * @brief Bind the texture array to a texture unit.
 				 * 
-				 * @param index The Texture Unit to bind to, if not selected, the texture unit will either be 0, or binded to whatever texture unit was last selected.
+				 * @param index The Texture Unit to bind to, if not selected, the texture unit will either be 0, or bound to whatever texture unit was last selected.
 				 */
 				void bind(int index = -1);
 
@@ -77,10 +89,13 @@ namespace phx
 				/// @brief Unordered Map for mapping paths with Texture Layers.
 				TexCache m_texNames;
 
+				/// @brief Unordered Map for reserving paths and Texture Layer numbers.
+				TexCache m_texReservations;
+
 				/// @brief Unique ID for the Texture Array, set by OpenGL.
 				unsigned int m_textureID;
 
-				/// @brief The number of textures that exist in the Chunk at this point in time.
+				/// @brief The number of textures that exist in the Array at this point in time.
 				int m_textureNumber = 0;
 			};
 
