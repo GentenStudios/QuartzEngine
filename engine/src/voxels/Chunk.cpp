@@ -142,14 +142,25 @@ ChunkMesh::ChunkMesh()
 ChunkMesh::~ChunkMesh()
 {}
 
-void ChunkMesh::add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos)
+void ChunkMesh::add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos, Chunk* chunk)
 {
 	if (block.getBlockType() == BlockType::SOLID)
 	{
+		ChunkRenderer& renderer = chunk->getBlockRenderer();
+		
+		int texLayer = -1;
+
+		if (static_cast<std::size_t>(face) < block.getBlockTextures().size())
+		{
+			gfx::gl::TextureArray* texArray = renderer.getTextureArray();
+			texArray->reserve(block.getBlockTextures()[static_cast<int>(face)]);
+			texLayer = texArray->getTexLayer(block.getBlockTextures()[static_cast<int>(face)]);
+
+			LDEBUG("Yo, I'm working: ", block.getBlockTextures()[static_cast<int>(face)], " @ ", texArray->getTexLayer(block.getBlockTextures()[static_cast<int>(face)]));
+		}
+
 		for (int i = 0; i < 6; ++i)
 		{
-			int texLayer = 0;
-
 			phx::Vector3 temp = CUBE_VERTS[(static_cast<int>(face) * 6) + i];
 			temp.x += (blockPos.x * 2) + (chunkPos.x * 2); // Multiply by 2, as that is the size of the actual cube edges, indicated by the cube vertices.
 			temp.y += (blockPos.y * 2) + (chunkPos.y * 2);
@@ -189,6 +200,7 @@ void ChunkMesh::resetAll()
 ChunkRenderer::ChunkRenderer() :
 	m_vao(nullptr), m_vbo(nullptr)
 {
+	m_textureArray = new gfx::gl::TextureArray();
 }
 
 ChunkRenderer::~ChunkRenderer()
@@ -207,6 +219,11 @@ void ChunkRenderer::updateMesh(const Mesh& mesh)
 	m_mesh.update(mesh);
 }
 
+gfx::gl::TextureArray* ChunkRenderer::getTextureArray()
+{
+	return m_textureArray;
+}
+
 void ChunkRenderer::bufferData()
 {
 	if (m_mesh.triangleCount() == 0)
@@ -223,6 +240,9 @@ void ChunkRenderer::bufferData()
 	std::vector<ChunkVert3D> temp;
 	for (std::size_t i = 0; i < m_mesh.vertices.size(); ++i)
 	{
+		if (m_mesh.texLayers[i] != 0)
+			LDEBUG("OH SHIT! ", m_mesh.texLayers[i]);
+
 		temp.emplace_back(m_mesh.vertices[i], m_mesh.uvs[i], m_mesh.texLayers[i]);
 	}
 
@@ -245,8 +265,10 @@ void ChunkRenderer::render()
 	if (m_mesh.triangleCount() == 0)
 		return;
 
+	m_textureArray->bind(10);
 	m_vao->bind();
 	GLCheck(glDrawArrays(GL_TRIANGLES, 0, m_mesh.vertices.size()));
+	m_textureArray->unbind();
 	m_vao->unbind();
 }
 
@@ -260,6 +282,8 @@ Chunk::Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, const std::string& d
 	m_chunkPos = chunkPos;
 	m_chunkSize = chunkSize;
 	m_defaultBlockID = defaultBlockID;
+
+	m_chunkFlags = NEEDS_MESHING;
 }
 
 void Chunk::populateData(unsigned int seed)
@@ -267,9 +291,9 @@ void Chunk::populateData(unsigned int seed)
 	for (std::size_t i = 0; i < m_chunkSize * m_chunkSize * m_chunkSize; ++i)
 		m_chunkBlocks.emplace_back(m_defaultBlockID);
 
-	//PerlinNoise* terrainGenerator = new PerlinNoise(seed);
-	//terrainGenerator->generateFor(m_chunkBlocks, m_chunkPos);
-	//delete terrainGenerator;
+	PerlinNoise* terrainGenerator = new PerlinNoise(seed);
+	terrainGenerator->generateFor(m_chunkBlocks, m_chunkPos, m_chunkSize);
+	delete terrainGenerator;
 
 	buildMesh();
 }
@@ -280,36 +304,48 @@ void Chunk::buildMesh()
 
 	for (std::size_t i = 0; i < m_chunkSize * m_chunkSize * m_chunkSize; ++i)
 	{
-		if (m_chunkBlocks[i].getBlockType() == BlockType::GAS)
-			continue;
-
-		if (m_chunkBlocks[i].getBlockType() == BlockType::WATER)
-			continue;
-
-		if (m_chunkBlocks[i].getBlockType() == BlockType::LIQUID)
-			continue;
-
-		if (m_chunkBlocks[i].getBlockType() == BlockType::OBJECT)
-			continue;
-
 		BlockInstance& block = m_chunkBlocks[i];
+
+		if (block.getBlockType() == BlockType::GAS)
+			continue;
+
+		//if (block.getBlockType() == BlockType::WATER)
+		//	continue;
+
+		//if (block.getBlockType() == BlockType::LIQUID)
+		//	continue;
+
+		//if (block.getBlockType() == BlockType::OBJECT)
+		//	continue;
 
 		std::size_t x = i % m_chunkSize;
 		std::size_t y = (i / m_chunkSize) % m_chunkSize;
 		std::size_t z = i / (m_chunkSize * m_chunkSize);
 
-		if (x == 0 || m_chunkBlocks[getVectorIndex(x - 1, y, z)].getBlockType() != BlockType::SOLID)					m_mesh.add(block, BlockFace::RIGHT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
-		if (x == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x + 1, y, z)].getBlockType() != BlockType::SOLID)	m_mesh.add(block, BlockFace::LEFT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
+		//if (x == 0 || m_chunkBlocks[getVectorIndex(x - 1, y, z)].getBlockType() != BlockType::SOLID)
+		//	m_mesh.add(block, BlockFace::RIGHT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		//if (x == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x + 1, y, z)].getBlockType() != BlockType::SOLID)
+		//	m_mesh.add(block, BlockFace::LEFT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 
-		if (y == 0 || m_chunkBlocks[getVectorIndex(x, y - 1, z)].getBlockType() != BlockType::SOLID)					m_mesh.add(block, BlockFace::BOTTOM, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
-		if (y == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y + 1, z)].getBlockType() != BlockType::SOLID)	m_mesh.add(block, BlockFace::TOP, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
+		//if (y == 0 || m_chunkBlocks[getVectorIndex(x, y - 1, z)].getBlockType() != BlockType::SOLID)
+		//	m_mesh.add(block, BlockFace::BOTTOM, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		//if (y == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y + 1, z)].getBlockType() != BlockType::SOLID)
+		//	m_mesh.add(block, BlockFace::TOP, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 
-		if (z == 0 || m_chunkBlocks[getVectorIndex(x, y, z - 1)].getBlockType() != BlockType::SOLID)					m_mesh.add(block, BlockFace::FRONT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
-		if (z == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y, z + 1)].getBlockType() != BlockType::SOLID)	m_mesh.add(block, BlockFace::BACK, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) });
+		//if (z == 0 || m_chunkBlocks[getVectorIndex(x, y, z - 1)].getBlockType() != BlockType::SOLID)
+		//	m_mesh.add(block, BlockFace::FRONT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		//if (z == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y, z + 1)].getBlockType() != BlockType::SOLID)
+		//	m_mesh.add(block, BlockFace::BACK, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+
+		for (int j = 0; j < 6; ++j)
+			m_mesh.add(block, static_cast<BlockFace>(j), m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 	}
 
-	if (!m_chunkFlags & BLOCKS_NEED_BUFFERING)
+	if (!(m_chunkFlags & BLOCKS_NEED_BUFFERING))
 		m_chunkFlags |= BLOCKS_NEED_BUFFERING;
+
+	if (!(m_chunkFlags & BLOCKS_NEED_TEXTURING))
+		m_chunkFlags |= BLOCKS_NEED_TEXTURING;
 
 	m_blockRenderer.resetMesh();
 	m_blockRenderer.updateMesh(m_mesh.getBlockMesh());
@@ -406,6 +442,23 @@ void Chunk::setBlockAt(phx::Vector3 position, const BlockInstance& newBlock)
 	}
 }
 
+ChunkRenderer& Chunk::getBlockRenderer()
+{
+	return m_blockRenderer;
+}
+
+ChunkRenderer& Chunk::getObjectRenderer()
+{
+	//return m_objectRenderer;
+	return m_blockRenderer;
+}
+
+ChunkRenderer& Chunk::getWaterRenderer()
+{
+	//return m_waterRenderer
+	return m_blockRenderer;
+}
+
 void Chunk::renderBlocks(int* counter)
 {
 	if (m_chunkFlags & BLOCKS_NEED_BUFFERING)
@@ -416,7 +469,19 @@ void Chunk::renderBlocks(int* counter)
 			return;
 
 		m_blockRenderer.bufferData();
-		m_chunkFlags |= BLOCKS_NEED_BUFFERING;
+		m_chunkFlags &= ~BLOCKS_NEED_BUFFERING;
+	}
+
+	if (m_chunkFlags & BLOCKS_NEED_TEXTURING)
+	{
+		if (*counter > 0)
+			(*counter)--;
+		else
+			return;
+
+		m_blockRenderer.getTextureArray()->resolveReservations();
+
+		m_chunkFlags &= ~BLOCKS_NEED_TEXTURING;
 	}
 
 	m_blockRenderer.render();

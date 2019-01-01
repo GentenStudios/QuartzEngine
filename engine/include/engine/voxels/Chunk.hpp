@@ -17,13 +17,14 @@ namespace phx
 {
 	namespace voxels
 	{
-		enum ChunkFlags : unsigned char
+		enum ChunkFlags : unsigned int
 		{
 			BLOCKS_NEED_BUFFERING	= 1 << 0,
 			OBJECTS_NEED_BUFFERING	= 1 << 1,
 			WATER_NEEDS_BUFFERING	= 1 << 2,
 			NEEDS_MESHING			= 1 << 3,
-			NEEDS_TEXTURING			= 1 << 4
+			BLOCKS_NEED_TEXTURING	= 1 << 4,
+			OBJECTS_NEED_TEXTURING	= 1 << 5,
 		};
 
 		enum class BlockFace : int
@@ -49,13 +50,15 @@ namespace phx
 			std::size_t triangleCount() const;
 		};
 
+		class Chunk;
+
 		class ChunkMesh
 		{
 		public:
 			ChunkMesh();
 			~ChunkMesh();
 
-			void add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos);
+			void add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos, Chunk* chunk);
 
 			const Mesh& getBlockMesh() const;
 			const Mesh& getObjectMesh() const;
@@ -78,6 +81,8 @@ namespace phx
 			void resetMesh();
 			void updateMesh(const Mesh& mesh);
 
+			gfx::gl::TextureArray* getTextureArray();
+
 			void bufferData();
 			void render();
 
@@ -89,7 +94,7 @@ namespace phx
 			gfx::gl::VertexArray* m_vao;
 			gfx::gl::VertexBuffer* m_vbo;
 
-			gfx::gl::TextureArray* m_textureArray = nullptr;
+			gfx::gl::TextureArray* m_textureArray;
 		};
 
 		class Chunk
@@ -115,6 +120,10 @@ namespace phx
 			BlockInstance getBlockAt(phx::Vector3 position) const;
 			void setBlockAt(phx::Vector3 position, const BlockInstance& newBlock);
 
+			ChunkRenderer& getBlockRenderer();
+			ChunkRenderer& getObjectRenderer();
+			ChunkRenderer& getWaterRenderer();
+
 			void renderBlocks(int* counter);
 			void renderObjects(int* counter);
 			void renderWater(int* counter);
@@ -131,7 +140,7 @@ namespace phx
 			//ChunkRenderer m_objectRenderer;
 			//ChunkRenderer m_waterRenderer;
 
-			unsigned char m_chunkFlags = 0;
+			unsigned int m_chunkFlags = 0;
 
 			std::string m_defaultBlockID;
 			std::vector<BlockInstance> m_chunkBlocks;

@@ -39,7 +39,7 @@ int TextureArray::getTexLayer(const std::string& path)
 	if (it == m_texNames.end())
 	{
 		auto it2 = m_texReservations.find(path);
-		if (it2 == m_texNames.end())
+		if (it2 == m_texReservations.end())
 			return -1;
 
 		return it2->second;
@@ -91,9 +91,9 @@ void TextureArray::resolveReservations()
 {
 	bind();
 
-	for (auto& current : m_texReservations)
+	for (auto current = m_texReservations.begin(); current != m_texReservations.end(); ++current)
 	{
-		std::string path = current.first;
+		std::string path = current->first;
 
 		if (m_texNames.find(path) == m_texNames.end())
 		{
@@ -101,9 +101,9 @@ void TextureArray::resolveReservations()
 			unsigned char* image = stbi_load(path.c_str(), &width, &height, &nbChannels, 0);
 			if (image != nullptr)
 			{
-				GLCheck(glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, current.second, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image));
+				GLCheck(glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, current->second, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image));
 
-				m_texNames[path] = current.second;
+				m_texNames[path] = current->second;
 			}
 			else
 			{
@@ -119,9 +119,9 @@ void TextureArray::resolveReservations()
 			GLCheck(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT));
 			GLCheck(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f));
 		}
-
-		m_texReservations.erase(current.first);
 	}
+
+	m_texReservations.clear();
 
 	unbind();
 }

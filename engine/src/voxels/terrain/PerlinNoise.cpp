@@ -42,50 +42,49 @@ PerlinNoise::PerlinNoise(unsigned int seed)
 	m_p.insert(m_p.end(), m_p.begin(), m_p.end());
 }
 
-void PerlinNoise::generateFor(std::vector<std::vector<std::vector<BlockInstance>>>& blockArray, phx::Vector3 chunkPos)
+void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, phx::Vector3 chunkPos, int chunkSize)
 {
-	for (size_t x = 0; x < blockArray.size(); x++)
+	m_chunkSize = chunkSize;
+
+	for (size_t x = 0; x < chunkSize; ++x)
 	{
-		for (size_t y = 0; y < blockArray[x].size(); y++)
+		for (size_t y = 0; y < chunkSize; ++y)
 		{
 			if (chunkPos.y + y >= 16)
 			{
-				for (auto& z : blockArray[x][y])
+				for (int z = 0; z < chunkSize; ++z)
 				{
-					z = BlockInstance("core:air");
+					blockArray[getVectorIndex(x, y, z)] = BlockInstance("core:air");
 				}
 				continue;
 			}
 
 			if (chunkPos.y + y < 0)
 			{
-				for (auto& z : blockArray[x][y])
+				for (int z = 0; z < chunkSize; ++z)
 				{
-					z = BlockInstance("core:dirt");
+					blockArray[getVectorIndex(x, y, z)] = BlockInstance("core:dirt");
 				}
 				continue;
 			}
 
-			for (size_t z = 0; z < blockArray[x][y].size(); z++)
+			for (size_t z = 0; z < chunkSize; ++z)
 			{
-				int x1 = x,
-					z1 = z;
-
 				phx::Vector3 temp = { 
-					((static_cast<float>(x1) + chunkPos.x) * 2) / 64.f,
-					((static_cast<float>(z1) + chunkPos.z) * 2) / 64.f,
+					((static_cast<float>(x) + chunkPos.x) * 2) / 64.f,
+					((static_cast<float>(z) + chunkPos.z) * 2) / 64.f,
 					((static_cast<float>(0) + chunkPos.y) * 2) / 64.f
 				};
 
 				float noise = at(temp);
 
-				int newY = static_cast<int>(noise * 16) % 16;
+				int newY = static_cast<int>(noise * chunkSize) % chunkSize;
 
-				blockArray[x][newY][z] = BlockInstance("core:grass");
+				blockArray[getVectorIndex(x, newY, z)] = BlockInstance("core:grass");
 
-				for (int y = 0; y < newY; y++)
+				for (int y2 = 0; y2 < newY; ++y2)
 				{
-					blockArray[x][y][z] = BlockInstance("core:dirt");
+					blockArray[getVectorIndex(x, y2, z)] = BlockInstance("core:dirt");
 				}
 			}
 		}
