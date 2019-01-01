@@ -103,7 +103,7 @@ static const Vector2 CUBE_UV[] = {
 	Vector2(0.f, -1.f),
 };
 
-static struct ChunkVert3D
+struct ChunkVert3D
 {
 	phx::Vector3 verts;
 	phx::Vector2 uvs;
@@ -136,11 +136,8 @@ std::size_t Mesh::triangleCount() const
 	return vertices.size() / 3;
 }
 
-ChunkMesh::ChunkMesh()
-{}
-
-ChunkMesh::~ChunkMesh()
-{}
+ChunkMesh::ChunkMesh() = default;
+ChunkMesh::~ChunkMesh() = default;
 
 void ChunkMesh::add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos, Chunk* chunk)
 {
@@ -155,8 +152,6 @@ void ChunkMesh::add(const BlockInstance& block, BlockFace face, phx::Vector3 chu
 			gfx::gl::TextureArray* texArray = renderer.getTextureArray();
 			texArray->reserve(block.getBlockTextures()[static_cast<int>(face)]);
 			texLayer = texArray->getTexLayer(block.getBlockTextures()[static_cast<int>(face)]);
-
-			LDEBUG("Yo, I'm working: ", block.getBlockTextures()[static_cast<int>(face)], " @ ", texArray->getTexLayer(block.getBlockTextures()[static_cast<int>(face)]));
 		}
 
 		for (int i = 0; i < 6; ++i)
@@ -240,9 +235,6 @@ void ChunkRenderer::bufferData()
 	std::vector<ChunkVert3D> temp;
 	for (std::size_t i = 0; i < m_mesh.vertices.size(); ++i)
 	{
-		if (m_mesh.texLayers[i] != 0)
-			LDEBUG("OH SHIT! ", m_mesh.texLayers[i]);
-
 		temp.emplace_back(m_mesh.vertices[i], m_mesh.uvs[i], m_mesh.texLayers[i]);
 	}
 
@@ -250,8 +242,8 @@ void ChunkRenderer::bufferData()
 	m_vbo->setData(static_cast<void*>(temp.data()), sizeof(ChunkVert3D) * temp.size());
 
 	gfx::gl::VertexAttrib vertAttrib	= gfx::gl::VertexAttrib(0, 3, sizeof(ChunkVert3D), offsetof(ChunkVert3D, verts), gfx::gl::GLType::FLOAT);
-	gfx::gl::VertexAttrib uvAttrib		= gfx::gl::VertexAttrib(1, 2, sizeof(ChunkVert3D), offsetof(ChunkVert3D, uvs), gfx::gl::GLType::FLOAT);
-	gfx::gl::VertexAttrib layerAttrib	= gfx::gl::VertexAttrib(2, 1, sizeof(ChunkVert3D), offsetof(ChunkVert3D, tx), gfx::gl::GLType::INT);
+	gfx::gl::VertexAttrib uvAttrib		= gfx::gl::VertexAttrib(1, 2, sizeof(ChunkVert3D), offsetof(ChunkVert3D, uvs),   gfx::gl::GLType::FLOAT);
+	gfx::gl::VertexAttrib layerAttrib	= gfx::gl::VertexAttrib(2, 1, sizeof(ChunkVert3D), offsetof(ChunkVert3D, tx),    gfx::gl::GLType::FLOAT);
 
 	vertAttrib.enable();
 	uvAttrib.enable();
@@ -309,36 +301,25 @@ void Chunk::buildMesh()
 		if (block.getBlockType() == BlockType::GAS)
 			continue;
 
-		//if (block.getBlockType() == BlockType::WATER)
-		//	continue;
-
-		//if (block.getBlockType() == BlockType::LIQUID)
-		//	continue;
-
-		//if (block.getBlockType() == BlockType::OBJECT)
-		//	continue;
-
 		std::size_t x = i % m_chunkSize;
 		std::size_t y = (i / m_chunkSize) % m_chunkSize;
 		std::size_t z = i / (m_chunkSize * m_chunkSize);
 
-		//if (x == 0 || m_chunkBlocks[getVectorIndex(x - 1, y, z)].getBlockType() != BlockType::SOLID)
-		//	m_mesh.add(block, BlockFace::RIGHT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
-		//if (x == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x + 1, y, z)].getBlockType() != BlockType::SOLID)
-		//	m_mesh.add(block, BlockFace::LEFT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		if (x == 0 || m_chunkBlocks[getVectorIndex(x - 1, y, z)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::RIGHT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		if (x == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x + 1, y, z)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::LEFT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 
-		//if (y == 0 || m_chunkBlocks[getVectorIndex(x, y - 1, z)].getBlockType() != BlockType::SOLID)
-		//	m_mesh.add(block, BlockFace::BOTTOM, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
-		//if (y == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y + 1, z)].getBlockType() != BlockType::SOLID)
-		//	m_mesh.add(block, BlockFace::TOP, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		if (y == 0 || m_chunkBlocks[getVectorIndex(x, y - 1, z)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::BOTTOM, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		if (y == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y + 1, z)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::TOP, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 
-		//if (z == 0 || m_chunkBlocks[getVectorIndex(x, y, z - 1)].getBlockType() != BlockType::SOLID)
-		//	m_mesh.add(block, BlockFace::FRONT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
-		//if (z == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y, z + 1)].getBlockType() != BlockType::SOLID)
-		//	m_mesh.add(block, BlockFace::BACK, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		if (z == 0 || m_chunkBlocks[getVectorIndex(x, y, z - 1)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::FRONT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		if (z == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y, z + 1)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::BACK, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 
-		for (int j = 0; j < 6; ++j)
-			m_mesh.add(block, static_cast<BlockFace>(j), m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 	}
 
 	if (!(m_chunkFlags & BLOCKS_NEED_BUFFERING))
@@ -346,6 +327,8 @@ void Chunk::buildMesh()
 
 	if (!(m_chunkFlags & BLOCKS_NEED_TEXTURING))
 		m_chunkFlags |= BLOCKS_NEED_TEXTURING;
+
+	m_chunkFlags &= ~NEEDS_MESHING;
 
 	m_blockRenderer.resetMesh();
 	m_blockRenderer.updateMesh(m_mesh.getBlockMesh());
@@ -485,6 +468,18 @@ void Chunk::renderBlocks(int* counter)
 	}
 
 	m_blockRenderer.render();
+
+	if (m_chunkFlags & NEEDS_MESHING)
+	{
+		if (*counter > 0)
+			(*counter)--;
+		else
+			return;
+
+		buildMesh();
+
+		m_chunkFlags &= NEEDS_MESHING;
+	}
 }
 
 void Chunk::renderObjects(int* counter)

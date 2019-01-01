@@ -106,16 +106,16 @@ void Sandbox::run()
 		world->toggleWireframe();
 	});
 
-	int fps_lasttime = SDL_GetTicks(); //the last recorded time.
-	int fps_current; //the current FPS.
-	int fps_frames = 0; //frames passed since the last recorded fps.
-	
 	gfx::Renderer2D renderer(
 		Matrix4x4::ortho(0.f, ww, 0.f, wh, 1.f, -1.f),
 		"assets/shaders/ui.vert",
 		"assets/shaders/ui.frag"
 	);
 
+	int fps_lasttime = SDL_GetTicks(); //the last recorded time.
+	int fps_current; //the current FPS.
+	int fps_frames = 0; //frames passed since the last recorded fps.
+	
 	world->determineGeneration(m_player->getPosition());
 	float last = SDL_GetTicks();
 	while (m_appData->window->isRunning())
@@ -147,7 +147,7 @@ void Sandbox::run()
 		shaderProgram->setUniform1<int>("u_TexArray", 10);
 
 		world->render(10);
-		
+
 		renderer.begin();
 		renderer.fillCircle({ ww / 2.f, wh / 2.f }, 3, 7, { 1.f, 1.f, 1.f });
 		renderer.end();

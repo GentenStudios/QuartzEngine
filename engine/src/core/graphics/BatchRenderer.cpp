@@ -8,8 +8,6 @@ using namespace phx;
 
 void BatchRenderer::create(int numVertices, int numIndices, gl::ShaderPipeline& shader)
 {
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	shader.use();
 
 	shader.bindAttributeLocation("a_position", 0);
@@ -87,6 +85,9 @@ void BatchRenderer::closeBuffer()
 
 void BatchRenderer::draw()
 {
+	GLCheck(glEnable(GL_BLEND));
+	GLCheck(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
 	m_vao->bind();
 	m_ibo->bind();
 
@@ -95,4 +96,6 @@ void BatchRenderer::draw()
 	
 	m_ibo->unbind();
 	m_vao->unbind();
+
+	GLCheck(glDisable(GL_BLEND));
 }
