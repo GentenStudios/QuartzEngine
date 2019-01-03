@@ -233,9 +233,12 @@ void ChunkRenderer::bufferData()
 		m_vbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
 
 	std::vector<ChunkVert3D> temp;
-	for (std::size_t i = 0; i < m_mesh.vertices.size(); ++i)
+
+	// Not doing vector::size() - 1, i >= 0; as std::size_t is a variant of an unsigned int, which does not go below 0, making it an infinitely running loop. 
+	// (i mean, shit would DEFINITELY hit the ceiling first, but who even fucking cares)
+	for (std::size_t i = m_mesh.vertices.size(); i > 0; i--)
 	{
-		temp.emplace_back(m_mesh.vertices[i], m_mesh.uvs[i], m_mesh.texLayers[i]);
+		temp.emplace_back(m_mesh.vertices[i - 1], m_mesh.uvs[i - 1], m_mesh.texLayers[i - 1]);
 	}
 
 	m_vbo->bind();
