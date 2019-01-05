@@ -1,18 +1,21 @@
 /**
- * @file MahthsUtils.hpp
+ * @file MathUtils.hpp
  * @brief MathUtils struct for useful things in life to do with maths :)
  * 
  */
 
 #pragma once
 
-namespace phx {
+namespace phx
+{
+	
 	/**
 	 * @brief Math utility functions.
 	 */
-	struct MathUtils {
-
-		static constexpr float PI = 3.14159265359f;	///< The value of PI as a float to 11 decimal places
+	struct MathUtils
+	{
+		/// @brief The value of PI as a float to 11 decimal places
+		static constexpr float PI = 3.14159265359f;
 
 		/**
 		 * @brief Converts degrees to radians.
@@ -27,7 +30,7 @@ namespace phx {
 
 		/**
 		 * @brief Converts radians to degrees.
-		 * @param degrees The value in radians to convert to degrees
+		 * @param radians The value in radians to convert to degrees
 		 * @return The value of the specified radians in degrees
 		 */
 		template <typename T>
@@ -49,4 +52,5 @@ namespace phx {
 			return value < min ? min : value > max ? max : value;
 		}
 	};
+
 }
