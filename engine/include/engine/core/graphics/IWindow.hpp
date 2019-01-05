@@ -1,12 +1,10 @@
 /**
  * @file IWindow.hpp
- * @brief File for Window API selecitons, CursorStates, EventTypes, and the Window creation interface.  
+ * @brief File for Window API selections, CursorStates, EventTypes, and the Window creation interface.  
  * 
  */
 
 #pragma once
-
-#include <engine/core/Core.hpp>
 
 #include <engine/core/math/Vector2.hpp>
 
@@ -15,9 +13,6 @@
 #include <engine/core/events/Keys.hpp>
 #include <engine/core/events/Mouse.hpp>
 
-#include <cinttypes>
-#include <tuple>
-#include <vector>
 #include <functional>
 
 namespace phx
@@ -45,16 +40,18 @@ namespace phx
 		{
 		public:
 			/**
-			 * @brief Creates an object to create a window dependant on the Windowing library specified.
+			 * @brief Creates an object to create a window dependent on the Windowing library specified.
 			 * 
 			 * @param title 	The title of the window, can be changed afterwards.
 			 * @param width 	The width of the window, can be changed afterwards
 			 * @param height 	The height of the window, can be changed afterwards.
 			 * @param version 	The OpenGL version that the window should create a context for. 
-			 * @param profile 	The OpenGL profile, such as the Compatability profile, or Core profile.
+			 * @param profile 	The OpenGL profile, such as the Compatibility profile, or Core profile.
 			 * @return IWindow* The respective object for the class depicted by the WindowingAPI parameter.
 			 */
 			static IWindow* createWindow(const std::string& title, int width, int height, GLVersion version, GLProfile profile);
+
+			virtual ~IWindow() = default;
 
 			/**
 			 * @brief Polls events that occur during the game loop.
@@ -76,7 +73,7 @@ namespace phx
 			/**
 			 * @brief Checks whether the window is still running, and thus (loosely) whether the game should keep running.
 			 * 
-			 * @return False when the window is needs to be quitted, which should "theoretically" quit the game.
+			 * @return False when the window is needs to be exited, which should "theoretically" quit the game.
 			 */
 			virtual bool isRunning() = 0;
 
@@ -94,10 +91,11 @@ namespace phx
 			 */
 			virtual void getSize(int& width, int& height) = 0;
 
+
 			/**
-			 * @brief Sets the size of the window
-			 * 
-			 * @param resolution The new size that the window needs to be set to.
+			 * @brief Set the size of the window.
+			 * @param width The new width of the window.
+			 * @param height The new height of the window.
 			 */
 			virtual void setSize(int width, int height) = 0;
 
@@ -109,7 +107,7 @@ namespace phx
 			virtual void setTitle(const char* title) = 0;
 
 			/**
-			 * @brief Makes the window fullscreen, or un-fullscreens it.
+			 * @brief Makes the window fullscreen, or exits fullscreen.
 			 * 
 			 * @param enabled True or False for whether the window should be made fullscreen.
 			 */
@@ -125,7 +123,7 @@ namespace phx
 			/**
 			 * @brief Sets the Cursor State of the Window.
 			 * 
-			 * @param cursorState A value from the CursorState Enumurator, the functionality described there is what the window will end up doing.
+			 * @param cursorState A value from the CursorState Enumerator, the functionality described there is what the window will end up doing.
 			 */
 			virtual void setCursorState(CursorState cursorState) = 0;
 
@@ -155,12 +153,13 @@ namespace phx
 			/**
 			 * @brief Adds a Window Event callback to the window. Callback is called - whenever the window is resized, focused, or unfocused.
 			 *
+			 * @param eventType The type of event that happens.
 			 * @param callback The actual callback, in the form of a Lambda.
 			 */
 			virtual void addWindowEventCallback(events::WindowEventType eventType, std::function<void()> callback) = 0;
 
 			/*
-			 * @brief Adds a mouse action event to the window, a mouse action is a button being clicke or released. Callback is called when the mouse is pressed or released.
+			 * @brief Adds a mouse action event to the window, a mouse action is a button being clicked or released. Callback is called when the mouse is pressed or released.
 			 *
 			 * @param callback The function to call when a mouse button is pressed or released.
 			 */
@@ -177,14 +176,14 @@ namespace phx
 			/**
 			 * @brief Gets the position of the mouse.
 			 * 
-			 * @return A Templated Vector containing ints instead of floats, arranged in the form of MouseX, MouseY. 
+			 * @return A TVector containing integers instead of floats, arranged in the form of MouseX, MouseY. 
 			 */
 			virtual TVector2<int> getMousePosition() = 0;
 			
 			/**
 			 * @brief Sets the position of the mouse
 			 * 
-			 * @param newPos A Templated Vector, containing ints instead of floats, arranged in the form of newMouseX, newMouseY.
+			 * @param newPos A TVector, containing integers instead of floats, arranged in the form of newMouseX, newMouseY.
 			 */
 			virtual void setMousePosition(TVector2<int> newPos) = 0;
 		};

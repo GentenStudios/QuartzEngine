@@ -1,4 +1,7 @@
 #include <engine/core/platform/SDL/SDLWindow.hpp>
+#include <engine/core/graphics/gl/GLDebug.hpp>
+
+#include <GL/glew.h>
 
 using namespace phx::sdl;
 using namespace phx;
@@ -7,8 +10,8 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.GLmajor);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.GLminor);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, version.glMajor);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, version.glMinor);
 	
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -40,7 +43,7 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 	if (m_window == nullptr)
 	{
 		SDL_Quit();
-		LERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.GLmajor) + "." + std::to_string(version.GLminor));
+		LERROR("Couldn't create window, need OpenGL >= " + std::to_string(version.glMajor) + "." + std::to_string(version.glMinor));
 		exit(EXIT_FAILURE);
 	}
 
@@ -77,6 +80,14 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 	GLCheck(glEnable(GL_MULTISAMPLE));
 
 	m_running = true;
+}
+
+SDLWindow::~SDLWindow()
+{
+	SDL_GL_DeleteContext(m_context);
+	SDL_DestroyWindow(m_window);
+
+	SDL_Quit();
 }
 
 void SDLWindow::pollEvents()

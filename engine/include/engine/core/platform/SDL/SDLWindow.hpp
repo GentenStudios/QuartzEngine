@@ -1,16 +1,12 @@
 #pragma once
 
-#include <engine/core/Core.hpp>
-
-#include <engine/core/math/Vector2.hpp>
-
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
+#include <engine/core/math/Vector2.hpp>
+
 #include <engine/core/graphics/gl/Context.hpp>
 #include <engine/core/graphics/IWindow.hpp>
-#include <engine/core/graphics/gl/GLDebug.hpp>
-#include <GL/glew.h>
 
 #include <engine/core/events/Keys.hpp>
 #include <engine/core/events/Mouse.hpp>
@@ -38,6 +34,7 @@ namespace phx
 			 * @param profile 	Refer to IWindow documentation
 			 */
 			SDLWindow(const std::string& title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile);
+			~SDLWindow();
 
 			virtual void pollEvents();
 			virtual void swapBuffers();
@@ -104,7 +101,7 @@ namespace phx
 				std::function<void()> callback;
 			};
 
-			/// @brief Vector for storing KeyEvents, is cycled through when a key event is recieved.
+			/// @brief Vector for storing KeyEvents, is cycled through when a key event is received.
 			std::vector<KeyEvent_t> m_keyEvents;
 
 			/// @brief Vector for storing MouseMoveEvents, is cycled through when the mouse is moved.
