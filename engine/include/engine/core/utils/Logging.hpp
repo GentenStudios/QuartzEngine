@@ -62,7 +62,7 @@ namespace phx
 
 		/**
 		 * @brief Set the text color for any preceding text (stdout). The color will remain as set here until it is changed by another `setTextColor` call.
-		 * @param The color to set any preceding text to.
+		 * @param color The color to set any preceding text to.
 		 */
 		static void setTextColor(const Color& color);
 	private:
@@ -104,9 +104,9 @@ namespace phx
 		/**
 		 * @brief Initialise the Logger, open file and set the initial logging verbosity level.
 		 * @param logFile The file in which log messages should be outputted to, as well as the console.
-		 * @param vbLevel The initial logging verbosity, dictates what should and shouldn't be outputted, by referring to LogVerbosity.
+		 * @param verbosityLevel The initial logging verbosity, dictates what should and shouldn't be outputted, by referring to LogVerbosity.
 		 */
-		void init(const std::string& logFile, LogVerbosity vbLevel);
+		void init(const std::string& logFile, LogVerbosity verbosityLevel);
 
 		/**
 		 * @brief Destroy the logger, by closing the log file.
@@ -118,8 +118,9 @@ namespace phx
 		 * @param verbosity     The verbosity of the message, dictates whether the message is outputted or not.
 		 * @param errorFile     The file from which the error is occurring
 		 * @param lineNumber    The line from which the error is occurring
+		 * @param subSectors	Extra [sections] that a message may need for better specialization.
 		 * @param message       The actual message to be logged.
-		 * @param Args...		A series of 0 or more different types to be added to the end of `message`
+		 * @param args			A series of 0 or more different types to be added to the end of `message`
 		 */
 		template <typename... Args>
 		void log(LogVerbosity verbosity, const std::string& errorFile, int lineNumber, const std::string& subSectors, const std::string& message, const Args&... args)
@@ -140,8 +141,8 @@ namespace phx
 		 * @param verbosity     The verbosity of the message, dictates whether the message is outputted or not.
 		 */
 		void logMessage(std::string errorFile, int lineNumber, std::string subSectors, std::string message, LogVerbosity verbosity);
-		
-		Logger() {}
+
+		Logger() {};
 		~Logger() {}
 
 		/// @brief String for the file to log to.

@@ -9,7 +9,11 @@ namespace phx
 
 	struct ApplicationRequirements
 	{
-		ApplicationRequirements() {}
+		ApplicationRequirements(): 
+			glProfile(gfx::GLProfile::CORE), 
+			windowWidth(0), windowHeight(0), 
+			logVerbosity(LogVerbosity::INFO)
+		{}
 
 		phx::gfx::GLProfile glProfile;
 		phx::gfx::GLVersion glVersion;
@@ -30,8 +34,8 @@ namespace phx
 	class Application
 	{
 	public:
-		Application() {};
-		virtual ~Application() {};
+		Application() = default;
+		virtual ~Application() = default;
 
 		virtual const ApplicationRequirements* getRequirements() = 0;
 		virtual void setAppData(ApplicationData* appData) = 0;
