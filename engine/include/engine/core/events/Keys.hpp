@@ -5,7 +5,6 @@
 
 #pragma once
 
-#include <engine/core/Core.hpp>
 #include <SDL.h>
 
 namespace phx {

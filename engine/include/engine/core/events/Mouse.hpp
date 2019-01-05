@@ -1,14 +1,20 @@
 #pragma once
 
-namespace phx { namespace events
+namespace phx
 {
-	enum class MouseAction
+	namespace events
 	{
-		UP, DOWN
-	};
+		enum class MouseAction
+		{
+			UP, 
+			DOWN
+		};
 
-	enum class MouseButton
-	{
-		LEFT, RIGHT, MIDDLE
-	};
-}}
+		enum class MouseButton
+		{
+			LEFT, 
+			RIGHT, 
+			MIDDLE
+		};
+	}
+}
