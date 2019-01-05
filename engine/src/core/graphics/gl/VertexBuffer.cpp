@@ -12,7 +12,7 @@ VertexBuffer::~VertexBuffer()
 	GLCheck(glDeleteBuffers(1, &m_bufferID));
 }
 
-void VertexBuffer::bind()
+void VertexBuffer::bind() const
 {
 	GLCheck(glBindBuffer(static_cast<GLenum>(m_target), m_bufferID));
 }
@@ -43,4 +43,9 @@ void VertexBuffer::unmapPointer()
 	bind();
 
 	GLCheck(glUnmapBuffer(static_cast<GLenum>(m_target)));
+}
+
+int VertexBuffer::getSize() const
+{
+	return m_size;
 }

@@ -1,9 +1,10 @@
 #include <engine/core/graphics/gl/TextureArray.hpp>
 
+#include <GL/glew.h>
+#include <engine/core/graphics/gl/GLDebug.hpp>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-
-#include <algorithm>
 
 using namespace phx::gfx::gl;
 
@@ -20,17 +21,24 @@ TextureArray::~TextureArray()
 	GLCheck(glDeleteTextures(1, &m_textureID));
 }
 
-void TextureArray::bind(int index)
+void TextureArray::bind(int index) const
 {
 	if (index != -1)
+	{
 		GLCheck(glActiveTexture(GL_TEXTURE0 + index));
+	}
 
 	GLCheck(glBindTexture(GL_TEXTURE_2D_ARRAY, m_textureID));
 }
 
-void TextureArray::unbind()
+void TextureArray::unbind() const
 {
 	GLCheck(glBindTexture(GL_TEXTURE_2D_ARRAY, 0));
+}
+
+const TexCache& TextureArray::getTextureList() const
+{
+	return m_texNames;
 }
 
 int TextureArray::getTexLayer(const std::string& path)
