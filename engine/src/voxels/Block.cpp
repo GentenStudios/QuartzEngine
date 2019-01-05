@@ -42,27 +42,21 @@ void RegistryBlock::setBreakCallback(const BlockCallback& callback) { m_onBreakC
 void RegistryBlock::setInteractLeftCallback(const InteractionCallback& callback) { m_interactLeftCallback = callback; }
 void RegistryBlock::setInteractRightCallback(const InteractionCallback& callback) { m_interactRightCallback = callback; }
 
-BlockInstance::BlockInstance()
+BlockInstance::BlockInstance() :
+	m_blockID("core:unknown")
 {
-	m_blockID = "core:unknown";
-
 	auto it = BlockLibrary::get()->requestBlock(m_blockID);
 	m_hitpoints = it.getInitialHP();
-	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();
-	m_blockTextures = it.getBlockTextures();
-
 }
 
-BlockInstance::BlockInstance(const std::string& blockID)
+BlockInstance::BlockInstance(const std::string& blockID) :
+	m_blockID(blockID)
 {
-	m_blockID = blockID;
-
 	auto it = BlockLibrary::get()->requestBlock(blockID);
 	m_hitpoints = it.getInitialHP();
-	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();
-	m_blockTextures = it.getBlockTextures();
+	m_blockName = it.getBlockName();
 }
 
 const std::string& BlockInstance::getBlockName() const { return m_blockName; }
@@ -74,8 +68,7 @@ void BlockInstance::setHitpoints(unsigned int hitpoints) { m_hitpoints = hitpoin
 const std::string& BlockInstance::getBlockID() const { return m_blockID; }
 BlockType BlockInstance::getBlockType() const { return m_blockType; }
 
-const std::vector<std::string>& BlockInstance::getBlockTextures() const { return m_blockTextures; }
-void BlockInstance::setBlockTextures(const std::vector<std::string>& newTextures) { m_blockTextures = newTextures; }
+const std::vector<std::string>& BlockInstance::getBlockTextures() const { return BlockLibrary::get()->requestBlock(m_blockID).getBlockTextures(); }
 
 BlockLibrary* BlockLibrary::get()
 {
@@ -102,7 +95,7 @@ void BlockLibrary::registerBlock(const RegistryBlock& block)
 	m_registeredBlocks[blockID] = block;
 }
 
-RegistryBlock BlockLibrary::requestBlock(const std::string& blockID) const
+const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) const
 {
 	auto it = m_registeredBlocks.find(blockID);
 

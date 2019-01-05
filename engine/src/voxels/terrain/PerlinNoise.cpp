@@ -63,7 +63,7 @@ void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, phx::Vecto
 			{
 				for (int z = 0; z < chunkSize; ++z)
 				{
-					blockArray[getVectorIndex(x, y, z)] = BlockInstance("core:dirt");
+					blockArray[getVectorIndex(x, y, z)] = BlockInstance("core:air");
 				}
 				continue;
 			}

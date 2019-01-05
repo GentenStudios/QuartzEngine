@@ -221,7 +221,7 @@ gfx::gl::TextureArray* ChunkRenderer::getTextureArray()
 
 void ChunkRenderer::bufferData()
 {
-	if (m_mesh.triangleCount() == 0)
+	if (m_mesh.vertices.empty())
 		return;
 
 	if (m_vao == nullptr)
@@ -257,7 +257,7 @@ void ChunkRenderer::bufferData()
 
 void ChunkRenderer::render()
 {
-	if (m_mesh.triangleCount() == 0)
+	if (m_mesh.vertices.empty())
 		return;
 
 	m_textureArray->bind(10);
@@ -290,7 +290,9 @@ void Chunk::populateData(unsigned int seed)
 	terrainGenerator->generateFor(m_chunkBlocks, m_chunkPos, m_chunkSize);
 	delete terrainGenerator;
 
-	buildMesh();
+	//buildMesh();
+	if (!(m_chunkFlags & NEEDS_MESHING))
+		m_chunkFlags |= NEEDS_MESHING;
 }
 
 void Chunk::buildMesh()
@@ -454,7 +456,9 @@ void Chunk::renderBlocks(int* counter)
 		else
 			return;
 
+		LDEBUG("BUFFERING A CHUNK!");
 		m_blockRenderer.bufferData();
+
 		m_chunkFlags &= ~BLOCKS_NEED_BUFFERING;
 	}
 
@@ -465,6 +469,7 @@ void Chunk::renderBlocks(int* counter)
 		else
 			return;
 
+		LDEBUG("TEXTURING A CHUNK!");
 		m_blockRenderer.getTextureArray()->resolveReservations();
 
 		m_chunkFlags &= ~BLOCKS_NEED_TEXTURING;
@@ -479,9 +484,10 @@ void Chunk::renderBlocks(int* counter)
 		else
 			return;
 
+		LDEBUG("MESHING A CHUNK!");
 		buildMesh();
 
-		m_chunkFlags &= NEEDS_MESHING;
+		m_chunkFlags &= ~NEEDS_MESHING;
 	}
 }
 

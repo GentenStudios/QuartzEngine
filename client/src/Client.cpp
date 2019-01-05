@@ -39,23 +39,23 @@ void Sandbox::run()
 	
 	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
 	std::vector<std::string> texForGrass;
-	texForGrass.push_back("assets/textures/grass_side.png");
-	texForGrass.push_back("assets/textures/grass_side.png");
-	texForGrass.push_back("assets/textures/grass_side.png");
-	texForGrass.push_back("assets/textures/grass_side.png");
-	texForGrass.push_back("assets/textures/dirt.png");
-	texForGrass.push_back("assets/textures/grass_top.png");
+	texForGrass.emplace_back("assets/textures/grass_side.png");
+	texForGrass.emplace_back("assets/textures/grass_side.png");
+	texForGrass.emplace_back("assets/textures/grass_side.png");
+	texForGrass.emplace_back("assets/textures/grass_side.png");
+	texForGrass.emplace_back("assets/textures/dirt.png");
+	texForGrass.emplace_back("assets/textures/grass_top.png");
 	block.setBlockTextures(texForGrass);
 	block.setBreakCallback([]() { LDEBUG("Broken a grass block!"); });
 
 	RegistryBlock blockDirt("core:dirt", "dirt", 100, BlockType::SOLID);
 	std::vector<std::string> texForDirt;
-	texForDirt.push_back("assets/textures/dirt.png");
-	texForDirt.push_back("assets/textures/dirt.png");
-	texForDirt.push_back("assets/textures/dirt.png");
-	texForDirt.push_back("assets/textures/dirt.png");
-	texForDirt.push_back("assets/textures/dirt.png");
-	texForDirt.push_back("assets/textures/dirt.png");
+	texForDirt.emplace_back("assets/textures/dirt.png");
+	texForDirt.emplace_back("assets/textures/dirt.png");
+	texForDirt.emplace_back("assets/textures/dirt.png");
+	texForDirt.emplace_back("assets/textures/dirt.png");
+	texForDirt.emplace_back("assets/textures/dirt.png");
+	texForDirt.emplace_back("assets/textures/dirt.png");
 	blockDirt.setBlockTextures(texForDirt);
 	blockDirt.setBreakCallback([]() { LDEBUG("Broken a dirt block!"); });
 
@@ -94,7 +94,6 @@ void Sandbox::run()
 	{
 		LDEBUG("ENTER!");
 		window->pollEvents();
-		bool isPressed = window->isKeyDown(events::Keys::KEY_LALT);
 		if (window->isKeyDown(events::Keys::KEY_LALT))
 		{
 			fullscreen = !fullscreen;

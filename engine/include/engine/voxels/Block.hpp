@@ -85,12 +85,9 @@ namespace phx
 			BlockType getBlockType() const;
 
 			const std::vector<std::string>& getBlockTextures() const;
-			void setBlockTextures(const std::vector<std::string>& newTextures);
 
 		private:
 			unsigned int m_hitpoints;
-
-			std::vector<std::string> m_blockTextures;
 
 			std::string m_blockID;
 			std::string m_blockName;
@@ -106,11 +103,11 @@ namespace phx
 
 			void registerBlock(const RegistryBlock& block);
 			
-			RegistryBlock requestBlock(const std::string& blockID) const;
+			const RegistryBlock& requestBlock(const std::string& blockID) const;
 
 		private:
-			BlockLibrary() {}
-			~BlockLibrary() {}
+			BlockLibrary() = default;
+			~BlockLibrary() = default;
 
 			std::unordered_map<std::string, RegistryBlock> m_registeredBlocks;
 		};
