@@ -1,6 +1,8 @@
 #include <engine/core/graphics/Renderer2D.hpp>
 #include <engine/core/utils/IO.hpp>
 
+#include <engine/core/math/MathUtils.hpp>
+
 #include <assert.h>
 
 using namespace phx::gfx;
