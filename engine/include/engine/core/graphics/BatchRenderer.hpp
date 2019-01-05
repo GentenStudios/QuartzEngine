@@ -10,6 +10,7 @@ namespace phx
 {
 	namespace gfx
 	{
+
 		/**
 		 * @brief Represents a single vertex in 3D space.
 		 */
@@ -34,29 +35,6 @@ namespace phx
 		 */
 		class BatchRenderer
 		{
-		private:
-			/// @brief The VAO for this renderer.
-			gl::VertexArray* m_vao;
-
-			/// @brief The VBO for this renderer. The VBO contains all packed data (e.g. position, color etc..).
-			gl::VertexBuffer* m_vbo;
-
-			/// @brief The element buffer object for this renderer.
-			gl::VertexBuffer* m_ibo;
-
-			/// @brief Points to the valid memory location of the vertex buffer data, ONLY IF it is accessed and the buffer is open (e.g. isReadyForDrawing() returns true)
-			Vertex3D* m_vertexBuffer;
-
-			/// @brief Points to the valid memory location of the element buffer data, ONLY IF it is accessed and the buffer is open (e.g. isReadyForDrawing() returns true)
-			unsigned* m_indexBuffer;
-
-			/// @brief The number of indices that have been added to this batch.
-			size_t m_indexCount;
-
-			/// @brief Have the VBO and IBO been mapped to `m_vertexBuffer` and `m_indexBuffer`? If so the buffer is open. (set to true in openBuffer() and set to false in closeBuffer())
-			bool m_bufferIsOpen;
-
-
 		public:
 			/**
 			 * @brief Initalize all CPU and GPU resources for this batch renderer - once this has been called, all other methods are safe to call.
@@ -109,7 +87,30 @@ namespace phx
 			 *
 			 * @return Whether the current batch can be modified.
 			 */
-			bool isReadyForDrawing() const { return m_bufferIsOpen; }
+			bool isReadyForDrawing() const;
+
+		private:
+			/// @brief The VAO for this renderer.
+			gl::VertexArray* m_vao = nullptr;
+
+			/// @brief The VBO for this renderer. The VBO contains all packed data (e.g. position, color etc..).
+			gl::VertexBuffer* m_vbo = nullptr;
+
+			/// @brief The element buffer object for this renderer.
+			gl::VertexBuffer* m_ibo = nullptr;
+
+			/// @brief Points to the valid memory location of the vertex buffer data, ONLY IF it is accessed and the buffer is open (e.g. isReadyForDrawing() returns true)
+			Vertex3D* m_vertexBuffer = nullptr;
+
+			/// @brief Points to the valid memory location of the element buffer data, ONLY IF it is accessed and the buffer is open (e.g. isReadyForDrawing() returns true)
+			unsigned int* m_indexBuffer = nullptr;
+
+			/// @brief The number of indices that have been added to this batch.
+			std::size_t m_indexCount = 0;
+
+			/// @brief Have the VBO and IBO been mapped to `m_vertexBuffer` and `m_indexBuffer`? If so the buffer is open. (set to true in openBuffer() and set to false in closeBuffer())
+			bool m_bufferIsOpen;
 		};
+
 	}
 }

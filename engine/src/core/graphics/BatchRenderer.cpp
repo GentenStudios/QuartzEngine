@@ -55,6 +55,11 @@ void BatchRenderer::addIndex(unsigned index)
 	m_indexCount += 1;
 }
 
+bool BatchRenderer::isReadyForDrawing() const
+{
+	return m_bufferIsOpen;
+}
+
 void BatchRenderer::destroy()
 {
 	delete m_vao;
