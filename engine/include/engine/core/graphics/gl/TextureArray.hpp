@@ -1,11 +1,5 @@
 #pragma once
 
-#include <engine/core/Core.hpp>
-
-#include <engine/core/graphics/gl/GLEnums.hpp>
-#include <engine/core/graphics/gl/GLDebug.hpp>
-#include <GL/glew.h>
-
 #include <unordered_map>
 
 namespace phx
@@ -61,21 +55,21 @@ namespace phx
 				 * 
 				 * @param index The Texture Unit to bind to, if not selected, the texture unit will either be 0, or bound to whatever texture unit was last selected.
 				 */
-				void bind(int index = -1);
+				void bind(int index = -1) const;
 
 				/**
 				 * @brief What do you think this does, you numpty.
 				 * @details if you didn't figure it out, this unbinds the texture from the texture unit. well.... it just binds "0" to that texture, but shut up.
 				 * 
 				 */
-				void unbind();
+				void unbind() const;
 
 				/**
 				 * @brief Get the texture list: remember, it's an unordered map? well, you better remember now, cuz i won't
 				 * 
 				 * @return const TexCache& 
 				 */
-				const TexCache& getTextureList() { return m_texNames; }
+				const TexCache& getTextureList() const;
 
 				/**
 				 * @brief Get the texture layer a particular texture is using.
