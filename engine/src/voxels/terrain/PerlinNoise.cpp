@@ -21,17 +21,19 @@ static int s_permutation[] = {
 	50, 45, 127, 4, 150, 254, 138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215,
 	61, 156, 180 };
 
-PerlinNoise::PerlinNoise()
+PerlinNoise::PerlinNoise() :
+	m_chunkSize(16)
 {
-	for (int i = 0; i < 256; ++i)
+	for (int i : s_permutation)
 	{
-		m_p.push_back(s_permutation[i]);
+		m_p.push_back(i);
 	}
 
 	m_p.insert(m_p.end(), m_p.begin(), m_p.end());
 }
 
-PerlinNoise::PerlinNoise(unsigned int seed)
+PerlinNoise::PerlinNoise(unsigned int seed) :
+	m_chunkSize(16)
 {
 	m_p.resize(256);
 
@@ -46,13 +48,13 @@ void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, phx::Vecto
 {
 	m_chunkSize = chunkSize;
 
-	for (size_t x = 0; x < chunkSize; ++x)
+	for (int x = 0; x < m_chunkSize; ++x)
 	{
-		for (size_t y = 0; y < chunkSize; ++y)
+		for (int y = 0; y < m_chunkSize; ++y)
 		{
 			if (chunkPos.y + y >= 16)
 			{
-				for (int z = 0; z < chunkSize; ++z)
+				for (int z = 0; z < m_chunkSize; ++z)
 				{
 					blockArray[getVectorIndex(x, y, z)] = BlockInstance("core:air");
 				}
@@ -61,14 +63,14 @@ void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, phx::Vecto
 
 			if (chunkPos.y + y < 0)
 			{
-				for (int z = 0; z < chunkSize; ++z)
+				for (int z = 0; z < m_chunkSize; ++z)
 				{
 					blockArray[getVectorIndex(x, y, z)] = BlockInstance("core:air");
 				}
 				continue;
 			}
 
-			for (size_t z = 0; z < chunkSize; ++z)
+			for (int z = 0; z < m_chunkSize; ++z)
 			{
 				phx::Vector3 temp = { 
 					((static_cast<float>(x) + chunkPos.x) * 2) / 64.f,
@@ -91,12 +93,12 @@ void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, phx::Vecto
 	}
 }
 
-float PerlinNoise::fade(float t)
+float PerlinNoise::fade(float t) const
 {
 	return t * t * t * (t * (t * 6 - 15) + 10);
 }
 
-float PerlinNoise::grad(int hash, float x, float y, float z)
+float PerlinNoise::grad(int hash, float x, float y, float z) const
 {
 	int h = hash & 15;
 
@@ -105,12 +107,12 @@ float PerlinNoise::grad(int hash, float x, float y, float z)
 	return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
 }
 
-float PerlinNoise::lerp(float t, float a, float b)
+float PerlinNoise::lerp(float t, float a, float b) const
 {
 	return a + t * (b - a);
 }
 
-float PerlinNoise::at(phx::Vector3 pos)
+float PerlinNoise::at(phx::Vector3 pos) const
 {
 	int X = static_cast<int>(std::floor(pos.x)) & 255;
 	int Y = static_cast<int>(std::floor(pos.y)) & 255;
@@ -141,7 +143,7 @@ float PerlinNoise::at(phx::Vector3 pos)
 	return (res + 1.f) / 2.f;
 }
 
-float PerlinNoise::atOctave(phx::Vector3 pos, int octaves, float persitance)
+float PerlinNoise::atOctave(phx::Vector3 pos, int octaves, float persitance) const
 {
 	float tot = 0;
 	float f = 1;

@@ -1,5 +1,8 @@
 #include <engine/voxels/Chunk.hpp>
 
+#include <engine/core/graphics/gl/VertexAttrib.hpp>
+#include <engine/voxels/terrain/PerlinNoise.hpp>
+
 using namespace phx::voxels;
 using namespace phx;
 

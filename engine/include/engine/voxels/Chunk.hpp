@@ -1,16 +1,14 @@
 #pragma once
 
-#include <engine/core/Core.hpp>
+#include <vector>
 
 #include <engine/core/math/Vector2.hpp>
 #include <engine/core/math/Vector3.hpp>
 
 #include <engine/voxels/Block.hpp>
-#include <engine/voxels/terrain/PerlinNoise.hpp>
 
 #include <engine/core/graphics/gl/VertexBuffer.hpp>
 #include <engine/core/graphics/gl/VertexArray.hpp>
-#include <engine/core/graphics/gl/VertexAttrib.hpp>
 #include <engine/core/graphics/gl/TextureArray.hpp>
 
 namespace phx
@@ -101,8 +99,8 @@ namespace phx
 		{
 		public:
 			Chunk() = delete;
-			Chunk(const Chunk&) = default;
-			Chunk(Chunk&& o) = default;
+			Chunk(const Chunk& other) = default;
+			Chunk(Chunk&& other) = default;
 			Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID);
 
 			~Chunk() = default;

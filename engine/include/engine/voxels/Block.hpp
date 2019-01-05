@@ -71,8 +71,6 @@ namespace phx
 		public:
 			BlockInstance();
 			BlockInstance(const std::string& blockID);
-			BlockInstance(const BlockInstance& other) = default;
-			BlockInstance(BlockInstance&& other) = default;
 
 			~BlockInstance() = default;
 

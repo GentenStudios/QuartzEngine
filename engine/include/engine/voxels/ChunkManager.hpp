@@ -25,19 +25,19 @@ namespace phx
 			~ChunkManager() = default;
 
 			void toggleWireframe();
-			bool isWireframe();;
+			bool isWireframe() const;;
 
 			void determineGeneration(phx::Vector3 cameraPosition);
 			void testGeneration(int test);
 			void unloadRedundant();
 
 			void setBlockAt(phx::Vector3 position, const BlockInstance& block);
-			BlockInstance getBlockAt(phx::Vector3 position);
+			BlockInstance getBlockAt(phx::Vector3 position) const;
 
 			void breakBlockAt(phx::Vector3 position, const BlockInstance& block);
 			void placeBlockAt(phx::Vector3 position, const BlockInstance& block);
 						
-			void render(int bufferCounter);
+			void render(int bufferCounter) const;
 
 		private:
 			unsigned int m_seed;

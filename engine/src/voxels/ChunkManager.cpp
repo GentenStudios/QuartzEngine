@@ -17,7 +17,7 @@ void ChunkManager::toggleWireframe()
 	glPolygonMode(GL_FRONT_AND_BACK, m_wireframe ? GL_LINE : GL_FILL);
 }
 
-bool ChunkManager::isWireframe()
+bool ChunkManager::isWireframe() const
 {
 	return m_wireframe;
 }
@@ -129,7 +129,7 @@ void ChunkManager::setBlockAt(phx::Vector3 position, const BlockInstance& block)
 	}
 }
 
-BlockInstance ChunkManager::getBlockAt(phx::Vector3 position)
+BlockInstance ChunkManager::getBlockAt(phx::Vector3 position) const
 {
 	int pos_x = static_cast<int>(position.x / 16);
 	int pos_y = static_cast<int>(position.y / 16);
@@ -272,7 +272,7 @@ void ChunkManager::placeBlockAt(phx::Vector3 position, const BlockInstance& bloc
 	}
 }
 
-void ChunkManager::render(int bufferCounter)
+void ChunkManager::render(int bufferCounter) const
 {
 	int count1 = bufferCounter;
 

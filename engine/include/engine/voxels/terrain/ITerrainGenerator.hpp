@@ -1,4 +1,4 @@
-#include <engine/core/Core.hpp>
+#pragma once
 
 #include <engine/core/math/Vector3.hpp>
 
