@@ -1,5 +1,6 @@
 #include <engine/core/graphics/Camera.hpp>
-#include <GL/glew.h>
+
+#include <engine/core/math/MathUtils.hpp>
 
 using namespace phx::gfx;
 using namespace phx;
@@ -8,7 +9,8 @@ const float HALF_PI = MathUtils::PI / 2;
 
 static Vector2 lastMousePos = { 0, 0 };
 
-FPSCam::FPSCam(IWindow* window) : m_window(window), enabled(true)
+FPSCam::FPSCam(IWindow* window) :
+	enabled(true), m_window(window)
 {
 	window->setCursorState(CursorState::DISABLED);
 	m_controls.load();
@@ -26,6 +28,11 @@ FPSCam::FPSCam(IWindow* window) : m_window(window), enabled(true)
 		this->setProjection(Matrix4x4::perspective(static_cast<float>(w) / static_cast<float>(h), 45.f, 1000.f, 0.1f));
 		this->m_windowCentre = { w / 2, h / 2 };
 	});
+}
+
+FPSCam::~FPSCam()
+{
+	m_window = nullptr;
 }
 
 void FPSCam::update(float dt)
@@ -105,6 +112,11 @@ Matrix4x4 FPSCam::getProjection()
 void phx::gfx::FPSCam::setProjection(const Matrix4x4 & projection)
 {
 	m_projection = projection;
+}
+
+CameraControls::CameraControls() :
+	m_controlsConfig(nullptr)
+{
 }
 
 void CameraControls::load()
