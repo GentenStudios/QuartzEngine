@@ -8,7 +8,6 @@
 
 #include <string>
 #include <unordered_map>
-#include <SDL.h>
 
 #include <inih/INIReader.h>
 
@@ -29,51 +28,63 @@ namespace phx
 	class ConfigFile
 	{
 	public:
+		/*
+		 * @brief Set's the associated .ini file for this ConfigFile. This filepath should be full (e.g. include the .ini extension)
+		 * @param filepath The filepath of the .ini file (should include .ini extension).
+		 */
+		ConfigFile(const std::string& filepath)
+			: m_filepath(filepath) {}
+		
+		/*
+		 * @brief Default stub constructor. Does nothing.
+		 */
+		ConfigFile() {}
+
 		/**
 		 * @brief Load's a integer value from the config .ini file, using the specfied default value if the value doesn't exist.
 		 * @param section The ini section that the key/value belongs to.
 		 * @param key The integers key (ini key/value pairs are in the format `key=value`
-		 * @param default The integer to be returned if the key/value/section doesn't exist.
+		 * @param defaultReturn The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		int getInteger(const std::string& section, const std::string& key, int defaultReturn);
+		int getInteger(const std::string& section, const std::string& key, int defaultReturn) const;
 
 		/**
 		 * @brief Load's a single character value from the config .ini file, using the specfied default value if the value doesn't exist
 		 * @param section The ini section that the key/value belongs to.
 		 * @param key The integers key (ini key/value pairs are in the format `key=value`
-		 * @param default The integer to be returned if the key/value/section doesn't exist.
+		 * @param defaultReturn The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		char getChar(const std::string& section, const std::string& key, char defaultReturn);
+		char getChar(const std::string& section, const std::string& key, char defaultReturn) const;
 
 		/**
 		 * @brief Load's a boolean value from the config .ini file, using the specfied default value if the value doesn't exist
 		 * @param section The ini section that the key/value belongs to.
 		 * @param key The integers key (ini key/value pairs are in the format `key=value`
-		 * @param default The integer to be returned if the key/value/section doesn't exist.
+		 * @param defaultReturn The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		bool getBool(const std::string& section, const std::string& key, bool defaultReturn);
+		bool getBool(const std::string& section, const std::string& key, bool defaultReturn) const;
 
 		/**
 		 * @brief Load's a 32 bit real value (float) from the config .ini file, using the specfied default value if the value doesn't exist
 		 * @param section The ini section that the key/value belongs to.
 		 * @param key The integers key (ini key/value pairs are in the format `key=value`
-		 * @param default The integer to be returned if the key/value/section doesn't exist.
+		 * @param defaultReturn The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		float getFloat(const std::string& section, const std::string& key, float defaultReturn);
+		float getFloat(const std::string& section, const std::string& key, float defaultReturn) const;
 
 		/**
          * @brief Load's a event::Keys enumumator value from the config .ini file, using the specfied default value if the value doesn't exist.
 		 *        This will parse the key names into a events::Keys value. See https://wiki.libsdl.org/SDL_Keycode for a list of all possible key names
 		 * @param section The ini section that the key/value belongs to.
 		 * @param key The integers key (ini key/value pairs are in the format `key=value`
-		 * @param default The integer to be returned if the key/value/section doesn't exist.
+		 * @param defaultReturn The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		events::Keys getScancode(const std::string& section, const std::string& key, events::Keys defaultReturn);
+		events::Keys getScancode(const std::string& section, const std::string& key, events::Keys defaultReturn) const;
 		
 		/**
 	 	 * @brief Return's if the .ini file for this config file exists on disk. This allows for cleaner handling of the file not existing.
@@ -86,18 +97,6 @@ namespace phx
 		 * @brief Load's the .ini file using the filename that has been set in the constructor. Can be used multiple times (to hot reload config files, for example).
 		 */
 		void reload();
-
-		/*
-		 * @brief Set's the assosiated .ini file for this ConfigFile. This filepath should be full (e.g. include the .ini extension)
-		 * @param filepath The filepath of the .ini file (should include .ini extension).
-		 */
-		ConfigFile(const std::string& filepath)
-			: m_filepath(filepath) {}
-		
-		/*
-		 * @brief Default stub constructor. Does nothing.
-		 */
-		ConfigFile() {}
 
 	private:
 		INIReader   m_inifile;

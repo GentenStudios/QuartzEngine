@@ -1,6 +1,7 @@
 #include <engine/core/utils/Config.hpp>
-
 #include <engine/core/utils/Logging.hpp>
+
+#include <SDL.h>
 
 #include <fstream>
 
@@ -17,7 +18,7 @@ ConfigFile* ConfigManager::registerConfig(const std::string & name)
 	m_configfiles.insert(std::make_pair(name, ConfigFile(name + ".ini")));
 	
 	ConfigFile *configFile = &m_configfiles[name];
-	configFile->reload(); // do inital load
+	configFile->reload(); // do initial load
 
 	return configFile;
 }
@@ -34,28 +35,28 @@ ConfigFile* ConfigManager::getConfigFile(const std::string & name)
 	return &m_configfiles[name];
 }
 
-int ConfigFile::getInteger(const std::string & section, const std::string & key, int defaultReturn)
+int ConfigFile::getInteger(const std::string & section, const std::string & key, int defaultReturn) const
 {
 	return m_inifile.GetInteger(section, key, defaultReturn);
 }
 
-char ConfigFile::getChar(const std::string & section, const std::string & key, char defaultReturn)
+char ConfigFile::getChar(const std::string & section, const std::string & key, char defaultReturn) const
 {
 	// INI has no concept of single characters only strings, so parse the first letter of the value string as the character.
 	return m_inifile.Get(section, key, std::string(defaultReturn, 1))[0];
 }
 
-bool ConfigFile::getBool(const std::string & section, const std::string & key, bool defaultReturn)
+bool ConfigFile::getBool(const std::string & section, const std::string & key, bool defaultReturn) const
 {
 	return m_inifile.GetBoolean(section, key, defaultReturn);
 }
 
-float ConfigFile::getFloat(const std::string & section, const std::string & key, float defaultReturn)
+float ConfigFile::getFloat(const std::string & section, const std::string & key, float defaultReturn) const
 {
 	return static_cast<float>(m_inifile.GetReal(section, key, static_cast<float>(defaultReturn)));
 }
 
-events::Keys ConfigFile::getScancode(const std::string & section, const std::string & key, events::Keys defaultReturn)
+events::Keys ConfigFile::getScancode(const std::string & section, const std::string & key, events::Keys defaultReturn) const
 {
 	// See https://wiki.libsdl.org/SDL_Keycode for a full map of Key Names -> Key Codes -> Scancodes
 
