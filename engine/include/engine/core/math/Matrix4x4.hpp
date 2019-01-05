@@ -7,7 +7,6 @@
 #pragma once
 
 #include <engine/core/math/Vector3.hpp>
-#include <engine/core/math/MathUtils.hpp>
 
 namespace phx {
 
@@ -40,13 +39,31 @@ namespace phx {
 		 */
 		static Matrix4x4 perspective(float aspect, float fov, float far, float near);
 
+		/**
+		 * @brief 
+		 * @param left 
+		 * @param right 
+		 * @param top 
+		 * @param bottom 
+		 * @param far 
+		 * @param near 
+		 * @return 
+		 */
 		static Matrix4x4 ortho(float left, float right, float top, float bottom, float far, float near);
 
+
+		/**
+		 * @brief 
+		 * @param eye 
+		 * @param centre 
+		 * @param up 
+		 * @return 
+		 */
 		static Matrix4x4 lookAt(const Vector3& eye, const Vector3& centre, const Vector3& up);
 	};
 
 	/**
-	 * @brief Multiplys two matrices together. Multiplication is not commutative (therefore left*right != right*left)
+	 * @brief Multiplies two matrices together. Multiplication is not commutative (therefore left*right != right*left)
 	 * @param left Left hand side of matrix multiplication.
 	 * @param right Right hand side of matrix multiplication.
 	 * @return Product of `left` and `right` matrices.
@@ -54,7 +71,7 @@ namespace phx {
 	Matrix4x4 operator*(const Matrix4x4& left, const Matrix4x4& right);
 
 	/**
-	 * @brief Multiplys together a matrix and a scalar value.
+	 * @brief Multiplies together a matrix and a scalar value.
 	 * @param left Left hand side of multiplication.
 	 * @param right Right hand side of multiplication
 	 * @return Product of `left` and `right`
@@ -62,7 +79,7 @@ namespace phx {
 	Matrix4x4 operator*(const Matrix4x4& left, const float& right);
 
 	/**
-	 * @brief Multipys together a matrix and a Vector3 value.
+	 * @brief Multiplies together a matrix and a Vector3 value.
 	 * @param left Left hand side of multiplication.
 	 * @param right Right hand side of multiplication.
 	 * @return Product of `left` and `right`

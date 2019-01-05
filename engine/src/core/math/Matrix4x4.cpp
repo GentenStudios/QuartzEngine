@@ -1,6 +1,6 @@
 #include <engine/core/math/Matrix4x4.hpp>
+#include <engine/core/math/MathUtils.hpp>
 
-#include <cstring>
 #include <cmath>
 
 using namespace phx;
@@ -9,7 +9,7 @@ using namespace phx;
 
 Matrix4x4::Matrix4x4()
 {
-	for (int i = 0; i < 4 * 4; ++i) elements[i] = 0.f;
+	for (float& element : elements) element = 0.f;
 
 	elements[INDEX2D(0, 0)] = 1.f;
 	elements[INDEX2D(1, 1)] = 1.f;
@@ -20,7 +20,7 @@ Matrix4x4::Matrix4x4()
 Matrix4x4 Matrix4x4::perspective(float aspect, float fov, float far, float near)
 {
 	Matrix4x4 mat4;
-	for (int i = 0; i < 16; i++) mat4.elements[i] = 0.f;
+	for (float& element : mat4.elements) element = 0.f;
 
 	float fovr = MathUtils::toRadians(fov);
 
@@ -37,7 +37,7 @@ Matrix4x4 Matrix4x4::perspective(float aspect, float fov, float far, float near)
 Matrix4x4 Matrix4x4::ortho(float left, float right, float top, float bottom, float far, float near)
 {
 	Matrix4x4 out;
-	for (int i = 0; i < 16; i++) out.elements[i] = 0.f;
+	for (float& element : out.elements) element = 0.f;
 
 	out.elements[0] = 2.f / (right - left);
 	out.elements[INDEX2D(1, 1)] = 2.f / (top - bottom);
