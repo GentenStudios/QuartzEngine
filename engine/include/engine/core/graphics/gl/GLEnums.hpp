@@ -1,7 +1,5 @@
 #pragma once
 
-#include <engine/core/Core.hpp>
-
 #include <GL/glew.h>
 
 namespace phx
