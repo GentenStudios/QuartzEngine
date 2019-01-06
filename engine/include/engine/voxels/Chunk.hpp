@@ -53,8 +53,8 @@ namespace phx
 		class ChunkMesh
 		{
 		public:
-			ChunkMesh();
-			~ChunkMesh();
+			ChunkMesh() = default;
+			~ChunkMesh() = default;
 
 			void add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos, Chunk* chunk);
 

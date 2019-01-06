@@ -139,9 +139,6 @@ std::size_t Mesh::triangleCount() const
 	return vertices.size() / 3;
 }
 
-ChunkMesh::ChunkMesh() = default;
-ChunkMesh::~ChunkMesh() = default;
-
 void ChunkMesh::add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos, Chunk* chunk)
 {
 	if (block.getBlockType() == BlockType::SOLID)
