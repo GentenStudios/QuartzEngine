@@ -11,7 +11,7 @@ namespace client
 	{
 	public:
 		Sandbox();
-		~Sandbox();
+		~Sandbox() = default;
 
 		const phx::ApplicationRequirements* getRequirements() { return m_appRequirements; }
 		void setAppData(phx::ApplicationData* appData) { m_appData = appData; }

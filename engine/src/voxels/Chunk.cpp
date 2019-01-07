@@ -106,24 +106,35 @@ static const Vector2 CUBE_UV[] = {
 	Vector2(0.f, -1.f),
 };
 
+const int ACTUAL_CUBE_SIZE = 2;
+const int NUM_FACES_IN_CUBE = 6;
+const int NUM_VERTS_IN_FACE = 6;
+
 struct ChunkVert3D
 {
 	phx::Vector3 verts;
 	phx::Vector2 uvs;
 
-	int tx;
+	int texLayer;
 
-	ChunkVert3D(phx::Vector3 vertices, phx::Vector2 UVs, int texLayer) :
-		verts(vertices), uvs(UVs), tx(texLayer)
+	ChunkVert3D(const phx::Vector3& vertices, const phx::Vector2& UVs, const int textureLayer) :
+		verts(vertices), uvs(UVs), texLayer(textureLayer)
 	{}
 };
 
 void Mesh::reset()
 {
 	vertices.clear();
+	vertices.shrink_to_fit();
+
 	normals.clear();
+	normals.shrink_to_fit();
+
 	uvs.clear();
+	uvs.shrink_to_fit();
+
 	texLayers.clear();
+	uvs.shrink_to_fit();
 }
 
 void Mesh::update(const Mesh& other)
@@ -147,24 +158,26 @@ void ChunkMesh::add(const BlockInstance& block, BlockFace face, phx::Vector3 chu
 		
 		int texLayer = -1;
 
-		if (static_cast<std::size_t>(face) < block.getBlockTextures().size())
+		auto& blockTexList = block.getBlockTextures();
+
+		if (static_cast<std::size_t>(face) < blockTexList.size())
 		{
 			gfx::gl::TextureArray* texArray = renderer.getTextureArray();
-			texArray->reserve(block.getBlockTextures()[static_cast<int>(face)]);
-			texLayer = texArray->getTexLayer(block.getBlockTextures()[static_cast<int>(face)]);
+			texArray->reserve(blockTexList[static_cast<int>(face)]);
+			texLayer = texArray->getTexLayer(blockTexList[static_cast<int>(face)]);
 		}
 
-		for (int i = 0; i < 6; ++i)
+		for (int i = 0; i < NUM_VERTS_IN_FACE; ++i)
 		{
-			phx::Vector3 temp = CUBE_VERTS[(static_cast<int>(face) * 6) + i];
-			temp.x += (blockPos.x * 2) + (chunkPos.x * 2); // Multiply by 2, as that is the size of the actual cube edges, indicated by the cube vertices.
-			temp.y += (blockPos.y * 2) + (chunkPos.y * 2);
-			temp.z += (blockPos.z * 2) + (chunkPos.z * 2);
+			phx::Vector3 blockVertices = CUBE_VERTS[(static_cast<int>(face) * NUM_FACES_IN_CUBE) + i];
+			blockVertices.x += (blockPos.x * ACTUAL_CUBE_SIZE) + (chunkPos.x * ACTUAL_CUBE_SIZE); // Multiply by 2, as that is the size of the actual cube edges, indicated by the cube vertices.
+			blockVertices.y += (blockPos.y * ACTUAL_CUBE_SIZE) + (chunkPos.y * ACTUAL_CUBE_SIZE);
+			blockVertices.z += (blockPos.z * ACTUAL_CUBE_SIZE) + (chunkPos.z * ACTUAL_CUBE_SIZE);
 
-			phx::Vector2 temp2 = CUBE_UV[(static_cast<int>(face) * 6) + i];
+			phx::Vector2 cubeUVs = CUBE_UV[(static_cast<int>(face) * NUM_FACES_IN_CUBE) + i];
 
-			m_blockMesh.vertices.push_back(temp);
-			m_blockMesh.uvs.push_back(temp2);
+			m_blockMesh.vertices.push_back(blockVertices);
+			m_blockMesh.uvs.push_back(cubeUVs);
 			m_blockMesh.texLayers.push_back(texLayer);
 		}
 	}
@@ -214,7 +227,7 @@ void ChunkRenderer::updateMesh(const Mesh& mesh)
 	m_mesh.update(mesh);
 }
 
-gfx::gl::TextureArray* ChunkRenderer::getTextureArray()
+gfx::gl::TextureArray* ChunkRenderer::getTextureArray() const
 {
 	return m_textureArray;
 }
@@ -244,9 +257,9 @@ void ChunkRenderer::bufferData()
 	m_vbo->bind();
 	m_vbo->setData(static_cast<void*>(temp.data()), sizeof(ChunkVert3D) * temp.size());
 
-	gfx::gl::VertexAttrib vertAttrib	= gfx::gl::VertexAttrib(0, 3, sizeof(ChunkVert3D), offsetof(ChunkVert3D, verts), gfx::gl::GLType::FLOAT);
-	gfx::gl::VertexAttrib uvAttrib		= gfx::gl::VertexAttrib(1, 2, sizeof(ChunkVert3D), offsetof(ChunkVert3D, uvs),   gfx::gl::GLType::FLOAT);
-	gfx::gl::VertexAttrib layerAttrib	= gfx::gl::VertexAttrib(2, 1, sizeof(ChunkVert3D), offsetof(ChunkVert3D, tx),    gfx::gl::GLType::FLOAT);
+	gfx::gl::VertexAttrib vertAttrib	= gfx::gl::VertexAttrib(0, 3, sizeof(ChunkVert3D), offsetof(ChunkVert3D, verts),	gfx::gl::GLType::FLOAT);
+	gfx::gl::VertexAttrib uvAttrib		= gfx::gl::VertexAttrib(1, 2, sizeof(ChunkVert3D), offsetof(ChunkVert3D, uvs),		gfx::gl::GLType::FLOAT);
+	gfx::gl::VertexAttrib layerAttrib	= gfx::gl::VertexAttrib(2, 1, sizeof(ChunkVert3D), offsetof(ChunkVert3D, texLayer),	gfx::gl::GLType::FLOAT);
 
 	vertAttrib.enable();
 	uvAttrib.enable();
@@ -255,7 +268,7 @@ void ChunkRenderer::bufferData()
 	m_vao->unbind();
 }
 
-void ChunkRenderer::render()
+void ChunkRenderer::render() const
 {
 	if (m_mesh.vertices.empty())
 		return;
@@ -290,7 +303,6 @@ void Chunk::populateData(unsigned int seed)
 	terrainGenerator->generateFor(m_chunkBlocks, m_chunkPos, m_chunkSize);
 	delete terrainGenerator;
 
-	//buildMesh();
 	if (!(m_chunkFlags & NEEDS_MESHING))
 		m_chunkFlags |= NEEDS_MESHING;
 }
@@ -437,14 +449,12 @@ ChunkRenderer& Chunk::getBlockRenderer()
 
 ChunkRenderer& Chunk::getObjectRenderer()
 {
-	//return m_objectRenderer;
-	return m_blockRenderer;
+	return m_objectRenderer;
 }
 
 ChunkRenderer& Chunk::getWaterRenderer()
 {
-	//return m_waterRenderer
-	return m_blockRenderer;
+	return m_waterRenderer;
 }
 
 void Chunk::renderBlocks(int* counter)
@@ -456,9 +466,7 @@ void Chunk::renderBlocks(int* counter)
 		else
 			return;
 
-		LDEBUG("BUFFERING A CHUNK!");
 		m_blockRenderer.bufferData();
-
 		m_chunkFlags &= ~BLOCKS_NEED_BUFFERING;
 	}
 
@@ -469,9 +477,7 @@ void Chunk::renderBlocks(int* counter)
 		else
 			return;
 
-		LDEBUG("TEXTURING A CHUNK!");
 		m_blockRenderer.getTextureArray()->resolveReservations();
-
 		m_chunkFlags &= ~BLOCKS_NEED_TEXTURING;
 	}
 
@@ -484,41 +490,17 @@ void Chunk::renderBlocks(int* counter)
 		else
 			return;
 
-		LDEBUG("MESHING A CHUNK!");
 		buildMesh();
-
 		m_chunkFlags &= ~NEEDS_MESHING;
 	}
 }
 
 void Chunk::renderObjects(int* counter)
 {
-	//if (m_chunkFlags & OBJECTS_NEED_BUFFERING)
-	//{
-	//	if (*counter > 0)
-	//		(*counter)--;
-	//	else
-	//		return;
-
-	//	m_objectRenderer.bufferData();
-	//	m_chunkFlags |= BLOCKS_NEED_BUFFERING;
-	//}
-
-	//m_objectRenderer.render();
+	// TODO: Write function for rendering objects. (TO BE DONE ONCE WE ACTUALLY HAVE OBJECTS)
 }
 
 void Chunk::renderWater(int* counter)
 {
-	//if (m_chunkFlags & WATER_NEEDS_BUFFERING)
-	//{
-	//	if (*counter > 0)
-	//		(*counter)--;
-	//	else
-	//		return;
-
-	//	m_waterRenderer.bufferData();
-	//	m_chunkFlags |= BLOCKS_NEED_BUFFERING;
-	//}
-
-	//m_waterRenderer.render();
+	// TODO: Write function for rendering water. (TO BE DONE ONCE WE ACTUALLY HAVE WATER)
 }

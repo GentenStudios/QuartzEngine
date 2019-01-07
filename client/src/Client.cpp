@@ -1,12 +1,9 @@
 #include <client/Client.hpp>
 
-#include <chrono>
-#include <thread>
-
 #include <engine/core/graphics/Renderer2D.hpp>
 
-using namespace phx::gfx;
 using namespace phx;
+using namespace gfx;
 
 using namespace client;
 
@@ -14,9 +11,6 @@ Sandbox::Sandbox() :
 	m_appRequirements(new phx::ApplicationRequirements()),
 	m_appData(new phx::ApplicationData)
 {
-	using namespace phx::gfx;
-	using namespace phx;
-
 	m_appRequirements->glProfile = GLProfile::CORE;
 	m_appRequirements->glVersion = GLVersion(3, 3);
 
@@ -27,9 +21,6 @@ Sandbox::Sandbox() :
 	m_appRequirements->logFile = "PhoenixClient.log";
 	m_appRequirements->logVerbosity = LogVerbosity::DEBUG;
 }
-
-Sandbox::~Sandbox()
-{}
 
 void Sandbox::run()
 {
@@ -60,7 +51,6 @@ void Sandbox::run()
 	blockDirt.setBreakCallback([]() { LDEBUG("Broken a dirt block!"); });
 
 	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
-	air.setBreakCallback([]() { LDEBUG("Broken an air block somehow"); });
 	
 	BlockLibrary::get()->init();
 
@@ -68,7 +58,8 @@ void Sandbox::run()
 	BlockLibrary::get()->registerBlock(blockDirt);
 	BlockLibrary::get()->registerBlock(air);
 
-	ChunkManager* world = new ChunkManager("core:air", time(nullptr));
+	// Initialise a world with an air block as the default, a chunk size of 16x16x16, and a random seed dependent on the current time.
+	ChunkManager* world = new ChunkManager("core:air", 16, time(nullptr));
 
 	m_player = std::make_unique<Player>(m_appData->window, world);
 
@@ -111,29 +102,30 @@ void Sandbox::run()
 		"assets/shaders/ui.frag"
 	);
 
-	int fps_lasttime = SDL_GetTicks(); //the last recorded time.
-	int fps_current; //the current FPS.
-	int fps_frames = 0; //frames passed since the last recorded fps.
+	std::size_t fpsLastTime = SDL_GetTicks(); //the last recorded time.
+	int fpsCurrent; //the current FPS.
+	int fpsFrames = 0; //frames passed since the last recorded fps.
 	
 	world->determineGeneration(m_player->getPosition());
-	float last = SDL_GetTicks();
+	
+	std::size_t last = SDL_GetTicks();
 	while (m_appData->window->isRunning())
 	{
 		m_appData->window->pollEvents();
-		float now = SDL_GetTicks();
+		std::size_t now = SDL_GetTicks();
 		float dt = now - last;
 		last = now;
 
 		m_player->tick(dt);
 
 		// ONLY HERE TEMPORARILY.
-		fps_frames++;
-		if (fps_lasttime < SDL_GetTicks() - 1000)
+		fpsFrames++;
+		if (fpsLastTime < SDL_GetTicks() - 1000)
 		{
-			fps_lasttime = SDL_GetTicks();
-			fps_current = fps_frames;
-			LDEBUG("FPS: ", fps_current);
-			fps_frames = 0;
+			fpsLastTime = SDL_GetTicks();
+			fpsCurrent = fpsFrames;
+			LDEBUG("FPS: ", fpsCurrent);
+			fpsFrames = 0;
 		}
 		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

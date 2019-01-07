@@ -79,10 +79,10 @@ namespace phx
 			void resetMesh();
 			void updateMesh(const Mesh& mesh);
 
-			gfx::gl::TextureArray* getTextureArray();
+			gfx::gl::TextureArray* getTextureArray() const;
 
 			void bufferData();
-			void render();
+			void render() const;
 
 			std::size_t getTrianglesCount() const;
 
@@ -133,10 +133,8 @@ namespace phx
 			ChunkMesh m_mesh;
 
 			ChunkRenderer m_blockRenderer;
-
-			// These are for later, when we support objects and water :)
-			//ChunkRenderer m_objectRenderer;
-			//ChunkRenderer m_waterRenderer;
+			ChunkRenderer m_objectRenderer;
+			ChunkRenderer m_waterRenderer;
 
 			unsigned int m_chunkFlags = 0;
 

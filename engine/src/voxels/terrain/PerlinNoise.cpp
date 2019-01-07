@@ -72,15 +72,17 @@ void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, phx::Vecto
 
 			for (int z = 0; z < m_chunkSize; ++z)
 			{
-				phx::Vector3 temp = { 
-					((static_cast<float>(x) + chunkPos.x) * 2) / 64.f,
-					((static_cast<float>(z) + chunkPos.z) * 2) / 64.f,
-					((static_cast<float>(0) + chunkPos.y) * 2) / 64.f
+				// Block Position with the smoothing factor applied to it.
+				// The division by 32 helps "decide" how smooth the generated terrain will be.
+				const phx::Vector3 blockPosWithSmoothingApplied = { 
+					(static_cast<float>(x) + chunkPos.x) / 32.f,
+					(static_cast<float>(z) + chunkPos.z) / 32.f,
+					(static_cast<float>(0) + chunkPos.y) / 32.f
 				};
 
-				float noise = at(temp);
+				const float noise = at(blockPosWithSmoothingApplied);
 
-				int newY = static_cast<int>(noise * chunkSize) % chunkSize;
+				const int newY = static_cast<int>(noise * m_chunkSize) % m_chunkSize;
 
 				blockArray[getVectorIndex(x, newY, z)] = BlockInstance("core:grass");
 

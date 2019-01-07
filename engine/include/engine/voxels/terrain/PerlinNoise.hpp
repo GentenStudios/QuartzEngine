@@ -1,17 +1,12 @@
 #pragma once
 
 #include <engine/core/math/Vector3.hpp>
-
 #include <engine/voxels/Block.hpp>
-
-const int PERLIN_XMAX = 256;
-const int PERLIN_YMAX = 256;
 
 namespace phx
 {
 	namespace voxels
 	{
-
 		class PerlinNoise
 		{
 		public:
@@ -31,11 +26,10 @@ namespace phx
 			float grad(int hash, float x, float y, float z) const;
 			float lerp(float t, float a, float b) const;
 
-			std::size_t getVectorIndex(int x, int y, int z) const
+			std::size_t getVectorIndex(const int x, const int y, const int z) const
 			{
 				return x + m_chunkSize * (y + m_chunkSize * z);
 			}
 		};
-
 	}
 }
