@@ -64,11 +64,6 @@ namespace phx {
 		void floor();
 
 		/**
-		 * @brief Floor or Ceil each component of the vector, depending on whether it is larger than 0 or not.
-		 */
-		void toFloorOrNotToFloorThatIsTheQuestion();
-
-		/**
 		 * @brief Calculates the cross product of `a` and `b`
 		 * @param a Left hand side of the calculation
 		 * @param b Right hand side of the calculation

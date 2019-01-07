@@ -363,7 +363,6 @@ const Vector3& Chunk::getChunkPos() const
 
 void Chunk::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
 {
-	position.floor();
 	if (position.x < m_chunkSize)
 	{
 		if (position.y < m_chunkSize)
@@ -387,7 +386,6 @@ void Chunk::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
 
 void Chunk::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
 {
-	position.floor();
 	if (position.x < m_chunkSize)
 	{
 		if (position.y < m_chunkSize)
@@ -409,7 +407,6 @@ void Chunk::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
 
 BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
 {
-	position.floor();
 	if (position.x < m_chunkSize)
 	{
 		if (position.y < m_chunkSize)
@@ -426,7 +423,6 @@ BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
 
 void Chunk::setBlockAt(phx::Vector3 position, const BlockInstance& newBlock)
 {
-	position.floor();
 	if (position.x < m_chunkSize)
 	{
 		if (position.y < m_chunkSize)
