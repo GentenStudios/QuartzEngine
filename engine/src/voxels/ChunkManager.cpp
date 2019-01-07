@@ -64,18 +64,6 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 	}
 }
 
-void ChunkManager::testGeneration(int test)
-{
-	for (int x = 0; x < test; x++)
-	{
-		for (int z = 0; z < test; z++)
-		{
-			m_managerData->chunks.emplace_back(Chunk({ x * 16.f, 0.f, z * 16.f }, 16, "core:air"));
-			m_managerData->chunks.back().populateData(m_seed);
-		}
-	}
-}
-
 void ChunkManager::unloadRedundant()
 {
 	// TODO this.

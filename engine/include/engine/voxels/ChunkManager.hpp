@@ -28,7 +28,6 @@ namespace phx
 			bool isWireframe() const;;
 
 			void determineGeneration(phx::Vector3 cameraPosition);
-			void testGeneration(int test);
 			void unloadRedundant();
 
 			void setBlockAt(phx::Vector3 position, const BlockInstance& block);
