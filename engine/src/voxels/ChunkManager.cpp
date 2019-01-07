@@ -7,9 +7,9 @@ using namespace phx::voxels;
 
 const int VIEW_DISTANCE = 16; // 96 blocks, 6 chunks.
 
-ChunkManager::ChunkManager(std::string blockID, unsigned int chunkSize, unsigned int seed) :
+ChunkManager::ChunkManager(const std::string& blockID, unsigned int chunkSize, unsigned int seed) :
 	m_seed(seed), m_chunkSize(chunkSize),
-	m_defaultBlockID(std::move(blockID))
+	m_defaultBlockID(blockID)
 {
 	m_managerData = new ChunkContainer();
 }

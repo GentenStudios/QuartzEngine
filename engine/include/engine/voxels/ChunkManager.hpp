@@ -19,7 +19,7 @@ namespace phx
 		class ChunkManager
 		{
 		public:
-			ChunkManager(std::string blockID, unsigned int chunkSize, unsigned int seed);
+			ChunkManager(const std::string& blockID, unsigned int chunkSize, unsigned int seed);
 			ChunkManager(const ChunkManager&) = default;
 
 			~ChunkManager() = default;
