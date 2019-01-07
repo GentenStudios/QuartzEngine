@@ -99,23 +99,21 @@ void TextureArray::resolveReservations()
 {
 	bind();
 
-	for (auto current = m_texReservations.begin(); current != m_texReservations.end(); ++current)
+	for (const auto& current : m_texReservations)
 	{
-		std::string path = current->first;
-
-		if (m_texNames.find(path) == m_texNames.end())
+		if (m_texNames.find(current.first) == m_texNames.end())
 		{
 			int width = -1, height = -1, nbChannels = -1;
-			unsigned char* image = stbi_load(path.c_str(), &width, &height, &nbChannels, 0);
+			unsigned char* image = stbi_load(current.first.c_str(), &width, &height, &nbChannels, 0);
 			if (image != nullptr)
 			{
-				GLCheck(glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, current->second, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image));
+				GLCheck(glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, current.second, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image));
 
-				m_texNames[path] = current->second;
+				m_texNames[current.first] = current.second;
 			}
 			else
 			{
-				RENDER_DEBUG("[TEXTURING]", "Image '" + path + "' could not be loaded.");
+				RENDER_ERROR("[TEXTURING]", "Image '" + current.first + "' could not be loaded.");
 				return;
 			}
 			stbi_image_free(image);
