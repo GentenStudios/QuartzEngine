@@ -1,4 +1,5 @@
 #include <client/Client.hpp>
+#include <chrono>
 
 #include <engine/core/graphics/Renderer2D.hpp>
 
@@ -8,8 +9,8 @@ using namespace gfx;
 using namespace client;
 
 Sandbox::Sandbox() :
-	m_appRequirements(new phx::ApplicationRequirements()),
-	m_appData(new phx::ApplicationData)
+	m_appRequirements(new ApplicationRequirements()),
+	m_appData(new ApplicationData)
 {
 	m_appRequirements->glProfile = GLProfile::CORE;
 	m_appRequirements->glVersion = GLVersion(3, 3);
@@ -26,8 +27,8 @@ void Sandbox::run()
 {
 	PHX_REGISTER_CONFIG("Controls");
 
-	using namespace phx::voxels;
-	
+	using namespace voxels;
+
 	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
 	std::vector<std::string> texForGrass;
 	texForGrass.emplace_back("assets/textures/grass_side.png");
@@ -51,7 +52,7 @@ void Sandbox::run()
 	blockDirt.setBreakCallback([]() { LDEBUG("Broken a dirt block!"); });
 
 	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
-	
+
 	BlockLibrary::get()->init();
 
 	BlockLibrary::get()->registerBlock(block);
@@ -59,7 +60,7 @@ void Sandbox::run()
 	BlockLibrary::get()->registerBlock(air);
 
 	// Initialise a world with an air block as the default, a chunk size of 16x16x16, and a random seed dependent on the current time.
-	ChunkManager* world = new ChunkManager("core:air", 16, time(nullptr));
+	ChunkManager* world = new ChunkManager("core:air", 16, static_cast<unsigned int>(time(nullptr)));
 
 	m_player = std::make_unique<Player>(m_appData->window, world);
 
@@ -67,10 +68,10 @@ void Sandbox::run()
 	shaderProgram->addStage(gl::ShaderType::VERTEX_SHADER, File::readFile("assets/shaders/main.vert").c_str());
 	shaderProgram->addStage(gl::ShaderType::FRAGMENT_SHADER, File::readFile("assets/shaders/main.frag").c_str());
 	shaderProgram->build();
-	
+
 	Matrix4x4 model;
 
-	phx::gfx::IWindow* window = m_appData->window;
+	IWindow* window = m_appData->window;
 	int ww, wh;
 	window->getSize(ww, wh);
 
@@ -92,27 +93,28 @@ void Sandbox::run()
 		}
 	});
 
-	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_1, [&world]() {
+	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_1, [&world]()
+	{
 		world->toggleWireframe();
 	});
 
-	gfx::Renderer2D renderer(
-		Matrix4x4::ortho(0.f, ww, 0.f, wh, 1.f, -1.f),
+	Renderer2D renderer(
+		Matrix4x4::ortho(0.f, static_cast<float>(ww), 0.f, static_cast<float>(wh), 1.f, -1.f),
 		"assets/shaders/ui.vert",
 		"assets/shaders/ui.frag"
 	);
 
-	std::size_t fpsLastTime = SDL_GetTicks(); //the last recorded time.
-	int fpsCurrent; //the current FPS.
-	int fpsFrames = 0; //frames passed since the last recorded fps.
-	
+	std::size_t fpsLastTime = SDL_GetTicks();
+	int fpsCurrent; // the current FPS.
+	int fpsFrames = 0; // frames passed since the last recorded fps.
+
 	world->determineGeneration(m_player->getPosition());
-	
-	std::size_t last = SDL_GetTicks();
+
+	float last = static_cast<float>(SDL_GetTicks());
 	while (m_appData->window->isRunning())
 	{
 		m_appData->window->pollEvents();
-		std::size_t now = SDL_GetTicks();
+		float now = static_cast<float>(SDL_GetTicks());
 		float dt = now - last;
 		last = now;
 
@@ -127,10 +129,10 @@ void Sandbox::run()
 			LDEBUG("FPS: ", fpsCurrent);
 			fpsFrames = 0;
 		}
-		
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
-		
+
 		shaderProgram->use();
 
 		m_player->applyTo(shaderProgram);
@@ -140,15 +142,15 @@ void Sandbox::run()
 		world->render(10);
 
 		renderer.begin();
-		renderer.fillCircle({ ww / 2.f, wh / 2.f }, 3, 7, { 1.f, 1.f, 1.f });
+		renderer.fillCircle({ww / 2.f, wh / 2.f}, 3, 7, {1.f, 1.f, 1.f});
 		renderer.end();
 		renderer.draw();
-		
+
 		m_appData->window->swapBuffers();
 	}
 }
 
-phx::Application* phx::createApplication()
+Application* phx::createApplication()
 {
 	return new Sandbox();
 }
