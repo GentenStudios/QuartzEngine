@@ -31,9 +31,7 @@ FPSCam::FPSCam(IWindow* window) :
 }
 
 FPSCam::~FPSCam()
-{
-	m_window = nullptr;
-}
+{}
 
 void FPSCam::update(float dt)
 {
@@ -87,24 +85,24 @@ void FPSCam::update(float dt)
 	}
 }
 
-Matrix4x4 FPSCam::calculateViewMatrix()
+Matrix4x4 FPSCam::calculateViewMatrix() const
 {
 	Vector3 centre = m_position + m_direction;
 
 	return Matrix4x4::lookAt(m_position, centre, m_up);
 }
 
-Vector3 FPSCam::getPosition()
+Vector3 FPSCam::getPosition() const
 {
 	return m_position;
 }
 
-Vector3 FPSCam::getDirection()
+Vector3 FPSCam::getDirection() const
 {
 	return m_direction;
 }
 
-Matrix4x4 FPSCam::getProjection()
+Matrix4x4 FPSCam::getProjection() const
 {
 	return m_projection;
 }
@@ -131,32 +129,32 @@ void CameraControls::load()
 const std::string CAMERA_KEYBOARD_SECTION = "CameraKeyboard";
 const std::string CAMERA_MISC_SECTION = "CameraMisc";
 
-events::Keys CameraControls::moveForward()
+events::Keys CameraControls::moveForward() const
 {
 	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveForward", events::Keys::KEY_W);
 }
 
-events::Keys CameraControls::moveBackwards()
+events::Keys CameraControls::moveBackwards() const
 {
 	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveBackwards", events::Keys::KEY_S);
 }
 
-events::Keys CameraControls::strafeLeft()
+events::Keys CameraControls::strafeLeft() const
 {
 	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeLeft", events::Keys::KEY_A);
 }
 
-events::Keys CameraControls::strafeRight()
+events::Keys CameraControls::strafeRight() const
 {
 	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeRight", events::Keys::KEY_D);
 }
 
-float CameraControls::mouseSensitivity()
+float CameraControls::mouseSensitivity() const
 {
 	return m_controlsConfig->getFloat(CAMERA_MISC_SECTION, "mouseSensitivty", 0.00005f);
 }
 
-float CameraControls::moveSpeed()
+float CameraControls::moveSpeed() const
 {
 	return m_controlsConfig->getFloat(CAMERA_MISC_SECTION, "moveSpeed", 0.1f);
 }

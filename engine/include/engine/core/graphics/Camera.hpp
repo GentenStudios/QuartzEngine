@@ -37,42 +37,42 @@ namespace phx
 			 *
 			 * @return An events::Keys ENUM value to use straight away in the camera classes.
 			 */
-			events::Keys moveForward();
+			events::Keys moveForward() const;
 
 			/**
 			 * @brief Gets the key assigned to moving backwards.
 			 *
 			 * @return An events::Keys ENUM value to use straight away in the camera classes.
 			 */
-			events::Keys moveBackwards();
+			events::Keys moveBackwards() const;
 
 			/**
 			 * @brief Gets the key assigned to strafing left.
 			 *
 			 * @return An events::Keys ENUM value to use straight away in the camera classes.
 			 */
-			events::Keys strafeLeft();
+			events::Keys strafeLeft() const;
 
 			/**
 			 * @brief Gets the key assigned to strafing right.
 			 *
 			 * @return An events::Keys ENUM value to use straight away in the camera classes.
 			 */
-			events::Keys strafeRight();
+			events::Keys strafeRight() const;
 
 			/**
 			 * @brief Gets the mouse sensitivity from the Config file.
 			 *
 			 * @return The mouse sensitivity, as a float, ready to use wherever necessary.
 			 */
-			float mouseSensitivity();
+			float mouseSensitivity() const;
 
 			/**
 			 * @brief Gets the move speed from the Config file.
 			 *
 			 * @return The move speed, as a float, ready to use wherever necessary.
 			 */
-			float moveSpeed();
+			float moveSpeed() const;
 
 		private:
 			/// @brief ConfigFile Object to store the values that are retrieved.
@@ -95,28 +95,28 @@ namespace phx
 			 *
 			 * @return A 4x4 Matrix containing the required information to send into shaders.
 			 */
-			Matrix4x4 calculateViewMatrix();
+			Matrix4x4 calculateViewMatrix() const;
 
 			/**
 			 * @brief Gets the Position of the Camera, in world space.
 			 *
 			 * @return A Vector3 containing the position of the camera.
 			 */
-			Vector3 getPosition();
+			Vector3 getPosition() const;
 
 			/**
 			 * @brief Gets the Direction of the Camera, in world space.
 			 *
 			 * @return A Vector3 containing the direction of the camera.
 			 */
-			Vector3 getDirection();
+			Vector3 getDirection() const;
 
 			/**
 			 * @brief Gets the projection of the Camera.
 			 *
 			 * @return A Matrix4x4 containing the camera projection.
 			 */
-			Matrix4x4 getProjection();
+			Matrix4x4 getProjection() const;
 
 
 			/**
