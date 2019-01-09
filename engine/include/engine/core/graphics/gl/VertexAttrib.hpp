@@ -28,17 +28,17 @@ namespace phx
 				 * @param type 			 The type of data that each component uses, such as a float, or int.
 				 */
 				VertexAttrib(unsigned int attribLocation, int attribNumComp, int attribStride, int attribOffset, GLType type) :
-					location(attribLocation),
-					components(attribNumComp),
-					stride(attribStride),
-					offset(attribOffset)
+					m_location(attribLocation),
+					m_components(attribNumComp),
+					m_stride(attribStride),
+					m_offset(attribOffset)
 				{
-					GLCheck(glVertexAttribPointer(location,
-						components,
+					GLCheck(glVertexAttribPointer(m_location,
+						m_components,
 						static_cast<GLenum>(type),
 						GL_FALSE,
 						attribStride,
-						reinterpret_cast<void*>(offset)
+						reinterpret_cast<void*>(m_offset)
 					));
 				}
 
@@ -46,27 +46,27 @@ namespace phx
 				 * @brief Enable the Vertex Attribute
 				 * 
 				 */
-				void enable()
+				void enable() const
 				{
-					GLCheck(glEnableVertexAttribArray(location));
+					GLCheck(glEnableVertexAttribArray(m_location));
 				}
 
 				/**
 				 * @brief Disable the Vertex Attribute
 				 * 
 				 */
-				void disable()
+				void disable() const
 				{
-					GLCheck(glDisableVertexAttribArray(location));
+					GLCheck(glDisableVertexAttribArray(m_location));
 				}
 
 			private:
 				// Look at VertexAttrib documentation to understand what these do.
 
-				unsigned int location;
-				int components;
-				int stride;
-				int offset;
+				unsigned int m_location;
+				int m_components;
+				int m_stride;
+				int m_offset;
 			};
 
 		}

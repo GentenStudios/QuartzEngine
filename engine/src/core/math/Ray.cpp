@@ -24,7 +24,12 @@ Vector3 Ray::backtrace(float scale)
 	return m_currentPosition;
 }
 
-float Ray::getLength()
+float Ray::getLength() const
 {
 	return m_length;
+}
+
+Vector3 Ray::getCurrentPosition() const
+{
+	return m_currentPosition;
 }

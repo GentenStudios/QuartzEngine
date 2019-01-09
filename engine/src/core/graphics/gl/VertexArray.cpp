@@ -7,12 +7,12 @@ VertexArray::VertexArray() : m_arrayID(0)
 	GLCheck(glGenVertexArrays(1, &m_arrayID));
 }
 
-void VertexArray::bind()
+void VertexArray::bind() const
 {
 	GLCheck(glBindVertexArray(m_arrayID));
 }
 
-void VertexArray::unbind()
+void VertexArray::unbind() const
 {
 	GLCheck(glBindVertexArray(0));
 }

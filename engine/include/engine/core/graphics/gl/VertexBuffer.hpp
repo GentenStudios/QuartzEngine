@@ -33,7 +33,7 @@ namespace phx
 				 * @brief Bind the Vertex Buffer.
 				 * 
 				 */
-				void bind();
+				void bind() const;
 
 				/**
 				 * @brief Unbind the Vertex Buffer.
@@ -90,10 +90,7 @@ namespace phx
 				 * 
 				 * @return The size of this buffer, in bytes.
 				 */
-				int getSize() const
-				{
-					return m_size;
-				}
+				int getSize() const;
 
 			private:
 				/// @brief Unique ID for the Vertex Buffer, set by OpenGL.

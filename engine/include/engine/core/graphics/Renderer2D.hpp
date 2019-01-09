@@ -17,9 +17,11 @@ namespace phx
 		{
 		public:
 			/**
-			 * @brief Initalizes the renderer.
+			 * @brief Initializes the renderer.
 			 *
 			 * @param projectionMatrix The projection matrix for the renderer. Normally for 2D this is a orthographic projection.
+			 * @param vertexShader A filepath to the vertex shader for 2D renderer.
+			 * @param fragmentShader A filepath to the fragment shader for the 2D renderer.
 			 */
 			Renderer2D(const Matrix4x4& projectionMatrix, const std::string& vertexShader, const std::string& fragmentShader);
 
@@ -34,7 +36,7 @@ namespace phx
 			void draw();
 
 			/**
-			 * @brief Finalises renderering for this frame. Should only be called when after all draw calls and before the actual `draw()` call. 
+			 * @brief Finalizes rendering for this frame. Should only be called when after all draw calls and before the actual `draw()` call. 
 			 */
 			void end();
 
@@ -65,7 +67,7 @@ namespace phx
 			/// @brief The projection matrix for this renderer.
 			Matrix4x4 m_projection;
 
-			/// @brief The shader that will be used in conjection with the renderer.
+			/// @brief The shader that will be used in conjunction with the renderer.
 			gl::ShaderPipeline m_shader;
 
 			/// @brief The offset of the current index in this batch. Used when calculating the current index for any vertex set.

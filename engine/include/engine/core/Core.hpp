@@ -16,17 +16,10 @@
 
 #define PHX_DEBUG
 
-// #ifdef DEBUG
-// #	define PHX_DEBUG
-// #endif
-
 /// INCLUDE STREAMS ///
 #include <iostream>
 #include <fstream>
 #include <sstream>
-
-/// INCLUDE MATH ///
-#include <cmath>
 
 /// INCLUDE STL CONTAINERS ///
 #include <string>

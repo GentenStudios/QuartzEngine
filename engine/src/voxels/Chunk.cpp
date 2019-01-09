@@ -1,13 +1,62 @@
 #include <engine/voxels/Chunk.hpp>
 
-#include <cstring>
-#include <functional>
-#include <numeric>
+#include <engine/core/graphics/gl/VertexAttrib.hpp>
+#include <engine/voxels/terrain/PerlinNoise.hpp>
 
 using namespace phx::voxels;
 using namespace phx;
 
-static const Vector2 CubeUV[] = {
+static const Vector3 CUBE_VERTS[] = {
+	// front
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f, -1.f),
+	Vector3(1.f,  1.f, -1.f),
+	Vector3(1.f,  1.f, -1.f),
+	Vector3(-1.f,  1.f, -1.f),
+	Vector3(-1.f, -1.f, -1.f),
+
+	// back
+	Vector3(-1.f, -1.f, 1.f),
+	Vector3(1.f, -1.f, 1.f),
+	Vector3(1.f,  1.f, 1.f),
+	Vector3(1.f,  1.f, 1.f),
+	Vector3(-1.f,  1.f, 1.f),
+	Vector3(-1.f, -1.f, 1.f),
+
+	// left
+	Vector3(-1.f,  1.f,  1.f),
+	Vector3(-1.f,  1.f, -1.f),
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3(-1.f, -1.f,  1.f),
+	Vector3(-1.f,  1.f,  1.f),
+
+	// right
+	Vector3(1.f,  1.f,  1.f),
+	Vector3(1.f,  1.f, -1.f),
+	Vector3(1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f,  1.f),
+	Vector3(1.f,  1.f,  1.f),
+
+	// bottom
+	Vector3(-1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f, -1.f),
+	Vector3(1.f, -1.f,  1.f),
+	Vector3(1.f, -1.f,  1.f),
+	Vector3(-1.f, -1.f,  1.f),
+	Vector3(-1.f, -1.f, -1.f),
+
+	// top
+	Vector3(-1.f,  1.f, -1.f),
+	Vector3(1.f,  1.f, -1.f),
+	Vector3(1.f,  1.f,  1.f),
+	Vector3(1.f,  1.f,  1.f),
+	Vector3(-1.f,  1.f,  1.f),
+	Vector3(-1.f,  1.f, -1.f)
+};
+
+static const Vector2 CUBE_UV[] = {
 	// front north
 	Vector2(-0.f, 1.f),
 	Vector2(-1.f, 1.f),
@@ -57,198 +106,277 @@ static const Vector2 CubeUV[] = {
 	Vector2(0.f, -1.f),
 };
 
-static const Vector3 CubeVerts[] = {
-	// front
-	Vector3(-1.f, -1.f, -1.f),
-	Vector3( 1.f, -1.f, -1.f),
-	Vector3( 1.f,  1.f, -1.f),
-	Vector3( 1.f,  1.f, -1.f),
-	Vector3(-1.f,  1.f, -1.f),
-	Vector3(-1.f, -1.f, -1.f),
+const int ACTUAL_CUBE_SIZE = 2;
+const int NUM_FACES_IN_CUBE = 6;
+const int NUM_VERTS_IN_FACE = 6;
 
-	// back
-	Vector3(-1.f, -1.f, 1.f),
-	Vector3( 1.f, -1.f, 1.f),
-	Vector3( 1.f,  1.f, 1.f),
-	Vector3( 1.f,  1.f, 1.f),
-	Vector3(-1.f,  1.f, 1.f),
-	Vector3(-1.f, -1.f, 1.f),
+struct ChunkVert3D
+{
+	phx::Vector3 verts;
+	phx::Vector2 uvs;
 
-	// left
-	Vector3(-1.f,  1.f,  1.f),
-	Vector3(-1.f,  1.f, -1.f),
-	Vector3(-1.f, -1.f, -1.f),
-	Vector3(-1.f, -1.f, -1.f),
-	Vector3(-1.f, -1.f,  1.f),
-	Vector3(-1.f,  1.f,  1.f),
+	int texLayer;
 
-	// right
-	Vector3(1.f,  1.f,  1.f),
-	Vector3(1.f,  1.f, -1.f),
-	Vector3(1.f, -1.f, -1.f),
-	Vector3(1.f, -1.f, -1.f),
-	Vector3(1.f, -1.f,  1.f),
-	Vector3(1.f,  1.f,  1.f),
-
-	// bottom
-	Vector3(-1.f, -1.f, -1.f),
-	Vector3( 1.f, -1.f, -1.f),
-	Vector3( 1.f, -1.f,  1.f),
-	Vector3( 1.f, -1.f,  1.f),
-	Vector3(-1.f, -1.f,  1.f),
-	Vector3(-1.f, -1.f, -1.f),
-
-	// top
-	Vector3(-1.f,  1.f, -1.f),
-	Vector3( 1.f,  1.f, -1.f),
-	Vector3( 1.f,  1.f,  1.f),
-	Vector3( 1.f,  1.f,  1.f),
-	Vector3(-1.f,  1.f,  1.f),
-	Vector3(-1.f,  1.f, -1.f)
+	ChunkVert3D(const phx::Vector3& vertices, const phx::Vector2& UVs, const int textureLayer) :
+		verts(vertices), uvs(UVs), texLayer(textureLayer)
+	{}
 };
 
-Chunk::Chunk(Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlock)
+void Mesh::reset()
 {
-	m_defaultBlockID = defaultBlock;
-	
-	m_blockMesh = new Mesh();
-	m_objectMesh = new Mesh();
-	m_waterMesh = new Mesh();
+	vertices.clear();
+	vertices.shrink_to_fit();
 
-	m_textureArray = new gfx::gl::TextureArray();
+	normals.clear();
+	normals.shrink_to_fit();
 
-	m_chunkPos = chunkPos;
-	m_chunkSize = chunkSize;
+	uvs.clear();
+	uvs.shrink_to_fit();
 
-	unsigned int sizeCubed = chunkSize * chunkSize * chunkSize;
-	m_vertInChunk = sizeCubed * 36;
-	m_uvInChunk = sizeCubed * 36;
-
-	m_blockMesh->chunkVertices.resize(m_vertInChunk);
-	m_blockMesh->chunkTexLayers.resize(m_vertInChunk);
-	m_blockMesh->chunkUVs.resize(m_uvInChunk);
-
-	m_chunkFlags = NEEDS_BUFFERING | NEEDS_MESHING;
-
+	texLayers.clear();
+	uvs.shrink_to_fit();
 }
 
-void Chunk::populateData()
+void Mesh::update(const Mesh& other)
 {
-	// Set whole array to have, for example, 16 elements inside the vector.
-	m_chunkBlocks.resize(m_chunkSize);
+	vertices = other.vertices;
+	normals = other.normals;
+	uvs = other.uvs;
+	texLayers = other.texLayers;
+}
 
-	for (unsigned int x = 0; x < m_chunkBlocks.size(); x++)
+std::size_t Mesh::triangleCount() const
+{
+	return vertices.size() / 3;
+}
+
+void ChunkMesh::add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos, Chunk* chunk)
+{
+	if (block.getBlockType() == BlockType::SOLID)
 	{
-		// Set each X index (first vector part, of the trio) to have, for example, 16 parts. So you can have m_chunkBlocks[x][0] to m_chunkBlocks[x][15]
-		m_chunkBlocks[x].resize(m_chunkSize);
-		for (unsigned int y = 0; y < m_chunkBlocks[x].size(); y++)
+		ChunkRenderer& renderer = chunk->getBlockRenderer();
+		
+		int texLayer = -1;
+
+		auto& blockTexList = block.getBlockTextures();
+
+		if (static_cast<std::size_t>(face) < blockTexList.size())
 		{
-			// Set the Y (first vector part, of the trio) to have, for example, 16 parts. So you can have m_chunkBlocks[x][y][0] to m_chunkBlocks[x][y][15]
-			m_chunkBlocks[x][y].resize(m_chunkSize);
-			for (unsigned int z = 0; z < m_chunkBlocks[x][y].size(); z++)
-			{
-				// Set the Z (first vector part, of the trio) to have the actual value of the blocks data. So, you can have m_chunkBlocks[x][y][z] = BlockType::SOLID
-				m_chunkBlocks[x][y][z] = BlockInstance(m_defaultBlockID);
-			}
+			gfx::gl::TextureArray* texArray = renderer.getTextureArray();
+			texArray->reserve(blockTexList[static_cast<int>(face)]);
+			texLayer = texArray->getTexLayer(blockTexList[static_cast<int>(face)]);
+		}
+
+		for (int i = 0; i < NUM_VERTS_IN_FACE; ++i)
+		{
+			phx::Vector3 blockVertices = CUBE_VERTS[(static_cast<int>(face) * NUM_FACES_IN_CUBE) + i];
+			blockVertices.x += (blockPos.x * ACTUAL_CUBE_SIZE) + (chunkPos.x * ACTUAL_CUBE_SIZE); // Multiply by 2, as that is the size of the actual cube edges, indicated by the cube vertices.
+			blockVertices.y += (blockPos.y * ACTUAL_CUBE_SIZE) + (chunkPos.y * ACTUAL_CUBE_SIZE);
+			blockVertices.z += (blockPos.z * ACTUAL_CUBE_SIZE) + (chunkPos.z * ACTUAL_CUBE_SIZE);
+
+			phx::Vector2 cubeUVs = CUBE_UV[(static_cast<int>(face) * NUM_FACES_IN_CUBE) + i];
+
+			m_blockMesh.vertices.push_back(blockVertices);
+			m_blockMesh.uvs.push_back(cubeUVs);
+			m_blockMesh.texLayers.push_back(texLayer);
 		}
 	}
+}
+
+const Mesh& ChunkMesh::getBlockMesh() const
+{
+	return m_blockMesh;
+}
+
+const Mesh& ChunkMesh::getObjectMesh() const
+{
+	return m_objectMesh;
+}
+
+const Mesh& ChunkMesh::getWaterMesh() const
+{
+	return m_waterMesh;
+}
+
+void ChunkMesh::resetAll()
+{
+	m_blockMesh.reset();
+	m_objectMesh.reset();
+	m_waterMesh.reset();
+}
+
+ChunkRenderer::ChunkRenderer() :
+	m_vao(nullptr), m_vbo(nullptr)
+{
+	m_textureArray = new gfx::gl::TextureArray();
+}
+
+ChunkRenderer::~ChunkRenderer()
+{
+	delete m_vao;
+	delete m_vbo;
+}
+
+void ChunkRenderer::resetMesh()
+{
+	m_mesh.reset();
+}
+
+void ChunkRenderer::updateMesh(const Mesh& mesh)
+{
+	m_mesh.update(mesh);
+}
+
+gfx::gl::TextureArray* ChunkRenderer::getTextureArray() const
+{
+	return m_textureArray;
+}
+
+void ChunkRenderer::bufferData()
+{
+	if (m_mesh.vertices.empty())
+		return;
+
+	if (m_vao == nullptr)
+		m_vao = new gfx::gl::VertexArray();
+
+	m_vao->bind();
+
+	if (m_vbo == nullptr)
+		m_vbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
+
+	std::vector<ChunkVert3D> temp;
+
+	// Not doing vector::size() - 1, i >= 0; as std::size_t is a variant of an unsigned int, which does not go below 0, making it an infinitely running loop. 
+	// (i mean, shit would DEFINITELY hit the ceiling first, but who even fucking cares)
+	for (std::size_t i = m_mesh.vertices.size(); i > 0; i--)
+	{
+		temp.emplace_back(m_mesh.vertices[i - 1], m_mesh.uvs[i - 1], m_mesh.texLayers[i - 1]);
+	}
+
+	m_vbo->bind();
+	m_vbo->setData(static_cast<void*>(temp.data()), sizeof(ChunkVert3D) * temp.size());
+
+	gfx::gl::VertexAttrib vertAttrib	= gfx::gl::VertexAttrib(0, 3, sizeof(ChunkVert3D), offsetof(ChunkVert3D, verts),	gfx::gl::GLType::FLOAT);
+	gfx::gl::VertexAttrib uvAttrib		= gfx::gl::VertexAttrib(1, 2, sizeof(ChunkVert3D), offsetof(ChunkVert3D, uvs),		gfx::gl::GLType::FLOAT);
+	gfx::gl::VertexAttrib layerAttrib	= gfx::gl::VertexAttrib(2, 1, sizeof(ChunkVert3D), offsetof(ChunkVert3D, texLayer),	gfx::gl::GLType::FLOAT);
+
+	vertAttrib.enable();
+	uvAttrib.enable();
+	layerAttrib.enable();
+
+	m_vao->unbind();
+}
+
+void ChunkRenderer::render() const
+{
+	if (m_mesh.vertices.empty())
+		return;
+
+	m_textureArray->bind(10);
+	m_vao->bind();
+	GLCheck(glDrawArrays(GL_TRIANGLES, 0, m_mesh.vertices.size()));
+	m_textureArray->unbind();
+	m_vao->unbind();
+}
+
+std::size_t ChunkRenderer::getTrianglesCount() const
+{
+	return m_mesh.triangleCount();
+}
+
+Chunk::Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID)
+{
+	m_chunkPos = chunkPos;
+	m_chunkSize = chunkSize;
+	m_defaultBlockID = defaultBlockID;
+
+	m_chunkFlags = NEEDS_MESHING;
+}
+
+void Chunk::populateData(unsigned int seed)
+{
+	for (std::size_t i = 0; i < m_chunkSize * m_chunkSize * m_chunkSize; ++i)
+		m_chunkBlocks.emplace_back(m_defaultBlockID);
+
+	PerlinNoise* terrainGenerator = new PerlinNoise(seed);
+	terrainGenerator->generateFor(m_chunkBlocks, m_chunkPos, m_chunkSize);
+	delete terrainGenerator;
+
+	if (!(m_chunkFlags & NEEDS_MESHING))
+		m_chunkFlags |= NEEDS_MESHING;
 }
 
 void Chunk::buildMesh()
 {
-	for (unsigned int z = 0; z < m_chunkSize; z++)
+	m_mesh.resetAll();
+
+	for (std::size_t i = 0; i < m_chunkSize * m_chunkSize * m_chunkSize; ++i)
 	{
-		for (unsigned int y = 0; y < m_chunkSize; y++)
-		{
-			for (unsigned int x = 0; x < m_chunkSize; x++)
-			{
-				if (m_chunkBlocks[x][y][z].getBlockType() != BlockType::OBJECT && m_chunkBlocks[x][y][z].getBlockType() != BlockType::WATER)
-				{
+		BlockInstance& block = m_chunkBlocks[i];
 
-					int memOffset = (x * 36) + (m_chunkSize * ((y * 36) + m_chunkSize * (z * 36)));
+		if (block.getBlockType() == BlockType::GAS)
+			continue;
 
-					std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
-					std::memset(m_blockMesh->chunkTexLayers.data() + memOffset, 0, 36 * sizeof(int));
-					std::memcpy(m_blockMesh->chunkUVs.data() + memOffset, CubeUV, sizeof(CubeUV));
+		std::size_t x = i % m_chunkSize;
+		std::size_t y = (i / m_chunkSize) % m_chunkSize;
+		std::size_t z = i / (m_chunkSize * m_chunkSize);
 
-					if (m_chunkBlocks[x][y][z].getBlockType() == BlockType::GAS)
-						continue;
+		if (x == 0 || m_chunkBlocks[getVectorIndex(x - 1, y, z)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::RIGHT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		if (x == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x + 1, y, z)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::LEFT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 
-					if (x == 0 || m_chunkBlocks[x - 1][y][z].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::RIGHT, memOffset, x, y, z);
-					if (x == m_chunkSize - 1 || m_chunkBlocks[x + 1][y][z].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::LEFT, memOffset, x, y, z);
+		if (y == 0 || m_chunkBlocks[getVectorIndex(x, y - 1, z)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::BOTTOM, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		if (y == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y + 1, z)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::TOP, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 
-					if (y == 0 || m_chunkBlocks[x][y - 1][z].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::BOTTOM, memOffset, x, y, z);
-					if (y == m_chunkSize - 1 || m_chunkBlocks[x][y + 1][z].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::TOP, memOffset, x, y, z);
+		if (z == 0 || m_chunkBlocks[getVectorIndex(x, y, z - 1)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::FRONT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
+		if (z == m_chunkSize - 1 || m_chunkBlocks[getVectorIndex(x, y, z + 1)].getBlockType() != BlockType::SOLID)
+			m_mesh.add(block, BlockFace::BACK, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
 
-					if (z == 0 || m_chunkBlocks[x][y][z - 1].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::FRONT, memOffset, x, y, z);
-					if (z == m_chunkSize - 1 || m_chunkBlocks[x][y][z + 1].getBlockType() != BlockType::SOLID)
-						addBlockFace(BlockFace::BACK, memOffset, x, y, z);
-
-				}
-				else if (m_chunkBlocks[x][y][z].getBlockType() == BlockType::WATER)
-				{
-					//TODO: all of this shit.
-				}
-			}
-		}
 	}
+
+	if (!(m_chunkFlags & BLOCKS_NEED_BUFFERING))
+		m_chunkFlags |= BLOCKS_NEED_BUFFERING;
+
+	if (!(m_chunkFlags & BLOCKS_NEED_TEXTURING))
+		m_chunkFlags |= BLOCKS_NEED_TEXTURING;
 
 	m_chunkFlags &= ~NEEDS_MESHING;
-	if(!(m_chunkFlags & NEEDS_BUFFERING))
-		m_chunkFlags |= NEEDS_BUFFERING;
+
+	m_blockRenderer.resetMesh();
+	m_blockRenderer.updateMesh(m_mesh.getBlockMesh());
 }
 
-void Chunk::addBlockFace(BlockFace face, int memOffset, int x, int y, int z)
+const ChunkMesh& Chunk::getChunkMesh() const
 {
-	int bytesInFace = 6 * sizeof(Vector3);
-	int memOffsetOffest = static_cast<int>(face) * 6;
+	return m_mesh;
+}
 
-	std::memcpy(m_blockMesh->chunkVertices.data() + memOffset + memOffsetOffest,	// Position in memory to copy to. So... original memory location + memory offset for that block + memory offset for that face.
-		CubeVerts + memOffsetOffest,												// Data to copy, PLUS, the memory offset, so the correct portion of the block is copied.
-		bytesInFace																	// Size of Data to copy.
-	);
-
-	auto& blockTex = m_chunkBlocks[x][y][z].getBlockTextures();
-	int texLayer = 0;
-
-	if (static_cast<int>(face) < blockTex.size())
-	{
-		m_textureArray->add(blockTex[static_cast<int>(face)]);
-		texLayer = m_textureArray->getTexLayer(blockTex[static_cast<int>(face)]);
-	}
-
-	// Set block positions in world space
-	for (int q = memOffset + memOffsetOffest; q < memOffset + memOffsetOffest + 6; q++)
-	{
-		m_blockMesh->chunkTexLayers[q] = texLayer; // Set the texture layer
-		m_blockMesh->chunkVertices[q].x += (x * 2) + (m_chunkPos.x * 2); // Multiply by 2, as that is the size of the actual cube edges, indicated by the cube vertices.
-		m_blockMesh->chunkVertices[q].y += (y * 2) + (m_chunkPos.y * 2);
-		m_blockMesh->chunkVertices[q].z += (z * 2) + (m_chunkPos.z * 2);
-	}
+const Vector3& Chunk::getChunkPos() const
+{
+	return m_chunkPos;
 }
 
 void Chunk::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
 {
-	if (position.x < m_chunkBlocks.size())
+	if (position.x < m_chunkSize)
 	{
-		if (position.y < m_chunkBlocks[position.x].size())
+		if (position.y < m_chunkSize)
 		{
-			if (position.z < m_chunkBlocks[position.z].size())
+			if (position.z < m_chunkSize)
 			{
-				int memOffset = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
-				std::memset(m_blockMesh->chunkVertices.data() + memOffset, 0, sizeof(CubeVerts));
+				BlockInstance& orig = m_chunkBlocks[getVectorIndex(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(position.z))];
 
-				auto& breakCallback =  BlockLibrary::get()->requestBlock(m_chunkBlocks[position.x][position.y][position.z].getBlockID()).getBreakCallback();
+				auto& breakCallback = BlockLibrary::get()->requestBlock(orig.getBlockID()).getBreakCallback();
 				if (breakCallback != nullptr)
 					breakCallback();
 
-				m_chunkBlocks[position.x][position.y][position.z] = block;
-				
+				orig = block;
+
 				if (!(m_chunkFlags & NEEDS_MESHING))
 					m_chunkFlags |= NEEDS_MESHING;
 			}
@@ -258,20 +386,17 @@ void Chunk::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
 
 void Chunk::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
 {
-	if (position.x < m_chunkBlocks.size())
+	if (position.x < m_chunkSize)
 	{
-		if (position.y < m_chunkBlocks[position.x].size())
+		if (position.y < m_chunkSize)
 		{
-			if (position.z < m_chunkBlocks[position.z].size())
+			if (position.z < m_chunkSize)
 			{
-				int memOffset = (position.x * 36) + (m_chunkSize * ((position.y * 36) + m_chunkSize * (position.z * 36)));
-				std::memcpy(m_blockMesh->chunkVertices.data() + memOffset, CubeVerts, sizeof(CubeVerts));
-
 				auto& placeCallback = BlockLibrary::get()->requestBlock(block.getBlockID()).getPlaceCallback();
 				if (placeCallback != nullptr)
 					placeCallback();
 
-				m_chunkBlocks[position.x][position.y][position.z] = block;
+				m_chunkBlocks[getVectorIndex(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(position.z))] = block;
 
 				if (!(m_chunkFlags & NEEDS_MESHING))
 					m_chunkFlags |= NEEDS_MESHING;
@@ -282,13 +407,13 @@ void Chunk::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
 
 BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
 {
-	if (position.x < m_chunkBlocks.size())
+	if (position.x < m_chunkSize)
 	{
-		if (position.y < m_chunkBlocks[position.x].size())
+		if (position.y < m_chunkSize)
 		{
-			if (position.z < m_chunkBlocks[position.z].size())
+			if (position.z < m_chunkSize)
 			{
-				return m_chunkBlocks[position.x][position.y][position.z];
+				return m_chunkBlocks[getVectorIndex(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(position.z))];
 			}
 		}
 	}
@@ -298,13 +423,13 @@ BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
 
 void Chunk::setBlockAt(phx::Vector3 position, const BlockInstance& newBlock)
 {
-	if (position.x < m_chunkBlocks.size())
+	if (position.x < m_chunkSize)
 	{
-		if (position.y < m_chunkBlocks[position.x].size())
+		if (position.y < m_chunkSize)
 		{
-			if (position.z < m_chunkBlocks[position.y].size())
+			if (position.z < m_chunkSize)
 			{
-				m_chunkBlocks[position.x][position.y][position.z] = newBlock;
+				m_chunkBlocks[getVectorIndex(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(position.z))] = newBlock;
 
 				if (!(m_chunkFlags & NEEDS_MESHING))
 					m_chunkFlags |= NEEDS_MESHING;
@@ -313,69 +438,65 @@ void Chunk::setBlockAt(phx::Vector3 position, const BlockInstance& newBlock)
 	}
 }
 
-void Chunk::bufferData()
+ChunkRenderer& Chunk::getBlockRenderer()
 {
-	if (m_blockMesh->chunkVertices.size() == 0)
-		return;
-
-	if (m_vao == nullptr)
-		m_vao = new gfx::gl::VertexArray();	
-
-	m_vao->bind();
-	
-	if (m_vbo == nullptr)
-		m_vbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
-
-	if (m_uvbo == nullptr)
-		m_uvbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
-
-	if (m_tlbo == nullptr)
-		m_tlbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
-
-	m_vbo->bind();
-	m_vbo->setData(static_cast<void*>(m_blockMesh->chunkVertices.data()), sizeof(m_blockMesh->chunkVertices[0]) * m_blockMesh->chunkVertices.size());	
-
-	gfx::gl::VertexAttrib vertices(0, 3, 3*sizeof(float), 0, gfx::gl::GLType::FLOAT);
-	vertices.enable();
-
-	m_uvbo->bind();
-	m_uvbo->setData(static_cast<void*>(m_blockMesh->chunkUVs.data()), sizeof(m_blockMesh->chunkUVs[0]) * m_blockMesh->chunkUVs.size());
-
-	gfx::gl::VertexAttrib uvs(1, 2, 2*sizeof(float), 0, gfx::gl::GLType::FLOAT);
-	uvs.enable();
-
-	m_tlbo->bind();
-	m_tlbo->setData(static_cast<void*>(m_blockMesh->chunkTexLayers.data()), sizeof(m_blockMesh->chunkTexLayers[0]) * m_blockMesh->chunkTexLayers.size());
-
-	gfx::gl::VertexAttrib texLayers(2, 1, sizeof(float), 0, gfx::gl::GLType::FLOAT);
-	texLayers.enable();
-
-	m_chunkFlags &= ~NEEDS_BUFFERING;
+	return m_blockRenderer;
 }
 
-void Chunk::render(int* counter)
+ChunkRenderer& Chunk::getObjectRenderer()
 {
-	if (m_chunkFlags & NEEDS_BUFFERING)
+	return m_objectRenderer;
+}
+
+ChunkRenderer& Chunk::getWaterRenderer()
+{
+	return m_waterRenderer;
+}
+
+void Chunk::renderBlocks(int* counter)
+{
+	if (m_chunkFlags & BLOCKS_NEED_BUFFERING)
 	{
-		if ((*counter) == 0)
+		if (*counter > 0)
+			(*counter)--;
+		else
 			return;
-		LDEBUG("BUFFERING MESH DATA!");
-		bufferData();
-		(*counter)--;
+
+		m_blockRenderer.bufferData();
+		m_chunkFlags &= ~BLOCKS_NEED_BUFFERING;
 	}
+
+	if (m_chunkFlags & BLOCKS_NEED_TEXTURING)
+	{
+		if (*counter > 0)
+			(*counter)--;
+		else
+			return;
+
+		m_blockRenderer.getTextureArray()->resolveReservations();
+		m_chunkFlags &= ~BLOCKS_NEED_TEXTURING;
+	}
+
+	m_blockRenderer.render();
 
 	if (m_chunkFlags & NEEDS_MESHING)
 	{
-		if ((*counter) == 0)
+		if (*counter > 0)
+			(*counter)--;
+		else
 			return;
-		LDEBUG("BUILDING MESH!");
-		buildMesh();
-		(*counter)--;
-	}
 
-	m_textureArray->bind(10);
-	m_vao->bind();
-	glDrawArrays(GL_TRIANGLES, 0, m_vertInChunk);
-	m_textureArray->unbind();
-	m_vao->unbind();
+		buildMesh();
+		m_chunkFlags &= ~NEEDS_MESHING;
+	}
+}
+
+void Chunk::renderObjects(int* counter)
+{
+	// TODO: Write function for rendering objects. (TO BE DONE ONCE WE ACTUALLY HAVE OBJECTS)
+}
+
+void Chunk::renderWater(int* counter)
+{
+	// TODO: Write function for rendering water. (TO BE DONE ONCE WE ACTUALLY HAVE WATER)
 }

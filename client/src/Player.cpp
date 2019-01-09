@@ -30,6 +30,11 @@ void Player::tick(float dt)
 	m_camera->update(dt);
 }
 
+phx::Vector3 Player::getPosition() 
+{
+	return m_camera->getPosition();
+}
+
 void Player::applyTo(phx::gfx::gl::ShaderPipeline* shader)
 {
 	shader->setMat4("u_projection", m_camera->getProjection());
@@ -67,17 +72,14 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 			
 			while (ray.getLength() < MAX_PICKING_DISTANCE)
 			{
-				if (canPlaceBlockAtPos(pos)) 
+				pos.floor();
+				BlockInstance block = m_world->getBlockAt(pos);
+
+				if (block.getBlockType() != BlockType::GAS)
 				{
-					BlockInstance block = m_world->getBlockAt(pos);
-
-					if (block.getBlockType() != BlockType::GAS)
-					{
-						pos.floor();
-
-						m_world->breakBlockAt(pos, BlockInstance("core:air"));
-						break;
-					}
+					LDEBUG("Ray is at: ", pos.x, " ", pos.y, " ", pos.z, "Block Type is: ", block.getBlockID().c_str());
+					m_world->breakBlockAt(pos, BlockInstance("core:air"));
+					break;
 				}
 
 				pos = ray.advance(RAY_INCREMENT);
@@ -91,18 +93,17 @@ void Player::onMouseClick(TVector2<int> position, events::MouseAction action, ev
 
 			while (ray.getLength() < MAX_PICKING_DISTANCE)
 			{
-				if (canPlaceBlockAtPos(pos))
+				pos.floor();
+				BlockInstance block = m_world->getBlockAt(pos);
+
+				if (block.getBlockType() != BlockType::GAS)
 				{
-					BlockInstance block = m_world->getBlockAt(pos);
+					pos = ray.backtrace(RAY_INCREMENT);
 
-					if (block.getBlockType() != BlockType::GAS)
-					{
-						pos = ray.backtrace(RAY_INCREMENT);
-						pos.floor();
+					LDEBUG("Ray is at: ", pos.x, " ", pos.y, " ", pos.z);
+					m_world->placeBlockAt(pos, BlockInstance("core:grass"));
 
-						m_world->placeBlockAt(pos, BlockInstance("core:grass"));
-						break;
-					}
+					break;
 				}
 
 				pos = ray.advance(RAY_INCREMENT);

@@ -26,13 +26,13 @@ namespace phx
 				 * @brief BIND THE ARRAY!
 				 * 
 				 */
-				void bind();
+				void bind() const;
 
 				/**
 				 * @brief unbind the array, like a wuss.
 				 * 
 				 */
-				void unbind();
+				void unbind() const;
 
 			private:
 				/// @brief Unique ID for the Vertex Array, set by OpenGL

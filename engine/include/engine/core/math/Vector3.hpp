@@ -35,20 +35,20 @@ namespace phx {
 
 		/**
 		 * @brief Constructs the Vector3 with the specified x, y and z components.
-		 * @param x The inital 'x' value of this vector
-		 * @param y The inital 'y' value of this vector
-		 * @param z The inital 'z' value of this vector
+		 * @param x The initial 'x' value of this vector
+		 * @param y The initial 'y' value of this vector
+		 * @param z The initial 'z' value of this vector
 		 */
 		Vector3(const float& x, const float& y, const float& z);
 
 		/**
-		 * @brief Constructs the Vector3 initalising x, y and z to the same value.
-		 * @param a The inital value for the x, y and z components
+		 * @brief Constructs the Vector3 initializing x, y and z to the same value.
+		 * @param a The initial value for the x, y and z components
 		 */
 		Vector3(const float& a);
 
 		/**
-		 * @brief Default constructs the Vector3 initalizing x, y and z with 0.0f
+		 * @brief Default constructs the Vector3 initializing x, y and z with 0.0f
 		 */
 		Vector3();
 
@@ -87,13 +87,13 @@ namespace phx {
 		static float   dot(const Vector3& a, const Vector3& b);
 
 		/**
-		 * @brief Adds another vector to this vector. Modifys this vector in place
+		 * @brief Adds another vector to this vector. Modifies this vector in place
 		 * @param other The vector to add to this.
 		 */
 		void operator+=(const Vector3& other);
 
 		/**
-		 * @brief Subtracts another vector from this vector. Modifys this vector in place.
+		 * @brief Subtracts another vector from this vector. Modifies this vector in place.
 		 * @param other The vector to subtract from this vector.
 		 */
 		void operator-=(const Vector3& other);
@@ -119,7 +119,7 @@ namespace phx {
 	Vector3 operator-(const Vector3& left, const Vector3& right);
 
 	/**
-	 * @brief Multiplys two vectors - the equation `p * q` where `p` and `q` are both 3 component vectors. Multiplys `right` and `left`.
+	 * @brief Multiplies two vectors - the equation `p * q` where `p` and `q` are both 3 component vectors. Multiplies `right` and `left`.
 	 * @param left The left hand side of the multiplication
 	 * @param right The right hand side of the multiplication
 	 * @return The product of `left` and `right`

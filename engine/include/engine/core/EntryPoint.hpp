@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 
 	delete application;
 
-	// ENGINE DE-INITIALISAITON
+	// ENGINE DE-INITIALIZATION
 	DESTROYLOGGER();
 
 	return 0;

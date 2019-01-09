@@ -25,11 +25,11 @@ namespace phx
 		class RegistryBlock
 		{
 		public:
-			RegistryBlock();
+			RegistryBlock() = delete;
 			RegistryBlock(std::string blockID, std::string blockName, int initialHP, BlockType blockType);
 			RegistryBlock(const RegistryBlock& other) = default;
 
-			~RegistryBlock();
+			~RegistryBlock() = default;
 
 			const std::string& getBlockID() const;
 			const std::string& getBlockName() const;
@@ -70,10 +70,9 @@ namespace phx
 		{
 		public:
 			BlockInstance();
-			BlockInstance(const BlockInstance& other) = default;
-
 			BlockInstance(const std::string& blockID);
-			~BlockInstance() {}
+
+			~BlockInstance() = default;
 
 			unsigned int getHitpoints() const;
 			void setHitpoints(unsigned int hitpoints);
@@ -85,12 +84,9 @@ namespace phx
 			BlockType getBlockType() const;
 
 			const std::vector<std::string>& getBlockTextures() const;
-			void setBlockTextures(const std::vector<std::string>& newTextures);
 
 		private:
 			unsigned int m_hitpoints;
-
-			std::vector<std::string> m_blockTextures;
 
 			std::string m_blockID;
 			std::string m_blockName;
@@ -106,11 +102,14 @@ namespace phx
 
 			void registerBlock(const RegistryBlock& block);
 			
-			RegistryBlock requestBlock(const std::string& blockID) const;
+			const RegistryBlock& requestBlock(const std::string& blockID) const;
 
 		private:
-			BlockLibrary() {}
-			~BlockLibrary() {}
+			BlockLibrary() = default;
+			BlockLibrary(const BlockLibrary& other) = default;
+			BlockLibrary(BlockLibrary&& other) = default;
+
+			~BlockLibrary() = default;
 
 			std::unordered_map<std::string, RegistryBlock> m_registeredBlocks;
 		};

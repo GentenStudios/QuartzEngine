@@ -1,9 +1,14 @@
+#include <GL/glew.h>
+
+#include <engine/core/graphics/gl/GLDebug.hpp>
 #include <engine/core/graphics/gl/ShaderPipeline.hpp>
 
 using namespace phx::gfx::gl;
 
 ShaderPipeline::ShaderPipeline()
-{}
+{
+	m_shaderProgram = GLCheck(glCreateProgram());
+}
 
 ShaderPipeline::~ShaderPipeline()
 {
@@ -12,9 +17,7 @@ ShaderPipeline::~ShaderPipeline()
 
 void ShaderPipeline::addStage(ShaderType stage, const char* shaderSource)
 {
-	unsigned int shader;
-
-	shader = GLCheck(glCreateShader(static_cast<GLenum>(stage)));
+	unsigned int shader = GLCheck(glCreateShader(static_cast<GLenum>(stage)));
 	GLCheck(glShaderSource(shader, 1, &shaderSource, nullptr));
 	GLCheck(glCompileShader(shader));
 
@@ -33,8 +36,6 @@ void ShaderPipeline::addStage(ShaderType stage, const char* shaderSource)
 
 void ShaderPipeline::build()
 {
-	m_shaderProgram = GLCheck(glCreateProgram());
-
 	for (unsigned int shaderID : m_shaders)
 	{
 		GLCheck(glAttachShader(m_shaderProgram, shaderID));

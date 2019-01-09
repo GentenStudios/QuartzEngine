@@ -1,6 +1,6 @@
 #pragma once
 
-#include <engine/core/Core.hpp>
+#include <vector>
 
 #include <engine/core/math/Vector2.hpp>
 #include <engine/core/math/Vector3.hpp>
@@ -9,18 +9,20 @@
 
 #include <engine/core/graphics/gl/VertexBuffer.hpp>
 #include <engine/core/graphics/gl/VertexArray.hpp>
-#include <engine/core/graphics/gl/VertexAttrib.hpp>
 #include <engine/core/graphics/gl/TextureArray.hpp>
 
 namespace phx
 {
 	namespace voxels
 	{
-		enum ChunkFlags : unsigned char
+		enum ChunkFlags : unsigned int
 		{
-			NEEDS_BUFFERING	= 1 << 0,
-			NEEDS_MESHING	= 1 << 1,
-			NEEDS_TEXTURING	= 1 << 2,
+			BLOCKS_NEED_BUFFERING	= 1 << 0,
+			OBJECTS_NEED_BUFFERING	= 1 << 1,
+			WATER_NEEDS_BUFFERING	= 1 << 2,
+			NEEDS_MESHING			= 1 << 3,
+			BLOCKS_NEED_TEXTURING	= 1 << 4,
+			OBJECTS_NEED_TEXTURING	= 1 << 5,
 		};
 
 		enum class BlockFace : int
@@ -35,25 +37,80 @@ namespace phx
 
 		struct Mesh
 		{
-			std::vector<phx::Vector3> chunkVertices;
-			std::vector<phx::Vector3> chunkNormals;
-			std::vector<phx::Vector2> chunkUVs;
-			std::vector<int> chunkTexLayers;
+			std::vector<phx::Vector3> vertices;
+			std::vector<phx::Vector3> normals;
+			std::vector<phx::Vector2> uvs;
+			std::vector<int> texLayers;
+
+			void reset();
+			void update(const Mesh& other);
+
+			std::size_t triangleCount() const;
+		};
+
+		class Chunk;
+
+		class ChunkMesh
+		{
+		public:
+			ChunkMesh() = default;
+			~ChunkMesh() = default;
+
+			void add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos, Chunk* chunk);
+
+			const Mesh& getBlockMesh() const;
+			const Mesh& getObjectMesh() const;
+			const Mesh& getWaterMesh() const;
+
+			void resetAll();
+
+		private:
+			Mesh m_blockMesh;
+			Mesh m_objectMesh;
+			Mesh m_waterMesh;
+		};
+
+		class ChunkRenderer
+		{
+		public:
+			ChunkRenderer();
+			~ChunkRenderer();
+
+			void resetMesh();
+			void updateMesh(const Mesh& mesh);
+
+			gfx::gl::TextureArray* getTextureArray() const;
+
+			void bufferData();
+			void render() const;
+
+			std::size_t getTrianglesCount() const;
+
+		private:
+			Mesh m_mesh;
+
+			gfx::gl::VertexArray* m_vao;
+			gfx::gl::VertexBuffer* m_vbo;
+
+			gfx::gl::TextureArray* m_textureArray;
 		};
 
 		class Chunk
 		{
 		public:
-			Chunk(const Chunk&) = default;
-
+			Chunk() = delete;
+			Chunk(const Chunk& other) = default;
+			Chunk(Chunk&& other) = default;
 			Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID);
-			~Chunk() {}
 
-			void populateData();
+			~Chunk() = default;
 
-			void buildMesh(); 
+			void populateData(unsigned int seed);
 
-			void addBlockFace(BlockFace face, int memOffset, int x, int y, int z);
+			void buildMesh();
+
+			const ChunkMesh& getChunkMesh() const;
+			const Vector3& getChunkPos() const;
 
 			void breakBlockAt(phx::Vector3 position, const BlockInstance& block);
 			void placeBlockAt(phx::Vector3 position, const BlockInstance& block);
@@ -61,37 +118,33 @@ namespace phx
 			BlockInstance getBlockAt(phx::Vector3 position) const;
 			void setBlockAt(phx::Vector3 position, const BlockInstance& newBlock);
 
-			void bufferData();
-			void render(int* counter);
+			ChunkRenderer& getBlockRenderer();
+			ChunkRenderer& getObjectRenderer();
+			ChunkRenderer& getWaterRenderer();
 
-			inline const Vector3& getChunkPos() const { return m_chunkPos; }
-
-			Mesh* getBlocksMesh();
-			Mesh* getObjectsMesh();
-			Mesh* getWaterMesh();
+			void renderBlocks(int* counter);
+			void renderObjects(int* counter);
+			void renderWater(int* counter);
 
 		private:
 			phx::Vector3 m_chunkPos;
 			unsigned int m_chunkSize;
 
-			unsigned char m_chunkFlags = 0;
+			ChunkMesh m_mesh;
+
+			ChunkRenderer m_blockRenderer;
+			ChunkRenderer m_objectRenderer;
+			ChunkRenderer m_waterRenderer;
+
+			unsigned int m_chunkFlags = 0;
 
 			std::string m_defaultBlockID;
-			std::vector<std::vector<std::vector<BlockInstance>>> m_chunkBlocks;
+			std::vector<BlockInstance> m_chunkBlocks;
 
-			phx::gfx::gl::TextureArray* m_textureArray = nullptr;
-			
-			Mesh* m_blockMesh;
-			Mesh* m_objectMesh;
-			Mesh* m_waterMesh;
-
-			phx::gfx::gl::VertexArray* m_vao = nullptr;
-			phx::gfx::gl::VertexBuffer* m_vbo = nullptr;
-			phx::gfx::gl::VertexBuffer* m_uvbo = nullptr;
-			phx::gfx::gl::VertexBuffer* m_tlbo = nullptr; // Texture Layer Buffer Object
-
-			unsigned int m_vertInChunk;
-			unsigned int m_uvInChunk;
+			std::size_t getVectorIndex(std::size_t x, std::size_t y, std::size_t z) const
+			{
+				return x + m_chunkSize * (y + m_chunkSize * z);
+			}
 		};
 
 	}

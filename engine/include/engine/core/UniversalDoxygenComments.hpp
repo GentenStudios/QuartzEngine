@@ -3,7 +3,7 @@
 /**
  * @brief The universal namespace for all official Phoenix code.
  *
- * @details ONLY Pheonix based code should be placed inside the PHX namespace.
+ * @details ONLY Phoenix based code should be placed inside the PHX namespace.
  *			Things like ENUMs, Classes, Functions, Structs, and similar should be placed inside the PHX Namespace,
  *			and in any required sub-namespaces.
  */
@@ -24,7 +24,7 @@ namespace phx
 	namespace gfx
 	{
 		/**
-		 * @brief The Namesapce for	specifically OpenGL related code.
+		 * @brief The Namespace for	specifically OpenGL related code.
 		 *
 		 * @details This namespace is mainly just for the OpenGL Abstraction Layer, nothing much else.
 		 *			The renderer we create later on can use this namespace, but WON'T be in it.

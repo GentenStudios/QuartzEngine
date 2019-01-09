@@ -1,5 +1,6 @@
 #include <engine/core/graphics/Camera.hpp>
-#include <GL/glew.h>
+
+#include <engine/core/math/MathUtils.hpp>
 
 using namespace phx::gfx;
 using namespace phx;
@@ -8,7 +9,8 @@ const float HALF_PI = MathUtils::PI / 2;
 
 static Vector2 lastMousePos = { 0, 0 };
 
-FPSCam::FPSCam(IWindow* window) : m_window(window), enabled(true)
+FPSCam::FPSCam(IWindow* window) :
+	enabled(true), m_window(window)
 {
 	window->setCursorState(CursorState::DISABLED);
 	m_controls.load();
@@ -27,6 +29,9 @@ FPSCam::FPSCam(IWindow* window) : m_window(window), enabled(true)
 		this->m_windowCentre = { w / 2, h / 2 };
 	});
 }
+
+FPSCam::~FPSCam()
+{}
 
 void FPSCam::update(float dt)
 {
@@ -80,24 +85,24 @@ void FPSCam::update(float dt)
 	}
 }
 
-Matrix4x4 FPSCam::calculateViewMatrix()
+Matrix4x4 FPSCam::calculateViewMatrix() const
 {
 	Vector3 centre = m_position + m_direction;
 
 	return Matrix4x4::lookAt(m_position, centre, m_up);
 }
 
-Vector3 FPSCam::getPosition()
+Vector3 FPSCam::getPosition() const
 {
 	return m_position;
 }
 
-Vector3 FPSCam::getDirection()
+Vector3 FPSCam::getDirection() const
 {
 	return m_direction;
 }
 
-Matrix4x4 FPSCam::getProjection()
+Matrix4x4 FPSCam::getProjection() const
 {
 	return m_projection;
 }
@@ -105,6 +110,11 @@ Matrix4x4 FPSCam::getProjection()
 void phx::gfx::FPSCam::setProjection(const Matrix4x4 & projection)
 {
 	m_projection = projection;
+}
+
+CameraControls::CameraControls() :
+	m_controlsConfig(nullptr)
+{
 }
 
 void CameraControls::load()
@@ -119,32 +129,32 @@ void CameraControls::load()
 const std::string CAMERA_KEYBOARD_SECTION = "CameraKeyboard";
 const std::string CAMERA_MISC_SECTION = "CameraMisc";
 
-events::Keys CameraControls::moveForward()
+events::Keys CameraControls::moveForward() const
 {
 	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveForward", events::Keys::KEY_W);
 }
 
-events::Keys CameraControls::moveBackwards()
+events::Keys CameraControls::moveBackwards() const
 {
 	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "moveBackwards", events::Keys::KEY_S);
 }
 
-events::Keys CameraControls::strafeLeft()
+events::Keys CameraControls::strafeLeft() const
 {
 	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeLeft", events::Keys::KEY_A);
 }
 
-events::Keys CameraControls::strafeRight()
+events::Keys CameraControls::strafeRight() const
 {
 	return m_controlsConfig->getScancode(CAMERA_KEYBOARD_SECTION, "strafeRight", events::Keys::KEY_D);
 }
 
-float CameraControls::mouseSensitivity()
+float CameraControls::mouseSensitivity() const
 {
 	return m_controlsConfig->getFloat(CAMERA_MISC_SECTION, "mouseSensitivty", 0.00005f);
 }
 
-float CameraControls::moveSpeed()
+float CameraControls::moveSpeed() const
 {
 	return m_controlsConfig->getFloat(CAMERA_MISC_SECTION, "moveSpeed", 0.1f);
 }

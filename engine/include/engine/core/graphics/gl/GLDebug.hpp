@@ -27,14 +27,14 @@
 #endif
 
 // MACRO FOR OPENGL DEBUGGING
-#ifdef PHX_GL_DEBUG
+#ifdef PHX_DEBUG
 #	define GLCheck(x) x; phx::gfx::gl::checkError(__FILE__, __LINE__);
 #else
 #	define GLCheck(x) x;
 #endif
 
 #ifndef PHX_OS_WINDOWS
-#define __stdcall
+#	define __stdcall
 #endif
 
 namespace phx
@@ -68,14 +68,16 @@ namespace phx
 #ifndef PHX_OS_WINDOWS  // Doesn't exist on Windows.
 					case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
 #endif // !PHX_OS_WINDOWS
+					default:							   error = "UNKNOWN"; break; // Something is seriously wrong, get this fixed.
 					}
 					RENDER_WARNING("", error.c_str());
 				}
 #endif  // PHX_DEBUG
 			}
+
 			/**
 			 * @brief OpenGL Debugging output function. THIS FUNCTION IS HANDLED BY OPENGL, AND DOES NOT NEED *ANY* INTERVENTION FROM PROGRAMMERS.
-			 * 
+			 *
 			 * @param source 		The source of the error, whether it be an API error, or WINDOW SYSTEM error, or maybe even a THIRD PARTY error.
 			 * @param type 			The type of error, as in ERROR, or DEPRECATED BEHAVIOUR, or other types of errors that OpenGL recognises.
 			 * @param id 			The ID of the error, this is often very vague and can be quite useless.
@@ -83,7 +85,7 @@ namespace phx
 			 * @param length 		The length of the message. (not used by us.)
 			 * @param message 		The message itself.
 			 * @param userParam 	Any Parameters we decide to make OpenGL send.
-			 * 
+			 *
 			 * ALL THESE PARAMETERS ARE SET BY OPENGL, AND ALL FUNCTION CALLS ARE DONE BY OPENGL, DO NOT INTERFERE WITH THIS, OR YOU MAY BREAK DEBUGGING OF OPENGL.
 			 */
 			inline void __stdcall glDebugOutput(GLenum source,
@@ -108,6 +110,7 @@ namespace phx
 				case GL_DEBUG_SOURCE_THIRD_PARTY:     errorOutput << "[THIRD PARY]"; break;
 				case GL_DEBUG_SOURCE_APPLICATION:     errorOutput << "[APPLICATION]"; break;
 				case GL_DEBUG_SOURCE_OTHER:           errorOutput << "[OTHER]"; break;
+				default:							  errorOutput << "[UNKNOWN]"; break; // Something is seriously wrong.
 				}
 
 				switch (type)
@@ -121,6 +124,7 @@ namespace phx
 				case GL_DEBUG_TYPE_PUSH_GROUP:          errorOutput << "[PUSH GROUP]"; break;
 				case GL_DEBUG_TYPE_POP_GROUP:           errorOutput << "[POP GROUP]"; break;
 				case GL_DEBUG_TYPE_OTHER:               errorOutput << "[OTHER]"; break;
+				default:							  errorOutput << "[UNKNOWN]"; break; // Something is seriously wrong.
 				}
 
 				errorOutput << " " << message;
@@ -131,6 +135,7 @@ namespace phx
 				case GL_DEBUG_SEVERITY_MEDIUM:       RENDER_WARNING("[MEDIUM SEVERITY]", errorOutput.str()); break;
 				case GL_DEBUG_SEVERITY_LOW:          RENDER_WARNING("[LOW SEVERITY]", errorOutput.str()); break;
 				case GL_DEBUG_SEVERITY_NOTIFICATION: RENDER_DEBUG("[NOTIFICATION]", errorOutput.str()); break;
+				default:							  errorOutput << "[UNKNOWN]"; break; // Something is seriously wrong.
 				}
 #endif // PHX_DEBUG
 			}

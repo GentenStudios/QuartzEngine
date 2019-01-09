@@ -4,6 +4,7 @@
 
 #include <engine/voxels/Block.hpp>
 #include <engine/voxels/Chunk.hpp>
+#include "terrain/PerlinNoise.hpp"
 
 namespace phx
 {
@@ -18,29 +19,34 @@ namespace phx
 		class ChunkManager
 		{
 		public:
-			ChunkManager(const std::string& blockID);
-			~ChunkManager();
+			ChunkManager(const std::string& blockID, unsigned int chunkSize, unsigned int seed);
+			ChunkManager(const ChunkManager&) = default;
+
+			~ChunkManager() = default;
 
 			void toggleWireframe();
-			bool isWireframe() { return m_wireframe; };
+			bool isWireframe() const;;
 
-			void determineGeneration(int test);
-			void testGeneration(int test);
-			void unloadRedundant() { /* TODO this. */ }
+			void determineGeneration(phx::Vector3 cameraPosition);
+			void unloadRedundant();
 
 			void setBlockAt(phx::Vector3 position, const BlockInstance& block);
-			BlockInstance getBlockAt(phx::Vector3 position);
+			BlockInstance getBlockAt(phx::Vector3 position) const;
 
 			void breakBlockAt(phx::Vector3 position, const BlockInstance& block);
 			void placeBlockAt(phx::Vector3 position, const BlockInstance& block);
 						
-			void render(int bufferCounter);
+			void render(int bufferCounter) const;
 
 		private:
+			unsigned int m_seed;
+
+			unsigned int m_chunkSize;
+
 			ChunkContainer* m_managerData;
 			std::string m_defaultBlockID;
 
-			bool m_wireframe;
+			bool m_wireframe = false;
 		};
 
 	}

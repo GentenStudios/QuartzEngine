@@ -1,15 +1,8 @@
-#include <engine/voxels/Block.hpp>
 #include <algorithm>
 
-using namespace phx::voxels;
+#include <engine/voxels/Block.hpp>
 
-RegistryBlock::RegistryBlock()
-{
-	m_blockID = "core:unknown";
-	m_blockName = "Unknown Block";
-	m_initialHealthPoints = 1;
-	m_blockType = BlockType::SOLID;
-}
+using namespace phx::voxels;
 
 RegistryBlock::RegistryBlock(std::string blockID, std::string blockName, int initialHP, BlockType blockType)
 {
@@ -18,9 +11,6 @@ RegistryBlock::RegistryBlock(std::string blockID, std::string blockName, int ini
 	m_initialHealthPoints = initialHP;
 	m_blockType = blockType;
 }
-
-RegistryBlock::~RegistryBlock()
-{}
 
 const std::string& RegistryBlock::getBlockID() const { return m_blockID; }
 const std::string& RegistryBlock::getBlockName() const { return m_blockName; }
@@ -42,27 +32,21 @@ void RegistryBlock::setBreakCallback(const BlockCallback& callback) { m_onBreakC
 void RegistryBlock::setInteractLeftCallback(const InteractionCallback& callback) { m_interactLeftCallback = callback; }
 void RegistryBlock::setInteractRightCallback(const InteractionCallback& callback) { m_interactRightCallback = callback; }
 
-BlockInstance::BlockInstance()
+BlockInstance::BlockInstance() :
+	m_blockID("core:unknown")
 {
-	m_blockID = "core:unknown";
-
 	auto it = BlockLibrary::get()->requestBlock(m_blockID);
 	m_hitpoints = it.getInitialHP();
-	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();
-	m_blockTextures = it.getBlockTextures();
-
 }
 
-BlockInstance::BlockInstance(const std::string& blockID)
+BlockInstance::BlockInstance(const std::string& blockID) :
+	m_blockID(blockID)
 {
-	m_blockID = blockID;
-
 	auto it = BlockLibrary::get()->requestBlock(blockID);
 	m_hitpoints = it.getInitialHP();
-	m_blockName = it.getBlockName();
 	m_blockType = it.getBlockType();
-	m_blockTextures = it.getBlockTextures();
+	m_blockName = it.getBlockName();
 }
 
 const std::string& BlockInstance::getBlockName() const { return m_blockName; }
@@ -74,8 +58,7 @@ void BlockInstance::setHitpoints(unsigned int hitpoints) { m_hitpoints = hitpoin
 const std::string& BlockInstance::getBlockID() const { return m_blockID; }
 BlockType BlockInstance::getBlockType() const { return m_blockType; }
 
-const std::vector<std::string>& BlockInstance::getBlockTextures() const { return m_blockTextures; }
-void BlockInstance::setBlockTextures(const std::vector<std::string>& newTextures) { m_blockTextures = newTextures; }
+const std::vector<std::string>& BlockInstance::getBlockTextures() const { return BlockLibrary::get()->requestBlock(m_blockID).getBlockTextures(); }
 
 BlockLibrary* BlockLibrary::get()
 {
@@ -85,8 +68,8 @@ BlockLibrary* BlockLibrary::get()
 
 void BlockLibrary::init()
 {
-	m_registeredBlocks["core:unknown"] = RegistryBlock("core:unknown", "Unkown Block", 1, BlockType::SOLID);
-	m_registeredBlocks["core:out_of_bounds"] = RegistryBlock("core:out_of_bounds", "Out Of Bounds Block", 1, BlockType::GAS);
+	m_registeredBlocks.emplace("core:unknown", RegistryBlock{ "core:unknown", "Unkown Block", 1, BlockType::SOLID });
+	m_registeredBlocks.emplace("core:out_of_bounds", RegistryBlock{ "core:out_of_bounds", "Out Of Bounds Block", 1, BlockType::GAS });
 }
 
 void BlockLibrary::registerBlock(const RegistryBlock& block)
@@ -99,10 +82,10 @@ void BlockLibrary::registerBlock(const RegistryBlock& block)
 		return;
 	}
 
-	m_registeredBlocks[blockID] = block;
+	m_registeredBlocks.emplace(blockID, block);
 }
 
-RegistryBlock BlockLibrary::requestBlock(const std::string& blockID) const
+const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) const
 {
 	auto it = m_registeredBlocks.find(blockID);
 

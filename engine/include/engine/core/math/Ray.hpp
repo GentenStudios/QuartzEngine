@@ -8,13 +8,15 @@ namespace phx
 	{
 	public:
 		Ray(const Vector3& start, const Vector3& direction);
+		Ray(const Ray& other) = default;
+		~Ray() = default;
 		
 		Vector3 advance(float scale);
 		Vector3 backtrace(float scale);
 
-		float getLength();
+		float getLength() const;
 
-		inline Vector3 getCurrentPosition() { return m_currentPosition; }
+		Vector3 getCurrentPosition() const;
 
 	private:
 		float m_length;
