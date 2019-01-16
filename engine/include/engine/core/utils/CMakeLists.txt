@@ -4,6 +4,7 @@ set(utilHeaders
     ${utilsIncludeDir}/IO.hpp
     ${utilsIncludeDir}/Logging.hpp
     ${utilsIncludeDir}/Config.hpp
+    ${utilsIncludeDir}/ThreadPool.hpp
 )
 
 source_group("Header Files\\Core\\Utils" FILES ${utilHeaders})
