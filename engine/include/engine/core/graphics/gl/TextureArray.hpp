@@ -37,18 +37,14 @@ namespace phx
 				 * @param path The path to the te, will be loaded by stb_image, unless we create something faster... one day, we will, and then we will party
 				 */
 				void add(const std::string& path);
-
+				
 				/**
-				 * @brief Reserve a texture for the array, until the array is out of places, which is another reason we need a ShaderFactory.
-				 *
-				 * @param path The path to the texture, will be stored in another map, for reservations, unless we create something faster... one day, we will, and then we will party
+				 * @brief Add a bunch of textures to the array, until the array is out of places, which is another reason we need a ShaderFactory.
+				 * 
+				 * @param texList Const reference to a "TexCache" (unordered_map) containing a bunch of textures and their layer number, 
+				 *				  all of which will be loaded by stb_image, unless we create something faster... one day, we will, and then we will party
 				 */
-				void reserve(const std::string& path);
-
-				/**
-				 * @brief Resolve and add all textures that have been reserved.
-				 */
-				void resolveReservations();
+				void add(const TexCache& texList);
 
 				/**
 				 * @brief Bind the texture array to a texture unit.
@@ -78,6 +74,12 @@ namespace phx
 				 * @return The actual texture layer that the texture is residing in, -1 if there is no texture with that path.
 				 */
 				int getTexLayer(const std::string& path);
+
+				/**
+				 * @brief Get the current layer that the texture array is dormant on.
+				 * @return The current layer that the texture array will next append to.
+				 */
+				int getCurrentLayer() const;
 
 			private:
 				/// @brief Unordered Map for mapping paths with Texture Layers.

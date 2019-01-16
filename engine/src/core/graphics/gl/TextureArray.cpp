@@ -55,6 +55,11 @@ int TextureArray::getTexLayer(const std::string& path)
 	return it->second;
 }
 
+int TextureArray::getCurrentLayer() const
+{
+	return m_textureNumber;
+}
+
 void TextureArray::add(const std::string& path)
 {
 	bind();
@@ -87,19 +92,11 @@ void TextureArray::add(const std::string& path)
 	unbind();
 }
 
-void TextureArray::reserve(const std::string& path)
-{
-	if (m_texReservations.find(path) == m_texReservations.end())
-	{
-		m_texReservations[path] = m_textureNumber++;
-	}
-}
-
-void TextureArray::resolveReservations()
+void TextureArray::add(const TexCache& texList)
 {
 	bind();
 
-	for (const auto& current : m_texReservations)
+	for (const auto& current : texList)
 	{
 		if (m_texNames.find(current.first) == m_texNames.end())
 		{
@@ -126,8 +123,6 @@ void TextureArray::resolveReservations()
 			GLCheck(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f));
 		}
 	}
-
-	m_texReservations.clear();
 
 	unbind();
 }
