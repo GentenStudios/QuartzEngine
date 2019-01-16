@@ -71,6 +71,7 @@ namespace phx
 					default:							   error = "UNKNOWN"; break; // Something is seriously wrong, get this fixed.
 					}
 					RENDER_WARNING("", error.c_str());
+					
 				}
 #endif  // PHX_DEBUG
 			}
@@ -135,7 +136,7 @@ namespace phx
 				case GL_DEBUG_SEVERITY_MEDIUM:       RENDER_WARNING("[MEDIUM SEVERITY]", errorOutput.str()); break;
 				case GL_DEBUG_SEVERITY_LOW:          RENDER_WARNING("[LOW SEVERITY]", errorOutput.str()); break;
 				case GL_DEBUG_SEVERITY_NOTIFICATION: RENDER_DEBUG("[NOTIFICATION]", errorOutput.str()); break;
-				default:							  errorOutput << "[UNKNOWN]"; break; // Something is seriously wrong.
+				default:							 RENDER_ERROR("[UNKNOWN]", errorOutput.str()); break; // Something is seriously wrong.
 				}
 #endif // PHX_DEBUG
 			}
