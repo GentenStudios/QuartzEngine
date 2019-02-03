@@ -1,10 +1,10 @@
 #pragma once
 
-#include <engine/core/Core.hpp>
+#include <engine/core/utils/ThreadPool.hpp>
 
 #include <engine/voxels/Block.hpp>
 #include <engine/voxels/Chunk.hpp>
-#include "terrain/PerlinNoise.hpp"
+#include <engine/voxels/terrain/PerlinNoise.hpp>
 
 namespace phx
 {
@@ -12,15 +12,14 @@ namespace phx
 	{
 		struct ChunkContainer
 		{
-			std::vector<Chunk> chunks;
-			std::vector<Vector3> positions;
+			
 		};
 
 		class ChunkManager
 		{
 		public:
 			ChunkManager(const std::string& blockID, unsigned int chunkSize, unsigned int seed);
-			ChunkManager(const ChunkManager&) = default;
+			ChunkManager(ChunkManager&& other) = default;
 
 			~ChunkManager() = default;
 
@@ -28,6 +27,7 @@ namespace phx
 			bool isWireframe() const;;
 
 			void determineGeneration(phx::Vector3 cameraPosition);
+			void testGeneration();
 			void unloadRedundant();
 
 			void setBlockAt(phx::Vector3 position, const BlockInstance& block);
@@ -36,17 +36,23 @@ namespace phx
 			void breakBlockAt(phx::Vector3 position, const BlockInstance& block);
 			void placeBlockAt(phx::Vector3 position, const BlockInstance& block);
 						
-			void render(int bufferCounter) const;
+			void render(int bufferCounter);
 
 		private:
 			unsigned int m_seed;
 
 			unsigned int m_chunkSize;
 
-			ChunkContainer* m_managerData;
 			std::string m_defaultBlockID;
 
+			std::vector<Chunk> m_chunks;
+
 			bool m_wireframe = false;
+
+			threads::ThreadPool<10> m_threadPool;
+			std::mutex m_mutex;
+
+			void addChunkToArray(const Chunk& chunk);
 		};
 
 	}

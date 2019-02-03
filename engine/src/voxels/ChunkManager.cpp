@@ -1,4 +1,5 @@
 #include <engine/voxels/ChunkManager.hpp>
+#include <engine/core/utils/Task.hpp>
 
 #include <algorithm>
 #include <utility>
@@ -10,9 +11,7 @@ const int VIEW_DISTANCE = 16; // 96 blocks, 6 chunks.
 ChunkManager::ChunkManager(const std::string& blockID, unsigned int chunkSize, unsigned int seed) :
 	m_seed(seed), m_chunkSize(chunkSize),
 	m_defaultBlockID(blockID)
-{
-	m_managerData = new ChunkContainer();
-}
+{}
 
 void ChunkManager::toggleWireframe()
 {
@@ -35,7 +34,7 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 	const int posZ = static_cast<int>(cameraPosition.z) / m_chunkSize;
 
 	// Get diameter to generate for.
-	const int chunkViewDistance = (VIEW_DISTANCE / m_chunkSize) * 2;
+	const int chunkViewDistance = (VIEW_DISTANCE / m_chunkSize);
 
 	for (int x = -chunkViewDistance; x <= chunkViewDistance; x++)
 	{
@@ -51,16 +50,30 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 
 				chunkToCheck = chunkToCheck * static_cast<float>(m_chunkSize);
 
-				auto result = std::find(m_managerData->positions.begin(), m_managerData->positions.end(), chunkToCheck);
-				
-				if (result == m_managerData->positions.end())
+				auto result = std::find_if(m_chunks.begin(), m_chunks.end(),
+					[chunkToCheck](const Chunk& o) -> bool
+					{
+						return o.getChunkPos() == chunkToCheck;
+					});
+
+				if (result == m_chunks.end())
 				{
-					m_managerData->chunks.emplace_back(chunkToCheck, m_chunkSize, m_defaultBlockID);
-					m_managerData->chunks.back().populateData(m_seed);
-					m_managerData->positions.push_back(chunkToCheck);
+					m_chunks.emplace_back(chunkToCheck, m_chunkSize, m_defaultBlockID);
+					m_chunks.back().populateData(m_seed);
 				}
 			}
 		}
+	}
+}
+
+void ChunkManager::testGeneration()
+{
+	for (int i = 0; i < 5; ++i)
+	{
+		phx::Vector3 pain = { i * 16.f, 0, 0 };
+
+		m_chunks.emplace_back(pain, m_chunkSize, m_defaultBlockID);
+		m_chunks.back().populateData(m_seed);
 	}
 }
 
@@ -97,10 +110,10 @@ void ChunkManager::setBlockAt(phx::Vector3 position, const BlockInstance& block)
 	}
 
 	const phx::Vector3 chunkPosition = phx::Vector3(static_cast<float>(posX * m_chunkSize),
-													static_cast<float>(posY * m_chunkSize),
-													static_cast<float>(posZ * m_chunkSize));
+		static_cast<float>(posY * m_chunkSize),
+		static_cast<float>(posZ * m_chunkSize));
 
-	for (auto& chunk : m_managerData->chunks)
+	for (auto& chunk : m_chunks)
 	{
 		if (chunk.getChunkPos() == chunkPosition)
 		{
@@ -109,7 +122,7 @@ void ChunkManager::setBlockAt(phx::Vector3 position, const BlockInstance& block)
 				position.x, // x position IN the chunk, not overall 
 				position.y, // y position IN the chunk, not overall 
 				position.z  // z position IN the chunk, not overall 
-				}, 
+				},
 				block
 			);
 
@@ -146,10 +159,10 @@ BlockInstance ChunkManager::getBlockAt(phx::Vector3 position) const
 	}
 
 	const phx::Vector3 chunkPosition = phx::Vector3(static_cast<float>(posX * m_chunkSize),
-													static_cast<float>(posY * m_chunkSize),
-													static_cast<float>(posZ * m_chunkSize));
+		static_cast<float>(posY * m_chunkSize),
+		static_cast<float>(posZ * m_chunkSize));
 
-	for (auto& chunk : m_managerData->chunks)
+	for (auto& chunk : m_chunks)
 	{
 		if (chunk.getChunkPos() == chunkPosition)
 		{
@@ -194,10 +207,10 @@ void ChunkManager::breakBlockAt(phx::Vector3 position, const BlockInstance& bloc
 	}
 
 	const phx::Vector3 chunkPosition = phx::Vector3(static_cast<float>(posX * m_chunkSize),
-													static_cast<float>(posY * m_chunkSize),
-													static_cast<float>(posZ * m_chunkSize));
+		static_cast<float>(posY * m_chunkSize),
+		static_cast<float>(posZ * m_chunkSize));
 
-	for (auto& chunk : m_managerData->chunks)
+	for (auto& chunk : m_chunks)
 	{
 		if (chunk.getChunkPos() == chunkPosition)
 		{
@@ -243,10 +256,10 @@ void ChunkManager::placeBlockAt(phx::Vector3 position, const BlockInstance& bloc
 	}
 
 	const phx::Vector3 chunkPosition = phx::Vector3(static_cast<float>(posX * m_chunkSize),
-													static_cast<float>(posY * m_chunkSize),
-													static_cast<float>(posZ * m_chunkSize));
+		static_cast<float>(posY * m_chunkSize),
+		static_cast<float>(posZ * m_chunkSize));
 
-	for (auto& chunk : m_managerData->chunks)
+	for (auto& chunk : m_chunks)
 	{
 		if (chunk.getChunkPos() == chunkPosition)
 		{
@@ -264,11 +277,11 @@ void ChunkManager::placeBlockAt(phx::Vector3 position, const BlockInstance& bloc
 	}
 }
 
-void ChunkManager::render(int bufferCounter) const
+void ChunkManager::render(int bufferCounter)
 {
 	int count1 = bufferCounter;
 
-	for (auto& chunk : m_managerData->chunks)
+	for (Chunk& chunk : m_chunks)
 	{
 		chunk.renderBlocks(&count1);
 	}
