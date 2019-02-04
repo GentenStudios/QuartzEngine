@@ -21,7 +21,7 @@ set(include_dirs
     ${header_dir}
 )
 
-set(libraries SDL2-static SDL2main glew_s)
+set(libraries SDL2-static SDL2main glew_s luamod)
 
 if(WIN32)
     set(libraries

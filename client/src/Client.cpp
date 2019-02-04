@@ -8,6 +8,8 @@ using namespace gfx;
 
 using namespace client;
 
+#include <luamod/luastate.h>
+
 Sandbox::Sandbox() :
 	m_appRequirements(new ApplicationRequirements()),
 	m_appData(new ApplicationData)
@@ -28,6 +30,9 @@ void Sandbox::run()
 	PHX_REGISTER_CONFIG("Controls");
 
 	using namespace voxels;
+
+	lm::LuaState luaState;
+	luaState.RunFile("assets/scripts/index.lua");
 
 	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
 	std::vector<std::string> texForGrass;

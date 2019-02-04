@@ -24,7 +24,6 @@ file(GLOB images ${AssetsPath}/images/*.png)
 source_group("Shaders" FILES ${shaders})
 source_group("Scripts" FILES ${scripts})
 source_group("Images" FILES ${images})
-
 add_custom_target(Phoenix_Client-Assets
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
                    ${AssetsPath} ${CMAKE_CURRENT_BINARY_DIR}/assets
@@ -34,5 +33,11 @@ add_custom_target(Phoenix_Client-Assets
 add_executable(${PROJECT_NAME} ${clientSources} ${clientHeaders})
 target_link_libraries(${PROJECT_NAME} ${libraries})
 include_directories(${include_dirs})
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different
+		$<TARGET_FILE:liblua>
+		$<TARGET_FILE_DIR:${PROJECT_NAME}>/$<TARGET_FILE_NAME:liblua>
+)
 
 add_dependencies(${PROJECT_NAME} Phoenix_Client-Assets)
