@@ -18,7 +18,7 @@ set(libraries Phoenix_Engine)
 set(AssetsPath ${CMAKE_CURRENT_SOURCE_DIR}/../assets)
 
 file(GLOB shaders ${AssetsPath}/shaders/*.vert ${AssetsPath}/shaders/*.frag)
-file(GLOB scripts ${AssetsPath}/scripts/*.wren)
+file(GLOB scripts ${AssetsPath}/scripts/*.lua)
 file(GLOB images ${AssetsPath}/images/*.png)
 
 source_group("Shaders" FILES ${shaders})

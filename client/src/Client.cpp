@@ -25,6 +25,19 @@ Sandbox::Sandbox() :
 	m_appRequirements->logVerbosity = LogVerbosity::DEBUG;
 }
 
+static void QuickSetupLuaBindingsCommon(lm::LuaState& state)
+{
+	auto luaLog = [&](int verbosity, const char* msg) {
+		Logger::get()->log((LogVerbosity)verbosity, "", 0, "", msg);
+	};
+
+	state.SetGlobal("DEBUG", (int)LogVerbosity::DEBUG);
+	state.SetGlobal("INFO", (int)LogVerbosity::INFO);
+	state.SetGlobal("WARNING", (int)LogVerbosity::WARNING);
+
+	state.Register("px_log", luaLog);
+}
+
 void Sandbox::run()
 {
 	PHX_REGISTER_CONFIG("Controls");
@@ -32,6 +45,8 @@ void Sandbox::run()
 	using namespace voxels;
 
 	lm::LuaState luaState;
+	QuickSetupLuaBindingsCommon(luaState);
+
 	luaState.RunFile("assets/scripts/index.lua");
 
 	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
