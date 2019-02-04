@@ -12,7 +12,7 @@ unset(clientHeaders CACHE)
 add_subdirectory(include)
 add_subdirectory(src)
 
-set(include_dirs ${dependencies}/SDL2/include ${dependencies}/../engine/include ${CMAKE_CURRENT_LIST_DIR}/include)
+set(include_dirs ${dependencies}/SDL2/include ${dependencies}/../engine/include ${dependencies}/luamod/include ${CMAKE_CURRENT_LIST_DIR}/include)
 set(libraries Phoenix_Engine)
 
 set(AssetsPath ${CMAKE_CURRENT_SOURCE_DIR}/../assets)

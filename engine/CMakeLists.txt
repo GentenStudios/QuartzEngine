@@ -17,6 +17,7 @@ set(include_dirs
     ${dependencies}/glew/include
     ${dependencies}/stb_image/
 	${dependencies}/inih
+	${dependencies}/luamod/include
     ${header_dir}
 )
 
