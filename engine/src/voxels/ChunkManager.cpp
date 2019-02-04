@@ -43,9 +43,9 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 			for (int z = -chunkViewDistance; z <= chunkViewDistance; z++)
 			{
 				phx::Vector3 chunkToCheck = {
-					static_cast<float>(x) * chunkViewDistance / 2 + posX,
-					static_cast<float>(y) * chunkViewDistance / 2 + posY,
-					static_cast<float>(z) * chunkViewDistance / 2 + posZ
+					static_cast<float>(x) * chunkViewDistance + posX,
+					static_cast<float>(y) * chunkViewDistance + posY,
+					static_cast<float>(z) * chunkViewDistance + posZ
 				};
 
 				chunkToCheck = chunkToCheck * static_cast<float>(m_chunkSize);
