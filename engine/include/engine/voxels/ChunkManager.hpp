@@ -10,15 +10,10 @@ namespace phx
 {
 	namespace voxels
 	{
-		struct ChunkContainer
-		{
-			
-		};
-
 		class ChunkManager
 		{
 		public:
-			ChunkManager(const std::string& blockID, unsigned int chunkSize, unsigned int seed);
+			ChunkManager(const std::string& blockID, int chunkSize, unsigned int seed);
 			ChunkManager(ChunkManager&& other) = default;
 
 			~ChunkManager() = default;
@@ -40,19 +35,12 @@ namespace phx
 
 		private:
 			unsigned int m_seed;
-
-			unsigned int m_chunkSize;
-
+			int m_chunkSize;
 			std::string m_defaultBlockID;
 
 			std::vector<Chunk> m_chunks;
 
 			bool m_wireframe = false;
-
-			threads::ThreadPool<10> m_threadPool;
-			std::mutex m_mutex;
-
-			void addChunkToArray(const Chunk& chunk);
 		};
 
 	}
