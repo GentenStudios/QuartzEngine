@@ -1,9 +1,9 @@
 #include <client/Client.hpp>
 #include <chrono>
 
-#include <engine/core/graphics/Renderer2D.hpp>
+#include <quartz/core/graphics/Renderer2D.hpp>
 
-using namespace phx;
+using namespace qz;
 using namespace gfx;
 
 using namespace client;
@@ -17,15 +17,15 @@ Sandbox::Sandbox() :
 
 	m_appRequirements->windowWidth = 1280;
 	m_appRequirements->windowHeight = 720;
-	m_appRequirements->windowTitle = "Phoenix!";
+	m_appRequirements->windowTitle = "Quartz!";
 
-	m_appRequirements->logFile = "PhoenixClient.log";
+	m_appRequirements->logFile = "QuartzClient.log";
 	m_appRequirements->logVerbosity = LogVerbosity::DEBUG;
 }
 
 void Sandbox::run()
 {
-	PHX_REGISTER_CONFIG("Controls");
+	QZ_REGISTER_CONFIG("Controls");
 
 	using namespace voxels;
 
@@ -150,7 +150,7 @@ void Sandbox::run()
 	}
 }
 
-Application* phx::createApplication()
+Application* qz::createApplication()
 {
 	return new Sandbox();
 }

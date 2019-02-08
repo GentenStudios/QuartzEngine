@@ -1,10 +1,10 @@
-#include <engine/voxels/terrain/PerlinNoise.hpp>
+#include <quartz/voxels/terrain/PerlinNoise.hpp>
 
 #include <algorithm>
 #include <random>
 #include <numeric>
 
-using namespace phx::voxels;
+using namespace qz::voxels;
 
 static int s_permutation[] = {
 	151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142,
@@ -44,7 +44,7 @@ PerlinNoise::PerlinNoise(unsigned int seed) :
 	m_p.insert(m_p.end(), m_p.begin(), m_p.end());
 }
 
-void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, phx::Vector3 chunkPos, int chunkSize)
+void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, qz::Vector3 chunkPos, int chunkSize)
 {
 	m_chunkSize = chunkSize;
 
@@ -74,7 +74,7 @@ void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, phx::Vecto
 			{
 				// Block Position with the smoothing factor applied to it.
 				// The division by 32 helps "decide" how smooth the generated terrain will be.
-				const phx::Vector3 blockPosWithSmoothingApplied = { 
+				const qz::Vector3 blockPosWithSmoothingApplied = { 
 					(static_cast<float>(x) + chunkPos.x) / 32.f,
 					(static_cast<float>(z) + chunkPos.z) / 32.f,
 					(static_cast<float>(0) + chunkPos.y) / 32.f
@@ -114,7 +114,7 @@ float PerlinNoise::lerp(float t, float a, float b) const
 	return a + t * (b - a);
 }
 
-float PerlinNoise::at(phx::Vector3 pos) const
+float PerlinNoise::at(qz::Vector3 pos) const
 {
 	int X = static_cast<int>(std::floor(pos.x)) & 255;
 	int Y = static_cast<int>(std::floor(pos.y)) & 255;
@@ -145,7 +145,7 @@ float PerlinNoise::at(phx::Vector3 pos) const
 	return (res + 1.f) / 2.f;
 }
 
-float PerlinNoise::atOctave(phx::Vector3 pos, int octaves, float persitance) const
+float PerlinNoise::atOctave(qz::Vector3 pos, int octaves, float persitance) const
 {
 	float tot = 0;
 	float f = 1;
@@ -153,7 +153,7 @@ float PerlinNoise::atOctave(phx::Vector3 pos, int octaves, float persitance) con
 	float maxValue = 0;
 	for (int i = 0; i < octaves; ++i)
 	{
-		tot += at(phx::Vector3(pos.x * f, pos.y * f, pos.z * f)) * a;
+		tot += at(qz::Vector3(pos.x * f, pos.y * f, pos.z * f)) * a;
 		maxValue += a;
 		a *= persitance;
 		f *= 2;

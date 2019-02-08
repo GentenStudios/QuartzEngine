@@ -1,26 +1,27 @@
 #pragma once
 
-#include <Phoenix.hpp>
+#define QZ_MAIN_HANDLED
+#include <Quartz.hpp>
 
 #include <client/Player.hpp>
 #include <memory>
 
 namespace client
 {
-	class Sandbox : public phx::Application
+	class Sandbox : public qz::Application
 	{
 	public:
 		Sandbox();
 		~Sandbox() = default;
 
-		const phx::ApplicationRequirements* getRequirements() { return m_appRequirements; }
-		void setAppData(phx::ApplicationData* appData) { m_appData = appData; }
+		const qz::ApplicationRequirements* getRequirements() { return m_appRequirements; }
+		void setAppData(qz::ApplicationData* appData) { m_appData = appData; }
 
 		void run();
 
 	private:
-		phx::ApplicationRequirements* m_appRequirements = nullptr;
-		phx::ApplicationData* m_appData = nullptr;
+		qz::ApplicationRequirements* m_appRequirements = nullptr;
+		qz::ApplicationData* m_appData = nullptr;
 
 		std::unique_ptr<Player> m_player;
 	};

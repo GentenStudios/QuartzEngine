@@ -1,10 +1,9 @@
-#include <engine/voxels/ChunkManager.hpp>
-//#include <engine/core/utils/Task.hpp>
+#include <quartz/voxels/ChunkManager.hpp>
 
 #include <algorithm>
 #include <utility>
 
-using namespace phx::voxels;
+using namespace qz::voxels;
 
 const int VIEW_DISTANCE = 16; // 96 blocks, 6 chunks.
 
@@ -24,7 +23,7 @@ bool ChunkManager::isWireframe() const
 	return m_wireframe;
 }
 
-void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
+void ChunkManager::determineGeneration(qz::Vector3 cameraPosition)
 {
 	cameraPosition = cameraPosition / 2.f;
 	cameraPosition += 0.5f;
@@ -42,7 +41,7 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 		{
 			for (int z = -chunkViewDistance; z <= chunkViewDistance; z++)
 			{
-				phx::Vector3 chunkToCheck = {
+				qz::Vector3 chunkToCheck = {
 					static_cast<float>(x) * chunkViewDistance / 2 + posX,
 					static_cast<float>(y) * chunkViewDistance / 2 + posY,
 					static_cast<float>(z) * chunkViewDistance / 2 + posZ
@@ -70,7 +69,7 @@ void ChunkManager::testGeneration()
 {
 	for (int i = 0; i < 5; ++i)
 	{
-		phx::Vector3 pain = { i * 16.f, 0, 0 };
+		qz::Vector3 pain = { i * 16.f, 0, 0 };
 
 		m_chunks.emplace_back(pain, m_chunkSize, m_defaultBlockID);
 		m_chunks.back().populateData(m_seed);
@@ -82,7 +81,7 @@ void ChunkManager::unloadRedundant()
 	// TODO this.
 }
 
-void ChunkManager::setBlockAt(phx::Vector3 position, const BlockInstance& block)
+void ChunkManager::setBlockAt(qz::Vector3 position, const BlockInstance& block)
 {
 	int posX = static_cast<int>(position.x / m_chunkSize);
 	int posY = static_cast<int>(position.y / m_chunkSize);
@@ -109,7 +108,7 @@ void ChunkManager::setBlockAt(phx::Vector3 position, const BlockInstance& block)
 		position.z += m_chunkSize;
 	}
 
-	const phx::Vector3 chunkPosition = phx::Vector3(static_cast<float>(posX * m_chunkSize),
+	const qz::Vector3 chunkPosition = qz::Vector3(static_cast<float>(posX * m_chunkSize),
 		static_cast<float>(posY * m_chunkSize),
 		static_cast<float>(posZ * m_chunkSize));
 
@@ -131,7 +130,7 @@ void ChunkManager::setBlockAt(phx::Vector3 position, const BlockInstance& block)
 	}
 }
 
-BlockInstance ChunkManager::getBlockAt(phx::Vector3 position) const
+BlockInstance ChunkManager::getBlockAt(qz::Vector3 position) const
 {
 	int posX = static_cast<int>(position.x / m_chunkSize);
 	int posY = static_cast<int>(position.y / m_chunkSize);
@@ -158,7 +157,7 @@ BlockInstance ChunkManager::getBlockAt(phx::Vector3 position) const
 		position.z += m_chunkSize;
 	}
 
-	const phx::Vector3 chunkPosition = phx::Vector3(static_cast<float>(posX * m_chunkSize),
+	const qz::Vector3 chunkPosition = qz::Vector3(static_cast<float>(posX * m_chunkSize),
 		static_cast<float>(posY * m_chunkSize),
 		static_cast<float>(posZ * m_chunkSize));
 
@@ -179,7 +178,7 @@ BlockInstance ChunkManager::getBlockAt(phx::Vector3 position) const
 	return BlockInstance("core:out_of_bounds");
 }
 
-void ChunkManager::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
+void ChunkManager::breakBlockAt(qz::Vector3 position, const BlockInstance& block)
 {
 	int posX = static_cast<int>(position.x / m_chunkSize);
 	int posY = static_cast<int>(position.y / m_chunkSize);
@@ -206,7 +205,7 @@ void ChunkManager::breakBlockAt(phx::Vector3 position, const BlockInstance& bloc
 		position.z += m_chunkSize;
 	}
 
-	const phx::Vector3 chunkPosition = phx::Vector3(static_cast<float>(posX * m_chunkSize),
+	const qz::Vector3 chunkPosition = qz::Vector3(static_cast<float>(posX * m_chunkSize),
 		static_cast<float>(posY * m_chunkSize),
 		static_cast<float>(posZ * m_chunkSize));
 
@@ -228,7 +227,7 @@ void ChunkManager::breakBlockAt(phx::Vector3 position, const BlockInstance& bloc
 	}
 }
 
-void ChunkManager::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
+void ChunkManager::placeBlockAt(qz::Vector3 position, const BlockInstance& block)
 {
 	int posX = static_cast<int>(position.x / m_chunkSize);
 	int posY = static_cast<int>(position.y / m_chunkSize);
@@ -255,7 +254,7 @@ void ChunkManager::placeBlockAt(phx::Vector3 position, const BlockInstance& bloc
 		position.z += m_chunkSize;
 	}
 
-	const phx::Vector3 chunkPosition = phx::Vector3(static_cast<float>(posX * m_chunkSize),
+	const qz::Vector3 chunkPosition = qz::Vector3(static_cast<float>(posX * m_chunkSize),
 		static_cast<float>(posY * m_chunkSize),
 		static_cast<float>(posZ * m_chunkSize));
 

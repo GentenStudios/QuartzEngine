@@ -1,8 +1,8 @@
 #include <algorithm>
 
-#include <engine/voxels/Block.hpp>
+#include <quartz/voxels/Block.hpp>
 
-using namespace phx::voxels;
+using namespace qz::voxels;
 
 RegistryBlock::RegistryBlock(std::string blockID, std::string blockName, int initialHP, BlockType blockType)
 {
@@ -23,7 +23,7 @@ const InteractionCallback& RegistryBlock::getInteractRightCallback() const { ret
 
 const std::vector<std::string>& RegistryBlock::getBlockTextures() const { return m_blockTextures; }
 
-void phx::voxels::RegistryBlock::setBlockTextures(const std::vector<std::string>& textures) { m_blockTextures = textures; }
+void RegistryBlock::setBlockTextures(const std::vector<std::string>& textures) { m_blockTextures = textures; }
 
 int RegistryBlock::getInitialHP() const { return m_initialHealthPoints; }
 

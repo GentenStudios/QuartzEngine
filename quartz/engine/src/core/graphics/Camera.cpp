@@ -1,9 +1,9 @@
-#include <engine/core/graphics/Camera.hpp>
+#include <quartz/core/graphics/Camera.hpp>
 
-#include <engine/core/math/MathUtils.hpp>
+#include <quartz/core/math/MathUtils.hpp>
 
-using namespace phx::gfx;
-using namespace phx;
+using namespace qz::gfx;
+using namespace qz;
 
 const float HALF_PI = MathUtils::PI / 2;
 
@@ -107,7 +107,7 @@ Matrix4x4 FPSCam::getProjection() const
 	return m_projection;
 }
 
-void phx::gfx::FPSCam::setProjection(const Matrix4x4 & projection)
+void FPSCam::setProjection(const Matrix4x4 & projection)
 {
 	m_projection = projection;
 }
@@ -119,7 +119,7 @@ CameraControls::CameraControls() :
 
 void CameraControls::load()
 {
-	m_controlsConfig = PHX_GET_CONFIG("Controls");
+	m_controlsConfig = QZ_GET_CONFIG("Controls");
 }
 
 /*

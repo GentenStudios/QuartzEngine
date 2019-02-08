@@ -1,10 +1,10 @@
-#include <engine/core/graphics/BatchRenderer.hpp>
-#include <engine/core/graphics/gl/VertexAttrib.hpp>
+#include <quartz/core/graphics/BatchRenderer.hpp>
+#include <quartz/core/graphics/gl/VertexAttrib.hpp>
 
 #include <assert.h>
 
-using namespace phx::gfx;
-using namespace phx;
+using namespace qz::gfx;
+using namespace qz;
 
 void BatchRenderer::create(int numVertices, int numIndices, gl::ShaderPipeline& shader)
 {

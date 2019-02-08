@@ -1,6 +1,6 @@
-#include <engine/core/math/Ray.hpp>
+#include <quartz/core/math/Ray.hpp>
 
-using namespace phx;
+using namespace qz;
 
 Ray::Ray(const Vector3& start, const Vector3& direction)
 	: m_start(start), m_direction(direction), 

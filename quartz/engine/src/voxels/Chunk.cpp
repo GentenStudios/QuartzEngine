@@ -1,10 +1,10 @@
-#include <engine/voxels/Chunk.hpp>
+#include <quartz/voxels/Chunk.hpp>
 
-#include <engine/core/graphics/gl/VertexAttrib.hpp>
-#include <engine/voxels/terrain/PerlinNoise.hpp>
+#include <quartz/core/graphics/gl/VertexAttrib.hpp>
+#include <quartz/voxels/terrain/PerlinNoise.hpp>
 
-using namespace phx::voxels;
-using namespace phx;
+using namespace qz::voxels;
+using namespace qz;
 
 static const Vector3 CUBE_VERTS[] = {
 	// front
@@ -112,12 +112,12 @@ const int NUM_VERTS_IN_FACE = 6;
 
 struct ChunkVert3D
 {
-	phx::Vector3 verts;
-	phx::Vector2 uvs;
+	qz::Vector3 verts;
+	qz::Vector2 uvs;
 
 	int texLayer;
 
-	ChunkVert3D(const phx::Vector3& vertices, const phx::Vector2& UVs, const int textureLayer) :
+	ChunkVert3D(const qz::Vector3& vertices, const qz::Vector2& UVs, const int textureLayer) :
 		verts(vertices), uvs(UVs), texLayer(textureLayer)
 	{}
 };
@@ -175,7 +175,7 @@ ChunkMesh& ChunkMesh::operator=(ChunkMesh&& other)
 	return *this;
 }
 
-void ChunkMesh::add(const BlockInstance& block, BlockFace face, phx::Vector3 chunkPos, phx::Vector3 blockPos, Chunk* chunk)
+void ChunkMesh::add(const BlockInstance& block, BlockFace face, qz::Vector3 chunkPos, qz::Vector3 blockPos, Chunk* chunk)
 {
 	if (block.getBlockType() == BlockType::SOLID)
 	{
@@ -193,12 +193,12 @@ void ChunkMesh::add(const BlockInstance& block, BlockFace face, phx::Vector3 chu
 
 		for (int i = 0; i < NUM_VERTS_IN_FACE; ++i)
 		{
-			phx::Vector3 blockVertices = CUBE_VERTS[(static_cast<int>(face) * NUM_FACES_IN_CUBE) + i];
+			qz::Vector3 blockVertices = CUBE_VERTS[(static_cast<int>(face) * NUM_FACES_IN_CUBE) + i];
 			blockVertices.x += (blockPos.x * ACTUAL_CUBE_SIZE) + (chunkPos.x * ACTUAL_CUBE_SIZE); // Multiply by 2, as that is the size of the actual cube edges, indicated by the cube vertices.
 			blockVertices.y += (blockPos.y * ACTUAL_CUBE_SIZE) + (chunkPos.y * ACTUAL_CUBE_SIZE);
 			blockVertices.z += (blockPos.z * ACTUAL_CUBE_SIZE) + (chunkPos.z * ACTUAL_CUBE_SIZE);
 
-			phx::Vector2 cubeUVs = CUBE_UV[(static_cast<int>(face) * NUM_FACES_IN_CUBE) + i];
+			qz::Vector2 cubeUVs = CUBE_UV[(static_cast<int>(face) * NUM_FACES_IN_CUBE) + i];
 
 			m_blockMesh.vertices.push_back(blockVertices);
 			m_blockMesh.uvs.push_back(cubeUVs);
@@ -448,7 +448,7 @@ Chunk& Chunk::operator=(Chunk&& other)
 	return *this;
 }
 
-Chunk::Chunk(phx::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID)
+Chunk::Chunk(qz::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID)
 {
 	m_chunkPos = chunkPos;
 	m_chunkSize = chunkSize;
@@ -526,7 +526,7 @@ const Vector3& Chunk::getChunkPos() const
 	return m_chunkPos;
 }
 
-void Chunk::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
+void Chunk::breakBlockAt(qz::Vector3 position, const BlockInstance& block)
 {
 	if (position.x < m_chunkSize)
 	{
@@ -551,7 +551,7 @@ void Chunk::breakBlockAt(phx::Vector3 position, const BlockInstance& block)
 	}
 }
 
-void Chunk::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
+void Chunk::placeBlockAt(qz::Vector3 position, const BlockInstance& block)
 {
 	if (position.x < m_chunkSize)
 	{
@@ -574,7 +574,7 @@ void Chunk::placeBlockAt(phx::Vector3 position, const BlockInstance& block)
 	}
 }
 
-BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
+BlockInstance Chunk::getBlockAt(qz::Vector3 position) const
 {
 	if (position.x < m_chunkSize)
 	{
@@ -590,7 +590,7 @@ BlockInstance Chunk::getBlockAt(phx::Vector3 position) const
 	return BlockInstance("core:out_of_bounds");
 }
 
-void Chunk::setBlockAt(phx::Vector3 position, const BlockInstance& newBlock)
+void Chunk::setBlockAt(qz::Vector3 position, const BlockInstance& newBlock)
 {
 	if (position.x < m_chunkSize)
 	{

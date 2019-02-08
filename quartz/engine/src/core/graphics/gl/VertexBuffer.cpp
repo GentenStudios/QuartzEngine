@@ -1,6 +1,6 @@
-#include <engine/core/graphics/gl/VertexBuffer.hpp>
+#include <quartz/core/graphics/gl/VertexBuffer.hpp>
 
-using namespace phx::gfx::gl;
+using namespace qz::gfx::gl;
 
 VertexBuffer::VertexBuffer(BufferTarget target, BufferUsage usage) : m_target(target), m_usage(usage)
 {

@@ -1,12 +1,12 @@
-#include <engine/core/platform/SDL/SDLWindow.hpp>
-#include <engine/core/graphics/gl/GLDebug.hpp>
+#include <quartz/core/platform/SDL/SDLWindow.hpp>
+#include <quartz/core/graphics/gl/GLDebug.hpp>
 
 #include <GL/glew.h>
 
-using namespace phx::sdl;
-using namespace phx;
+using namespace qz::sdl;
+using namespace qz;
 
-SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::GLVersion version, phx::gfx::GLProfile profile)
+SDLWindow::SDLWindow(const std::string& title, int width, int height, gfx::GLVersion version, gfx::GLProfile profile)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	
@@ -22,20 +22,20 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 	uint32_t SDLProfile = SDL_GL_CONTEXT_PROFILE_CORE;
 	switch (profile)
 	{
-	case phx::gfx::GLProfile::CORE:
+	case gfx::GLProfile::CORE:
 		SDLProfile = SDL_GL_CONTEXT_PROFILE_CORE;
 		break;
-	case phx::gfx::GLProfile::COMPATABILITY:
+	case gfx::GLProfile::COMPATABILITY:
 		SDLProfile = SDL_GL_CONTEXT_PROFILE_COMPATIBILITY;
 		break;
-	case phx::gfx::GLProfile::ES:
+	case gfx::GLProfile::ES:
 		SDLProfile = SDL_GL_CONTEXT_PROFILE_ES;
 		break;
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDLProfile);
 
-#ifdef PHX_DEBUG
+#ifdef QZ_DEBUG
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 #endif
 
@@ -57,7 +57,7 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, phx::gfx::
 		exit(EXIT_FAILURE);
 	}
 
-#ifdef PHX_DEBUG
+#ifdef QZ_DEBUG
 	GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
 	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
 	{
@@ -250,9 +250,9 @@ void SDLWindow::setResizable(bool enabled)
 	SDL_SetWindowResizable(m_window, enabled ? SDL_TRUE : SDL_FALSE);
 }
 
-void SDLWindow::setCursorState(phx::gfx::CursorState cursorState)
+void SDLWindow::setCursorState(gfx::CursorState cursorState)
 {
-	bool on = cursorState == phx::gfx::CursorState::NORMAL;
+	bool on = cursorState == gfx::CursorState::NORMAL;
 	SDL_ShowCursor(on);
 }
 

@@ -1,13 +1,13 @@
 #include <client/Player.hpp>
 
-#include <engine/core/math/Ray.hpp>
+#include <quartz/core/math/Ray.hpp>
 
 using namespace client;
 
-Player::Player(phx::gfx::IWindow* window,phx::voxels::ChunkManager* world)
+Player::Player(qz::gfx::IWindow* window,qz::voxels::ChunkManager* world)
 	: m_window(window), m_world(world)
 {
-	m_camera = std::make_unique<phx::gfx::FPSCam>(window);
+	m_camera = std::make_unique<qz::gfx::FPSCam>(window);
 	m_camera->enabled = true;
 
 	window->addKeyCallback(events::KeyEventType::PRESSED, events::Keys::KEY_ESCAPE, [&]() {
@@ -30,12 +30,12 @@ void Player::tick(float dt)
 	m_camera->update(dt);
 }
 
-phx::Vector3 Player::getPosition() 
+qz::Vector3 Player::getPosition() 
 {
 	return m_camera->getPosition();
 }
 
-void Player::applyTo(phx::gfx::gl::ShaderPipeline* shader)
+void Player::applyTo(qz::gfx::gl::ShaderPipeline* shader)
 {
 	shader->setMat4("u_projection", m_camera->getProjection());
 	shader->setMat4("u_view", m_camera->calculateViewMatrix());

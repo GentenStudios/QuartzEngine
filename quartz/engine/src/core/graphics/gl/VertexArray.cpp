@@ -1,6 +1,6 @@
-#include <engine/core/graphics/gl/VertexArray.hpp>
+#include <quartz/core/graphics/gl/VertexArray.hpp>
 
-using namespace phx::gfx::gl;
+using namespace qz::gfx::gl;
 
 VertexArray::VertexArray() : m_arrayID(0)
 {

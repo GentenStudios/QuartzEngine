@@ -1,6 +1,6 @@
-#include <engine/core/math/Vector2.hpp>
+#include <quartz/core/math/Vector2.hpp>
 
-using namespace phx;
+using namespace qz;
 
 Vector2::Vector2()
 	: x(0.f), y(0.f)

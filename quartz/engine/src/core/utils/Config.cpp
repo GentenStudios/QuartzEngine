@@ -1,11 +1,11 @@
-#include <engine/core/utils/Config.hpp>
-#include <engine/core/utils/Logging.hpp>
+#include <quartz/core/utils/Config.hpp>
+#include <quartz/core/utils/Logging.hpp>
 
 #include <SDL.h>
 
 #include <fstream>
 
-using namespace phx;
+using namespace qz;
 
 ConfigManager* ConfigManager::get()
 {

@@ -3,39 +3,42 @@
  *  @brief Function definitions for logging.hpp
  */
 
-#include <engine/core/utils/Logging.hpp>
+#include <quartz/core/utils/Logging.hpp>
 
 #include <cstdio>
 
-#ifdef PHX_OS_WINDOWS
-	#include <Windows.h>
-	#undef ERROR // Windows is a dick
+#ifdef QZ_OS_WINDOWS
+#include <Windows.h>
+#undef ERROR // Windows is a dick
 #endif
 
-using namespace phx;
+using namespace qz;
 
-namespace phx { namespace os_terminal {
-
-#ifdef PHX_OS_WINDOWS
-	// WARNING: Do not change the order of this array, (it needs to match the order of `phx::Console::Color`)
-	static WORD s_win32TerminalColors[] =
+namespace qz
+{
+	namespace os_terminal
 	{
-		FOREGROUND_INTENSITY | FOREGROUND_RED, // red
-		FOREGROUND_INTENSITY | FOREGROUND_GREEN, // green
-		FOREGROUND_INTENSITY | FOREGROUND_BLUE, // blue
-		FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN, // yellow
-		FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE, // white
-		0, // black
-		FOREGROUND_RED | FOREGROUND_GREEN, // dark yellow
-		FOREGROUND_RED, // dark red
-		FOREGROUND_GREEN, // dark green
-		FOREGROUND_BLUE, // dark blue
-		FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_BLUE // magenta
-	};
+
+#ifdef QZ_OS_WINDOWS
+		// WARNING: Do not change the order of this array, (it needs to match the order of `phx::Console::Color`)
+		static WORD s_win32TerminalColors[] =
+		{
+			FOREGROUND_INTENSITY | FOREGROUND_RED, // red
+			FOREGROUND_INTENSITY | FOREGROUND_GREEN, // green
+			FOREGROUND_INTENSITY | FOREGROUND_BLUE, // blue
+			FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN, // yellow
+			FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE, // white
+			0, // black
+			FOREGROUND_RED | FOREGROUND_GREEN, // dark yellow
+			FOREGROUND_RED, // dark red
+			FOREGROUND_GREEN, // dark green
+			FOREGROUND_BLUE, // dark blue
+			FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_BLUE // magenta
+		};
 #endif
 
-#ifdef PHX_OS_LINUX
-	static const char *s_linuxTerminalColors[] =
+#ifdef QZ_OS_LINUX
+		static const char *s_linuxTerminalColors[] =
 		{
 			"\033[1;31m",
 			"\033[1;32m",
@@ -48,18 +51,19 @@ namespace phx { namespace os_terminal {
 			"\033[0;32m",
 			"\033[0;34m",
 			"\033[1;35m",
-	};
+		};
 #endif
-}}
+	}
+}
 
 void Console::setTextColor(const Console::Color& color)
 {
-#ifdef PHX_OS_WINDOWS
+#ifdef QZ_OS_WINDOWS
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console, os_terminal::s_win32TerminalColors[static_cast<size_t>(color)]);
 #endif
 
-#ifdef PHX_OS_LINUX
+#ifdef QZ_OS_LINUX
 	std::cout << os_terminal::s_linuxTerminalColors[static_cast<size_t>(color)];
 #endif
 }
@@ -125,17 +129,17 @@ void Logger::logMessage(std::string errorFile, int lineNumber, std::string subSe
 	Console::setTextColor(getColorFromVerbosity(verbosity));
 
 	const char* verbosityString = LogVerbosityLookup[static_cast<size_t>(verbosity)];
-	
+
 	/*
 		Log messages are in the format:
 			[ERROR/INFO/DEBUG/WARNING] <file of log>: <line number> <message>
-			             ^                          ^                   ^
+						 ^                          ^                   ^
 			Verbosity of message          If verbosity != INFO    The message to log
 	*/
 
 	std::stringstream logMessageStream;
 	logMessageStream << "[" << verbosityString << "] " << subSectors;
-	
+
 	if (verbosity != LogVerbosity::INFO) // Print the erroring file and line number if the message is not classed as INFO
 	{
 		logMessageStream << errorFile << ":" << lineNumber << " ";
@@ -152,15 +156,15 @@ void Logger::logMessage(std::string errorFile, int lineNumber, std::string subSe
 		// Append the `(<number of times this message has been logged>)` to the end of the log message
 		// - done by overwriting the previous message, and then rewriting it will the added `(...)` at the end.
 		m_logFileHandle << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")";
-		std::cout       << '\r' << logMessageString << " (" << m_currentDuplicates << ")";
+		std::cout << '\r' << logMessageString << " (" << m_currentDuplicates << ")";
 	}
-	else 
+	else
 	{
 		m_currentDuplicates = 1;
-		m_prevMessage       = message;
+		m_prevMessage = message;
 
 		m_logFileHandle << '\n' << logMessageString;
-		std::cout       << '\n' << logMessageString;
+		std::cout << '\n' << logMessageString;
 	}
 
 	Console::setTextColor(Console::Color::WHITE);

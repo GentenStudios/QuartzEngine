@@ -1,12 +1,12 @@
-#include <engine/core/graphics/Renderer2D.hpp>
-#include <engine/core/utils/IO.hpp>
+#include <quartz/core/graphics/Renderer2D.hpp>
+#include <quartz/core/utils/IO.hpp>
 
-#include <engine/core/math/MathUtils.hpp>
+#include <quartz/core/math/MathUtils.hpp>
 
 #include <assert.h>
 
-using namespace phx::gfx;
-using namespace phx;
+using namespace qz::gfx;
+using namespace qz;
 
 static const int MAX_RENDERABLES = 10000;
 static const int MAX_VERTICES    = MAX_RENDERABLES * 4;

@@ -1,9 +1,9 @@
-#include <engine/core/math/Matrix4x4.hpp>
-#include <engine/core/math/MathUtils.hpp>
+#include <quartz/core/math/Matrix4x4.hpp>
+#include <quartz/core/math/MathUtils.hpp>
 
 #include <cmath>
 
-using namespace phx;
+using namespace qz;
 
 #define INDEX2D(x, y) (x + y * 4)
 
@@ -94,7 +94,7 @@ Matrix4x4 Matrix4x4::lookAt(const Vector3& eye, const Vector3& centre, const Vec
 	return lookAtMatrix;
 }
 
-Matrix4x4 phx::operator*(const Matrix4x4& left, const Matrix4x4& right)
+Matrix4x4 qz::operator*(const Matrix4x4& left, const Matrix4x4& right)
 {
 	Matrix4x4 matrix;
 
@@ -114,7 +114,7 @@ Matrix4x4 phx::operator*(const Matrix4x4& left, const Matrix4x4& right)
 	return matrix;
 }
 
-Matrix4x4 phx::operator*(const Matrix4x4& left, const float& right)
+Matrix4x4 qz::operator*(const Matrix4x4& left, const float& right)
 {
 	Matrix4x4 matrix;
 	for (int i = 0; i < 16; i++)
@@ -124,7 +124,7 @@ Matrix4x4 phx::operator*(const Matrix4x4& left, const float& right)
 	return matrix;
 }
 
-Vector3 phx::operator*(const Matrix4x4& left, const Vector3& right)
+Vector3 qz::operator*(const Matrix4x4& left, const Vector3& right)
 {
 	float x = left.elements[0 + 0 * 4] * right.x + left.elements[1 + 0 * 4] * right.y + left.elements[2 + 0 * 4] * right.z;
 	float y = left.elements[0 + 1 * 4] * right.x + left.elements[1 + 1 * 4] * right.y + left.elements[2 + 1 * 4] * right.z;

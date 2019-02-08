@@ -1,12 +1,12 @@
-#include <engine/core/graphics/gl/TextureArray.hpp>
+#include <quartz/core/graphics/gl/TextureArray.hpp>
 
 #include <GL/glew.h>
-#include <engine/core/graphics/gl/GLDebug.hpp>
+#include <quartz/core/graphics/gl/GLDebug.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-using namespace phx::gfx::gl;
+using namespace qz::gfx::gl;
 
 TextureArray::TextureArray()
 {

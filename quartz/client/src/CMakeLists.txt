@@ -4,5 +4,5 @@ set(clientSources
 	${currentDir}/Client.cpp
 	${currentDir}/Player.cpp
 
-	PARENT_SOURCES
+	PARENT_SCOPE
 )

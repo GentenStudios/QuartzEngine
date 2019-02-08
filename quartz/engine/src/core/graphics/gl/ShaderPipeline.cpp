@@ -1,9 +1,9 @@
 #include <GL/glew.h>
 
-#include <engine/core/graphics/gl/GLDebug.hpp>
-#include <engine/core/graphics/gl/ShaderPipeline.hpp>
+#include <quartz/core/graphics/gl/GLDebug.hpp>
+#include <quartz/core/graphics/gl/ShaderPipeline.hpp>
 
-using namespace phx::gfx::gl;
+using namespace qz::gfx::gl;
 
 ShaderPipeline::ShaderPipeline()
 {
@@ -146,17 +146,17 @@ template <> void ShaderPipeline::setUniform4<unsigned int>(const std::string& na
 	GLCheck(glUniform4ui(glGetUniformLocation(m_shaderProgram, name.c_str()), a, b, c, d));
 }
 
-void ShaderPipeline::setVec2(const std::string& name, phx::Vector2& data) const
+void ShaderPipeline::setVec2(const std::string& name, qz::Vector2& data) const
 {
 	GLCheck(glUniform2fv(glGetUniformLocation(m_shaderProgram, name.c_str()), 1, &data.x));
 }
 
-void ShaderPipeline::setVec3(const std::string& name, phx::Vector3& data) const
+void ShaderPipeline::setVec3(const std::string& name, qz::Vector3& data) const
 {
 	GLCheck(glUniform3fv(glGetUniformLocation(m_shaderProgram, name.c_str()), 1, &data.x));
 }
 
-void ShaderPipeline::setMat4(const std::string& name, const phx::Matrix4x4& mat) const
+void ShaderPipeline::setMat4(const std::string& name, const qz::Matrix4x4& mat) const
 {
 	GLCheck(glUniformMatrix4fv(glGetUniformLocation(m_shaderProgram, name.c_str()), 1, GL_FALSE, &mat.elements[0]));
 }

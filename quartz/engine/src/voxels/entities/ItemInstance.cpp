@@ -1,6 +1,6 @@
-#include <engine/voxels/entities/ItemInstance.hpp>
+#include <quartz/voxels/entities/ItemInstance.hpp>
 
-using namespace phx::entities;
+using namespace qz::entities;
 
 // JUST HERE FOR REFERENCE. NOT NEEDED FOR ANYTHING ATM.
 // MapBlock::MapBlock( std::string id, int rotation ) : m_id( id ), m_rotation( rotation ), m_damage( 0 )
