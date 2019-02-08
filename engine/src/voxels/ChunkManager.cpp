@@ -8,7 +8,7 @@ using namespace phx::voxels;
 
 const int VIEW_DISTANCE = 16; // 96 blocks, 6 chunks.
 
-ChunkManager::ChunkManager(const std::string& blockID, unsigned int chunkSize, unsigned int seed) :
+ChunkManager::ChunkManager(const std::string& blockID, int chunkSize, unsigned int seed) :
 	m_seed(seed), m_chunkSize(chunkSize),
 	m_defaultBlockID(blockID)
 {}
@@ -34,7 +34,7 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 	const int posZ = static_cast<int>(cameraPosition.z) / m_chunkSize;
 
 	// Get diameter to generate for.
-	const int chunkViewDistance = (VIEW_DISTANCE / m_chunkSize);
+	const int chunkViewDistance = VIEW_DISTANCE / m_chunkSize;
 
 	for (int x = -chunkViewDistance; x <= chunkViewDistance; x++)
 	{
@@ -43,9 +43,9 @@ void ChunkManager::determineGeneration(phx::Vector3 cameraPosition)
 			for (int z = -chunkViewDistance; z <= chunkViewDistance; z++)
 			{
 				phx::Vector3 chunkToCheck = {
-					static_cast<float>(x) * chunkViewDistance / 2 + posX,
-					static_cast<float>(y) * chunkViewDistance / 2 + posY,
-					static_cast<float>(z) * chunkViewDistance / 2 + posZ
+					static_cast<float>(x) * chunkViewDistance + posX,
+					static_cast<float>(y) * chunkViewDistance + posY,
+					static_cast<float>(z) * chunkViewDistance + posZ
 				};
 
 				chunkToCheck = chunkToCheck * static_cast<float>(m_chunkSize);
