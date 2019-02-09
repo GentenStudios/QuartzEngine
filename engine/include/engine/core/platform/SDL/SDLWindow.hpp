@@ -13,6 +13,8 @@
 
 #include <engine/core/utils/Config.hpp>
 
+#include <vector>
+
 namespace phx
 {
 	namespace sdl

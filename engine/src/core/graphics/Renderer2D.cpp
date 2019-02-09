@@ -5,6 +5,8 @@
 
 #include <assert.h>
 
+#include <cmath>
+
 using namespace phx::gfx;
 using namespace phx;
 

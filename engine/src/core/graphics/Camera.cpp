@@ -1,6 +1,7 @@
 #include <engine/core/graphics/Camera.hpp>
 
 #include <engine/core/math/MathUtils.hpp>
+#include <cmath>
 
 using namespace phx::gfx;
 using namespace phx;
