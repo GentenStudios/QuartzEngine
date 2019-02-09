@@ -1,0 +1,3 @@
+[submodule "third_party/luamod"]
+	path = quartz/third_party/luamod
+	url = https://github.com/DontBelieveMe/luamod.git
