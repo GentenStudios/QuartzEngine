@@ -25,5 +25,4 @@ namespace client
 
 		std::unique_ptr<Player> m_player;
 	};
-
 }
