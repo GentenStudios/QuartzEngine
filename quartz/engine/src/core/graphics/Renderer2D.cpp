@@ -4,6 +4,7 @@
 #include <quartz/core/math/MathUtils.hpp>
 
 #include <assert.h>
+#include <cmath>
 
 using namespace qz::gfx;
 using namespace qz;

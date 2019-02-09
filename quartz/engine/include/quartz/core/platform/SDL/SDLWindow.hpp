@@ -12,6 +12,7 @@
 #include <quartz/core/events/Mouse.hpp>
 
 #include <quartz/core/utils/Config.hpp>
+#include <vector>
 
 namespace qz
 {

@@ -1,6 +1,7 @@
 #include <quartz/core/graphics/Camera.hpp>
 
 #include <quartz/core/math/MathUtils.hpp>
+#include <cmath>
 
 using namespace qz::gfx;
 using namespace qz;
