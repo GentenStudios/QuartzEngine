@@ -8,6 +8,8 @@ using namespace gfx;
 
 using namespace client;
 
+#include <luamod/luastate.h>
+
 Sandbox::Sandbox() :
 	m_appRequirements(new ApplicationRequirements()),
 	m_appData(new ApplicationData)
@@ -23,43 +25,58 @@ Sandbox::Sandbox() :
 	m_appRequirements->logVerbosity = LogVerbosity::DEBUG;
 }
 
+static void QuickSetupLuaBindingsCommon(lm::LuaState& state)
+{
+	using namespace voxels;
+
+	auto luaLog = [&](int verbosity, const char* msg) {
+		Logger::get()->log((LogVerbosity)verbosity, "", 0, "", msg);
+	};
+
+	state.SetGlobal("DEBUG", (int)LogVerbosity::DEBUG);
+	state.SetGlobal("INFO", (int)LogVerbosity::INFO);
+	state.SetGlobal("WARNING", (int)LogVerbosity::WARNING);
+
+	state.SetGlobal("BLOCK_SOLID", (int)BlockType::SOLID);
+	state.SetGlobal("BLOCK_GAS", (int)BlockType::GAS);
+	state.SetGlobal("BLOCK_LIQUID", (int)BlockType::LIQUID);
+	state.SetGlobal("BLOCK_OBJECT", (int)BlockType::OBJECT);
+	state.SetGlobal("BLOCK_WATER", (int)BlockType::WATER);
+
+	state.Register("px_log", luaLog);
+
+	auto luaRegisterBlock = [&](std::string blockid, lm::Table blockInfo) {
+		std::string displayname = blockInfo.GetProperty<std::string>("displayname", "<unknownblockname>");
+		int blockType = blockInfo.GetProperty("type", (int)BlockType::SOLID);
+		lm::Array textures = blockInfo.GetProperty<lm::Array>("textures");
+		RegistryBlock block(blockid, displayname, 100, (BlockType)blockType);
+		block.setBlockTextures(textures.ToVector<std::string>());
+	
+		BlockLibrary::get()->registerBlock(block);
+	};
+
+	state.Register("px_register_block", luaRegisterBlock);
+
+}
+
 void Sandbox::run()
 {
 	PHX_REGISTER_CONFIG("Controls");
 
 	using namespace voxels;
 
-	RegistryBlock block("core:grass", "Grass", 100, BlockType::SOLID);
-	std::vector<std::string> texForGrass;
-	texForGrass.emplace_back("assets/textures/grass_side.png");
-	texForGrass.emplace_back("assets/textures/grass_side.png");
-	texForGrass.emplace_back("assets/textures/grass_side.png");
-	texForGrass.emplace_back("assets/textures/grass_side.png");
-	texForGrass.emplace_back("assets/textures/dirt.png");
-	texForGrass.emplace_back("assets/textures/grass_top.png");
-	block.setBlockTextures(texForGrass);
-	block.setBreakCallback([]() { LDEBUG("Broken a grass block!"); });
+	lm::LuaState luaState;
+	QuickSetupLuaBindingsCommon(luaState);
 
-	RegistryBlock blockDirt("core:dirt", "dirt", 100, BlockType::SOLID);
-	std::vector<std::string> texForDirt;
-	texForDirt.emplace_back("assets/textures/dirt.png");
-	texForDirt.emplace_back("assets/textures/dirt.png");
-	texForDirt.emplace_back("assets/textures/dirt.png");
-	texForDirt.emplace_back("assets/textures/dirt.png");
-	texForDirt.emplace_back("assets/textures/dirt.png");
-	texForDirt.emplace_back("assets/textures/dirt.png");
-	blockDirt.setBlockTextures(texForDirt);
-	blockDirt.setBreakCallback([]() { LDEBUG("Broken a dirt block!"); });
+	luaState.RunFile("assets/scripts/index.lua");
 
 	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
 
 	BlockLibrary::get()->init();
 
-	BlockLibrary::get()->registerBlock(block);
-	BlockLibrary::get()->registerBlock(blockDirt);
 	BlockLibrary::get()->registerBlock(air);
 
-	// Initialise a world with an air block as the default, a chunk size of 16x16x16, and a random seed dependent on the current time.
+	// Initialize a world with an air block as the default, a chunk size of 16x16x16, and a random seed dependent on the current time.
 	ChunkManager* world = new ChunkManager("core:air", 16, static_cast<unsigned int>(time(nullptr)));
 
 	m_player = std::make_unique<Player>(m_appData->window, world);
