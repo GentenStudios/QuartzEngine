@@ -1,43 +1,36 @@
 #pragma once
 
 #include <quartz/core/Core.hpp>
-#include <quartz/core/utils/Logging.hpp>
-
 #include <quartz/core/graphics/IWindow.hpp>
+#include <quartz/core/utilities/Logger.hpp>
 
 namespace qz
 {
 	struct ApplicationRequirements
 	{
-		ApplicationRequirements(): 
-			glProfile(gfx::GLProfile::CORE), 
-			windowWidth(0), windowHeight(0), 
-			logVerbosity(LogVerbosity::INFO)
-		{}
-
-		gfx::GLProfile glProfile;
-		gfx::GLVersionRequired glVersion;
-
-		int windowWidth;
-		int windowHeight;
 		std::string windowTitle;
+		int windowWidth = 1280;
+		int windowHeight = 720;
 
-		std::string logFile;
-		LogVerbosity logVerbosity;
+		std::string logFilePath;
+		utils::LogVerbosity logVerbosity = utils::LogVerbosity::INFO;
 	};
 
 	struct ApplicationData
 	{
 		gfx::IWindow* window;
+
+		ApplicationData() : window(nullptr) {}
+		~ApplicationData() {}
 	};
 
-	class Application
+	class QZ_API Application
 	{
 	public:
 		Application() = default;
 		virtual ~Application() = default;
 
-		virtual const ApplicationRequirements* getRequirements() = 0;
+		virtual const ApplicationRequirements* getAppRequirements() = 0;
 		virtual void setAppData(ApplicationData* appData) = 0;
 
 		virtual void run() = 0;

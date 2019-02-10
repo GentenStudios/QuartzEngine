@@ -11,7 +11,7 @@ set_target_properties(quartz-engine.pch PROPERTIES FOLDER quartz-dependencies)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC SDL2-static SDL2main glad luamod)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2-static SDL2main glad luamod)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 target_include_directories(${PROJECT_NAME} PUBLIC 
@@ -25,13 +25,13 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/source/include/)
 
 if(WIN32)
-	target_link_libraries(${PROJECT_NAME} PUBLIC imm32.lib ole32.lib oleaut32.lib opengl32.lib version.lib winmm.lib)
+	target_link_libraries(${PROJECT_NAME} PRIVATE imm32.lib ole32.lib oleaut32.lib opengl32.lib version.lib winmm.lib)
 endif()
 
 if(UNIX AND NOT APPLE)
 	find_package(X11 REQUIRED)
 	find_package(Threads REQUIRED)
-	target_link_libraries(${PROJECT_NAME} PUBLIC ${X11_LIBRARIES} ${X11_Xxf86vm_LIB} GL)
+	target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES} ${X11_Xxf86vm_LIB} GL)
 endif()
 
 foreach(FILE ${quartzSources}) 

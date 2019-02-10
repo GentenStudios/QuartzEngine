@@ -1,21 +1,24 @@
+add_subdirectory(math)
 add_subdirectory(events)
 add_subdirectory(graphics)
-add_subdirectory(math)
-add_subdirectory(utils)
 add_subdirectory(platform)
+add_subdirectory(utilities)
+
+set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 
 set(coreHeaders
-    ${eventHeaders}
-    ${graphicsHeaders}
-    ${mathHeaders}
-    ${utilHeaders}
-    ${platformHeaders}
+	${mathHeaders}
+	${eventHeaders}
+	${graphicsHeaders}
+	${platformHeaders}
+	${utilityHeaders}
 
-    ${CMAKE_CURRENT_LIST_DIR}/Core.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/UniversalDoxygenComments.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/Application.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/EntryPoint.hpp
-    ${CMAKE_CURRENT_LIST_DIR}/quartz-pch.hpp
+	${currentDir}/Core.hpp
+	${currentDir}/Application.hpp
+	${currentDir}/EntryPoint.hpp
+	${currentDir}/quartz-pch.hpp
 
-    PARENT_SCOPE
+	${currentDir}/UniversalDoxygenComments.hpp
+	
+	PARENT_SCOPE
 )
