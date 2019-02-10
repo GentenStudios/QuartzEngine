@@ -25,16 +25,16 @@ namespace qz
 		 * 			We, as of 17th November 2018 (stated by BeeperDeeper089, or Vyom Fadia) DO NOT, AND WILL NOT SUPPORT ANYTHING BEFORE OPENGL 3.3.
 		 * 			We will be supported OpenGLES at a later date, but will be sticking with normal, desktop OpenGL for now, due to ease of development.
 		 */
-		struct GLVersion {
+		struct GLVersionRequired {
 			int glMajor;
 			int glMinor;
 
-			GLVersion(int a, int b) :
+			GLVersionRequired(int a, int b) :
 				glMajor(a),
 				glMinor(b)
 			{}
 
-			GLVersion() :
+			GLVersionRequired() :
 				glMajor(0),
 				glMinor(0)
 			{}

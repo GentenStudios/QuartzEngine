@@ -2,10 +2,10 @@
 
 #include <quartz/core/Core.hpp>
 
-#include <GL/glew.h>
+#include <glad/glad.h>
 
 #ifdef QZ_OS_WINDOWS
-#	define RENDER_ERROR(subSectors, message, ...)		qz::Logger::get()->log(qz::LogVerbosity::ERROR, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
+#	define RENDER_ERROR(subSectors, message, ...)		qz::Logger::get()->log(qz::LogVerbosity::FATAL, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
 #	define RENDER_INFO(subSectors, message, ...)		qz::Logger::get()->log(qz::LogVerbosity::INFO, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
 #	ifdef QZ_DEBUG
 #		define RENDER_WARNING(subSectors, message, ...)	qz::Logger::get()->log(qz::LogVerbosity::WARNING, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
@@ -15,7 +15,7 @@
 #		define RENDER_DEBUG(subSectors, message, ...)
 #	endif
 #else
-#	define RENDER_ERROR(subSectors, message, ...)		qz::Logger::get()->log(qz::LogVerbosity::ERROR, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, ##__VA_ARGS__)
+#	define RENDER_ERROR(subSectors, message, ...)		qz::Logger::get()->log(qz::LogVerbosity::FATAL, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, ##__VA_ARGS__)
 #	define RENDER_INFO(subSectors, message, ...)		qz::Logger::get()->log(qz::LogVerbosity::INFO, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, ##__VA_ARGS__)
 #	ifdef QZ_DEBUG
 #		define RENDER_WARNING(subSectors, message, ...)	qz::Logger::get()->log(qz::LogVerbosity::WARNING, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, ##__VA_ARGS__)
@@ -80,7 +80,7 @@ namespace qz
 			 * @brief OpenGL Debugging output function. THIS FUNCTION IS HANDLED BY OPENGL, AND DOES NOT NEED *ANY* INTERVENTION FROM PROGRAMMERS.
 			 *
 			 * @param source 		The source of the error, whether it be an API error, or WINDOW SYSTEM error, or maybe even a THIRD PARTY error.
-			 * @param type 			The type of error, as in ERROR, or DEPRECATED BEHAVIOUR, or other types of errors that OpenGL recognises.
+			 * @param type 			The type of error, as in FATAL, or DEPRECATED BEHAVIOUR, or other types of errors that OpenGL recognises.
 			 * @param id 			The ID of the error, this is often very vague and can be quite useless.
 			 * @param severity 		The severity of the error, whether it be HGIH, MEDIUM, or LOW severity, or even just a notificataion.
 			 * @param length 		The length of the message. (not used by us.)
@@ -116,7 +116,7 @@ namespace qz
 
 				switch (type)
 				{
-				case GL_DEBUG_TYPE_ERROR:               errorOutput << "[ERROR]"; break;
+				case GL_DEBUG_TYPE_ERROR:               errorOutput << "[FATAL]"; break;
 				case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: errorOutput << "[DEPRECATED BEHAVIOUR]"; break;
 				case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:  errorOutput << "[UNDEFINED BEHAVIOUR]"; break;
 				case GL_DEBUG_TYPE_PORTABILITY:         errorOutput << "[PORTABILITY]"; break;

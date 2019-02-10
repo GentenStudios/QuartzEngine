@@ -49,7 +49,7 @@ namespace qz
 			 * @param profile 	The OpenGL profile, such as the Compatibility profile, or Core profile.
 			 * @return IWindow* The respective object for the class depicted by the WindowingAPI parameter.
 			 */
-			static IWindow* createWindow(const std::string& title, int width, int height, GLVersion version, GLProfile profile);
+			static IWindow* createWindow(const std::string& title, int width, int height, GLVersionRequired version, GLProfile profile);
 
 			virtual ~IWindow() = default;
 

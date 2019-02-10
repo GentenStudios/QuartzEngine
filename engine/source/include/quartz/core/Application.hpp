@@ -15,7 +15,7 @@ namespace qz
 		{}
 
 		gfx::GLProfile glProfile;
-		gfx::GLVersion glVersion;
+		gfx::GLVersionRequired glVersion;
 
 		int windowWidth;
 		int windowHeight;

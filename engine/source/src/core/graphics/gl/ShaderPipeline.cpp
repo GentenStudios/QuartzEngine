@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include <glad/glad.h>
 
 #include <quartz/core/graphics/gl/GLDebug.hpp>
 #include <quartz/core/graphics/gl/ShaderPipeline.hpp>
@@ -27,7 +27,7 @@ void ShaderPipeline::addStage(ShaderType stage, const char* shaderSource)
 	if (!success)
 	{
 		GLCheck(glGetShaderInfoLog(shader, 1024, nullptr, infoLog));
-		RENDER_ERROR("[SHADER COMPILATION]", std::string("ERROR::SHADER::COMPILATION - ").append(infoLog));
+		RENDER_ERROR("[SHADER COMPILATION]", std::string("FATAL::SHADER::COMPILATION - ").append(infoLog));
 	}
 
 	m_shaders.push_back(shader);

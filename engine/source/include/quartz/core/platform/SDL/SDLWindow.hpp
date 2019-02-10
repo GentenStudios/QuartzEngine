@@ -34,7 +34,7 @@ namespace qz
 			 * @param version 	Refer to IWindow documentation
 			 * @param profile 	Refer to IWindow documentation
 			 */
-			SDLWindow(const std::string& title, int width, int height, gfx::GLVersion version, gfx::GLProfile profile);
+			SDLWindow(const std::string& title, int width, int height, gfx::GLVersionRequired version, gfx::GLProfile profile);
 			~SDLWindow();
 
 			virtual void pollEvents();

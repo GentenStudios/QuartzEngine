@@ -1,12 +1,12 @@
 #include <quartz/core/platform/SDL/SDLWindow.hpp>
 #include <quartz/core/graphics/gl/GLDebug.hpp>
 
-#include <GL/glew.h>
+#include <glad/glad.h>
 
 using namespace qz::sdl;
 using namespace qz;
 
-SDLWindow::SDLWindow(const std::string& title, int width, int height, gfx::GLVersion version, gfx::GLProfile profile)
+SDLWindow::SDLWindow(const std::string& title, int width, int height, gfx::GLVersionRequired version, gfx::GLProfile profile)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	
@@ -51,7 +51,7 @@ SDLWindow::SDLWindow(const std::string& title, int width, int height, gfx::GLVer
 
 	m_context = SDL_GL_CreateContext(m_window);
 
-	if (glewInit() != GLEW_OK)
+	if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
 	{
 		LERROR("Uh Oh! There was a booboo, and we can't fix it :(. Tell the pros that an OpenGL context could not be created. Sorry for the inconvenience!");
 		exit(EXIT_FAILURE);

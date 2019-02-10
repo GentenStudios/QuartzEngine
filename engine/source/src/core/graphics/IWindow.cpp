@@ -3,7 +3,7 @@
 
 using namespace qz::gfx;
 
-IWindow* IWindow::createWindow(const std::string& title, int width, int height, GLVersion version, GLProfile profile)
+IWindow* IWindow::createWindow(const std::string& title, int width, int height, GLVersionRequired version, GLProfile profile)
 {
 	return new qz::sdl::SDLWindow(title, width, height, version, profile);
 }

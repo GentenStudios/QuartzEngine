@@ -3,7 +3,7 @@
 #include <quartz/core/Core.hpp>
 
 #include <quartz/core/graphics/gl/GLDebug.hpp>
-#include <GL/glew.h>
+#include <glad/glad.h>
 
 namespace qz
 {

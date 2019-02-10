@@ -1,6 +1,6 @@
 #include <quartz/core/graphics/gl/TextureArray.hpp>
 
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <quartz/core/graphics/gl/GLDebug.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION

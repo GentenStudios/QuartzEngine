@@ -80,7 +80,7 @@ void Logger::init(const std::string& logFile, LogVerbosity verbosityLevel = LogV
 	// Creating the files
 	m_logFileHandle.open(Logger::m_logFile, std::ios::app);
 
-	LogVerbosityLookup[0] = "ERROR";
+	LogVerbosityLookup[0] = "FATAL";
 	LogVerbosityLookup[1] = "WARNING";
 	LogVerbosityLookup[2] = "INFO";
 	LogVerbosityLookup[3] = "DEBUG";
@@ -111,7 +111,7 @@ static Console::Color getColorFromVerbosity(LogVerbosity vb)
 
 	switch (vb)
 	{
-	case LogVerbosity::ERROR:   col = Console::Color::RED;        break;
+	case LogVerbosity::FATAL:   col = Console::Color::RED;        break;
 	case LogVerbosity::WARNING: col = Console::Color::YELLOW;     break;
 	case LogVerbosity::INFO:    col = Console::Color::GREEN;      break;
 	case LogVerbosity::DEBUG:   col = Console::Color::DARK_GREEN; break;
@@ -132,7 +132,7 @@ void Logger::logMessage(std::string errorFile, int lineNumber, std::string subSe
 
 	/*
 		Log messages are in the format:
-			[ERROR/INFO/DEBUG/WARNING] <file of log>: <line number> <message>
+			[FATAL/INFO/DEBUG/WARNING] <file of log>: <line number> <message>
 						 ^                          ^                   ^
 			Verbosity of message          If verbosity != INFO    The message to log
 	*/

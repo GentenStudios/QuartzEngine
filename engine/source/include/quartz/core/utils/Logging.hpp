@@ -16,7 +16,7 @@
 #define DESTROYLOGGER()              	qz::Logger::get()->destroy()
 
 #ifdef QZ_OS_WINDOWS
-#	define LERROR(message, ...)            qz::Logger::get()->log(qz::LogVerbosity::ERROR, __FILE__, __LINE__, "", message, __VA_ARGS__)
+#	define LERROR(message, ...)            qz::Logger::get()->log(qz::LogVerbosity::FATAL, __FILE__, __LINE__, "", message, __VA_ARGS__)
 #	define LINFO(message, ...)             qz::Logger::get()->log(qz::LogVerbosity::INFO, __FILE__, __LINE__, "", message, __VA_ARGS__)
 #	ifdef QZ_DEBUG
 #		define LDEBUG(message, ...)        qz::Logger::get()->log(qz::LogVerbosity::DEBUG, __FILE__, __LINE__, "", message, __VA_ARGS__)
@@ -26,9 +26,9 @@
 #		define LWARNING(message, ...)
 #	endif
 #else
-#	define LERROR(message, ...)            qz::Logger::get()->log(qz::LogVerbosity::ERROR, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
+#	define LERROR(message, ...)            qz::Logger::get()->log(qz::LogVerbosity::FATAL, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
 #	define LINFO(message, ...)             qz::Logger::get()->log(qz::LogVerbosity::INFO, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
-#	ifdef PHX_DEBUG
+#	ifdef QZ_DEBUG
 #		define LDEBUG(message, ...)        qz::Logger::get()->log(qz::LogVerbosity::DEBUG, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
 #		define LWARNING(message, ...)      qz::Logger::get()->log(qz::LogVerbosity::WARNING, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
 #	else
@@ -73,7 +73,7 @@ namespace qz
 	 */
 	enum class LogVerbosity
 	{
-		ERROR	= 0, ///< ERROR Is for critical messages that result in FAILURES
+		FATAL	= 0, ///< FATAL Is for critical messages that result in FAILURES
 		WARNING = 1, ///< WARNING More verbose logging, for errors that are not FATAL, but are errors none-the-less
 		INFO	= 2, ///< INFO For important information which can aid finding problems quickly
 		DEBUG	= 3, ///< DEBUG For absolutely everything, like entering a function to exiting the function.
@@ -154,7 +154,7 @@ namespace qz
 		/// @brief The initial logging level that is referred to, to dictate what gets logged and what doesn't.
 		LogVerbosity m_vbLevel;
 
-		/// @brief The lookup table for ENUM, so something can get outputted like "[ERROR]"
+		/// @brief The lookup table for ENUM, so something can get outputted like "[FATAL]"
 		const char* LogVerbosityLookup[4];
 
 		/// @brief The previous message that has been logged.
