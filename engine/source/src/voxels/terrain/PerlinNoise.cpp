@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/voxels/terrain/PerlinNoise.hpp>
 
 #include <algorithm>
