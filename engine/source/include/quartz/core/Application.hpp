@@ -1,6 +1,7 @@
 #pragma once
 
 #include <quartz/core/Core.hpp>
+#include <quartz/core/utils/Logging.hpp>
 
 #include <quartz/core/graphics/IWindow.hpp>
 

@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/math/Ray.hpp>
 
 using namespace qz;

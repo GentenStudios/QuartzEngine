@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/voxels/ChunkManager.hpp>
 
 #include <algorithm>

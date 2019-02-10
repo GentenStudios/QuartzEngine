@@ -8,6 +8,8 @@
 
 #include <quartz/core/graphics/gl/GLEnums.hpp>
 
+#include <vector>
+
 namespace qz
 {
 	namespace gfx

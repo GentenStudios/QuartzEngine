@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/voxels/entities/ItemInstance.hpp>
 
 using namespace qz::entities;

@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/math/Matrix4x4.hpp>
 #include <quartz/core/math/MathUtils.hpp>
 
@@ -17,7 +18,7 @@ Matrix4x4::Matrix4x4()
 	elements[INDEX2D(3, 3)] = 1.f;
 }
 
-Matrix4x4 Matrix4x4::perspective(float aspect, float fov, float far, float near)
+Matrix4x4 Matrix4x4::perspective(float aspect, float fov, float farPlane, float nearPlane)
 {
 	Matrix4x4 mat4;
 	for (float& element : mat4.elements) element = 0.f;
@@ -28,24 +29,24 @@ Matrix4x4 Matrix4x4::perspective(float aspect, float fov, float far, float near)
 
 	mat4.elements[0] = 1.f / (aspect * tanHalfFovy);
 	mat4.elements[INDEX2D(1, 1)] = 1.f / tanHalfFovy;
-	mat4.elements[INDEX2D(2, 2)] = -(far + near) / (far - near);
+	mat4.elements[INDEX2D(2, 2)] = -(farPlane + nearPlane) / (farPlane - nearPlane);
 	mat4.elements[INDEX2D(3, 2)] = -1.f;
-	mat4.elements[INDEX2D(2, 3)] = -(2.f * far * near) / (far - near);
+	mat4.elements[INDEX2D(2, 3)] = -(2.f * farPlane * nearPlane) / (farPlane - nearPlane);
 	return mat4;
 }
 
-Matrix4x4 Matrix4x4::ortho(float left, float right, float top, float bottom, float far, float near)
+Matrix4x4 Matrix4x4::ortho(float left, float right, float top, float bottom, float farPlane, float nearPlane)
 {
 	Matrix4x4 out;
 	for (float& element : out.elements) element = 0.f;
 
 	out.elements[0] = 2.f / (right - left);
 	out.elements[INDEX2D(1, 1)] = 2.f / (top - bottom);
-	out.elements[INDEX2D(2, 2)] = -2.f / (far - near);
+	out.elements[INDEX2D(2, 2)] = -2.f / (farPlane - nearPlane);
 	out.elements[INDEX2D(3, 3)] = 1.f;
 	out.elements[INDEX2D(0, 3)] = -((right + left) / (right - left));
 	out.elements[INDEX2D(1, 3)] = -((top + bottom) / (top - bottom));
-	out.elements[INDEX2D(2, 3)] = -((far + near) / (far - near));
+	out.elements[INDEX2D(2, 3)] = -((farPlane + nearPlane) / (farPlane - nearPlane));
 
 	return out;
 }

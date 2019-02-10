@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/graphics/BatchRenderer.hpp>
 #include <quartz/core/graphics/gl/VertexAttrib.hpp>
 

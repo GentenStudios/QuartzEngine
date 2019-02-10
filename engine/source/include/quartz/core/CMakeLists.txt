@@ -15,6 +15,7 @@ set(coreHeaders
     ${CMAKE_CURRENT_LIST_DIR}/UniversalDoxygenComments.hpp
     ${CMAKE_CURRENT_LIST_DIR}/Application.hpp
     ${CMAKE_CURRENT_LIST_DIR}/EntryPoint.hpp
+    ${CMAKE_CURRENT_LIST_DIR}/QuartzPCH.hpp
 
     PARENT_SCOPE
 )

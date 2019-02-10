@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/utils/Config.hpp>
 #include <quartz/core/utils/Logging.hpp>
 

@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/graphics/Renderer2D.hpp>
 #include <quartz/core/utils/IO.hpp>
 

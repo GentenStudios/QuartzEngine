@@ -1,8 +1,4 @@
-/**
- *  @file logging.cpp
- *  @brief Function definitions for logging.hpp
- */
-
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/utils/Logging.hpp>
 
 #include <cstdio>

@@ -1,7 +1,8 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/graphics/gl/TextureArray.hpp>
+#include <quartz/core/graphics/gl/GLDebug.hpp>
 
 #include <glad/glad.h>
-#include <quartz/core/graphics/gl/GLDebug.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>

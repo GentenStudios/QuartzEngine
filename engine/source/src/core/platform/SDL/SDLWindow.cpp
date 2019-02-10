@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/platform/SDL/SDLWindow.hpp>
 #include <quartz/core/graphics/gl/GLDebug.hpp>
 

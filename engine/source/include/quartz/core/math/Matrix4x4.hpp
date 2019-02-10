@@ -37,7 +37,7 @@ namespace qz
 		 * @param near Distance from the viewer to the near clipping plane.
 		 * @return The calculated perspective projection matrix.
 		 */
-		static Matrix4x4 perspective(float aspect, float fov, float far, float near);
+		static Matrix4x4 perspective(float aspect, float fov, float farPlane, float nearPlane);
 
 		/**
 		 * @brief 
@@ -45,19 +45,19 @@ namespace qz
 		 * @param right 
 		 * @param top 
 		 * @param bottom 
-		 * @param far 
-		 * @param near 
+		 * @param farPlane 
+		 * @param nearPlane
 		 * @return 
 		 */
-		static Matrix4x4 ortho(float left, float right, float top, float bottom, float far, float near);
+		static Matrix4x4 ortho(float left, float right, float top, float bottom, float farPlane, float nearPlane);
 
 
 		/**
 		 * @brief 
-		 * @param eye 
-		 * @param centre 
-		 * @param up 
-		 * @return 
+		 * @param eye Usually the position of the camera, but is always the position that is being looked FROM
+		 * @param centre The position that the viewer wants to be looking
+		 * @param up The UP vector of the camera.
+		 * @return The calculated view matrix.
 		 */
 		static Matrix4x4 lookAt(const Vector3& eye, const Vector3& centre, const Vector3& up);
 	};

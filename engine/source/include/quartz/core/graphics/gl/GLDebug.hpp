@@ -1,10 +1,11 @@
 #pragma once
 
 #include <quartz/core/Core.hpp>
+#include <quartz/core/utils/Logging.hpp>
 
 #include <glad/glad.h>
 
-#ifdef QZ_OS_WINDOWS
+#ifdef QZ_PLATFORM_WINDOWS
 #	define RENDER_ERROR(subSectors, message, ...)		qz::Logger::get()->log(qz::LogVerbosity::FATAL, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
 #	define RENDER_INFO(subSectors, message, ...)		qz::Logger::get()->log(qz::LogVerbosity::INFO, __FILE__, __LINE__, std::string("[RENDERING]").append(subSectors), message, __VA_ARGS__)
 #	ifdef QZ_DEBUG
@@ -33,7 +34,7 @@
 #	define GLCheck(x) x;
 #endif
 
-#ifndef QZ_OS_WINDOWS
+#ifndef QZ_PLATFORM_WINDOWS
 #	define __stdcall
 #endif
 
