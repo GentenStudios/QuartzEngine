@@ -1,20 +1,10 @@
-set(graphicsSourceDir ${CMAKE_CURRENT_LIST_DIR})
+add_subdirectory(API)
 
-set(openglSources
-	${graphicsSourceDir}/gl/ShaderPipeline.cpp
-	${graphicsSourceDir}/gl/TextureArray.cpp
-	${graphicsSourceDir}/gl/VertexArray.cpp
-	${graphicsSourceDir}/gl/VertexBuffer.cpp
-)
-
+set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 set(graphicsSources
-	${openglSources}
+	${apiSources}
 
-	${graphicsSourceDir}/Camera.cpp
-	${graphicsSourceDir}/IWindow.cpp
-
-	${graphicsSourceDir}/BatchRenderer.cpp
-	${graphicsSourceDir}/Renderer2D.cpp
+	${currentDir}/IWindow.cpp
 
 	PARENT_SCOPE
 )
