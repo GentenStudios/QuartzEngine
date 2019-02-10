@@ -1,3 +1,4 @@
+#include <quartz/core/quartz-pch.hpp>
 #include <quartz/core/graphics/Camera.hpp>
 
 #include <quartz/core/math/MathUtils.hpp>

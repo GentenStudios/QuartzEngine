@@ -1,3 +1,4 @@
+#include <quartz/core/quartz-pch.hpp>
 #include <quartz/core/graphics/gl/TextureArray.hpp>
 
 #include <glad/glad.h>

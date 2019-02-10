@@ -1,3 +1,4 @@
+#include <quartz/core/quartz-pch.hpp>
 #include <quartz/core/graphics/gl/VertexBuffer.hpp>
 
 using namespace qz::gfx::gl;

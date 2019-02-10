@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(quartz-engine LANGUAGES CXX)
+project(quartz-engine LANGUAGES CXX CXXPCH)
 
 add_subdirectory(source/include)
 add_subdirectory(source/src)
@@ -13,7 +13,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC SDL2-static SDL2main glad luamod)
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
 target_include_directories(${PROJECT_NAME} PUBLIC 
 	${dependencies}/SDL2/include 
-	${dependencies}/glew/include 
+	${dependencies}/glad/include 
 	${dependencies}/stb_image 
 	${dependencies}/inih 
 	${dependencies}/luamod/include
@@ -31,6 +31,8 @@ if(UNIX AND NOT APPLE)
 	target_link_libraries(${PROJECT_NAME} PUBLIC ${X11_LIBRARIES} ${X11_Xxf86vm_LIB} GL)
 endif()
 
+target_precompiled_header(${PROJECT_NAME} source/include/quartz/core/quartz-pch.hpp TYPE c++-header)
+set_target_properties(quartz-engine.pch PROPERTIES FOLDER quartz-dependencies)
 
 foreach(FILE ${quartzSources}) 
     get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)

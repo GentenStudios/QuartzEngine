@@ -1,3 +1,4 @@
+#include <quartz/core/quartz-pch.hpp>
 #include <quartz/core/math/Vector2.hpp>
 
 using namespace qz;

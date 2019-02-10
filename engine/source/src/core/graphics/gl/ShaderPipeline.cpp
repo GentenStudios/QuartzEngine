@@ -1,3 +1,5 @@
+#include <quartz/core/quartz-pch.hpp>
+
 #include <glad/glad.h>
 
 #include <quartz/core/graphics/gl/GLDebug.hpp>

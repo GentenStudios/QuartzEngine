@@ -1,3 +1,4 @@
+#include <quartz/core/quartz-pch.hpp>
 #include <quartz/core/utils/IO.hpp>
 
 using namespace qz;
