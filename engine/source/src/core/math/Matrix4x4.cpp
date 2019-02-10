@@ -1,4 +1,4 @@
-#include <quartz/core/quartz-pch.hpp>
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/math/Matrix4x4.hpp>
 #include <quartz/core/math/MathUtils.hpp>
 

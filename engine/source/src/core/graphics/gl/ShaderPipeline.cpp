@@ -1,9 +1,9 @@
-#include <quartz/core/quartz-pch.hpp>
+#include <quartz/core/QuartzPCH.hpp>
+#include <quartz/core/graphics/gl/GLDebug.hpp>
+#include <quartz/core/graphics/gl/ShaderPipeline.hpp>
 
 #include <glad/glad.h>
 
-#include <quartz/core/graphics/gl/GLDebug.hpp>
-#include <quartz/core/graphics/gl/ShaderPipeline.hpp>
 
 using namespace qz::gfx::gl;
 

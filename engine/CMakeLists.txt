@@ -6,9 +6,6 @@ add_subdirectory(source/include)
 add_subdirectory(source/src)
 
 add_library(${PROJECT_NAME} STATIC ${quartzSources} ${quartzHeaders})
-target_precompiled_header(${PROJECT_NAME} source/include/quartz/core/quartz-pch.hpp)
-set_target_properties(quartz-engine.pch PROPERTIES FOLDER quartz-dependencies)
-
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC SDL2-static SDL2main glad luamod)
@@ -33,6 +30,9 @@ if(UNIX AND NOT APPLE)
 	find_package(Threads REQUIRED)
 	target_link_libraries(${PROJECT_NAME} PUBLIC ${X11_LIBRARIES} ${X11_Xxf86vm_LIB} GL)
 endif()
+
+target_precompiled_header(${PROJECT_NAME} source/include/quartz/core/QuartzPCH.hpp TYPE c++-header)
+set_target_properties(quartz-engine.pch PROPERTIES FOLDER quartz-dependencies)
 
 foreach(FILE ${quartzSources}) 
     get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
