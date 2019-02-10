@@ -1,57 +1,39 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Phoenix_Engine)
+project(quartz-engine LANGUAGES CXX)
 
-set(source_dir ${PROJECT_SOURCE_DIR}/src)
-set(header_dir ${PROJECT_SOURCE_DIR}/include)
+add_subdirectory(source/include)
+add_subdirectory(source/src)
 
-unset(engineSources CACHE)
-unset(engineHeaders CACHE)
+add_library(${PROJECT_NAME} STATIC ${quartzSources} ${quartzHeaders})
+set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 
-add_subdirectory(include)
-add_subdirectory(src)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2-static SDL2main glew_s luamod)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
-set(include_dirs
-    ${dependencies}/SDL2/include
-    ${dependencies}/glew/include
-    ${dependencies}/stb_image/
-	${dependencies}/inih
+
+target_include_directories(${PROJECT_NAME} PUBLIC 
+	${dependencies}/SDL2/include 
+	${dependencies}/glew/include 
+	${dependencies}/stb_image 
+	${dependencies}/inih 
 	${dependencies}/luamod/include
-    ${header_dir}
 )
 
-set(libraries SDL2-static SDL2main glew_s luamod)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/source/include/)
 
 if(WIN32)
-    set(libraries
-        ${libraries}
-        imm32.lib
-        ole32.lib
-        oleaut32.lib
-        opengl32.lib
-        version.lib
-        winmm.lib
-    )
+	target_link_libraries(${PROJECT_NAME} PRIVATE imm32.lib ole32.lib oleaut32.lib opengl32.lib version.lib winmm.lib)
 endif()
 
 if(UNIX AND NOT APPLE)
-    find_package(X11 REQUIRED)
-    find_package(Threads REQUIRED)
-    set(libraries
-        ${libraries}
-        ${X11_LIBRARIES}
-        ${X11_Xxf86vm_LIB}
-        GL
-    )
+	find_package(X11 REQUIRED)
+	find_package(Threads REQUIRED)
+	target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES} ${X11_Xxf86vm_LIB} GL)
 endif()
 
-# Link the library
-add_library(${PROJECT_NAME} STATIC ${engineSources} ${engineHeaders})
-target_link_libraries(${PROJECT_NAME} ${libraries})
-target_include_directories(${PROJECT_NAME} PUBLIC ${include_dirs})
 
-foreach(FILE ${engineSources}) 
+foreach(FILE ${quartzSources}) 
     get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
 
@@ -61,7 +43,7 @@ foreach(FILE ${engineSources})
     source_group("${GROUP}" FILES "${FILE}")
 endforeach()
 
-foreach(FILE ${engineHeaders})
+foreach(FILE ${quartzHeaders})
     get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
 
