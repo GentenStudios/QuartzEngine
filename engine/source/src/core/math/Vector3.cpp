@@ -1,49 +1,7 @@
 #include <quartz/core/quartz-pch.hpp>
 #include <quartz/core/math/Vector3.hpp>
 
-#include <cmath>
-
-using namespace qz;
-
-Vector3::Vector3(const float& x, const float& y, const float& z) :
-	x(x), y(y), z(z)
-{
-}
-
-Vector3::Vector3(const float& a) :
-	x(a), y(a), z(a)
-{
-}
-
-Vector3::Vector3() :
-	x(0.f), y(0.f), z(0.f)
-{
-}
-
-Vector3 Vector3::cross(const Vector3& a, const Vector3& b)
-{
-	return {
-		a.y * b.z - a.z * b.y,
-		a.z * b.x - a.x * b.z,
-		a.x * b.y - a.y * b.x
-	};
-}
-
-Vector3 Vector3::normalize(const Vector3& a)
-{
-	float len = std::sqrt(dot(a, a));
-
-	return {
-		a.x / len,
-		a.y / len,
-		a.z / len
-	};
-}
-
-float Vector3::dot(const Vector3& a, const Vector3& b)
-{
-	return a.x * b.x + a.y * b.y + a.z * b.z;
-}
+using namespace qz::math;
 
 void Vector3::floor()
 {
@@ -52,77 +10,45 @@ void Vector3::floor()
 	z = std::floor(z);
 }
 
-void Vector3::set(const float& a)
+void Vector3::ceil()
 {
-	this->x = a;
-	this->y = a;
-	this->z = a;
+	x = std::ceil(x);
+	y = std::ceil(y);
+	z = std::ceil(z);
 }
 
-void Vector3::operator+=(const Vector3& other)
+void Vector3::normalise()
 {
-	x += other.x;
-	y += other.y;
-	z += other.z;
+	const float len = std::sqrt(x * x + y * y + z * z);
+
+	x /= len;
+	y /= len;
+	z /= len;
 }
 
-void Vector3::operator-=(const Vector3& other)
-{
-	x -= other.x;
-	y -= other.y;
-	z -= other.z;
-}
-
-Vector3 qz::operator+(const Vector3& left, const Vector3& right)
+Vector3 Vector3::cross(const Vector3& vec1, const Vector3& vec2)
 {
 	return {
-		left.x + right.x,
-		left.y + right.y,
-		left.z + right.z
+	vec1.y * vec2.z - vec1.z * vec2.y,
+	vec1.z * vec2.x - vec1.x * vec2.z,
+	vec1.x * vec2.y - vec1.y * vec2.x
 	};
 }
 
-Vector3 qz::operator-(const Vector3& left, const Vector3& right)
+Vector3 Vector3::normalise(const Vector3& vec1)
 {
+	const float len = std::sqrt(dotProduct(vec1, vec1));
+
 	return {
-		left.x - right.x,
-		left.y - right.y,
-		left.z - right.z
+		vec1.x / len,
+		vec1.y / len,
+		vec1.z / len
 	};
 }
 
-Vector3 qz::operator*(const Vector3& left, const Vector3& right)
+float Vector3::dotProduct(const Vector3& vec1, const Vector3& vec2)
 {
-	return {
-		left.x * right.x,
-		left.y * right.y,
-		left.z * right.z
-	};
-}
-
-Vector3 qz::operator/(const Vector3& left, const Vector3& right)
-{
-	return {
-		left.x / right.x,
-		left.y / right.y,
-		left.z / right.z
-	};
-}
-
-bool qz::operator==(const Vector3& left, const Vector3& right)
-{
-	return (
-		left.x == right.x &&
-		left.y == right.y &&
-		left.z == right.z
-	);
-}
-
-bool qz::operator!=(const Vector3& left, const Vector3& right)
-{
-	return !(
-		left.x == right.x &&
-		left.y == right.y &&
-		left.z == right.z
-	);
+	return	vec1.x * vec2.x +
+		vec1.y * vec2.y +
+		vec1.z * vec2.z;
 }
