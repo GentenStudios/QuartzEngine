@@ -1,88 +1,55 @@
-/**
- * @file Matrix4x4.hpp
- * @brief 4 by 4 Matrix for fun maths! :/ or :) depending on the day.
- * 
- */
-
 #pragma once
 
+#include <quartz/core/Core.hpp>
 #include <quartz/core/math/Vector3.hpp>
 
 namespace qz
 {
-	/**
-	 * @brief Represents a column major 4x4 matrix of floats.
-	 */
-	struct Matrix4x4
+	namespace math
 	{
-		float elements[4 * 4]; ///< The 16 float array that stores the matrices elements sequentially.
 
-		/**
-		 * @brief Default constructs the as an identity matrix (the top left to bottom right diagonal is 1.0f)
-		 */
-		Matrix4x4();
+		struct QZ_API Matrix4x4
+		{
+			float elements[16];
 
-		Matrix4x4(
-			float m00, float m10, float m20, float m30,
-			float m01, float m11, float m21, float m31,
-			float m02, float m12, float m22, float m32,
-			float m03, float m13, float m23, float m33
-		);
+			Matrix4x4();
+			Matrix4x4(
+				float e0,	float e4,	float e8,	float e12, 
+				float e1,	float e5,	float e9,	float e13,
+				float e2,	float e6,	float e10,	float e14,
+				float e3,	float e7,	float e11,	float e15
+				);
 
-		/**
-		 * @brief Constructs a perspective projection matrix.
-		 * @param aspect The aspect ratio is the ratio of x (width) to y (height).
-		 * @param fov Specifies the field of view angle, in degrees.
-		 * @param far Distance from the viewer to the far clipping plane (should always be positive)
-		 * @param near Distance from the viewer to the near clipping plane.
-		 * @return The calculated perspective projection matrix.
-		 */
-		static Matrix4x4 perspective(float aspect, float fov, float farPlane, float nearPlane);
+			~Matrix4x4() = default;
 
-		/**
-		 * @brief 
-		 * @param left 
-		 * @param right 
-		 * @param top 
-		 * @param bottom 
-		 * @param farPlane 
-		 * @param nearPlane
-		 * @return 
-		 */
-		static Matrix4x4 ortho(float left, float right, float top, float bottom, float farPlane, float nearPlane);
+			static Matrix4x4 perspective(
+				const float& aspectRatio,
+				const float& fieldOfView,
+				const float& farPlane,
+				const float& nearPlane
+			);
 
+			static Matrix4x4 ortho(float left, 
+				float right, 
+				float top, 
+				float bottom, 
+				float farPlane, 
+				float nearPlane
+			);
 
-		/**
-		 * @brief 
-		 * @param eye Usually the position of the camera, but is always the position that is being looked FROM
-		 * @param centre The position that the viewer wants to be looking
-		 * @param up The UP vector of the camera.
-		 * @return The calculated view matrix.
-		 */
-		static Matrix4x4 lookAt(const Vector3& eye, const Vector3& centre, const Vector3& up);
+			static Matrix4x4 lookAt(
+				const Vector3& eyePos,
+				const Vector3& centre,
+				const Vector3& up
+			);
+
+			void operator*=(const Matrix4x4& other);
+			Matrix4x4 operator*(const Matrix4x4& other);
+
+			void operator*=(const float& other);
+			Matrix4x4 operator*(const float& other);
+
+			Vector3 operator*(const Vector3& other);
+		};
 	};
-
-	/**
-	 * @brief Multiplies two matrices together. Multiplication is not commutative (therefore left*right != right*left)
-	 * @param left Left hand side of matrix multiplication.
-	 * @param right Right hand side of matrix multiplication.
-	 * @return Product of `left` and `right` matrices.
-	 */
-	Matrix4x4 operator*(const Matrix4x4& left, const Matrix4x4& right);
-
-	/**
-	 * @brief Multiplies together a matrix and a scalar value.
-	 * @param left Left hand side of multiplication.
-	 * @param right Right hand side of multiplication
-	 * @return Product of `left` and `right`
-	 */
-	Matrix4x4 operator*(const Matrix4x4& left, const float& right);
-
-	/**
-	 * @brief Multiplies together a matrix and a Vector3 value.
-	 * @param left Left hand side of multiplication.
-	 * @param right Right hand side of multiplication.
-	 * @return Product of `left` and `right`
-	 */
-	Vector3 operator*(const Matrix4x4& left, const Vector3& right);
 }

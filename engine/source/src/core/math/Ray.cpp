@@ -1,7 +1,7 @@
 #include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/math/Ray.hpp>
 
-using namespace qz;
+using namespace qz::math;
 
 Ray::Ray(const Vector3& start, const Vector3& direction)
 	: m_start(start), m_direction(direction), 
