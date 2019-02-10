@@ -1,9 +1,7 @@
 #include <quartz/core/quartz-pch.hpp>
 #include <quartz/core/utils/Logging.hpp>
 
-#include <cstdio>
-
-#ifdef QZ_OS_WINDOWS
+#ifdef QZ_PLATFORM_WINDOWS
 #include <Windows.h>
 #undef ERROR // Windows is a dick
 #endif
@@ -15,7 +13,7 @@ namespace qz
 	namespace os_terminal
 	{
 
-#ifdef QZ_OS_WINDOWS
+#ifdef QZ_PLATFORM_WINDOWS
 		// WARNING: Do not change the order of this array, (it needs to match the order of `phx::Console::Color`)
 		static WORD s_win32TerminalColors[] =
 		{
@@ -33,7 +31,7 @@ namespace qz
 		};
 #endif
 
-#ifdef QZ_OS_LINUX
+#ifdef QZ_PLATFORM_LINUX
 		static const char *s_linuxTerminalColors[] =
 		{
 			"\033[1;31m",
@@ -54,12 +52,12 @@ namespace qz
 
 void Console::setTextColor(const Console::Color& color)
 {
-#ifdef QZ_OS_WINDOWS
+#ifdef QZ_PLATFORM_WINDOWS
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(console, os_terminal::s_win32TerminalColors[static_cast<size_t>(color)]);
 #endif
 
-#ifdef QZ_OS_LINUX
+#ifdef QZ_PLATFORM_LINUX
 	std::cout << os_terminal::s_linuxTerminalColors[static_cast<size_t>(color)];
 #endif
 }

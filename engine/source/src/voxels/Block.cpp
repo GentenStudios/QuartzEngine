@@ -1,5 +1,4 @@
-#include <algorithm>
-
+#include <quartz/core/utils/Logging.hpp>
 #include <quartz/voxels/Block.hpp>
 
 using namespace qz::voxels;
