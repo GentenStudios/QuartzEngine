@@ -1,11 +1,11 @@
 #include <quartz/core/quartz-pch.hpp>
-#include <quartz/core/utils/Config.hpp>
-#include <quartz/core/utils/Logging.hpp>
-
-#include <SDL.h>
+#include <quartz/core/utilities/Config.hpp>
+#include <quartz/core/utilities/Logger.hpp>
 
 #include <fstream>
+#include <SDL.h>
 
+using namespace qz::utils;
 using namespace qz;
 
 ConfigManager* ConfigManager::get()
@@ -57,7 +57,7 @@ float ConfigFile::getFloat(const std::string & section, const std::string & key,
 	return static_cast<float>(m_inifile.GetReal(section, key, static_cast<float>(defaultReturn)));
 }
 
-events::Keys ConfigFile::getScancode(const std::string & section, const std::string & key, events::Keys defaultReturn) const
+events::Key ConfigFile::getScancode(const std::string & section, const std::string & key, events::Key defaultReturn) const
 {
 	// See https://wiki.libsdl.org/SDL_Keycode for a full map of Key Names -> Key Codes -> Scancodes
 
@@ -65,7 +65,7 @@ events::Keys ConfigFile::getScancode(const std::string & section, const std::str
 	const char* defaultName = SDL_GetKeyName(defaultKey);
 	
 	std::string value = m_inifile.Get(section, key, defaultName);
-	return static_cast<events::Keys>(SDL_GetScancodeFromName(value.c_str()));
+	return static_cast<events::Key>(SDL_GetScancodeFromName(value.c_str()));
 }
 
 bool ConfigFile::existsOnDisk() const
