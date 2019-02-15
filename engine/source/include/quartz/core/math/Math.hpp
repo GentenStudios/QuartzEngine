@@ -7,20 +7,13 @@
 
 namespace qz
 {
-	namespace math
-	{
-		typedef Matrix4x4				mat4;
-		typedef Vector2					vec2;
-		typedef Vector3					vec3;
-		typedef	TemplateVector2<int>	vec2i;
-		typedef	TemplateVector3<int>	vec3i;
+	typedef math::Matrix4x4				Matrix4x4;
 
-		template <typename T>
-		using tvec3 = TemplateVector3<T>;
+	typedef math::Vector2				Vector2;
+	typedef math::Vector3				Vector3;
+	typedef math::TemplateVector2<int>	Vector2i;
+	typedef math::TemplateVector3<int>	Vector3i;
 
-		template <typename T>
-		using tvec2 = TemplateVector2<T>;
-
-		typedef Ray						ray;
-	}
+	template <typename T> using TVector2 = math::TemplateVector2<T>;
+	template <typename T> using TVector3 = math::TemplateVector3<T>;
 }
