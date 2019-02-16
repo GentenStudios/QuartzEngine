@@ -4,7 +4,6 @@
 
 #include <algorithm>
 
-
 using namespace qz::voxels;
 
 RegistryBlock::RegistryBlock(std::string blockID, std::string blockName, int initialHP, BlockType blockType)

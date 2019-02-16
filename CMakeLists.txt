@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(quartz CXX)
+project(quartz)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/CMakePCHCompiler)
 

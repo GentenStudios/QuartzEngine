@@ -17,7 +17,6 @@ int main(int argc, char** argv)
 	INITLOGGER(requirements->logFile, requirements->logVerbosity);
 
 	ApplicationData* appData = new ApplicationData();
-
 	appData->window = gfx::IWindow::createWindow(
 		requirements->windowTitle,
 		requirements->windowWidth,

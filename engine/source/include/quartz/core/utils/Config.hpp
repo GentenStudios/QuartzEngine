@@ -11,7 +11,7 @@
 
 #include <inih/INIReader.h>
 
-#include <quartz/core/events/Keys.hpp>
+#include <quartz/core/events/EventEnums.hpp>
 
 #define QZ_REGISTER_CONFIG(filenameStr) \
 	qz::ConfigManager::get()->registerConfig(filenameStr)
@@ -84,7 +84,7 @@ namespace qz
 		 * @param defaultReturn The integer to be returned if the key/value/section doesn't exist.
 		 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 		 */
-		events::Keys getScancode(const std::string& section, const std::string& key, events::Keys defaultReturn) const;
+		events::Key getScancode(const std::string& section, const std::string& key, events::Key defaultReturn) const;
 		
 		/**
 	 	 * @brief Return's if the .ini file for this config file exists on disk. This allows for cleaner handling of the file not existing.
