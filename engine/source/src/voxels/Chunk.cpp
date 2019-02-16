@@ -1,3 +1,4 @@
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/voxels/Chunk.hpp>
 
 #include <quartz/core/graphics/gl/VertexAttrib.hpp>
