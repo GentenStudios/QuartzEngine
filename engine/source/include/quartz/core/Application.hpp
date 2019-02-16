@@ -10,13 +10,9 @@ namespace qz
 	struct ApplicationRequirements
 	{
 		ApplicationRequirements(): 
-			glProfile(gfx::GLProfile::CORE), 
 			windowWidth(0), windowHeight(0), 
 			logVerbosity(LogVerbosity::INFO)
 		{}
-
-		gfx::GLProfile glProfile;
-		gfx::GLVersionRequired glVersion;
 
 		int windowWidth;
 		int windowHeight;

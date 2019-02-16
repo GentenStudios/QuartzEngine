@@ -1,10 +1,20 @@
 #include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/graphics/IWindow.hpp>
-#include <quartz/core/platform/SDL/SDLWindow.hpp>
+#include <quartz/core/platform/GLWindow.hpp>
 
 using namespace qz::gfx;
 
-IWindow* IWindow::createWindow(const std::string& title, int width, int height, GLVersionRequired version, GLProfile profile)
+IWindow* IWindow::create(const std::string& title, const unsigned int width, const unsigned int height, std::size_t flags, RenderingAPI renderingAPI)
 {
-	return new qz::sdl::SDLWindow(title, width, height, version, profile);
+	Context::setRenderingAPI(RenderingAPI::NONE);
+
+	switch (renderingAPI)
+	{
+	case RenderingAPI::OPENGL:	
+		Context::setRenderingAPI(RenderingAPI::OPENGL); 
+		return new api::gl::GLWindow(title, width, height);
+	
+	default:
+		return nullptr;
+	}
 }

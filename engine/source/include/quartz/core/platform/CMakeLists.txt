@@ -1,4 +1,7 @@
-set(platformHeaders
+set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 
-    PARENT_SCOPE
+set(platformHeaders
+	${currentDir}/GLWindow.hpp
+
+	PARENT_SCOPE
 )

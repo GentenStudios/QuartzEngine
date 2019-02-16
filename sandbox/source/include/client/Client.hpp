@@ -1,9 +1,7 @@
 #pragma once
 
-#define QZ_MAIN_HANDLED
 #include <Quartz.hpp>
 
-#include <client/Player.hpp>
 #include <memory>
 
 namespace client
@@ -22,7 +20,5 @@ namespace client
 	private:
 		qz::ApplicationRequirements* m_appRequirements = nullptr;
 		qz::ApplicationData* m_appData = nullptr;
-
-		std::unique_ptr<Player> m_player;
 	};
 }
