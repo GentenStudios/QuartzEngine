@@ -45,9 +45,9 @@ namespace qz
 			virtual void close()								  = 0;
 			virtual bool isRunning()						const = 0;
 
-			virtual void resize(math::vec2i size)				  = 0;
+			virtual void resize(Vector2i size)					  = 0;
 			virtual void setResizable(bool enabled)				  = 0;
-			virtual math::vec2i getSize()					const = 0;
+			virtual Vector2i getSize()						const = 0;
 
 			virtual void setVSync(bool enabled)					  = 0;
 			virtual bool isVSync()							const = 0;
@@ -58,8 +58,8 @@ namespace qz
 			virtual bool isFullscreen()						const = 0;
 
 			virtual void setCursorState(CursorState state)		  = 0;
-			virtual void setCursorPosition(math::vec2 pos)		  = 0;
-			virtual math::vec2 getCursorPosition()			const = 0;
+			virtual void setCursorPosition(Vector2 pos)			  = 0;
+			virtual Vector2 getCursorPosition()				const = 0;
 			virtual bool isKeyDown(int key)					const = 0;
 
 		protected:

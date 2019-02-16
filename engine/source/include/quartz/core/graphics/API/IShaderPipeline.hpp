@@ -40,9 +40,9 @@ namespace qz
 				virtual void setUniform3(const std::string& name, float a, float b, float c) const = 0;
 				virtual void setUniform4(const std::string& name, float a, float b, float c, float d) const = 0;
 
-				virtual void setVec2(const std::string& name, math::vec2& data) const = 0;
-				virtual void setVec3(const std::string& name, math::vec3& data) const = 0;
-				virtual void setMat4(const std::string& name, const math::mat4& mat) const = 0;
+				virtual void setVec2(const std::string& name, const Vector2& data) const = 0;
+				virtual void setVec3(const std::string& name, const Vector3& data) const = 0;
+				virtual void setMat4(const std::string& name, const Matrix4x4& mat) const = 0;
 
 				virtual void bindAttributeLocation(const std::string& attribName, int index) = 0;
 				virtual int retrieveAttributeLocation(const std::string& attribName) = 0;

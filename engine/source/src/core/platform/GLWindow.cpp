@@ -1,9 +1,11 @@
-#include <quartz/core/quartz-pch.hpp>
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/platform/GLWindow.hpp>
 #include <quartz/core/graphics/API/gl/GLCommon.hpp>
 #include <quartz/core/events/KeyEvent.hpp>
 #include <quartz/core/events/MouseEvent.hpp>
 #include <quartz/core/events/ApplicationEvent.hpp>
+
+#include <quartz/core/utils/Logging.hpp>
 
 #include <glad/glad.h>
 
@@ -31,7 +33,7 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 	if (m_window == nullptr)
 	{
 		SDL_Quit();
-		LFATAL("Couldn't create window, need OpenGL >= 3.3");
+		LERROR("Couldn't create window, need OpenGL >= 3.3");
 		exit(EXIT_FAILURE);
 	}
 
@@ -42,7 +44,7 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 
 	if (!gladLoadGLLoader(static_cast<GLADloadproc>(SDL_GL_GetProcAddress)))
 	{
-		LFATAL("Failed to initialize GLAD");
+		LERROR("Failed to initialize GLAD");
 		exit(EXIT_FAILURE);
 	}
 
@@ -163,7 +165,7 @@ bool GLWindow::isRunning() const
 	return m_running;
 }
 
-void GLWindow::resize(math::vec2i size)
+void GLWindow::resize(Vector2i size)
 {
 	SDL_SetWindowSize(m_window, size.x, size.y);
 }
@@ -173,9 +175,9 @@ void GLWindow::setResizable(bool enabled)
 	SDL_SetWindowResizable(m_window, enabled ? SDL_TRUE : SDL_FALSE);
 }
 
-qz::math::vec2i GLWindow::getSize() const
+Vector2i GLWindow::getSize() const
 {
-	math::vec2i size;
+	Vector2i size;
 	SDL_GetWindowSize(m_window, &size.x, &size.y);
 
 	return size;
@@ -208,7 +210,7 @@ void GLWindow::setFullscreen(bool enabled)
 
 		if (check != 0)
 		{
-			LFATAL("Uh oh! Something went very wrong, send this error message to a developer: ", SDL_GetError());
+			LERROR("Uh oh! Something went very wrong, send this error message to a developer: ", SDL_GetError());
 		}
 		else
 		{
@@ -239,12 +241,12 @@ void GLWindow::setCursorState(gfx::CursorState state)
 	SDL_ShowCursor(on);
 }
 
-void GLWindow::setCursorPosition(math::vec2 pos)
+void GLWindow::setCursorPosition(Vector2 pos)
 {
 	SDL_WarpMouseInWindow(m_window, static_cast<int>(pos.x), static_cast<int>(pos.y));
 }
 
-qz::math::vec2 GLWindow::getCursorPosition() const
+Vector2 GLWindow::getCursorPosition() const
 {
 	int x, y;
 	SDL_GetMouseState(&x, &y);

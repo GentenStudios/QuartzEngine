@@ -1,4 +1,4 @@
-#include <quartz/core/quartz-pch.hpp>
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/graphics/API/gl/GLStateManager.hpp>
 
 using namespace qz::gfx::api::gl;

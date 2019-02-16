@@ -1,4 +1,4 @@
-#include <quartz/core/quartz-pch.hpp>
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/graphics/API/gl/GLShaderPipeline.hpp>
 
 using namespace qz::gfx::api::gl;
@@ -115,17 +115,17 @@ void GLShaderPipeline::setUniform4(const std::string& name, float a, float b, fl
 	GLCheck(glUniform4f(glGetUniformLocation(m_id, name.c_str()), a, b, c, d));
 }
 
-void GLShaderPipeline::setVec2(const std::string& name, math::vec2& data) const
+void GLShaderPipeline::setVec2(const std::string& name, const Vector2& data) const
 {
 	GLCheck(glUniform2fv(glGetUniformLocation(m_id, name.c_str()), 1, &data.x));
 }
 
-void GLShaderPipeline::setVec3(const std::string& name, math::vec3& data) const
+void GLShaderPipeline::setVec3(const std::string& name, const Vector3& data) const
 {
 	GLCheck(glUniform3fv(glGetUniformLocation(m_id, name.c_str()), 1, &data.x));
 }
 
-void GLShaderPipeline::setMat4(const std::string& name, const math::mat4& mat) const
+void GLShaderPipeline::setMat4(const std::string& name, const Matrix4x4& mat) const
 {
 	GLCheck(glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &mat.elements[0]));
 }

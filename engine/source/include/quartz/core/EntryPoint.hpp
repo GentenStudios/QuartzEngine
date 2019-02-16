@@ -17,12 +17,12 @@ int main(int argc, char** argv)
 	INITLOGGER(requirements->logFile, requirements->logVerbosity);
 
 	ApplicationData* appData = new ApplicationData();
-	appData->window = gfx::IWindow::createWindow(
+	appData->window = gfx::IWindow::create(
 		requirements->windowTitle,
 		requirements->windowWidth,
 		requirements->windowHeight,
-		requirements->glVersion,
-		requirements->glProfile
+		0,
+		gfx::RenderingAPI::OPENGL
 	);
 
 	application->setAppData(appData);

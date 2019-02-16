@@ -1,4 +1,4 @@
-#include <quartz/core/quartz-pch.hpp>
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/graphics/API/Context.hpp>
 
 using namespace qz::gfx;

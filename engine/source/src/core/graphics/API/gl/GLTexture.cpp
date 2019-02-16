@@ -1,4 +1,4 @@
-#include <quartz/core/quartz-pch.hpp>
+#include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/graphics/API/gl/GLTexture.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -87,7 +87,7 @@ void GLTexture::setDataFromFile(const std::string& filepath)
 	}
 	else
 	{
-		qz::utils::Logger::instance()->log(utils::LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", filepath, " could not be found.");
+		qz::Logger::get()->log(LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", filepath, " could not be found.");
 		return;
 	}
 	

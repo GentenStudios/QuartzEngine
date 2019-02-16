@@ -43,9 +43,9 @@ namespace qz
 					void setUniform3(const std::string& name, float a, float b, float c) const override;
 					void setUniform4(const std::string& name, float a, float b, float c, float d) const override;
 
-					void setVec2(const std::string& name, math::vec2& data) const override;
-					void setVec3(const std::string& name, math::vec3& data) const override;
-					void setMat4(const std::string& name, const math::mat4& mat) const override;
+					void setVec2(const std::string& name, const Vector2& data) const override;
+					void setVec3(const std::string& name, const Vector3& data) const override;
+					void setMat4(const std::string& name, const Matrix4x4& mat) const override;
 
 					void bindAttributeLocation(const std::string& attribName, int index) override;
 					int retrieveAttributeLocation(const std::string& attribName) override;
