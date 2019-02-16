@@ -87,7 +87,7 @@ void GLTexture::setDataFromFile(const std::string& filepath)
 	}
 	else
 	{
-		qz::Logger::get()->log(LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", filepath, " could not be found.");
+		utils::Logger::instance()->log(utils::LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", filepath, " could not be found.");
 		return;
 	}
 	

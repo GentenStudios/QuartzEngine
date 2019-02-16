@@ -68,7 +68,7 @@ void GLTextureArray::add(const std::string& filepath)
 		}
 		else
 		{
-			qz::Logger::get()->log(LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", filepath, " could not be found.");
+			utils::Logger::instance()->log(utils::LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", filepath, " could not be found.");
 			return;
 		}
 
@@ -111,7 +111,7 @@ void GLTextureArray::resolveReservations()
 			}
 			else
 			{
-				qz::Logger::get()->log(LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", current.first, " could not be found.");
+				utils::Logger::instance()->log(utils::LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", current.first, " could not be found.");
 				return;
 			}
 			stbi_image_free(image);

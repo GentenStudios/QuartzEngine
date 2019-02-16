@@ -2,8 +2,6 @@
 
 #include <Quartz.hpp>
 
-#include <memory>
-
 namespace client
 {
 	class Sandbox : public qz::Application
@@ -12,13 +10,24 @@ namespace client
 		Sandbox();
 		~Sandbox() = default;
 
-		const qz::ApplicationRequirements* getRequirements() { return m_appRequirements; }
-		void setAppData(qz::ApplicationData* appData) { m_appData = appData; }
+		const ApplicationRequirements* getAppRequirements() override { return m_appRequirements; }
+		void setAppData(qz::ApplicationData* appData) override { m_appData = appData; }
 
-		void run();
+		void run() override;
+
+		void onEvent(events::Event& e);
+		bool onKeyPress(events::KeyPressedEvent& e);
+		bool onClose(events::WindowCloseEvent& e);
 
 	private:
 		qz::ApplicationRequirements* m_appRequirements = nullptr;
 		qz::ApplicationData* m_appData = nullptr;
+
+		Vector3 m_clearColor;
 	};
+}
+
+inline qz::Application* qz::createApplication()
+{
+	return new client::Sandbox();
 }
