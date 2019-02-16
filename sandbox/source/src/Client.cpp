@@ -1,31 +1,49 @@
 #include <client/Client.hpp>
-#include <quartz/core/utils/Config.hpp>
+#include <quartz/core/utilities/Config.hpp>
 
 #include <chrono>
-
-using namespace qz;
-using namespace gfx;
+#include <glad/glad.h>
 
 using namespace client;
+using namespace qz;
 
-Sandbox::Sandbox() :
-	m_appRequirements(new ApplicationRequirements()),
-	m_appData(new ApplicationData)
+Sandbox::Sandbox()
 {
+	m_appRequirements = new ApplicationRequirements();
+	m_appRequirements->windowTitle = "Quartz Sandbox";
 	m_appRequirements->windowWidth = 1280;
 	m_appRequirements->windowHeight = 720;
-	m_appRequirements->windowTitle = "Quartz!";
 
-	m_appRequirements->logFile = "QuartzClient.log";
-	m_appRequirements->logVerbosity = LogVerbosity::DEBUG;
+	m_appRequirements->logFilePath = "Sandbox.log";
+	m_appRequirements->logVerbosity = utils::LogVerbosity::DEBUG;
 }
 
 void Sandbox::run()
 {
-	LDEBUG("DEBUG MESSAGE");
+	gfx::IWindow* window = m_appData->window;
+
+	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
+
+	while (window->isRunning())
+	{
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+		window->swapBuffers();
+		window->pollEvents();
+	}
 }
 
-Application* qz::createApplication()
+void Sandbox::onEvent(events::Event& event)
 {
-	return new Sandbox();
+	events::EventDispatcher dispatcher = events::EventDispatcher(event);
+
+	dispatcher.dispatch<events::KeyPressedEvent>(std::bind(&Sandbox::onKeyEvent, this, std::placeholders::_1));
+}
+
+bool Sandbox::onKeyEvent(events::KeyPressedEvent& event)
+{
+	LDEBUG("Key pressed! wowowowowowow");
+
+	return true;
 }

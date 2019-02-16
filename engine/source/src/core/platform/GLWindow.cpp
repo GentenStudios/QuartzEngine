@@ -5,7 +5,7 @@
 #include <quartz/core/events/MouseEvent.hpp>
 #include <quartz/core/events/ApplicationEvent.hpp>
 
-#include <quartz/core/utils/Logging.hpp>
+#include <quartz/core/utilities/Logger.hpp>
 
 #include <glad/glad.h>
 
@@ -33,7 +33,7 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 	if (m_window == nullptr)
 	{
 		SDL_Quit();
-		LERROR("Couldn't create window, need OpenGL >= 3.3");
+		LFATAL("Couldn't create window, need OpenGL >= 3.3");
 		exit(EXIT_FAILURE);
 	}
 
@@ -44,7 +44,7 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 
 	if (!gladLoadGLLoader(static_cast<GLADloadproc>(SDL_GL_GetProcAddress)))
 	{
-		LERROR("Failed to initialize GLAD");
+		LFATAL("Failed to initialize GLAD");
 		exit(EXIT_FAILURE);
 	}
 
@@ -210,7 +210,7 @@ void GLWindow::setFullscreen(bool enabled)
 
 		if (check != 0)
 		{
-			LERROR("Uh oh! Something went very wrong, send this error message to a developer: ", SDL_GetError());
+			LFATAL("Uh oh! Something went very wrong, send this error message to a developer: ", SDL_GetError());
 		}
 		else
 		{

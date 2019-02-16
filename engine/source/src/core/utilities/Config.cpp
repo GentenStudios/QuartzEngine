@@ -1,11 +1,11 @@
 #include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/utils/Config.hpp>
-#include <quartz/core/utils/Logging.hpp>
+#include <quartz/core/utilities/Config.hpp>
+#include <quartz/core/utilities/Logger.hpp>
 
 #include <SDL.h>
-
 #include <fstream>
 
+using namespace qz::utils;
 using namespace qz;
 
 ConfigManager* ConfigManager::get()
@@ -26,7 +26,7 @@ ConfigFile* ConfigManager::registerConfig(const std::string & name)
 
 ConfigFile* ConfigManager::getConfigFile(const std::string & name)
 {
-	// Config file has not been registered so return nullptr.
+	// Config file has not been registered so return an empty config.
 	if (m_configfiles.find(name) == m_configfiles.end())
 	{
 		static ConfigFile file;

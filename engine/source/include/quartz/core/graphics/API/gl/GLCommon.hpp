@@ -1,7 +1,7 @@
 #pragma once
 
 #include <quartz/core/Core.hpp>
-#include <quartz/core/utils/Logging.hpp>
+#include <quartz/core/utilities/Logger.hpp>
 #include <quartz/core/graphics/API/GFXTypes.hpp>
 #include <quartz/core/graphics/API/IBuffer.hpp>
 #include <quartz/core/graphics/API/IShaderPipeline.hpp>
@@ -29,7 +29,8 @@ namespace qz
 			{
 				inline void checkError(const char* file, const int line)
 				{
-
+					using namespace qz::utils;
+					
 					GLenum errorCode;
 					while ((errorCode = glGetError()) != GL_NO_ERROR)
 					{
@@ -46,7 +47,7 @@ namespace qz
 						default:							   error = "UNKNOWN";						break; // Something is seriously wrong, get this fixed.
 						}
 
-						Logger::get()->log(LogVerbosity::WARNING, file, line, "[RENDERING][OPENGL ERROR] ", error);
+						Logger::instance()->log(LogVerbosity::WARNING, file, line, "[RENDERING][OPENGL ERROR] ", error);
 					}
 				}
 
@@ -72,6 +73,7 @@ namespace qz
 					const GLchar* message,
 					const void* userParam)
 				{
+					using namespace qz::utils;
 
 					std::stringstream subCategories;
 					LogVerbosity verb;
@@ -112,7 +114,7 @@ namespace qz
 
 					subCategories << " ";
 
-					Logger::get()->log(verb, "OpenGL Debugger", 0, subCategories.str(), message);
+					Logger::instance()->log(verb, "OpenGL Debugger", 0, subCategories.str(), message);
 				}
 
 				inline GLenum gfxToOpenGL(DataType type)
