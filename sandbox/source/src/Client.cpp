@@ -1,8 +1,8 @@
 #include <client/Client.hpp>
 #include <quartz/core/utilities/Config.hpp>
 
-#include <chrono>
 #include <glad/glad.h>
+#include <chrono>
 
 using namespace client;
 using namespace qz;
@@ -27,23 +27,61 @@ void Sandbox::run()
 	while (window->isRunning())
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, 1.0f);
 
 		window->swapBuffers();
 		window->pollEvents();
 	}
 }
 
-void Sandbox::onEvent(events::Event& event)
+bool onClose(events::WindowCloseEvent e)
 {
-	events::EventDispatcher dispatcher = events::EventDispatcher(event);
-
-	dispatcher.dispatch<events::KeyPressedEvent>(std::bind(&Sandbox::onKeyEvent, this, std::placeholders::_1));
+	LDEBUG("WOW! WINDOW IS CLOSING DOWN.");
+	return true;
 }
 
-bool Sandbox::onKeyEvent(events::KeyPressedEvent& event)
+bool Sandbox::onKeyPress(events::KeyPressedEvent& e)
 {
-	LDEBUG("Key pressed! wowowowowowow");
+	if (e.getKeyCode() == events::Key::KEY_W)
+	{
+		m_clearColor = { 0, 1, 0 };
+	}
+	else if (e.getKeyCode() == events::Key::KEY_A)
+	{
+		m_clearColor = { 1, 0, 0 };
+	}
+	else if (e.getKeyCode() == events::Key::KEY_S)
+	{
+		m_clearColor = { 0, 0, 1 };
+	}
+	else if (e.getKeyCode() == events::Key::KEY_D)
+	{
+		m_clearColor = { 1, 1, 1 };
+	}
+	else
+	{
+		m_clearColor = { 0, 0, 0 };
+	}
 
+	return true;
+}
+
+bool Sandbox::onClose(events::WindowCloseEvent& e)
+{
+	LDEBUG("Sandbox is shutting down.");
+
+	return true;
+}
+
+void Sandbox::onEvent(events::Event& e)
+{
+	auto test = events::EventDispatcher(e);
+	test.dispatch<events::WindowCloseEvent>(std::bind(&Sandbox::onClose, this, std::placeholders::_1));
+	test.dispatch<events::KeyPressedEvent>(std::bind(&Sandbox::onKeyPress, this, std::placeholders::_1));
+}
+
+bool onClose2(events::WindowCloseEvent e)
+{
+	LDEBUG("WOW! THE SECOND EVENT HANDLER IS WORKING!");
 	return true;
 }
