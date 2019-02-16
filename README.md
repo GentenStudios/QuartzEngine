@@ -10,7 +10,7 @@
 
 #### Building
 
-- Either clone https://github.com/beeperdeeper089/Project-Phoenix or fork and then clone your fork.
+- Either clone https://github.com/beeperdeeper089/project-phoenix or fork and then clone your fork.
 
 - Run `cmake -H. -Bbuild` inside the root directory
 
