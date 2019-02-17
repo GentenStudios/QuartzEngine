@@ -25,7 +25,7 @@ namespace qz
 				static GraphicsResource<IShaderPipeline> generateShaderPipeline();
 				virtual ~IShaderPipeline() = default;
 
-				virtual void addStage(ShaderType stage, const char* shaderSource) = 0;
+				virtual void addStage(ShaderType stage, const std::string& shaderSource) = 0;
 				virtual void build() = 0;
 
 				virtual void use() const = 0;

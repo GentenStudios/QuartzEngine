@@ -37,7 +37,7 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 		exit(EXIT_FAILURE);
 	}
 
-	m_cachedScreenSize = { width, height };
+	m_cachedScreenSize = { static_cast<float>(width), static_cast<float>(height) };
 
 	m_context = SDL_GL_CreateContext(m_window);
 	SDL_GL_MakeCurrent(m_window, m_context);
@@ -165,9 +165,9 @@ bool GLWindow::isRunning() const
 	return m_running;
 }
 
-void GLWindow::resize(Vector2i size)
+void GLWindow::resize(Vector2 size)
 {
-	SDL_SetWindowSize(m_window, size.x, size.y);
+	SDL_SetWindowSize(m_window, static_cast<int>(size.x), static_cast<int>(size.y));
 }
 
 void GLWindow::setResizable(bool enabled)
@@ -175,12 +175,13 @@ void GLWindow::setResizable(bool enabled)
 	SDL_SetWindowResizable(m_window, enabled ? SDL_TRUE : SDL_FALSE);
 }
 
-Vector2i GLWindow::getSize() const
+Vector2 GLWindow::getSize() const
 {
-	Vector2i size;
-	SDL_GetWindowSize(m_window, &size.x, &size.y);
+	int x;
+	int y;
+	SDL_GetWindowSize(m_window, &x, &y);
 
-	return size;
+	return { static_cast<float>(x), static_cast<float>(y) };
 }
 
 void GLWindow::setVSync(bool enabled)
@@ -215,7 +216,7 @@ void GLWindow::setFullscreen(bool enabled)
 		else
 		{
 			m_cachedScreenSize = getSize();
-			resize({ current.w, current.h });
+			resize({ static_cast<float>(current.w), static_cast<float>(current.h) });
 			SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN);
 
 			glViewport(0, 0, current.w, current.h);
@@ -226,7 +227,7 @@ void GLWindow::setFullscreen(bool enabled)
 		SDL_SetWindowFullscreen(m_window, 0);
 		resize(m_cachedScreenSize);
 
-		glViewport(0, 0, m_cachedScreenSize.x, m_cachedScreenSize.y);
+		glViewport(0, 0, static_cast<int>(m_cachedScreenSize.x), static_cast<int>(m_cachedScreenSize.y));
 	}
 }
 
@@ -237,7 +238,7 @@ bool GLWindow::isFullscreen() const
 
 void GLWindow::setCursorState(gfx::CursorState state)
 {
-	bool on = state == gfx::CursorState::NORMAL;
+	const bool on = state == gfx::CursorState::NORMAL;
 	SDL_ShowCursor(on);
 }
 
@@ -253,7 +254,7 @@ Vector2 GLWindow::getCursorPosition() const
 	return { static_cast<float>(x), static_cast<float>(y) };
 }
 
-bool GLWindow::isKeyDown(int key) const
+bool GLWindow::isKeyDown(events::Key key) const
 {
 	return SDL_GetKeyboardState(nullptr)[static_cast<SDL_Scancode>(key)];
 }

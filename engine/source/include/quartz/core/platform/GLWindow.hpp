@@ -38,9 +38,9 @@ namespace qz
 					void close() override;
 					bool isRunning() const override;
 
-					void resize(Vector2i size) override;
+					void resize(Vector2 size) override;
+					Vector2 getSize() const override;
 					void setResizable(bool enabled) override;
-					Vector2i getSize() const override;
 
 					void setVSync(bool enabled) override;
 					bool isVSync() const override;
@@ -53,7 +53,7 @@ namespace qz
 					void setCursorState(gfx::CursorState state) override;
 					void setCursorPosition(Vector2 pos) override;
 					Vector2 getCursorPosition() const override;
-					bool isKeyDown(int key) const override;
+					bool isKeyDown(events::Key key) const override;
 
 				private:
 					SDL_Window* m_window;
@@ -63,7 +63,7 @@ namespace qz
 					bool m_vsync;
 					bool m_fullscreen;
 
-					Vector2i m_cachedScreenSize = Vector2i(0, 0);
+					Vector2 m_cachedScreenSize = { 0, 0 };
 
 					void dispatchToListeners(events::Event&& event)
 					{

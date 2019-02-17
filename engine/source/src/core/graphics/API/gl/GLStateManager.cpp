@@ -89,10 +89,7 @@ void GLStateManager::render(unsigned int start, unsigned int count) const
 {
 	bind();
 
-	for (auto& buffer : m_buffers)
-	{
-		GLCheck(glDrawArrays(GL_TRIANGLES, start, count));
-	}
+	GLCheck(glDrawArrays(GL_TRIANGLES, start, count));
 
 	unbind();
 }

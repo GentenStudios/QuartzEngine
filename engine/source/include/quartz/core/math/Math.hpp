@@ -1,5 +1,6 @@
 #pragma once
 
+#include <quartz/core/math/MathUtils.hpp>
 #include <quartz/core/math/Matrix4x4.hpp>
 #include <quartz/core/math/Vector3.hpp>
 #include <quartz/core/math/Vector2.hpp>

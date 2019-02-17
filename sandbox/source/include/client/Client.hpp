@@ -23,7 +23,7 @@ namespace client
 		qz::ApplicationRequirements* m_appRequirements = nullptr;
 		qz::ApplicationData* m_appData = nullptr;
 
-		Vector3 m_clearColor;
+		qz::gfx::FPSCamera* m_camera;
 	};
 }
 
