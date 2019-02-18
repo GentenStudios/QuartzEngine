@@ -2,7 +2,7 @@
 #include <quartz/core/graphics/Camera.hpp>
 
 const float HALF_PI = qz::math::PI / 2;
-const float MOVE_SPEED = 0.1f;
+const float MOVE_SPEED = 0.01f;
 const float SENSITIVITY = 0.00005f;
 
 using namespace qz::gfx;
@@ -10,7 +10,7 @@ using namespace qz;
 
 FPSCamera::FPSCamera(IWindow* window) : m_window(window)
 {
-	//window->setCursorState(CursorState::DISABLED);
+	window->setCursorState(CursorState::DISABLED);
 
 	const Vector2 windowSize = window->getSize();
 	m_projection = Matrix4x4::perspective(static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y), 45.f, 1000.f, 0.1f);
@@ -84,12 +84,5 @@ void FPSCamera::tick(float dt)
 	}
 	else if (m_window->isKeyDown(events::Key::KEY_D)) {
 		m_position += right * dt * moveSpeed;
-	}
-
-	if (m_window->isKeyDown(events::Key::KEY_A)) {
-		m_position.y -= moveSpeed * dt;
-	}
-	else if (m_window->isKeyDown(events::Key::KEY_A)) {
-		m_position.y += moveSpeed * dt;
 	}
 }

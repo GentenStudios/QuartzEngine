@@ -13,12 +13,12 @@ namespace qz
 			float elements[16];
 
 			Matrix4x4();
-			Matrix4x4(
-				float e0,	float e4,	float e8,	float e12, 
-				float e1,	float e5,	float e9,	float e13,
-				float e2,	float e6,	float e10,	float e14,
-				float e3,	float e7,	float e11,	float e15
-				);
+			Matrix4x4::Matrix4x4(
+				float m00, float m10, float m20, float m30,
+				float m01, float m11, float m21, float m31,
+				float m02, float m12, float m22, float m32,
+				float m03, float m13, float m23, float m33
+			);
 
 			~Matrix4x4() = default;
 

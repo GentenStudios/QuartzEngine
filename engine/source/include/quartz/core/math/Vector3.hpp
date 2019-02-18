@@ -26,7 +26,7 @@ namespace qz
 			static float	dotProduct	(const Vector3& vec1, const Vector3& vec2);
 
 			void	operator+=	(const Vector3& other)			{ x += other.x; y += other.y; z += other.z; };
-			void	operator-=	(const Vector3& other)			{ x += other.x; y += other.y; z += other.z; };
+			void	operator-=	(const Vector3& other)			{ x -= other.x; y -= other.y; z -= other.z; };
 			void	operator+=	(const float& i)				{ x += i; y += i; z += i; }
 			void	operator-=	(const float& i)				{ x -= i; y -= i; z -= i; }
 
