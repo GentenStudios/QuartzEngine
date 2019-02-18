@@ -19,7 +19,7 @@ void Vector3::ceil()
 
 void Vector3::normalise()
 {
-	const float len = std::sqrt(x * x + y * y + z * z);
+	const float len = std::sqrt(dotProduct({ x, y, z }, { x, y, z }));
 
 	x /= len;
 	y /= len;

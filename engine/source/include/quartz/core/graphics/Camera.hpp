@@ -17,10 +17,6 @@ namespace qz
 		public:
 			FPSCamera(IWindow* window);
 
-			bool onKeyPress(const events::KeyPressedEvent& key);
-			bool onMouseMove(const events::MouseMovedEvent& mouse);
-			bool onWindowResize(const events::WindowResizeEvent& window);
-
 			Vector3 getPosition() const;
 			Vector3 getDirection() const;
 
