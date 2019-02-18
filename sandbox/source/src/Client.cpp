@@ -28,9 +28,9 @@ void Sandbox::run()
 	using namespace gfx::api;
 
 	float vertices[] = {
-		-0.5f, -0.5f, -10.0f,
-		0.5f, -0.5f, -10.0f,
-		0.0f,  0.5f, -10.0f
+		-0.5f, -0.5f, -3.f,
+		0.5f, -0.5f, -3.f,
+		0.0f,  0.5f, -3.f
 	};
 
 	auto state = IStateManager::generateStateManager();
@@ -50,15 +50,7 @@ void Sandbox::run()
 
 	state->attachBufferLayout(layout, shader);
 
-	Matrix4x4 model;
-
-	const Vector2 windowSize = window->getSize();
-	Matrix4x4 proj = Matrix4x4::perspective(static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y), 45.f, 1000.f, 0.1f);
-
-	Matrix4x4 view = Matrix4x4::lookAt({ -1.f, -1.f, 1.f }, { 0.f, 0.f, -10.f }, { 0, 1.f, 0 });
-
-	Vector3 camPos;
-	Vector3 camDir;
+	Matrix4x4 model = Matrix4x4();
 
 	float last = static_cast<float>(SDL_GetTicks());
 	while (window->isRunning())
@@ -69,6 +61,8 @@ void Sandbox::run()
 		float dt = now - last;
 		last = now;
 
+		m_camera->tick(dt);
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 
@@ -80,13 +74,6 @@ void Sandbox::run()
 		state->render(0, 3);
 
 		window->swapBuffers();
-
-		m_camera->tick(dt);
-		camPos = m_camera->getPosition();
-		camDir = m_camera->getDirection();
-		LDEBUG("CAMERA POSITION: ", camPos.x, " ", camPos.y, " ", camPos.z, "\n"
-			"CAMERA DIRECTION: ", camDir.x, " ", camDir.y, " ", camDir.z);
-
 	}
 }
 
