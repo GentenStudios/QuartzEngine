@@ -12,6 +12,16 @@
 using namespace qz::gfx::api::gl;
 using namespace qz;
 
+void GLWindow::startGUIFrame()
+{
+	m_gui.startFrame();
+}
+
+void GLWindow::endGUIFrame()
+{
+	m_gui.endFrame();
+}
+
 GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(false), m_fullscreen(false)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -71,6 +81,8 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 	GLCheck(glEnable(GL_MULTISAMPLE));
 
 	m_running = true;
+
+	m_gui.init(m_window, &m_context);
 }
 
 GLWindow::~GLWindow()
@@ -86,6 +98,7 @@ void GLWindow::pollEvents()
 	SDL_Event event;
 	while (SDL_PollEvent(&event) > 0)
 	{
+		m_gui.pollEvents(&event);
 		switch (event.type)
 		{
 		case SDL_QUIT:

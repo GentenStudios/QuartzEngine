@@ -2,6 +2,7 @@
 #include <quartz/core/utilities/Config.hpp>
 
 #include <glad/glad.h>
+#include <imgui/imgui.h>
 #include <chrono>
 
 using namespace client;
@@ -21,16 +22,20 @@ Sandbox::Sandbox()
 void Sandbox::run()
 {
 	gfx::IWindow* window = m_appData->window;
-
 	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
 
 	while (window->isRunning())
 	{
+		window->pollEvents();
+		
+		window->startGUIFrame();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, 1.0f);
+	
+		ImGui::ShowDemoWindow();
 
+		window->endGUIFrame();
 		window->swapBuffers();
-		window->pollEvents();
 	}
 }
 

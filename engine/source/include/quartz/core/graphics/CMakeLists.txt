@@ -5,6 +5,7 @@ set(graphicsHeaders
 	${apiHeaders}
 	
 	${currentDir}/IWindow.hpp
+	${currentDir}/SDLGUILayer.hpp
 
 	PARENT_SCOPE
 )

@@ -11,6 +11,8 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
+#include <quartz/core/graphics/SDLGUILayer.hpp>
+
 namespace qz
 {
 	namespace gfx
@@ -54,10 +56,15 @@ namespace qz
 					void setCursorPosition(Vector2 pos) override;
 					Vector2 getCursorPosition() const override;
 					bool isKeyDown(int key) const override;
+					
+					void startGUIFrame() override;
+					void endGUIFrame() override;
 
 				private:
 					SDL_Window* m_window;
 					SDL_GLContext m_context;
+					SDLGUILayer m_gui;
+
 					bool m_running;
 
 					bool m_vsync;
