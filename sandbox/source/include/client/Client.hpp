@@ -22,7 +22,7 @@ namespace client
 	private:
 		qz::ApplicationRequirements* m_appRequirements = nullptr;
 		qz::ApplicationData* m_appData = nullptr;
-
+		
 		Vector3 m_clearColor;
 	};
 }
