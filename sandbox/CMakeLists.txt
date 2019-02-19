@@ -25,7 +25,7 @@ add_executable(${PROJECT_NAME} ${clientSources} ${clientHeaders})
 target_link_libraries(${PROJECT_NAME} PRIVATE quartz-engine)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
-target_include_directories(${PROJECT_NAME} PRIVATE ${dependencies}/SDL2/include ${dependencies}/glew/include ${dependencies}/../engine/include ${dependencies}/luamod/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${dependencies}/SDL2/include ${dependencies}/glew/include ${dependencies}/../engine/include ${dependencies}/luamod/include ${dependencies}/imgui/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/source/include)
 
 add_dependencies(${PROJECT_NAME} quartz-sandbox-assets)

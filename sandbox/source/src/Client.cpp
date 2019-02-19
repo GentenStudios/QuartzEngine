@@ -2,6 +2,7 @@
 #include <quartz/core/utilities/Config.hpp>
 
 #include <glad/glad.h>
+#include <imgui/imgui.h>
 #include <chrono>
 
 using namespace client;
@@ -21,9 +22,10 @@ Sandbox::Sandbox()
 void Sandbox::run()
 {
 	gfx::IWindow* window = m_appData->window;
-	m_camera = new gfx::FPSCamera(window);
 
-	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
+  m_camera = new gfx::FPSCamera(window);
+
+  window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
 
 	using namespace gfx::api;
 
@@ -81,10 +83,14 @@ void Sandbox::run()
 		shader->setMat4("u_projection", m_camera->getProjection());
 		shader->setMat4("u_view", m_camera->calculateViewMatrix());
 		shader->setMat4("u_model", model);
+    
+ 		state->render(0, 3);
 
-		state->render(0, 3);
+    window->startGUIFrame();
+		ImGui::ShowDemoWindow();
+		window->endGUIFrame();
 
-		window->swapBuffers();
+    window->swapBuffers();
 		window->pollEvents();
 	}
 }

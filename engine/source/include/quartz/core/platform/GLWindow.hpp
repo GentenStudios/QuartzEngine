@@ -11,6 +11,8 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
+#include <quartz/core/platform/SDLGuiLayer.hpp>
+
 namespace qz
 {
 	namespace gfx
@@ -54,10 +56,15 @@ namespace qz
 					void setCursorPosition(Vector2 pos) override;
 					Vector2 getCursorPosition() const override;
 					bool isKeyDown(events::Key key) const override;
+					
+					void startGUIFrame() override;
+					void endGUIFrame() override;
 
 				private:
 					SDL_Window* m_window;
 					SDL_GLContext m_context;
+					SDLGuiLayer m_gui;
+
 					bool m_running;
 
 					bool m_vsync;
@@ -65,13 +72,8 @@ namespace qz
 
 					Vector2 m_cachedScreenSize = { 0, 0 };
 
-					void dispatchToListeners(events::Event&& event)
-					{
-						for (std::function<void(events::Event&)>& eventListener : m_eventListeners)
-						{
-							eventListener(event);
-						}
-					}
+				private:
+					void dispatchToListeners(events::Event&& event);
 				};
 			}
 		}

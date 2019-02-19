@@ -23,7 +23,7 @@ namespace client
 		qz::ApplicationRequirements* m_appRequirements = nullptr;
 		qz::ApplicationData* m_appData = nullptr;
 
-		qz::gfx::FPSCamera* m_camera = nullptr;
+    qz::gfx::FPSCamera* m_camera = nullptr;
 	};
 }
 
