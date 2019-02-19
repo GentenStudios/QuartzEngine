@@ -11,7 +11,7 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
-#include <quartz/core/graphics/SDLGUILayer.hpp>
+#include <quartz/core/platform/SDLGuiLayer.hpp>
 
 namespace qz
 {
@@ -63,7 +63,7 @@ namespace qz
 				private:
 					SDL_Window* m_window;
 					SDL_GLContext m_context;
-					SDLGUILayer m_gui;
+					SDLGuiLayer m_gui;
 
 					bool m_running;
 
@@ -71,7 +71,8 @@ namespace qz
 					bool m_fullscreen;
 
 					Vector2i m_cachedScreenSize = Vector2i(0, 0);
-
+					
+					// #todo: move into source file
 					void dispatchToListeners(events::Event&& event)
 					{
 						for (std::function<void(events::Event&)>& eventListener : m_eventListeners)

@@ -1,4 +1,4 @@
-#include <quartz/core/graphics/SDLGUILayer.hpp>
+#include <quartz/core/platform/SDLGuiLayer.hpp>
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl.h>
@@ -6,7 +6,7 @@
 
 using namespace qz::gfx;
 
-void SDLGUILayer::init(SDL_Window* window, SDL_GLContext* ctx)
+void SDLGuiLayer::init(SDL_Window* window, SDL_GLContext* ctx)
 {
 	m_window = window;
 	m_context = ctx;
@@ -17,20 +17,20 @@ void SDLGUILayer::init(SDL_Window* window, SDL_GLContext* ctx)
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 }
 
-void SDLGUILayer::startFrame()
+void SDLGuiLayer::startFrame()
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_window);
 	ImGui::NewFrame();
 }
 
-void SDLGUILayer::endFrame()
+void SDLGuiLayer::endFrame()
 {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void SDLGUILayer::pollEvents(SDL_Event* e)
+void SDLGuiLayer::pollEvents(SDL_Event* e)
 {
 	ImGui_ImplSDL2_ProcessEvent(e);
 }
