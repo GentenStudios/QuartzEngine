@@ -28,9 +28,9 @@ void Sandbox::run()
 	using namespace gfx::api;
 
 	float vertices[] = {
-		-0.5f, -0.5f, -3.f,
-		0.5f, -0.5f, -3.f,
-		0.0f,  0.5f, -3.f
+		-1.f, -1.f, -3.f,
+		1.f, -1.f, -3.f,
+		0.0f,  1.f, -3.f
 	};
 
 	auto state = IStateManager::generateStateManager();
@@ -50,19 +50,30 @@ void Sandbox::run()
 
 	state->attachBufferLayout(layout, shader);
 
-	Matrix4x4 model = Matrix4x4();
+	const Matrix4x4 model;
+
+	std::size_t fpsLastTime = SDL_GetTicks();
+	int fpsCurrent; // the current FPS.
+	int fpsFrames = 0; // frames passed since the last recorded fps.
 
 	float last = static_cast<float>(SDL_GetTicks());
 	while (window->isRunning())
 	{
-		window->pollEvents();
+		fpsFrames++;
+		if (fpsLastTime < SDL_GetTicks() - 1000)
+		{
+			fpsLastTime = SDL_GetTicks();
+			fpsCurrent = fpsFrames;
+			LDEBUG("FPS: ", fpsCurrent);
+			fpsFrames = 0;
+		}
 
-		float now = static_cast<float>(SDL_GetTicks());
-		float dt = now - last;
+		const float now = static_cast<float>(SDL_GetTicks());
+		const float dt = now - last;
 		last = now;
 
 		m_camera->tick(dt);
-		
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 
@@ -74,33 +85,32 @@ void Sandbox::run()
 		state->render(0, 3);
 
 		window->swapBuffers();
+		window->pollEvents();
 	}
 }
 
-bool onClose(events::WindowCloseEvent e)
-{
-	LDEBUG("WOW! WINDOW IS CLOSING DOWN.");
-	return true;
-}
-
-bool Sandbox::onClose(events::WindowCloseEvent& e)
+bool Sandbox::onClose(events::WindowCloseEvent& event)
 {
 	LDEBUG("Sandbox is shutting down.");
 
 	return true;
 }
 
-void Sandbox::onEvent(events::Event& e)
+void Sandbox::onEvent(events::Event& event)
 {
-	//auto test = events::EventDispatcher(e);
-	//test.dispatch<events::WindowCloseEvent>(std::bind(&Sandbox::onClose, this, std::placeholders::_1));
-	//test.dispatch<events::KeyPressedEvent>(std::bind(&gfx::FPSCamera::onKeyPress, m_camera, std::placeholders::_1));
-	//test.dispatch<events::MouseMovedEvent>(std::bind(&gfx::FPSCamera::onMouseMove, m_camera, std::placeholders::_1));
-	//test.dispatch<events::WindowResizeEvent>(std::bind(&gfx::FPSCamera::onWindowResize, m_camera, std::placeholders::_1));
+	auto test = events::EventDispatcher(event);
+	test.dispatch<events::KeyPressedEvent>(std::bind(&Sandbox::onKeyPress, this, std::placeholders::_1));
+	test.dispatch<events::WindowCloseEvent>(std::bind(&Sandbox::onClose, this, std::placeholders::_1));
+	test.dispatch<events::WindowResizeEvent>(std::bind(&gfx::FPSCamera::onWindowResize, m_camera, std::placeholders::_1));
 }
 
-bool onClose2(events::WindowCloseEvent e)
+bool Sandbox::onKeyPress(events::KeyPressedEvent& event)
 {
-	LDEBUG("WOW! THE SECOND EVENT HANDLER IS WORKING!");
+	if (event.getKeyCode() == events::Key::KEY_ESCAPE)
+	{
+		LDEBUG("Escape Pressed.");
+		m_camera->enable(!m_camera->isEnabled());
+	}
+
 	return true;
 }

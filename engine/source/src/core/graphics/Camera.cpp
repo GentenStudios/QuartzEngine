@@ -28,6 +28,16 @@ qz::Vector3 FPSCamera::getDirection() const
 	return m_direction;
 }
 
+bool FPSCamera::onWindowResize(events::WindowResizeEvent event)
+{
+	const Vector2 windowSize = m_window->getSize();
+	m_projection = Matrix4x4::perspective(static_cast<float>(windowSize.x) / static_cast<float>(windowSize.y), 45.f, 1000.f, 0.1f);
+
+	m_windowCentre = { static_cast<float>(static_cast<int>(windowSize.x / 2)), static_cast<float>(static_cast<int>(windowSize.y / 2)) };
+
+	return true;
+}
+
 void FPSCamera::setProjection(const Matrix4x4& projection)
 {
 	m_projection = projection;
@@ -41,12 +51,28 @@ qz::Matrix4x4 FPSCamera::getProjection() const
 qz::Matrix4x4 FPSCamera::calculateViewMatrix() const
 {
 	const Vector3 centre = m_position + m_direction;
-
 	return Matrix4x4::lookAt(m_position, centre, m_up);
+}
+
+void FPSCamera::enable(bool enabled)
+{
+	if (enabled)
+	{
+		m_window->setCursorState(gfx::CursorState::DISABLED);
+		m_enabled = enabled;
+	}
+	else
+	{
+		m_window->setCursorState(gfx::CursorState::NORMAL);
+		m_enabled = enabled;
+	}
 }
 
 void FPSCamera::tick(float dt)
 {
+	if (!m_enabled)
+		return;
+
 	const Vector2 mousePos = m_window->getCursorPosition();
 
 	m_window->setCursorPosition(m_windowCentre);
@@ -62,11 +88,11 @@ void FPSCamera::tick(float dt)
 	m_direction.y = std::sin(m_rotation.y);
 	m_direction.z = std::cos(m_rotation.y) * std::cos(m_rotation.x);
 
-	const Vector3 right(
+	const Vector3 right = {
 		std::sin(m_rotation.x - HALF_PI),
 		0.f,
 		std::cos(m_rotation.x - HALF_PI)
-	);
+	};
 
 	m_up = Vector3::cross(right, m_direction);
 
