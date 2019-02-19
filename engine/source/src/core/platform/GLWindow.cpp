@@ -22,6 +22,14 @@ void GLWindow::endGUIFrame()
 	m_gui.endFrame();
 }
 
+void GLWindow::dispatchToListeners(events::Event&& event)
+{
+	for (std::function<void(events::Event&)>& eventListener : m_eventListeners)
+	{
+		eventListener(event);
+	}
+}
+
 GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(false), m_fullscreen(false)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);

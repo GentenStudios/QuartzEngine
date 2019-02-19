@@ -71,15 +71,9 @@ namespace qz
 					bool m_fullscreen;
 
 					Vector2i m_cachedScreenSize = Vector2i(0, 0);
-					
-					// #todo: move into source file
-					void dispatchToListeners(events::Event&& event)
-					{
-						for (std::function<void(events::Event&)>& eventListener : m_eventListeners)
-						{
-							eventListener(event);
-						}
-					}
+
+				private:
+					void dispatchToListeners(events::Event&& event);
 				};
 			}
 		}
