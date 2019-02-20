@@ -17,13 +17,12 @@ namespace client
 
 		void onEvent(events::Event& event);
 		bool onKeyPress(events::KeyPressedEvent& event);
-		bool onClose(events::WindowCloseEvent& event);
 
 	private:
 		qz::ApplicationRequirements* m_appRequirements = nullptr;
 		qz::ApplicationData* m_appData = nullptr;
 
-    qz::gfx::FPSCamera* m_camera = nullptr;
+		qz::gfx::FPSCamera* m_camera = nullptr;
 	};
 }
 

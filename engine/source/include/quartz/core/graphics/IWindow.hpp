@@ -61,7 +61,7 @@ namespace qz
 			virtual void setCursorState(CursorState state)        = 0;
 			virtual void setCursorPosition(Vector2 pos)           = 0;
 			virtual Vector2 getCursorPosition()             const = 0;
-			virtual bool isKeyDown(int key)	                const = 0;
+			virtual bool isKeyDown(events::Key key)	        const = 0;
 			
 			virtual void startGUIFrame()                          = 0;
 			virtual void endGUIFrame()                            = 0;

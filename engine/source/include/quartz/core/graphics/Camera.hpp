@@ -40,7 +40,7 @@ namespace qz
 			Vector3 m_position;
 			Vector3 m_up;
 			Vector3 m_direction;
-			Vector2 m_windowCentre = { 0, 0 };
+			Vector2 m_windowCentre;
 
 			bool m_enabled = true;
 		};
