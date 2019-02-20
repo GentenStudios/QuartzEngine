@@ -2,6 +2,7 @@
 #include <quartz/core/utilities/Config.hpp>
 
 #include <glad/glad.h>
+#include <imgui/imgui.h>
 #include <chrono>
 
 using namespace client;
@@ -21,6 +22,7 @@ Sandbox::Sandbox()
 void Sandbox::run()
 {
 	gfx::IWindow* window = m_appData->window;
+
 	m_camera = new gfx::FPSCamera(window);
 
 	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
@@ -37,7 +39,7 @@ void Sandbox::run()
 	auto buffer = IBuffer::generateBuffer(BufferTarget::ARRAY_BUFFER, BufferUsage::STATIC);
 	auto shader = IShaderPipeline::generateShaderPipeline();
 
-	buffer->setData(9 * sizeof(float), vertices);
+	buffer->setData(sizeof(vertices), vertices);
 
 	state->attachBuffer(buffer);
 
@@ -53,7 +55,7 @@ void Sandbox::run()
 	const Matrix4x4 model;
 
 	std::size_t fpsLastTime = SDL_GetTicks();
-	int fpsCurrent; // the current FPS.
+	int fpsCurrent = 0; // the current FPS.
 	int fpsFrames = 0; // frames passed since the last recorded fps.
 
 	float last = static_cast<float>(SDL_GetTicks());
@@ -64,7 +66,6 @@ void Sandbox::run()
 		{
 			fpsLastTime = SDL_GetTicks();
 			fpsCurrent = fpsFrames;
-			LDEBUG("FPS: ", fpsCurrent);
 			fpsFrames = 0;
 		}
 
@@ -84,23 +85,22 @@ void Sandbox::run()
 
 		state->render(0, 3);
 
+		window->startGUIFrame();
+		ImGui::Begin("Debug Information");
+		ImGui::Text("FPS: %d", fpsCurrent);
+		ImGui::Text("Frame Time: %f ms", dt);
+		ImGui::End();
+		window->endGUIFrame();
+
 		window->swapBuffers();
 		window->pollEvents();
 	}
-}
-
-bool Sandbox::onClose(events::WindowCloseEvent& event)
-{
-	LDEBUG("Sandbox is shutting down.");
-
-	return true;
 }
 
 void Sandbox::onEvent(events::Event& event)
 {
 	auto test = events::EventDispatcher(event);
 	test.dispatch<events::KeyPressedEvent>(std::bind(&Sandbox::onKeyPress, this, std::placeholders::_1));
-	test.dispatch<events::WindowCloseEvent>(std::bind(&Sandbox::onClose, this, std::placeholders::_1));
 	test.dispatch<events::WindowResizeEvent>(std::bind(&gfx::FPSCamera::onWindowResize, m_camera, std::placeholders::_1));
 }
 
@@ -108,7 +108,6 @@ bool Sandbox::onKeyPress(events::KeyPressedEvent& event)
 {
 	if (event.getKeyCode() == events::Key::KEY_ESCAPE)
 	{
-		LDEBUG("Escape Pressed.");
 		m_camera->enable(!m_camera->isEnabled());
 	}
 
