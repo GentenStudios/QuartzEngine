@@ -18,9 +18,7 @@ namespace qz
 			WINDOW_RESIZE,			//< Used for when a window is resized, this is mainly useful for recalculating projections/viewports for graphics.
 			WINDOW_FOCUS,			//< Used for when a window is focused or "clicked back onto". E.g. A camera can be re-enabled when the window is focused.
 			WINDOW_LOST_FOCUS,		//< Used for when a window loses focus, or is "clicked off of". E.g. A camera can be disabled when the window loses focus.
-			APP_TICK,				//< UNUSED, UNIMPLEMENTED AT THE MOMENT.
-			APP_UPDATE,				//< UNUSED, UNIMPLEMENTED AT THE MOMENT.
-			APP_RENDER,				//< UNUSED, UNIMPLEMENTED AT THE MOMENT.
+			APP_TICK,				//< Used for when a new iteration of the main game loop runs (NOT IMPLEMENTED AS OF 19/02/2019).
 			KEY_PRESSED,			//< Used for when a key is pressed, not great for things like cameras, as the event callback will have a little "latency" to it.
 			KEY_RELEASED,			//< Used for when a key is released, not great for things like cameras, as the event callback will have a little "latency" to it.
 			MOUSE_BUTTON_PRESSED,	//< Used for when a mouse button is pressed.
