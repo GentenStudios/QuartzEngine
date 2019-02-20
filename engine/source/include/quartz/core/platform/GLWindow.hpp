@@ -70,7 +70,7 @@ namespace qz
 					bool m_vsync;
 					bool m_fullscreen;
 
-					Vector2 m_cachedScreenSize = { 0, 0 };
+					Vector2 m_cachedScreenSize;
 
 				private:
 					void dispatchToListeners(events::Event&& event);
