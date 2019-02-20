@@ -6,11 +6,21 @@ namespace qz
 {
 	namespace events
 	{
+		/**
+		 * @brief Enumerator for the supported mouse buttons that can be pressed.
+		 * 
+		 * or released. can't be actionist or whatever
+		 */
 		enum class MouseButton
 		{
 			LEFT, RIGHT, MIDDLE
 		};
 
+		/**
+		 * @brief Enumerator for all the keys that are possible to be pressed.
+		 * 
+		 * i'm not documenting each freaking enum member. send help pls
+		 */
 		enum class Key : int {
 			KEY_A = SDL_SCANCODE_A, KEY_B = SDL_SCANCODE_B, KEY_C = SDL_SCANCODE_C,
 			KEY_D = SDL_SCANCODE_D,	KEY_E = SDL_SCANCODE_E,	KEY_F = SDL_SCANCODE_F,
