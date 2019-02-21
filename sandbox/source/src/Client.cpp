@@ -61,6 +61,8 @@ void Sandbox::run()
 	float last = static_cast<float>(SDL_GetTicks());
 	while (window->isRunning())
 	{
+		window->startFrame();
+
 		fpsFrames++;
 		if (fpsLastTime < SDL_GetTicks() - 1000)
 		{
@@ -85,15 +87,12 @@ void Sandbox::run()
 
 		state->render(0, 3);
 
-		window->startGUIFrame();
 		ImGui::Begin("Debug Information");
 		ImGui::Text("FPS: %d", fpsCurrent);
 		ImGui::Text("Frame Time: %f ms", dt);
 		ImGui::End();
-		window->endGUIFrame();
 
-		window->swapBuffers();
-		window->pollEvents();
+		window->endFrame();
 	}
 }
 
