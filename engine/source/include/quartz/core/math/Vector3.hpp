@@ -120,9 +120,9 @@ namespace qz
 		template <typename T>
 		struct QZ_API TemplateVector3
 		{
-			union { T x; T r; T a; };
-			union {	T y; T g; T b; };
-			union { T z; T b; T c; };
+			union { T x; T r; };
+			union {	T y; T g; };
+			union { T z; T b; };
 
 			TemplateVector3()				: x(T()),	y(T()), z(T())	{}
 			TemplateVector3(T x)			: x(x),		y(x),	z(x)	{}
