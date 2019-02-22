@@ -9,6 +9,9 @@
 
 using namespace qz::utils;
 
+/**
+ * @brief The lookup table for converting the verbosity enums to text.
+ */
 static const char* g_logVerbToText[] = {
 		"FATAL ERROR",
 		"WARNING",
@@ -50,6 +53,10 @@ static void setTerminalTextColor(TextColor color)
 #endif
 }
 
+/**
+ * @brief Sets the color of the terminal using the verbosity provided
+ * @param vb The verbosity corresponding the color wanted.
+ */
 static void setTerminalTextColor(LogVerbosity vb)
 {
 	TextColor color;
