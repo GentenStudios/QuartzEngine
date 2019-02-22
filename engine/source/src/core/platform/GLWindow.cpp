@@ -164,12 +164,12 @@ void GLWindow::hide() const
 	SDL_HideWindow(m_window);
 }
 
-void GLWindow::maximise() const
+void GLWindow::maximize() const
 {
 	SDL_MaximizeWindow(m_window);
 }
 
-void GLWindow::minimise() const
+void GLWindow::minimize() const
 {
 	SDL_MinimizeWindow(m_window);
 }
