@@ -57,8 +57,8 @@ namespace qz
 					Vector2 getCursorPosition() const override;
 					bool isKeyDown(events::Key key) const override;
 					
-					void startGUIFrame() override;
-					void endGUIFrame() override;
+					void startFrame() override;
+					void endFrame() override;
 
 				private:
 					SDL_Window* m_window;

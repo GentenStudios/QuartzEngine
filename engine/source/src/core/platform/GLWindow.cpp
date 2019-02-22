@@ -12,14 +12,17 @@
 using namespace qz::gfx::api::gl;
 using namespace qz;
 
-void GLWindow::startGUIFrame()
+void GLWindow::startFrame()
 {
 	m_gui.startFrame();
 }
 
-void GLWindow::endGUIFrame()
+void GLWindow::endFrame()
 {
 	m_gui.endFrame();
+
+	swapBuffers();
+	pollEvents();
 }
 
 void GLWindow::dispatchToListeners(events::Event&& event)

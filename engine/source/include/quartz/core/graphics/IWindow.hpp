@@ -36,7 +36,7 @@ namespace qz
 			virtual void pollEvents()                             = 0;
 			virtual void swapBuffers()                      const = 0;
 
-			virtual void registerEventListener(std::function<void(events::Event&)> listener) = 0;
+ 			virtual void registerEventListener(std::function<void(events::Event&)> listener) = 0;
 
 			virtual void show()                             const = 0;
 			virtual void hide()                             const = 0;
@@ -63,8 +63,8 @@ namespace qz
 			virtual Vector2 getCursorPosition()             const = 0;
 			virtual bool isKeyDown(events::Key key)	        const = 0;
 			
-			virtual void startGUIFrame()                          = 0;
-			virtual void endGUIFrame()                            = 0;
+			virtual void startFrame()                             = 0;
+			virtual void endFrame()                               = 0;
 
 		protected:
 			std::vector<std::function<void(events::Event&)>> m_eventListeners;

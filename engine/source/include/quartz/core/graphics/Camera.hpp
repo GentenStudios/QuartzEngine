@@ -3,9 +3,6 @@
 #include <quartz/core/Core.hpp>
 #include <quartz/core/math/Math.hpp>
 #include <quartz/core/graphics/IWindow.hpp>
-
-#include <quartz/core/events/KeyEvent.hpp>
-#include <quartz/core/events/MouseEvent.hpp>
 #include <quartz/core/events/ApplicationEvent.hpp>
 
 namespace qz
