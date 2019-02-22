@@ -34,10 +34,12 @@ GLShaderPipeline& GLShaderPipeline::operator=(GLShaderPipeline&& o) noexcept
 	return *this;
 }
 
-void GLShaderPipeline::addStage(ShaderType stage, const char* shaderSource)
+void GLShaderPipeline::addStage(ShaderType stage, const std::string& shaderSource)
 {
 	unsigned int shader = GLCheck(glCreateShader(gfxToOpenGL(stage)));
-	GLCheck(glShaderSource(shader, 1, &shaderSource, nullptr));
+
+	const char* source = shaderSource.c_str();
+	GLCheck(glShaderSource(shader, 1, &source, nullptr));
 	GLCheck(glCompileShader(shader));
 
 	int success;

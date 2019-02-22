@@ -28,7 +28,7 @@ namespace qz
 					GLShaderPipeline(GLShaderPipeline&& o) noexcept;
 					GLShaderPipeline& operator=(GLShaderPipeline&& o) noexcept;
 
-					void addStage(ShaderType stage, const char* shaderSource) override;
+					void addStage(ShaderType stage, const std::string& shaderSource) override;
 					void build() override;
 
 					void use() const override;

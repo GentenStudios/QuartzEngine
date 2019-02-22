@@ -22,71 +22,93 @@ Sandbox::Sandbox()
 void Sandbox::run()
 {
 	gfx::IWindow* window = m_appData->window;
+
+	m_camera = new gfx::FPSCamera(window);
+
 	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
 
+	using namespace gfx::api;
+
+	float vertices[] = {
+		-1.f, -1.f, -3.f,
+		1.f, -1.f, -3.f,
+		0.0f,  1.f, -3.f
+	};
+
+	auto state = IStateManager::generateStateManager();
+	auto buffer = IBuffer::generateBuffer(BufferTarget::ARRAY_BUFFER, BufferUsage::STATIC);
+	auto shader = IShaderPipeline::generateShaderPipeline();
+
+	buffer->setData(sizeof(vertices), vertices);
+
+	state->attachBuffer(buffer);
+
+	shader->addStage(ShaderType::VERTEX_SHADER, utils::FileIO::readAllFile("assets/shaders/main.vert"));
+	shader->addStage(ShaderType::FRAGMENT_SHADER, utils::FileIO::readAllFile("assets/shaders/main.frag"));
+	shader->build();
+
+	BufferLayout layout;
+	layout.registerAttribute("a_Pos", gfx::DataType::FLOAT, 3, 3 * sizeof(float), 0, false);
+
+	state->attachBufferLayout(layout, shader);
+
+	const Matrix4x4 model;
+
+	std::size_t fpsLastTime = SDL_GetTicks();
+	int fpsCurrent = 0; // the current FPS.
+	int fpsFrames = 0; // frames passed since the last recorded fps.
+
+	float last = static_cast<float>(SDL_GetTicks());
 	while (window->isRunning())
 	{
-		window->startGUIFrame();
+		window->startFrame();
+
+		fpsFrames++;
+		if (fpsLastTime < SDL_GetTicks() - 1000)
+		{
+			fpsLastTime = SDL_GetTicks();
+			fpsCurrent = fpsFrames;
+			fpsFrames = 0;
+		}
+
+		const float now = static_cast<float>(SDL_GetTicks());
+		const float dt = now - last;
+		last = now;
+
+		m_camera->tick(dt);
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, 1.0f);
-	
-		ImGui::ShowDemoWindow();
+		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
 
-		window->endGUIFrame();
-		window->swapBuffers();
-		
-		window->pollEvents();
+		shader->use();
+		shader->setMat4("u_projection", m_camera->getProjection());
+		shader->setMat4("u_view", m_camera->calculateViewMatrix());
+		shader->setMat4("u_model", model);
+
+		state->render(0, 3);
+
+		ImGui::Begin("Debug Information");
+		ImGui::Text("FPS: %d", fpsCurrent);
+		ImGui::Text("Frame Time: %f ms", dt);
+		ImGui::End();
+
+		window->endFrame();
 	}
 }
 
-bool onClose(events::WindowCloseEvent e)
+void Sandbox::onEvent(events::Event& event)
 {
-	LDEBUG("WOW! WINDOW IS CLOSING DOWN.");
-	return true;
-}
-
-bool Sandbox::onKeyPress(events::KeyPressedEvent& e)
-{
-	if (e.getKeyCode() == events::Key::KEY_W)
-	{
-		m_clearColor = { 0, 1, 0 };
-	}
-	else if (e.getKeyCode() == events::Key::KEY_A)
-	{
-		m_clearColor = { 1, 0, 0 };
-	}
-	else if (e.getKeyCode() == events::Key::KEY_S)
-	{
-		m_clearColor = { 0, 0, 1 };
-	}
-	else if (e.getKeyCode() == events::Key::KEY_D)
-	{
-		m_clearColor = { 1, 1, 1 };
-	}
-	else
-	{
-		m_clearColor = { 0, 0, 0 };
-	}
-
-	return true;
-}
-
-bool Sandbox::onClose(events::WindowCloseEvent& e)
-{
-	LDEBUG("Sandbox is shutting down.");
-
-	return true;
-}
-
-void Sandbox::onEvent(events::Event& e)
-{
-	auto test = events::EventDispatcher(e);
-	test.dispatch<events::WindowCloseEvent>(std::bind(&Sandbox::onClose, this, std::placeholders::_1));
+	auto test = events::EventDispatcher(event);
 	test.dispatch<events::KeyPressedEvent>(std::bind(&Sandbox::onKeyPress, this, std::placeholders::_1));
+	test.dispatch<events::WindowResizeEvent>(std::bind(&gfx::FPSCamera::onWindowResize, m_camera, std::placeholders::_1));
 }
 
-bool onClose2(events::WindowCloseEvent e)
+bool Sandbox::onKeyPress(events::KeyPressedEvent& event)
 {
-	LDEBUG("WOW! THE SECOND EVENT HANDLER IS WORKING!");
+	if (event.getKeyCode() == events::Key::KEY_ESCAPE)
+	{
+		m_camera->enable(!m_camera->isEnabled());
+	}
+
 	return true;
 }

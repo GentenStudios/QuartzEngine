@@ -17,31 +17,32 @@ Matrix4x4::Matrix4x4()
 	elements[INDEX_2D(3, 3)] = 1.f;
 }
 
-Matrix4x4::Matrix4x4(const float e0, const float e4, const float e8, const float e12,
- 					 const float e1, const float e5, const float e9,  const float e13,
-					 const float e2, const float e6, const float e10, const float e14,
-					 const float e3, const float e7, const float e11, const float e15
+Matrix4x4::Matrix4x4(
+	float m00, float m10, float m20, float m30,
+	float m01, float m11, float m21, float m31,
+	float m02, float m12, float m22, float m32,
+	float m03, float m13, float m23, float m33
 )
 {
-	elements[0 + 0 * 4] = e0;
-	elements[1 + 0 * 4] = e1;
-	elements[2 + 0 * 4] = e2;
-	elements[3 + 0 * 4] = e3;
+	elements[0 + 0 * 4] = m00;
+	elements[1 + 0 * 4] = m10;
+	elements[2 + 0 * 4] = m20;
+	elements[3 + 0 * 4] = m30;
 
-	elements[0 + 1 * 4] = e4;
-	elements[1 + 1 * 4] = e5;
-	elements[2 + 1 * 4] = e6;
-	elements[3 + 1 * 4] = e7;
+	elements[0 + 1 * 4] = m01;
+	elements[1 + 1 * 4] = m11;
+	elements[2 + 1 * 4] = m21;
+	elements[3 + 1 * 4] = m31;
 
-	elements[0 + 2 * 4] = e8;
-	elements[1 + 2 * 4] = e9;
-	elements[2 + 2 * 4] = e10;
-	elements[3 + 2 * 4] = e11;
+	elements[0 + 2 * 4] = m02;
+	elements[1 + 2 * 4] = m12;
+	elements[2 + 2 * 4] = m22;
+	elements[3 + 2 * 4] = m32;
 
-	elements[0 + 3 * 4] = e12;
-	elements[1 + 3 * 4] = e13;
-	elements[2 + 3 * 4] = e14;
-	elements[3 + 3 * 4] = e15;
+	elements[0 + 3 * 4] = m03;
+	elements[1 + 3 * 4] = m13;
+	elements[2 + 3 * 4] = m23;
+	elements[3 + 3 * 4] = m33;
 }
 
 Matrix4x4 Matrix4x4::perspective(const float& aspectRatio, const float& fieldOfView, const float& farPlane,

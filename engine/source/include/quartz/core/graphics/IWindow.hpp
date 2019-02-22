@@ -4,6 +4,7 @@
 #include <quartz/core/math/Math.hpp>
 #include <quartz/core/events/Event.hpp>
 #include <quartz/core/graphics/API/Context.hpp>
+#include <quartz/core/events/EventEnums.hpp>
 
 #include <vector>
 #include <functional>
@@ -35,7 +36,7 @@ namespace qz
 			virtual void pollEvents()                             = 0;
 			virtual void swapBuffers()                      const = 0;
 
-			virtual void registerEventListener(std::function<void(events::Event&)> listener) = 0;
+ 			virtual void registerEventListener(std::function<void(events::Event&)> listener) = 0;
 
 			virtual void show()                             const = 0;
 			virtual void hide()                             const = 0;
@@ -45,9 +46,9 @@ namespace qz
 			virtual void close()                                  = 0;
 			virtual bool isRunning()                        const = 0;
 
-			virtual void resize(Vector2i size)                    = 0;
+			virtual void resize(Vector2 size)                     = 0;
 			virtual void setResizable(bool enabled)               = 0;
-			virtual Vector2i getSize()                      const = 0;
+			virtual Vector2 getSize()                       const = 0;
 
 			virtual void setVSync(bool enabled)                   = 0;
 			virtual bool isVSync()                          const = 0;
@@ -60,10 +61,10 @@ namespace qz
 			virtual void setCursorState(CursorState state)        = 0;
 			virtual void setCursorPosition(Vector2 pos)           = 0;
 			virtual Vector2 getCursorPosition()             const = 0;
-			virtual bool isKeyDown(int key)	                const = 0;
+			virtual bool isKeyDown(events::Key key)	        const = 0;
 			
-			virtual void startGUIFrame()                          = 0;
-			virtual void endGUIFrame()                            = 0;
+			virtual void startFrame()                             = 0;
+			virtual void endFrame()                               = 0;
 
 		protected:
 			std::vector<std::function<void(events::Event&)>> m_eventListeners;

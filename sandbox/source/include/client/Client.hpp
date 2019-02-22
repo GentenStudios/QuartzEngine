@@ -15,15 +15,14 @@ namespace client
 
 		void run() override;
 
-		void onEvent(events::Event& e);
-		bool onKeyPress(events::KeyPressedEvent& e);
-		bool onClose(events::WindowCloseEvent& e);
+		void onEvent(events::Event& event);
+		bool onKeyPress(events::KeyPressedEvent& event);
 
 	private:
 		qz::ApplicationRequirements* m_appRequirements = nullptr;
 		qz::ApplicationData* m_appData = nullptr;
-		
-		Vector3 m_clearColor;
+
+		qz::gfx::FPSCamera* m_camera = nullptr;
 	};
 }
 
