@@ -17,7 +17,7 @@ void Vector3::ceil()
 	z = std::ceil(z);
 }
 
-void Vector3::normalise()
+void Vector3::normalize()
 {
 	const float len = std::sqrt(dotProduct({ x, y, z }, { x, y, z }));
 
@@ -35,7 +35,7 @@ Vector3 Vector3::cross(const Vector3& vec1, const Vector3& vec2)
 	};
 }
 
-Vector3 Vector3::normalise(const Vector3& vec1)
+Vector3 Vector3::normalize(const Vector3& vec1)
 {
 	const float len = std::sqrt(dotProduct(vec1, vec1));
 
