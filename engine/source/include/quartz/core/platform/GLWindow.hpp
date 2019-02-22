@@ -21,6 +21,13 @@ namespace qz
 		{
 			namespace gl
 			{
+				/**
+				 * @brief Derived Class from IWindow, for producing a window with an OpenGL context.
+				 * 
+				 * This is used when a window with an OpenGL context is required. For further documentation, refer to
+				 * the docs provided with the IWindow class, as GLWindow is only an implementation based on the public
+				 * API as defined in IWindow.
+				 */
 				class QZ_API GLWindow : public gfx::IWindow
 				{
 				public:
@@ -34,8 +41,8 @@ namespace qz
 
 					void show() const override;
 					void hide() const override;
-					void maximise() const override;
-					void minimise() const override;
+					void maximize() const override;
+					void minimize() const override;
 					void focus() const override;
 					void close() override;
 					bool isRunning() const override;

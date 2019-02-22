@@ -83,10 +83,10 @@ Matrix4x4 Matrix4x4::ortho(float left, float right, float top, float bottom, flo
 Matrix4x4 Matrix4x4::lookAt(const Vector3& eyePos, const Vector3& centre, const Vector3& up)
 {
 	Vector3 f = centre - eyePos;
-	f.normalise();
+	f.normalize();
 
 	Vector3 s = Vector3::cross(f, up);
-	s.normalise();
+	s.normalize();
 
 	const Vector3 u = Vector3::cross(s, f);
 

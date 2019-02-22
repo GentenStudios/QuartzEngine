@@ -1,9 +1,3 @@
-/**
- * @file Config.hpp
- * @brief Class(es) and #defines for Configuration Loading and Interpreting.
- *
- */
-
 #pragma once
 
 #include <quartz/core/Core.hpp>
