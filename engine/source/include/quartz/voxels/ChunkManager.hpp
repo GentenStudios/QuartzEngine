@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <quartz/core/utils/ThreadPool.hpp>
+#include <quartz/core/utilities/ThreadPool.hpp>
 
 #include <quartz/voxels/Block.hpp>
 #include <quartz/voxels/Chunk.hpp>

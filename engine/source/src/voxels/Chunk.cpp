@@ -24,7 +24,7 @@
 #include <quartz/core/QuartzPCH.hpp>
 #include <quartz/voxels/Chunk.hpp>
 
-#include <quartz/core/graphics/gl/VertexAttrib.hpp>
+//#include <quartz/core/graphics/gl/VertexAttrib.hpp>
 #include <quartz/voxels/terrain/PerlinNoise.hpp>
 
 using namespace qz::voxels;
@@ -340,7 +340,7 @@ int ChunkRenderer::getTexLayer(const std::string& path)
 void ChunkRenderer::loadTextures()
 {
 	if (m_textureArray == nullptr)
-		m_textureArray = new gfx::gl::TextureArray();
+		m_textureArray = new gfx::api::gl::GLTextureArray();
 
 	m_textureArray->add(m_texReservations);
 }
@@ -351,12 +351,12 @@ void ChunkRenderer::bufferData()
 		return;
 
 	if (m_vao == nullptr)
-		m_vao = new gfx::gl::VertexArray();
+		m_vao = new gfx::api::gl::GLBuffer(gfx::api::BufferTarget::ARRAY_BUFFER, gfx::api::BufferUsage::DYNAMIC_DRAW);
 
 	m_vao->bind();
 
 	if (m_vbo == nullptr)
-		m_vbo = new gfx::gl::VertexBuffer(gfx::gl::BufferTarget::ARRAY_BUFFER, gfx::gl::BufferUsage::DYNAMIC_DRAW);
+		m_vbo = new gfx::api::gl::GLBuffer(gfx::api::BufferTarget::ARRAY_BUFFER, gfx::api::BufferUsage::DYNAMIC_DRAW);
 
 	std::vector<ChunkVert3D> temp;
 
@@ -382,7 +382,7 @@ void ChunkRenderer::bufferData()
 
 	// bufferData() is usually called just before a render call, meaning that if the textureArray is a nullptr, then things will go south pretty fucking fast.
 	if (m_textureArray == nullptr)
-		m_textureArray = new gfx::gl::TextureArray();
+		m_textureArray = new gfx::api::gl::GLTextureArray();
 }
 
 void ChunkRenderer::render() const

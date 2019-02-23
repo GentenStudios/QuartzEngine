@@ -23,7 +23,7 @@
 
 #include <quartz/core/QuartzPCH.hpp>
 #include <quartz/voxels/Block.hpp>
-#include <quartz/core/utils/Logging.hpp>
+#include <quartz/core/utilities/Logger.hpp>
 
 #include <algorithm>
 

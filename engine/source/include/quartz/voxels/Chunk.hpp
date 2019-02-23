@@ -31,11 +31,10 @@
 
 #include <quartz/voxels/Block.hpp>
 
-#include <quartz/core/graphics/gl/VertexBuffer.hpp>
-#include <quartz/core/graphics/gl/VertexArray.hpp>
-#include <quartz/core/graphics/gl/TextureArray.hpp>
+#include <quartz/core/graphics/API/gl/GLBuffer.hpp>
+#include <quartz/core/graphics/API/gl/GLTextureArray.hpp>
 
-#include <quartz/core/utils/ThreadPool.hpp>
+#include <quartz/core/utilities/ThreadPool.hpp>
 #include <atomic>
 
 namespace qz
@@ -131,12 +130,12 @@ namespace qz
 		private:
 			Mesh m_mesh;
 
-			gfx::gl::VertexArray* m_vao = nullptr;
-			gfx::gl::VertexBuffer* m_vbo = nullptr;
+			gfx::api::IBuffer* m_vao = nullptr;
+			gfx::api::IBuffer* m_vbo = nullptr;
 
-			gfx::gl::TextureArray* m_textureArray = nullptr;
+			gfx::api::ITextureArray* m_textureArray = nullptr;
 
-			gfx::gl::TexCache m_texReservations;
+			gfx::api::TexCache m_texReservations;
 
 			int m_currentLayer = 0;
 		};
@@ -193,7 +192,7 @@ namespace qz
 			std::vector<BlockInstance> m_chunkBlocks;
 
 			std::mutex m_chunkMutex;
-			threads::ThreadPool<1> m_threadPool;
+			threads::utils::ThreadPool<1> m_threadPool;
 
 			std::size_t getVectorIndex(std::size_t x, std::size_t y, std::size_t z) const
 			{
