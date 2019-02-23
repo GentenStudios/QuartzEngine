@@ -27,6 +27,7 @@
 #include <quartz/core/math/Math.hpp>
 #include <quartz/core/graphics/IWindow.hpp>
 #include <quartz/core/events/ApplicationEvent.hpp>
+#include <cmath>
 
 namespace qz
 {
