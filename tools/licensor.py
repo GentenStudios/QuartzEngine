@@ -81,4 +81,5 @@ if __name__ == '__main__':
         for exclude in args.excludes:
             excludes.append(os.path.realpath(exclude))
             
-    recurseAndUpdate(os.path.realpath(__file__) + "../", oldCopyright, newCopyright, excludes) # QUARTZ EDIT
+    recurseAndUpdate(os.path.dirname(os.path.abspath(__file__)) + "/../", oldCopyright, newCopyright, excludes) 
+# QUARTZ EDIT
