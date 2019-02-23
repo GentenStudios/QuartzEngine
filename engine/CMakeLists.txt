@@ -32,8 +32,8 @@ if(UNIX AND NOT APPLE)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES} ${X11_Xxf86vm_LIB} GL)
 endif()
 
-target_precompiled_header(${PROJECT_NAME} source/include/quartz/core/QuartzPCH.hpp TYPE c++-header)
-set_target_properties(quartz-engine.pch PROPERTIES FOLDER quartz-dependencies)
+#target_precompiled_header(${PROJECT_NAME} source/include/quartz/core/QuartzPCH.hpp TYPE c++-header)
+#set_target_properties(quartz-engine.pch PROPERTIES FOLDER quartz-dependencies)
 
 foreach(FILE ${quartzSources}) 
     get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
