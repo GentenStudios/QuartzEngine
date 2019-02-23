@@ -23,6 +23,7 @@
 
 #include <client/Client.hpp>
 #include <quartz/core/utilities/Config.hpp>
+#include <quartz/voxels/ChunkManager.hpp>
 
 #include <glad/glad.h>
 #include <imgui/imgui.h>
@@ -49,6 +50,9 @@ void Sandbox::run()
 	m_camera = new gfx::FPSCamera(window);
 
 	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
+
+	auto cm = qz::voxels::ChunkManager("core:dirt", 16, 42);
+	cm.determineGeneration(m_camera->getPosition());
 
 	using namespace gfx::api;
 
