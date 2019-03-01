@@ -10,7 +10,8 @@
 
 #### Building
 
-- Either clone https://github.com/GentenStudios/quartz-engine or fork and then clone your fork.
+- Either clone https://github.com/GentenStudios/quartz-engine or fork and then clone your fork. You will have to either clone with the
+``--recursive`` option, or you can run: ``git submodule update --init`` after cloning.
 
 - Run `cmake -H. -Bbuild` inside the root directory
 
