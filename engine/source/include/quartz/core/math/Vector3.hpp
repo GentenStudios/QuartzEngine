@@ -24,6 +24,7 @@
 #pragma once
 
 #include <quartz/core/Core.hpp>
+#include <cmath>
 
 namespace qz
 {

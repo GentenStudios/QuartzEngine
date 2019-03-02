@@ -24,6 +24,8 @@
 #include <quartz/core/QuartzPCH.hpp>
 #include <quartz/core/graphics/Camera.hpp>
 
+#include <cmath>
+
 const float HALF_PI = qz::math::PI / 2;
 const float MOVE_SPEED = 0.01f;
 const float SENSITIVITY = 0.00005f;

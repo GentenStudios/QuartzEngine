@@ -72,7 +72,7 @@ static void setTerminalTextColor(TextColor color)
 #endif
 
 #ifdef QZ_PLATFORM_LINUX
-	std::cout << os_terminal::s_linuxTerminalColors[static_cast<std::size_t>(color)];
+	std::cout << s_linuxTermCol[static_cast<std::size_t>(color)];
 #endif
 }
 
