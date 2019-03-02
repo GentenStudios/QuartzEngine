@@ -118,3 +118,27 @@ namespace qz
 		};
 	}
 }
+
+/**
+ * @brief Compares two vectors.
+ * @param left The left hand side of the comparison.
+ * @param right The right hand side of the comparison
+ * @return True when both vectors are equivalent, otherwise false.
+ */
+inline bool operator==(const qz::math::Vector2& left, const qz::math::Vector2& right)
+{
+	return left.x == right.x &&
+		left.y == right.y;
+}
+
+/**
+ * @brief Compares two vectors.
+ * @param left The left hand side of the comparison.
+ * @param right The right hand side of the comparison
+ * @return False when both vectors are equivalent, otherwise true.
+ */
+inline bool operator!=(const qz::math::Vector2& left, const qz::math::Vector2& right)
+{
+	return left.x != right.x &&
+		left.y != right.y;
+}

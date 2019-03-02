@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <quartz/core/math/Vector3.hpp>
+#include <quartz/core/math/Math.hpp>
 #include <quartz/voxels/Block.hpp>
 
 namespace qz

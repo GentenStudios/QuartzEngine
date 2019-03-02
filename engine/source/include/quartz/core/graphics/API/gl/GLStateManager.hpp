@@ -54,7 +54,7 @@ namespace qz
 					GraphicsResource<IBuffer> retrieveBuffer(unsigned int index = 0) override;
 
 					void attachBuffer(GraphicsResource<IBuffer> buffer) override;
-					void attachBufferLayout(const BufferLayout& bufferLayout, GraphicsResource<IShaderPipeline> shader) override;
+					void attachBufferLayout(const BufferLayout& bufferLayout) override;
 
 					void render(unsigned int start, unsigned int count) const override;
 

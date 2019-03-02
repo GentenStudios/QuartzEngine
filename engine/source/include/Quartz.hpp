@@ -26,6 +26,7 @@
 #include <quartz/core/Core.hpp>
 #include <quartz/core/utilities/Logger.hpp>
 #include <quartz/core/utilities/FileIO.hpp>
+#include <quartz/core/utilities/Config.hpp>
 
 #include <quartz/core/Application.hpp>
 #include <quartz/core/EntryPoint.hpp>
