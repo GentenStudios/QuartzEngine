@@ -10,7 +10,8 @@
 
 #### Building
 
-- Either clone https://github.com/beeperdeeper089/project-phoenix or fork and then clone your fork.
+- Either clone https://github.com/GentenStudios/quartz-engine or fork and then clone your fork. You will have to either clone with the
+``--recursive`` option, or you can run: ``git submodule update --init`` after cloning.
 
 - Run `cmake -H. -Bbuild` inside the root directory
 
@@ -18,7 +19,7 @@
 
   ##### Visual Studio
 
-  - Right click on `Phoenix_Client` and click `Set as StartUp project`
+  - Right click on `quartz-sandbox` and click `Set as StartUp project`
   - Click `Local Windows Debugger` to run
 
   ##### Make
