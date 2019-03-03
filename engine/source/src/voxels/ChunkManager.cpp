@@ -22,12 +22,14 @@
 // DAMAGE.
 
 #include <quartz/core/QuartzPCH.hpp>
+#include <quartz/core/graphics/API/IShaderPipeline.hpp>
 #include <quartz/voxels/ChunkManager.hpp>
+#include <quartz/voxels/terrain/PerlinNoise.hpp>
 
 #include <algorithm>
-#include <utility>
 
 using namespace qz::voxels;
+using namespace qz;
 
 const int VIEW_DISTANCE = 16; // 96 blocks, 6 chunks.
 

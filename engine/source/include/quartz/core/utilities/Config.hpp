@@ -31,10 +31,10 @@
 #include <inih/INIReader.h>
 
 #define QZ_REGISTER_CONFIG(filenameStr) \
-	qz::ConfigManager::get()->registerConfig(filenameStr)
+	qz::utils::ConfigManager::get()->registerConfig(filenameStr)
 
 #define QZ_GET_CONFIG(filenameStr) \
-	qz::ConfigManager::get()->getConfigFile(filenameStr)
+	qz::utils::ConfigManager::get()->getConfigFile(filenameStr)
 
 namespace qz
 {

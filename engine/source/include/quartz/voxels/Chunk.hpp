@@ -26,15 +26,14 @@
 #include <vector>
 #include <mutex>
 
-#include <quartz/core/math/Vector2.hpp>
-#include <quartz/core/math/Vector3.hpp>
+#include <quartz/core/math/Math.hpp>
 
 #include <quartz/voxels/Block.hpp>
 
-#include <quartz/core/graphics/API/gl/GLBuffer.hpp>
-#include <quartz/core/graphics/API/gl/GLTextureArray.hpp>
+#include <quartz/core/graphics/api/IStateManager.hpp>
+#include <quartz/core/graphics/api/IBuffer.hpp>
+#include <quartz/core/graphics/api/ITextureArray.hpp>
 
-#include <quartz/core/utilities/ThreadPool.hpp>
 #include <atomic>
 
 namespace qz
@@ -130,12 +129,20 @@ namespace qz
 		private:
 			Mesh m_mesh;
 
+<<<<<<< HEAD
 			gfx::api::IBuffer* m_vao = nullptr;
 			gfx::api::IBuffer* m_vbo = nullptr;
 
 			gfx::api::ITextureArray* m_textureArray = nullptr;
 
 			gfx::api::TexCache m_texReservations;
+=======
+			gfx::api::GraphicsResource<gfx::api::IStateManager> m_stateManager = nullptr;
+			gfx::api::GraphicsResource<gfx::api::IBuffer> m_buffer = nullptr;
+
+			gfx::api::GraphicsResource<gfx::api::ITextureArray> m_textureArray = nullptr;
+			gfx::TexCache m_texReservations;
+>>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 
 			int m_currentLayer = 0;
 		};
@@ -151,7 +158,7 @@ namespace qz
 			Chunk(Chunk&& other);
 			Chunk& operator=(Chunk&& other);
 
-			Chunk(qz::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID);
+			Chunk(qz::Vector3 chunkPos, int chunkSize, const std::string& defaultBlockID);
 
 			~Chunk() = default;
 
@@ -177,8 +184,8 @@ namespace qz
 			void renderWater(int* counter);
 
 		private:
-			qz::Vector3 m_chunkPos;
-			unsigned int m_chunkSize;
+			Vector3 m_chunkPos;
+			int m_chunkSize;
 
 			ChunkMesh m_mesh;
 
@@ -186,14 +193,17 @@ namespace qz
 			ChunkRenderer m_objectRenderer;
 			ChunkRenderer m_waterRenderer;
 
-			std::atomic<unsigned int> m_chunkFlags;
+			unsigned int m_chunkFlags;
 
 			std::string m_defaultBlockID;
 			std::vector<BlockInstance> m_chunkBlocks;
 
+<<<<<<< HEAD
 			std::mutex m_chunkMutex;
 			threads::utils::ThreadPool<1> m_threadPool;
 
+=======
+>>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 			std::size_t getVectorIndex(std::size_t x, std::size_t y, std::size_t z) const
 			{
 				return x + m_chunkSize * (y + m_chunkSize * z);

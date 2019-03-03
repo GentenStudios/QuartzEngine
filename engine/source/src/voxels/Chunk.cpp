@@ -24,8 +24,9 @@
 #include <quartz/core/QuartzPCH.hpp>
 #include <quartz/voxels/Chunk.hpp>
 
-//#include <quartz/core/graphics/gl/VertexAttrib.hpp>
+#include <quartz/core/graphics/api/BufferLayout.hpp>
 #include <quartz/voxels/terrain/PerlinNoise.hpp>
+#include "quartz/core/graphics/API/gl/GLCommon.hpp"
 
 using namespace qz::voxels;
 using namespace qz;
@@ -254,13 +255,7 @@ void ChunkMesh::resetAll()
 }
 
 ChunkRenderer::ChunkRenderer() {}
-
-ChunkRenderer::~ChunkRenderer()
-{
-	delete m_vao;
-	delete m_vbo;
-	delete m_textureArray;
-}
+ChunkRenderer::~ChunkRenderer() {}
 
 ChunkRenderer::ChunkRenderer(const ChunkRenderer& other)
 {
@@ -271,8 +266,8 @@ ChunkRenderer& ChunkRenderer::operator=(const ChunkRenderer& other)
 {
 	m_mesh = other.m_mesh;
 
-	m_vao = nullptr;
-	m_vbo = nullptr;
+	m_stateManager = nullptr;
+	m_buffer = nullptr;
 	m_textureArray = nullptr;
 
 	return *this;
@@ -282,8 +277,8 @@ ChunkRenderer::ChunkRenderer(ChunkRenderer&& other)
 {
 	m_mesh = std::move(other.m_mesh);
 
-	m_vao = nullptr;
-	m_vbo = nullptr;
+	m_stateManager = nullptr;
+	m_buffer = nullptr;
 
 	std::swap(m_textureArray, other.m_textureArray);
 }
@@ -291,12 +286,6 @@ ChunkRenderer::ChunkRenderer(ChunkRenderer&& other)
 ChunkRenderer& ChunkRenderer::operator=(ChunkRenderer&& other)
 {
 	m_mesh = std::move(other.m_mesh);
-
-	delete m_vao;
-	m_vao = nullptr;
-
-	delete m_vbo;
-	m_vbo = nullptr;
 
 	std::swap(m_textureArray, other.m_textureArray);
 
@@ -317,9 +306,6 @@ void ChunkRenderer::reserveTexture(const std::string& path)
 {
 	if (m_texReservations.find(path) == m_texReservations.end())
 	{
-		if (m_textureArray != nullptr)
-			m_currentLayer = m_textureArray->getCurrentLayer();
-
 		m_texReservations.emplace(path, m_currentLayer);
 		m_currentLayer++;
 	}
@@ -340,7 +326,11 @@ int ChunkRenderer::getTexLayer(const std::string& path)
 void ChunkRenderer::loadTextures()
 {
 	if (m_textureArray == nullptr)
+<<<<<<< HEAD
 		m_textureArray = new gfx::api::gl::GLTextureArray();
+=======
+		m_textureArray = gfx::api::ITextureArray::generateTextureArray();
+>>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 
 	m_textureArray->add(m_texReservations);
 }
@@ -350,13 +340,23 @@ void ChunkRenderer::bufferData()
 	if (m_mesh.vertices.empty())
 		return;
 
+<<<<<<< HEAD
 	if (m_vao == nullptr)
 		m_vao = new gfx::api::gl::GLBuffer(gfx::api::BufferTarget::ARRAY_BUFFER, gfx::api::BufferUsage::DYNAMIC_DRAW);
+=======
+	if (m_stateManager == nullptr)
+		m_stateManager = gfx::api::IStateManager::generateStateManager();
+>>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 
-	m_vao->bind();
+	m_stateManager->bind();
 
+<<<<<<< HEAD
 	if (m_vbo == nullptr)
 		m_vbo = new gfx::api::gl::GLBuffer(gfx::api::BufferTarget::ARRAY_BUFFER, gfx::api::BufferUsage::DYNAMIC_DRAW);
+=======
+	if (m_buffer == nullptr)
+		m_buffer = gfx::api::IBuffer::generateBuffer(gfx::api::BufferTarget::ARRAY_BUFFER, gfx::api::BufferUsage::DYNAMIC);
+>>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 
 	std::vector<ChunkVert3D> temp;
 
@@ -367,22 +367,28 @@ void ChunkRenderer::bufferData()
 		temp.emplace_back(m_mesh.vertices[i - 1], m_mesh.uvs[i - 1], m_mesh.texLayers[i - 1]);
 	}
 
-	m_vbo->bind();
-	m_vbo->setData(static_cast<void*>(temp.data()), sizeof(ChunkVert3D) * temp.size());
+	m_buffer->bind();
+	m_buffer->setData(sizeof(ChunkVert3D) * temp.size(), static_cast<void*>(temp.data()));
 
-	gfx::gl::VertexAttrib vertAttrib	= gfx::gl::VertexAttrib(0, 3, sizeof(ChunkVert3D), offsetof(ChunkVert3D, verts),	gfx::gl::GLType::FLOAT);
-	gfx::gl::VertexAttrib uvAttrib		= gfx::gl::VertexAttrib(1, 2, sizeof(ChunkVert3D), offsetof(ChunkVert3D, uvs),		gfx::gl::GLType::FLOAT);
-	gfx::gl::VertexAttrib layerAttrib	= gfx::gl::VertexAttrib(2, 1, sizeof(ChunkVert3D), offsetof(ChunkVert3D, texLayer),	gfx::gl::GLType::FLOAT);
+	m_stateManager->attachBuffer(m_buffer);
 
-	vertAttrib.enable();
-	uvAttrib.enable();
-	layerAttrib.enable();
+	gfx::api::BufferLayout bufferLayout;
 
-	m_vao->unbind();
+	bufferLayout.registerAttribute(0, qz::gfx::DataType::FLOAT, 3, sizeof(ChunkVert3D), offsetof(ChunkVert3D, verts), false);
+	bufferLayout.registerAttribute(1, qz::gfx::DataType::FLOAT, 2, sizeof(ChunkVert3D), offsetof(ChunkVert3D, uvs), false);
+	bufferLayout.registerAttribute(2, qz::gfx::DataType::FLOAT, 1, sizeof(ChunkVert3D), offsetof(ChunkVert3D, texLayer), false);
+
+	m_stateManager->attachBufferLayout(bufferLayout);
+
+	m_stateManager->unbind();
 
 	// bufferData() is usually called just before a render call, meaning that if the textureArray is a nullptr, then things will go south pretty fucking fast.
 	if (m_textureArray == nullptr)
+<<<<<<< HEAD
 		m_textureArray = new gfx::api::gl::GLTextureArray();
+=======
+		m_textureArray = gfx::api::ITextureArray::generateTextureArray();
+>>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 }
 
 void ChunkRenderer::render() const
@@ -391,7 +397,7 @@ void ChunkRenderer::render() const
 		return;
 
 	m_textureArray->bind(10);
-	m_vao->bind();
+	m_stateManager->bind();
 	GLCheck(glDrawArrays(GL_TRIANGLES, 0, m_mesh.vertices.size()));
 }
 
@@ -472,17 +478,17 @@ Chunk& Chunk::operator=(Chunk&& other)
 	return *this;
 }
 
-Chunk::Chunk(qz::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID)
+Chunk::Chunk(qz::Vector3 chunkPos, int chunkSize, const std::string& defaultBlockID)
 {
 	m_chunkPos = chunkPos;
 	m_chunkSize = chunkSize;
 	m_defaultBlockID = defaultBlockID;
+
+	m_chunkFlags = 0;
 }
 
 void Chunk::populateData(unsigned int seed)
 {
-	std::lock_guard<std::mutex> lock(m_chunkMutex);
-
 	for (std::size_t i = 0; i < m_chunkSize * m_chunkSize * m_chunkSize; ++i)
 		m_chunkBlocks.emplace_back(m_defaultBlockID);
 
@@ -496,8 +502,6 @@ void Chunk::populateData(unsigned int seed)
 
 void Chunk::buildMesh()
 {
-	std::lock_guard<std::mutex> lock(m_chunkMutex);
-
 	m_mesh.resetAll();
 	
 	for (std::size_t i = 0; i < m_chunkSize * m_chunkSize * m_chunkSize; ++i)
@@ -507,9 +511,9 @@ void Chunk::buildMesh()
 		if (block.getBlockType() == BlockType::GAS)
 			continue;
 
-		const std::size_t x = i % m_chunkSize;
-		const std::size_t y = (i / m_chunkSize) % m_chunkSize;
-		const std::size_t z = i / (m_chunkSize * m_chunkSize);
+		const int x = i % m_chunkSize;
+		const int y = (i / m_chunkSize) % m_chunkSize;
+		const int z = i / (m_chunkSize * m_chunkSize);
 
 		if (x == 0 || m_chunkBlocks[getVectorIndex(x - 1, y, z)].getBlockType() != BlockType::SOLID)
 			m_mesh.add(block, BlockFace::RIGHT, m_chunkPos, { static_cast<float>(x), static_cast<float>(y), static_cast<float>(z) }, this);
@@ -558,8 +562,6 @@ void Chunk::breakBlockAt(qz::Vector3 position, const BlockInstance& block)
 		{
 			if (position.z < m_chunkSize)
 			{
-				std::unique_lock<std::mutex> lock(m_chunkMutex);
-				
 				BlockInstance& orig = m_chunkBlocks[getVectorIndex(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(position.z))];
 
 				auto& breakCallback = BlockLibrary::get()->requestBlock(orig.getBlockID()).getBreakCallback();
@@ -583,8 +585,6 @@ void Chunk::placeBlockAt(qz::Vector3 position, const BlockInstance& block)
 		{
 			if (position.z < m_chunkSize)
 			{
-				std::unique_lock<std::mutex> lock(m_chunkMutex);
-
 				auto& placeCallback = BlockLibrary::get()->requestBlock(block.getBlockID()).getPlaceCallback();
 				if (placeCallback != nullptr)
 					placeCallback();
@@ -622,8 +622,6 @@ void Chunk::setBlockAt(qz::Vector3 position, const BlockInstance& newBlock)
 		{
 			if (position.z < m_chunkSize)
 			{
-				std::unique_lock<std::mutex> lock(m_chunkMutex);
-
 				m_chunkBlocks[getVectorIndex(static_cast<int>(position.x), static_cast<int>(position.y), static_cast<int>(position.z))] = newBlock;
 
 				if (!(m_chunkFlags & NEEDS_MESHING))

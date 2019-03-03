@@ -27,9 +27,9 @@
 using namespace qz::gfx::api;
 using namespace qz::gfx;
 
-void BufferLayout::registerAttribute(const std::string& name, DataType type, int count, int stride, std::size_t offset, bool normalised)
+void BufferLayout::registerAttribute(unsigned int index, DataType type, int count, int stride, std::size_t offset, bool normalised)
 {
-	m_bufferLayout.push_back({ name, type, count, stride, offset, normalised });
+	m_bufferLayout.push_back({ index, type, count, stride, offset, normalised });
 }
 
 void BufferLayout::registerAttribute(BufferAttribute attribute)

@@ -34,9 +34,10 @@ namespace qz
 {
 	namespace gfx
 	{
+		using TexCache = std::unordered_map<std::string, int>;
+
 		namespace api
 		{
-			using TexCache = std::unordered_map<std::string, int>;
 
 			class QZ_API ITextureArray : public ITextureObject
 			{
@@ -47,12 +48,15 @@ namespace qz
 				virtual void setOptions(TextureOptions options) = 0;
 
 				virtual void add(const std::string& path) = 0;
+				virtual void add(const TexCache& cache) = 0;
 
 				virtual void reserve(const std::string& path) = 0;
 				virtual void resolveReservations() = 0;
 
 				virtual const TexCache& getTextureList() const = 0;
 				virtual int getTexLayer(const std::string& path) = 0;
+
+				int getCurrentTexLayer() const { return m_layerNumber; }
 
 			protected:
 				ITextureArray() = default;

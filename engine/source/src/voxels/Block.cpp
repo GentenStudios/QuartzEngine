@@ -25,8 +25,6 @@
 #include <quartz/voxels/Block.hpp>
 #include <quartz/core/utilities/Logger.hpp>
 
-#include <algorithm>
-
 using namespace qz::voxels;
 
 RegistryBlock::RegistryBlock(std::string blockID, std::string blockName, int initialHP, BlockType blockType)
@@ -117,7 +115,7 @@ const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) cons
 	if (it == m_registeredBlocks.end())
 	{
 		LWARNING("The Block: ", blockID, " cannot be found, but is being requested. Using core:unknown block type instead. Please take action!");
-		return RegistryBlock("core:unknown", "Unknown Block", 1, BlockType::SOLID);
+		return m_registeredBlocks.at("core:unknown");
 	}
 
 	return it->second;
