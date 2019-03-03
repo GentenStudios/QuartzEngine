@@ -150,8 +150,8 @@ void Logger::logMessage(const std::string& errorFile, int lineNumber, LogVerbosi
 
 		// The "\r" prefix makes sure that if there is a new message, but it is the same, it will rewrite that line to the console, 
 		// rather than to print it out again and waste terminal space. Really useful, but may confuse people just as it did confuse me.
-		m_logFileHandle << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")";
-		std::cout << '\r' << logMessageString << " (" << m_currentDuplicates << ")";
+		m_logFileHandle << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")" << '\n';
+		std::cout << '\r' << logMessageString << " (" << m_currentDuplicates << ")" << '\n';
 	}
 	else
 	{
