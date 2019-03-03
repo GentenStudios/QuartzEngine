@@ -110,12 +110,6 @@ void Logger::initialise(const std::string& logFile, LogVerbosity verbLevel)
 	m_logFileHandle.open(Logger::m_logFile, std::ios::out | std::ios::app);
 }
 
-/**
-* @brief Destroys the logger.
-* 
-* Closes the file handle, and puts an extra newline character so the next
-* terminal prompt doesn't extend on the last logged line.
-*/
 void Logger::destroy()
 {
 	std::cout << '\n';
