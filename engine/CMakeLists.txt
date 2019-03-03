@@ -18,6 +18,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 	${dependencies}/inih 
 	${dependencies}/luamod/include
 	${dependencies}/imgui/include
+	${dependencies}/entt
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/source/include/)
