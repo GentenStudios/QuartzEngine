@@ -18,6 +18,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 	${dependencies}/inih 
 	${dependencies}/luamod/include
 	${dependencies}/imgui/include
+	${dependencies}/entt
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/source/include/)
@@ -30,12 +31,6 @@ if(UNIX AND NOT APPLE)
 	find_package(X11 REQUIRED)
 	find_package(Threads REQUIRED)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES} ${X11_Xxf86vm_LIB} GL)
-endif()
-
-if (MSVC)
-    # do not use PCH on linux because it won't compile otherwise
-    target_precompiled_header(${PROJECT_NAME} source/include/quartz/core/QuartzPCH.hpp TYPE c++-header)
-    set_target_properties(quartz-engine.pch PROPERTIES FOLDER quartz-dependencies)
 endif()
 
 foreach(FILE ${quartzSources}) 

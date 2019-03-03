@@ -112,6 +112,7 @@ void Logger::initialise(const std::string& logFile, LogVerbosity verbLevel)
 
 void Logger::destroy()
 {
+	std::cout << '\n';
 	m_logFileHandle.close();
 }
 
