@@ -145,7 +145,7 @@ void Sandbox::run()
 		shader->setMat4("u_view", m_camera->calculateViewMatrix());
 		shader->setMat4("u_model", model);
 
-		world->render(10);
+		world->render(10);  // should be in the settings (the chunks actualisation factor, here: 10 per frame)
 
 		ImGui::Begin("Debug Information");
 		ImGui::Text("FPS: %d", fpsCurrent);

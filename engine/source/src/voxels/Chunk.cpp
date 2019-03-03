@@ -486,8 +486,9 @@ void Chunk::buildMesh()
 {
 	m_mesh.resetAll();
 	
-	for (std::size_t i = 0; i < m_chunkSize * m_chunkSize * m_chunkSize; ++i)
+	for (std::size_t j = m_chunkSize * m_chunkSize * m_chunkSize; j > 0; --j)
 	{
+		std::size_t i = j - 1;
 		BlockInstance& block = m_chunkBlocks[i];
 
 		if (block.getBlockType() == BlockType::GAS)
