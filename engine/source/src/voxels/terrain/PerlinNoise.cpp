@@ -59,9 +59,9 @@ PerlinNoise::PerlinNoise() :
 
 	// need a better way to load the script
 	m_lua.Register("loadModel", [&](std::string filename){
-		this->m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/" + filename));
+		this->m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/" + filename).c_str());
 	});
-	m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/PerlinNoise.lua"));
+	m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/PerlinNoise.lua").c_str());
 }
 
 PerlinNoise::PerlinNoise(unsigned int seed) :

@@ -24,7 +24,7 @@
 #include <quartz/core/QuartzPCH.hpp>
 #include <quartz/voxels/Chunk.hpp>
 
-#include <quartz/core/graphics/api/BufferLayout.hpp>
+#include <quartz/core/graphics/API/BufferLayout.hpp>
 #include <quartz/voxels/terrain/PerlinNoise.hpp>
 #include "quartz/core/graphics/API/gl/GLCommon.hpp"
 
@@ -326,11 +326,7 @@ int ChunkRenderer::getTexLayer(const std::string& path)
 void ChunkRenderer::loadTextures()
 {
 	if (m_textureArray == nullptr)
-<<<<<<< HEAD
-		m_textureArray = new gfx::api::gl::GLTextureArray();
-=======
 		m_textureArray = gfx::api::ITextureArray::generateTextureArray();
->>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 
 	m_textureArray->add(m_texReservations);
 }
@@ -340,23 +336,13 @@ void ChunkRenderer::bufferData()
 	if (m_mesh.vertices.empty())
 		return;
 
-<<<<<<< HEAD
-	if (m_vao == nullptr)
-		m_vao = new gfx::api::gl::GLBuffer(gfx::api::BufferTarget::ARRAY_BUFFER, gfx::api::BufferUsage::DYNAMIC_DRAW);
-=======
 	if (m_stateManager == nullptr)
 		m_stateManager = gfx::api::IStateManager::generateStateManager();
->>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 
 	m_stateManager->bind();
 
-<<<<<<< HEAD
-	if (m_vbo == nullptr)
-		m_vbo = new gfx::api::gl::GLBuffer(gfx::api::BufferTarget::ARRAY_BUFFER, gfx::api::BufferUsage::DYNAMIC_DRAW);
-=======
 	if (m_buffer == nullptr)
 		m_buffer = gfx::api::IBuffer::generateBuffer(gfx::api::BufferTarget::ARRAY_BUFFER, gfx::api::BufferUsage::DYNAMIC);
->>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 
 	std::vector<ChunkVert3D> temp;
 
@@ -384,11 +370,7 @@ void ChunkRenderer::bufferData()
 
 	// bufferData() is usually called just before a render call, meaning that if the textureArray is a nullptr, then things will go south pretty fucking fast.
 	if (m_textureArray == nullptr)
-<<<<<<< HEAD
-		m_textureArray = new gfx::api::gl::GLTextureArray();
-=======
 		m_textureArray = gfx::api::ITextureArray::generateTextureArray();
->>>>>>> 4ac3af9bbccc9f99f1e5c9c37dc2138fcefa5ad8
 }
 
 void ChunkRenderer::render() const
