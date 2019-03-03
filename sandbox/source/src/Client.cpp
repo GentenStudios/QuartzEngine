@@ -91,9 +91,6 @@ void Sandbox::run()
 
 	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
 
-	auto cm = qz::voxels::ChunkManager("core:dirt", 16, 42);
-	cm.determineGeneration(m_camera->getPosition());
-
 	using namespace gfx::api;
 	using namespace voxels;
 

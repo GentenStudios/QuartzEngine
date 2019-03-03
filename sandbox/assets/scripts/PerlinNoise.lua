@@ -5,5 +5,5 @@ models = {}  -- needed for tFileIO::readAllFilehe perlin noise stuff
 
 function getSmoothingFactor(x, y, z)
     -- (x, y, z) is the chunk position
-    return 32.0  -- default value
+    return 16.0
 end

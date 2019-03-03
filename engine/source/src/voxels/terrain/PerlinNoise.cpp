@@ -29,6 +29,7 @@
 #include <numeric>
 #include <quartz/core/utilities/FileIO.hpp>
 #include <functional>
+#include <iostream>
 
 using namespace qz::voxels;
 
@@ -74,6 +75,12 @@ PerlinNoise::PerlinNoise(unsigned int seed) :
 	std::default_random_engine engine(seed);
 	std::shuffle(m_p.begin(), m_p.end(), engine);
 	m_p.insert(m_p.end(), m_p.begin(), m_p.end());
+
+	// need a better way to load the script
+	m_lua.Register("loadModel", [&](std::string filename){
+		this->m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/" + filename).c_str());
+	});
+	m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/PerlinNoise.lua").c_str());
 }
 
 void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, qz::Vector3 chunkPos, int chunkSize)
