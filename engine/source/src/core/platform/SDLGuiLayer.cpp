@@ -36,6 +36,10 @@ void SDLGuiLayer::init(SDL_Window* window, SDL_GLContext* context)
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+
 	ImGui_ImplSDL2_InitForOpenGL(window, context); 
 	ImGui_ImplOpenGL3_Init("#version 330 core");
 }
