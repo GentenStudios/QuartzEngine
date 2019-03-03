@@ -472,7 +472,10 @@ Chunk::Chunk(qz::Vector3 chunkPos, int chunkSize, const std::string& defaultBloc
 void Chunk::populateData(unsigned int seed)
 {
 	for (std::size_t i = 0; i < m_chunkSize * m_chunkSize * m_chunkSize; ++i)
+	{
+		std::cout << i << std::endl;
 		m_chunkBlocks.emplace_back(m_defaultBlockID);
+	}
 
 	PerlinNoise* terrainGenerator = new PerlinNoise(seed);
 	terrainGenerator->generateFor(m_chunkBlocks, m_chunkPos, m_chunkSize);
