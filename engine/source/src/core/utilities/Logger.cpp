@@ -158,8 +158,8 @@ void Logger::logMessage(const std::string& errorFile, int lineNumber, LogVerbosi
 		m_currentDuplicates = 1;
 		m_prevMessage = message;
 
-		m_logFileHandle << '\n' << logMessageString;
-		std::cout << '\n' << logMessageString;
+		m_logFileHandle << '\n' << logMessageString << '\n';
+		std::cout << '\n' << logMessageString << '\n';
 	}
 
 	setTerminalTextColor(TextColor::WHITE);
