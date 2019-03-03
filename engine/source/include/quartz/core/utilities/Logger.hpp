@@ -99,6 +99,13 @@ namespace qz
 			 * @param verbLevel The level of verbosity that should be logged.
 			 */
 			void initialise(const std::string& logFile, LogVerbosity verbLevel);
+			
+			/**
+			* @brief Destroys the logger.
+			* 
+			* Closes the file handle, and puts an extra newline character so the next
+			* terminal prompt doesn't extend on the last logged line.
+			*/
 			void destroy();
 
 			/**
