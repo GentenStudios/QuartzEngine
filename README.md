@@ -12,6 +12,7 @@ https://discord.gg/5JmwPJf
 - CMake (Version >= 3.0)
 - A C++11 compatible compiler. The following have been tested
   - Visual Studio 2017 (MSVC 14.10)
+- OpenGL (Version >= 3.3)
 
 #### Building
 
