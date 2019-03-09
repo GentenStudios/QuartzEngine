@@ -1,7 +1,6 @@
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
-
-set(coreClientHeaders
-	${currentDir}/Client.hpp
+set(coreSandboxHeaders
+	${currentDir}/Sandbox.hpp
 	
 	PARENT_SCOPE
 )

@@ -21,13 +21,13 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <client/Client.hpp>
+#include <Sandbox/Sandbox.hpp>
 
 #include <glad/glad.h>
 #include <imgui/imgui.h>
 #include <chrono>
 
-using namespace client;
+using namespace sandbox;
 using namespace qz;
 
 Sandbox::Sandbox()

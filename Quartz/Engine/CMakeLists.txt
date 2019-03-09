@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(quartz-engine LANGUAGES CXX)
+project(QuartzEngine LANGUAGES CXX)
 
 add_subdirectory(Include)
 add_subdirectory(Source)
@@ -36,6 +36,7 @@ foreach(FILE ${quartzSources})
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
 
     string(REPLACE "/" "\\" GROUP "${GROUP}")
+	string(REPLACE "Source" "" GROUP "${GROUP}")
 
     set(GROUP "Source Files${GROUP}")
     source_group("${GROUP}" FILES "${FILE}")
@@ -46,6 +47,7 @@ foreach(FILE ${quartzHeaders})
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
 
     string(REPLACE "/" "\\" GROUP "${GROUP}")
+	string(REPLACE "Include" "" GROUP "${GROUP}")
 
     set(GROUP "Header Files${GROUP}")
     source_group("${GROUP}" FILES "${FILE}")

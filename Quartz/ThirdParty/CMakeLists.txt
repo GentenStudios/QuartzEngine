@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 option(LIBC "..." ON)
 
-project(quartz-dependencies)
+project(QuartzDependencies)
 
 if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/luamod/include)
 	message("It seems like the Git Submodules have not been initialised and cloned, they will now be initialised and cloned as required.")

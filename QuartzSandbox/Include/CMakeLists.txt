@@ -1,7 +1,7 @@
-add_subdirectory(client)
+add_subdirectory(Sandbox)
 
-set(clientHeaders
-	${coreClientHeaders}
+set(sandboxHeaders
+	${coreSandboxHeaders}
 
 	PARENT_SCOPE
 )

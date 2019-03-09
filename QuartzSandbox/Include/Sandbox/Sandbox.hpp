@@ -25,7 +25,7 @@
 
 #include <Quartz.hpp>
 
-namespace client
+namespace sandbox
 {
 	class Sandbox : public qz::Application
 	{
@@ -51,6 +51,6 @@ namespace client
 
 inline qz::Application* qz::createApplication()
 {
-	return new client::Sandbox();
+	return new sandbox::Sandbox();
 }
 
