@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(quartz-engine LANGUAGES CXX CXXPCH)
+project(quartz-engine LANGUAGES CXX)
 
 add_subdirectory(source/include)
 add_subdirectory(source/src)
