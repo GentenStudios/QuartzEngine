@@ -22,6 +22,6 @@ if(WIN32)
     set_target_properties(wluajit PROPERTIES FOLDER quartz-dependencies/lua/luajit)
 endif()
 
-set_target_properties(luamod PROPERTIES FOLDER quartz-dependencies/lua)
+set_target_properties(luamod luamod_tests PROPERTIES FOLDER quartz-dependencies/lua)
 set_target_properties(SDL2main SDL2 SDL2-static uninstall PROPERTIES FOLDER quartz-dependencies/sdl2)
 set_target_properties(glad imgui PROPERTIES FOLDER quartz-dependencies)
