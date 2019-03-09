@@ -2,15 +2,14 @@ cmake_minimum_required(VERSION 3.0)
 
 project(quartz-engine LANGUAGES CXX)
 
-add_subdirectory(source/include)
-add_subdirectory(source/src)
+add_subdirectory(Include)
+add_subdirectory(Source)
 
 add_library(${PROJECT_NAME} STATIC ${quartzSources} ${quartzHeaders})
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2-static SDL2main glad luamod imgui)
 
-set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../third_party)
+set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../ThirdParty)
 target_include_directories(${PROJECT_NAME} PUBLIC 
 	${dependencies}/SDL2/include 
 	${dependencies}/glad/include 
@@ -19,9 +18,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 	${dependencies}/luamod/include
 	${dependencies}/imgui/include
 	${dependencies}/entt
+	${CMAKE_CURRENT_LIST_DIR}/Include
 )
-
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/source/include/)
 
 if(WIN32)
 	target_link_libraries(${PROJECT_NAME} PRIVATE imm32.lib ole32.lib oleaut32.lib opengl32.lib version.lib winmm.lib)
