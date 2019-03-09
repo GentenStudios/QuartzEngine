@@ -1,5 +1,5 @@
-add_subdirectory(core)
-# add_subdirectory(voxels)
+add_subdirectory(Core)
+# add_subdirectory(Voxels)
 
 set(quartzSources
 	${coreSources}

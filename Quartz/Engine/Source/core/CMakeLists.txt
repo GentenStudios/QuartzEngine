@@ -1,7 +1,7 @@
-add_subdirectory(graphics)
-add_subdirectory(math)
-add_subdirectory(platform)
-add_subdirectory(utilities)
+add_subdirectory(Graphics)
+add_subdirectory(Math)
+add_subdirectory(Platform)
+add_subdirectory(Utilities)
 
 set(coreSources
 	${graphicsSources}

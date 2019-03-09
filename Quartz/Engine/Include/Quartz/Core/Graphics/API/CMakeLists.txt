@@ -1,4 +1,4 @@
-add_subdirectory(gl)
+add_subdirectory(GL)
 
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 set(apiHeaders

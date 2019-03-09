@@ -1,8 +1,8 @@
-add_subdirectory(math)
-add_subdirectory(events)
-add_subdirectory(graphics)
-add_subdirectory(platform)
-add_subdirectory(utilities)
+add_subdirectory(Math)
+add_subdirectory(Events)
+add_subdirectory(Graphics)
+add_subdirectory(Platform)
+add_subdirectory(Utilities)
 
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 
