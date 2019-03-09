@@ -1,4 +1,5 @@
 # QUARTZ ENGINE
+[![Build Status](https://travis-ci.org/GentenStudios/quartz-engine.svg?branch=develop)](https://travis-ci.org/GentenStudios/quartz-engine)
 
 ## Community
 
