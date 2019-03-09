@@ -1,3 +1,4 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/5ec1ftmq4bv8dxj0?svg=true)](https://ci.appveyor.com/project/DontBelieveMe/quartz-engine) [![Build Status](https://travis-ci.org/GentenStudios/quartz-engine.svg?branch=develop)](https://travis-ci.org/GentenStudios/quartz-engine)
 # QUARTZ ENGINE
 
 ## Community
