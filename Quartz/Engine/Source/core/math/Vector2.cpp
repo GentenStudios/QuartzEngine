@@ -21,8 +21,8 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/math/Vector2.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Math/Vector2.hpp>
 
 using namespace qz::math;
 

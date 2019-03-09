@@ -23,9 +23,9 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/graphics/API/IStateManager.hpp>
-#include <quartz/core/graphics/API/gl/GLBuffer.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Graphics/API/IStateManager.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLBuffer.hpp>
 
 #include <vector>
 

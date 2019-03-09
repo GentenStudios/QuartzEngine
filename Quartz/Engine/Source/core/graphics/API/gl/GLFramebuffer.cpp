@@ -21,8 +21,8 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/graphics/API/gl/GLFramebuffer.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLFramebuffer.hpp>
 
 using namespace qz::gfx::api::gl;
 using namespace qz::gfx::api;

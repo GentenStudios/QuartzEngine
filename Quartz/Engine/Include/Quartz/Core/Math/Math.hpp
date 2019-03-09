@@ -23,11 +23,11 @@
 
 #pragma once
 
-#include <quartz/core/math/MathUtils.hpp>
-#include <quartz/core/math/Matrix4x4.hpp>
-#include <quartz/core/math/Vector3.hpp>
-#include <quartz/core/math/Vector2.hpp>
-#include <quartz/core/math/Ray.hpp>
+#include <Quartz/Core/Math/MathUtils.hpp>
+#include <Quartz/Core/Math/Matrix4x4.hpp>
+#include <Quartz/Core/Math/Vector3.hpp>
+#include <Quartz/Core/Math/Vector2.hpp>
+#include <Quartz/Core/Math/Ray.hpp>
 
 namespace qz
 {

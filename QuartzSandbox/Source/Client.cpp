@@ -22,7 +22,6 @@
 // DAMAGE.
 
 #include <client/Client.hpp>
-#include <quartz/core/utilities/Config.hpp>
 
 #include <glad/glad.h>
 #include <imgui/imgui.h>

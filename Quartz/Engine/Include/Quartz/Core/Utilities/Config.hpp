@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/events/EventEnums.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Events/EventEnums.hpp>
 
 #include <string>
 #include <unordered_map>

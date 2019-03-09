@@ -23,10 +23,10 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/math/Math.hpp>
-#include <quartz/core/events/Event.hpp>
-#include <quartz/core/events/EventEnums.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Math/Math.hpp>
+#include <Quartz/Core/Events/Event.hpp>
+#include <Quartz/Core/Events/EventEnums.hpp>
 
 namespace qz
 {

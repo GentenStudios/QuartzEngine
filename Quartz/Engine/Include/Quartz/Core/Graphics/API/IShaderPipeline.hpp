@@ -23,10 +23,10 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/math/Math.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Math/Math.hpp>
 
-#include <quartz/core/graphics/API/GraphicsResource.hpp>
+#include <Quartz/Core/Graphics/API/GraphicsResource.hpp>
 
 #include <string>
 

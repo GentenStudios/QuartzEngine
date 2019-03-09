@@ -21,14 +21,14 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/platform/GLWindow.hpp>
-#include <quartz/core/graphics/API/gl/GLCommon.hpp>
-#include <quartz/core/events/KeyEvent.hpp>
-#include <quartz/core/events/MouseEvent.hpp>
-#include <quartz/core/events/ApplicationEvent.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Platform/GLWindow.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
+#include <Quartz/Core/Events/KeyEvent.hpp>
+#include <Quartz/Core/Events/MouseEvent.hpp>
+#include <Quartz/Core/Events/ApplicationEvent.hpp>
 
-#include <quartz/core/utilities/Logger.hpp>
+#include <Quartz/Core/Utilities/Logger.hpp>
 
 #include <glad/glad.h>
 

@@ -21,9 +21,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/graphics/API/gl/GLTextureArray.hpp>
-#include <quartz/core/graphics/API/gl/GLCommon.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLTextureArray.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
 
 #include <stb_image.h>
 

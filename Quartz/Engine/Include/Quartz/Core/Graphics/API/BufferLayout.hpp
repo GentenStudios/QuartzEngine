@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/graphics/API/GFXTypes.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Graphics/API/GFXTypes.hpp>
 
 #include <vector>
 #include <string>

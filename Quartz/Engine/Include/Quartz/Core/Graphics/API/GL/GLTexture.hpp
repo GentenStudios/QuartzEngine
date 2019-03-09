@@ -23,9 +23,9 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/graphics/API/gl/GLCommon.hpp>
-#include <quartz/core/graphics/API/ITexture.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
+#include <Quartz/Core/Graphics/API/ITexture.hpp>
 
 namespace qz
 {

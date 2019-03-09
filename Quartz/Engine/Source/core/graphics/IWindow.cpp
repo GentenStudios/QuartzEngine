@@ -21,9 +21,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/graphics/IWindow.hpp>
-#include <quartz/core/platform/GLWindow.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Graphics/IWindow.hpp>
+#include <Quartz/Core/Platform/GLWindow.hpp>
 
 using namespace qz::gfx;
 

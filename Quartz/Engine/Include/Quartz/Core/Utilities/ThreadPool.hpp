@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
+#include <Quartz/Core/Core.hpp>
 
 #include <thread>
 #include <mutex>

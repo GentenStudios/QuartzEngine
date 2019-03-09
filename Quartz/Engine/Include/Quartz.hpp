@@ -23,28 +23,29 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/utilities/Logger.hpp>
-#include <quartz/core/utilities/FileIO.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Core/Utilities/FileIO.hpp>
+#include <Quartz/Core/Utilities/Config.hpp>
 
-#include <quartz/core/Application.hpp>
-#include <quartz/core/EntryPoint.hpp>
+#include <Quartz/Core/Application.hpp>
+#include <Quartz/Core/EntryPoint.hpp>
 
-#include <quartz/core/events/Event.hpp>
-#include <quartz/core/events/ApplicationEvent.hpp>
-#include <quartz/core/events/KeyEvent.hpp>
-#include <quartz/core/events/MouseEvent.hpp>
-#include <quartz/core/events/EventEnums.hpp>
+#include <Quartz/Core/Events/Event.hpp>
+#include <Quartz/Core/Events/ApplicationEvent.hpp>
+#include <Quartz/Core/Events/KeyEvent.hpp>
+#include <Quartz/Core/Events/MouseEvent.hpp>
+#include <Quartz/Core/Events/EventEnums.hpp>
 
-#include <quartz/core/graphics/API/Context.hpp>
-#include <quartz/core/graphics/API/BufferLayout.hpp>
-#include <quartz/core/graphics/API/GFXTypes.hpp>
-#include <quartz/core/graphics/API/IBuffer.hpp>
-#include <quartz/core/graphics/API/IFramebuffer.hpp>
-#include <quartz/core/graphics/API/ITexture.hpp>
-#include <quartz/core/graphics/API/ITextureArray.hpp>
-#include <quartz/core/graphics/API/IShaderPipeline.hpp>
-#include <quartz/core/graphics/API/IStateManager.hpp>
+#include <Quartz/Core/Graphics/API/Context.hpp>
+#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
+#include <Quartz/Core/Graphics/API/GFXTypes.hpp>
+#include <Quartz/Core/Graphics/API/IBuffer.hpp>
+#include <Quartz/Core/Graphics/API/IFramebuffer.hpp>
+#include <Quartz/Core/Graphics/API/ITexture.hpp>
+#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
+#include <Quartz/Core/Graphics/API/IShaderPipeline.hpp>
+#include <Quartz/Core/Graphics/API/IStateManager.hpp>
 
-#include <quartz/core/graphics/IWindow.hpp>
-#include <quartz/core/graphics/Camera.hpp>
+#include <Quartz/Core/Graphics/IWindow.hpp>
+#include <Quartz/Core/Graphics/Camera.hpp>

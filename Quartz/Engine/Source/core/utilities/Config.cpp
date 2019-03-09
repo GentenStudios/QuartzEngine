@@ -21,9 +21,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/utilities/Config.hpp>
-#include <quartz/core/utilities/Logger.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Utilities/Config.hpp>
+#include <Quartz/Core/Utilities/Logger.hpp>
 
 #include <SDL.h>
 #include <fstream>

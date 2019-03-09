@@ -21,9 +21,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/math/Matrix4x4.hpp>
-#include <quartz/core/math/MathUtils.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Math/Matrix4x4.hpp>
+#include <Quartz/Core/Math/MathUtils.hpp>
 
 #define INDEX_2D(x, y) x + (y * 4)
 

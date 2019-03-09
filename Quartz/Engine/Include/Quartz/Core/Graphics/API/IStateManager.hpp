@@ -23,12 +23,12 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
+#include <Quartz/Core/Core.hpp>
 
-#include <quartz/core/graphics/API/GraphicsResource.hpp>
-#include <quartz/core/graphics/API/IBuffer.hpp>
-#include <quartz/core/graphics/API/BufferLayout.hpp>
-#include <quartz/core/graphics/API/IShaderPipeline.hpp>
+#include <Quartz/Core/Graphics/API/GraphicsResource.hpp>
+#include <Quartz/Core/Graphics/API/IBuffer.hpp>
+#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
+#include <Quartz/Core/Graphics/API/IShaderPipeline.hpp>
 
 namespace qz
 {

@@ -21,10 +21,10 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/graphics/API/ITexture.hpp>
-#include <quartz/core/graphics/API/Context.hpp>
-#include <quartz/core/graphics/API/gl/GLTexture.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Graphics/API/ITexture.hpp>
+#include <Quartz/Core/Graphics/API/Context.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLTexture.hpp>
 
 using namespace qz::gfx::api;
 

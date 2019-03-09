@@ -23,12 +23,12 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/utilities/Logger.hpp>
-#include <quartz/core/graphics/API/GFXTypes.hpp>
-#include <quartz/core/graphics/API/IBuffer.hpp>
-#include <quartz/core/graphics/API/IShaderPipeline.hpp>
-#include <quartz/core/graphics/API/ITexture.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Core/Graphics/API/GFXTypes.hpp>
+#include <Quartz/Core/Graphics/API/IBuffer.hpp>
+#include <Quartz/Core/Graphics/API/IShaderPipeline.hpp>
+#include <Quartz/Core/Graphics/API/ITexture.hpp>
 
 #include <glad/glad.h>
 

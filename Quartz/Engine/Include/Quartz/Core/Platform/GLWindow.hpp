@@ -23,10 +23,10 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/math/Math.hpp>
-#include <quartz/core/events/Event.hpp>
-#include <quartz/core/graphics/IWindow.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Math/Math.hpp>
+#include <Quartz/Core/Events/Event.hpp>
+#include <Quartz/Core/Graphics/IWindow.hpp>
 
 #include <vector>
 #include <functional>
@@ -34,7 +34,7 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
-#include <quartz/core/platform/SDLGuiLayer.hpp>
+#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
 
 namespace qz
 {

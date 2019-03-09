@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include <quartz/core/Core.hpp>
-#include <quartz/core/Application.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Application.hpp>
 
 using namespace qz;
 
