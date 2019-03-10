@@ -33,7 +33,7 @@ GraphicsResource<IShaderPipeline> IShaderPipeline::generateShaderPipeline()
 	switch (Context::getRenderingAPI())
 	{
 	case RenderingAPI::OPENGL:
-		return std::make_shared<gl::GLShaderPipeline>();
+		return GraphicsResource<IShaderPipeline>(new gl::GLShaderPipeline());
 
 	default:
 		return nullptr;
