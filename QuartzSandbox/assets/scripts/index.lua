@@ -1,6 +1,6 @@
 px_register_block("core:grass", {
 	displayname = "Grass",
-	type = BLOCK_SOLID,
+	type = BLOCK_AIR,
 	textures = {
 		"assets/textures/grass_side.png",
 		"assets/textures/grass_side.png",

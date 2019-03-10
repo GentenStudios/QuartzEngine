@@ -1,5 +1,5 @@
 add_subdirectory(Core)
-# add_subdirectory(Voxels)
+add_subdirectory(Voxels)
 
 set(coreHeaderSystem
 	${coreHeaders}

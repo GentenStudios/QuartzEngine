@@ -23,11 +23,9 @@
 
 #pragma once
 
-#include <quartz/core/utils/ThreadPool.hpp>
-
-#include <quartz/voxels/Block.hpp>
-#include <quartz/voxels/Chunk.hpp>
-#include <quartz/voxels/terrain/PerlinNoise.hpp>
+#include <Quartz/Core/Math/Math.hpp>
+#include <Quartz/Voxels/Block.hpp>
+#include <Quartz/Voxels/Chunk.hpp>
 
 namespace qz
 {

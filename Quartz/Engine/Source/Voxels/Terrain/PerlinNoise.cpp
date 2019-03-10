@@ -21,12 +21,14 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/voxels/terrain/PerlinNoise.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Voxels/Terrain/PerlinNoise.hpp>
+#include <Quartz/Core/Utilities/FileIO.hpp>
 
 #include <algorithm>
 #include <random>
 #include <numeric>
+#include <functional>
 
 using namespace qz::voxels;
 
@@ -54,6 +56,12 @@ PerlinNoise::PerlinNoise() :
 	}
 
 	m_p.insert(m_p.end(), m_p.begin(), m_p.end());
+
+	// need a better way to load the script
+	m_lua.Register("loadModel", [&](std::string filename){
+		this->m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/" + filename).c_str());
+	});
+	m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/PerlinNoise.lua").c_str());
 }
 
 PerlinNoise::PerlinNoise(unsigned int seed) :
@@ -66,11 +74,18 @@ PerlinNoise::PerlinNoise(unsigned int seed) :
 	std::default_random_engine engine(seed);
 	std::shuffle(m_p.begin(), m_p.end(), engine);
 	m_p.insert(m_p.end(), m_p.begin(), m_p.end());
+
+	// need a better way to load the script
+	m_lua.Register("loadModel", [&](std::string filename){
+		this->m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/" + filename).c_str());
+	});
+	m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/PerlinNoise.lua").c_str());
 }
 
 void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, qz::Vector3 chunkPos, int chunkSize)
 {
 	m_chunkSize = chunkSize;
+	const float smoothing = m_lua.Call<float>("getSmoothingFactor", chunkPos.x, chunkPos.y, chunkPos.z);
 
 	for (int x = 0; x < m_chunkSize; ++x)
 	{
@@ -97,13 +112,12 @@ void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, qz::Vector
 			for (int z = 0; z < m_chunkSize; ++z)
 			{
 				// Block Position with the smoothing factor applied to it.
-				// The division by 32 helps "decide" how smooth the generated terrain will be.
+				// The division by 'smoothing' helps "decide" how smooth the generated terrain will be.
 				const qz::Vector3 blockPosWithSmoothingApplied = { 
-					(static_cast<float>(x) + chunkPos.x) / 32.f,
-					(static_cast<float>(z) + chunkPos.z) / 32.f,
-					(static_cast<float>(0) + chunkPos.y) / 32.f
+					(static_cast<float>(x) + chunkPos.x) / smoothing,
+					(static_cast<float>(z) + chunkPos.z) / smoothing,
+					(static_cast<float>(0) + chunkPos.y) / smoothing
 				};
-
 				const float noise = at(blockPosWithSmoothingApplied);
 
 				const int newY = static_cast<int>(noise * m_chunkSize) % m_chunkSize;

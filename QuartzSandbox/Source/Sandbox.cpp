@@ -22,10 +22,15 @@
 // DAMAGE.
 
 #include <Sandbox/Sandbox.hpp>
+#include <Quartz.hpp>
+
+#include <Quartz/Voxels/ChunkManager.hpp>
+
+#include <luamod/luastate.h>
+#include <luamod/table.h>
 
 #include <glad/glad.h>
 #include <imgui/imgui.h>
-#include <chrono>
 
 using namespace sandbox;
 using namespace qz;
@@ -41,8 +46,45 @@ Sandbox::Sandbox()
 	m_appRequirements->logVerbosity = utils::LogVerbosity::DEBUG;
 }
 
+static void QuickSetupLuaBindingsCommon(lm::LuaState& state)
+{
+	using namespace voxels;
+	using namespace utils;
+
+	auto luaLog = [&](int verbosity, const char* msg) {
+		Logger::instance()->log((LogVerbosity)verbosity, "", 0, "", msg);
+	};
+
+	state.SetGlobal("DEBUG", (int)LogVerbosity::DEBUG);
+	state.SetGlobal("INFO", (int)LogVerbosity::INFO);
+	state.SetGlobal("WARNING", (int)LogVerbosity::WARNING);
+
+	state.SetGlobal("BLOCK_SOLID", (int)BlockType::SOLID);
+	state.SetGlobal("BLOCK_GAS", (int)BlockType::GAS);
+	state.SetGlobal("BLOCK_LIQUID", (int)BlockType::LIQUID);
+	state.SetGlobal("BLOCK_OBJECT", (int)BlockType::OBJECT);
+	state.SetGlobal("BLOCK_WATER", (int)BlockType::WATER);
+
+	state.Register("px_log", luaLog);
+
+	auto luaRegisterBlock = [&](std::string blockid, lm::Table blockInfo) {
+		std::string displayname = blockInfo.GetProperty<std::string>("displayname", "<unknownblockname>");
+		int blockType = blockInfo.GetProperty("type", (int)BlockType::SOLID);
+		lm::Array textures = blockInfo.GetProperty<lm::Array>("textures");
+		RegistryBlock block(blockid, displayname, 100, (BlockType)blockType);
+		block.setBlockTextures(textures.ToVector<std::string>());
+
+		BlockLibrary::get()->registerBlock(block);
+	};
+
+	state.Register("px_register_block", luaRegisterBlock);
+
+}
+
 void Sandbox::run()
 {
+	QZ_REGISTER_CONFIG("Controls");
+
 	gfx::IWindow* window = m_appData->window;
 
 	m_camera = new gfx::FPSCamera(window);
@@ -50,29 +92,25 @@ void Sandbox::run()
 	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
 
 	using namespace gfx::api;
+	using namespace voxels;
 
-	float vertices[] = {
-		-1.f, -1.f, -3.f,
-		1.f, -1.f, -3.f,
-		0.0f,  1.f, -3.f
-	};
+	lm::LuaState luaState;
+	QuickSetupLuaBindingsCommon(luaState);
+	luaState.RunFile("assets/scripts/index.lua");
 
-	auto state = IStateManager::generateStateManager();
-	auto buffer = IBuffer::generateBuffer(BufferTarget::ARRAY_BUFFER, BufferUsage::STATIC);
+	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
+
+	BlockLibrary::get()->init();
+	BlockLibrary::get()->registerBlock(air);
+
 	auto shader = IShaderPipeline::generateShaderPipeline();
-
-	buffer->setData(sizeof(vertices), vertices);
-
-	state->attachBuffer(buffer);
-
 	shader->addStage(ShaderType::VERTEX_SHADER, utils::FileIO::readAllFile("assets/shaders/main.vert"));
 	shader->addStage(ShaderType::FRAGMENT_SHADER, utils::FileIO::readAllFile("assets/shaders/main.frag"));
 	shader->build();
 
-	BufferLayout layout;
-	layout.registerAttribute("a_Pos", gfx::DataType::FLOAT, 3, 3 * sizeof(float), 0, false);
+	voxels::ChunkManager* world = new voxels::ChunkManager("core:air", 16, time(nullptr));
 
-	state->attachBufferLayout(layout, shader);
+	world->determineGeneration(m_camera->getPosition());
 
 	const Matrix4x4 model;
 
@@ -107,7 +145,7 @@ void Sandbox::run()
 		shader->setMat4("u_view", m_camera->calculateViewMatrix());
 		shader->setMat4("u_model", model);
 
-		state->render(0, 3);
+		world->render(10);  // should be in the settings (the chunks actualisation factor, here: 10 per frame)
 
 		ImGui::Begin("Debug Information");
 		ImGui::Text("FPS: %d", fpsCurrent);
@@ -116,6 +154,8 @@ void Sandbox::run()
 
 		window->endFrame();
 	}
+
+	delete world;
 }
 
 void Sandbox::onEvent(events::Event& event)

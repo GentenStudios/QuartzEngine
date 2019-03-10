@@ -51,6 +51,7 @@ namespace qz
 					void setOptions(TextureOptions options) override;
 
 					void add(const std::string& filepath) override;
+					void add(const TexCache& cache) override;
 
 					void reserve(const std::string& filepath) override;
 					void resolveReservations() override;

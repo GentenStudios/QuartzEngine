@@ -21,13 +21,14 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/voxels/ChunkManager.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Voxels/ChunkManager.hpp>
+#include <Quartz/Voxels/Terrain/PerlinNoise.hpp>
 
 #include <algorithm>
-#include <utility>
 
 using namespace qz::voxels;
+using namespace qz;
 
 const int VIEW_DISTANCE = 16; // 96 blocks, 6 chunks.
 

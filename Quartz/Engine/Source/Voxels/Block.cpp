@@ -21,11 +21,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/voxels/Block.hpp>
-#include <quartz/core/utils/Logging.hpp>
-
-#include <algorithm>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Voxels/Block.hpp>
+#include <Quartz/Core/Utilities/Logger.hpp>
 
 using namespace qz::voxels;
 
@@ -117,7 +115,7 @@ const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) cons
 	if (it == m_registeredBlocks.end())
 	{
 		LWARNING("The Block: ", blockID, " cannot be found, but is being requested. Using core:unknown block type instead. Please take action!");
-		return RegistryBlock("core:unknown", "Unknown Block", 1, BlockType::SOLID);
+		return m_registeredBlocks.at("core:unknown");
 	}
 
 	return it->second;

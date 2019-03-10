@@ -85,25 +85,23 @@ void GLStateManager::attachBuffer(GraphicsResource<IBuffer> buffer)
 	m_buffers.emplace_back(buffer);
 }
 
-void GLStateManager::attachBufferLayout(const BufferLayout& bufferLayout, GraphicsResource<IShaderPipeline> shader)
+void GLStateManager::attachBufferLayout(const BufferLayout& bufferLayout)
 {
 	bind();
 
 	m_buffers[0]->bind();
 
-	for (auto& shrek : bufferLayout.getLayouts())
+	for (auto& attribute : bufferLayout.getLayouts())
 	{
-		const int index = shader->retrieveAttributeLocation(shrek.name);
+		glVertexAttribPointer(attribute.index,
+			attribute.elementCount,
+			gfxToOpenGL(attribute.type),
+			attribute.normalised ? GL_TRUE : GL_FALSE,
+			attribute.countTillNextElement,
+			reinterpret_cast<void*>(attribute.offset));
 
-		glVertexAttribPointer(index, 
-			shrek.elementCount, 
-			gfxToOpenGL(shrek.type), 
-			shrek.normalised ? GL_TRUE : GL_FALSE, 
-			shrek.countTillNextElement, 
-			reinterpret_cast<void*>(shrek.offset));
-
-		glEnableVertexAttribArray(index);
-		}
+		glEnableVertexAttribArray(attribute.index);
+	}
 
 	unbind();
 }

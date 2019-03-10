@@ -28,6 +28,8 @@
 #include <Quartz/Core/Graphics/IWindow.hpp>
 #include <Quartz/Core/Events/ApplicationEvent.hpp>
 
+#include <cmath>
+
 namespace qz
 {
 	namespace gfx

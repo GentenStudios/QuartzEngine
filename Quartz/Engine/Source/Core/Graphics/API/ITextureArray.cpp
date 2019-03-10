@@ -27,6 +27,7 @@
 #include <Quartz/Core/Graphics/API/GL/GLTextureArray.hpp>
 
 using namespace qz::gfx::api;
+using namespace qz::gfx;
 
 GraphicsResource<ITextureArray> ITextureArray::generateTextureArray()
 {

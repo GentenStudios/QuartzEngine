@@ -23,8 +23,11 @@
 
 #pragma once
 
-#include <quartz/core/math/Vector3.hpp>
-#include <quartz/voxels/Block.hpp>
+#include <Quartz/Core/Math/Math.hpp>
+#include <Quartz/Voxels/Block.hpp>
+
+#include <luamod/luastate.h>
+#include <luamod/function.h>
 
 namespace qz
 {
@@ -44,6 +47,7 @@ namespace qz
 		private:
 			std::vector<int> m_p;
 			int m_chunkSize;
+			lm::LuaState m_lua;
 
 			float fade(float t) const;
 			float grad(int hash, float x, float y, float z) const;

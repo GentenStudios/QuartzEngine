@@ -26,17 +26,13 @@
 #include <vector>
 #include <mutex>
 
-#include <quartz/core/math/Vector2.hpp>
-#include <quartz/core/math/Vector3.hpp>
+#include <Quartz/Core/Math/Math.hpp>
 
-#include <quartz/voxels/Block.hpp>
+#include <Quartz/Voxels/Block.hpp>
 
-#include <quartz/core/graphics/gl/VertexBuffer.hpp>
-#include <quartz/core/graphics/gl/VertexArray.hpp>
-#include <quartz/core/graphics/gl/TextureArray.hpp>
-
-#include <quartz/core/utils/ThreadPool.hpp>
-#include <atomic>
+#include <Quartz/Core/Graphics/API/IStateManager.hpp>
+#include <Quartz/Core/Graphics/API/IBuffer.hpp>
+#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
 
 namespace qz
 {
@@ -131,12 +127,11 @@ namespace qz
 		private:
 			Mesh m_mesh;
 
-			gfx::gl::VertexArray* m_vao = nullptr;
-			gfx::gl::VertexBuffer* m_vbo = nullptr;
+			gfx::api::GraphicsResource<gfx::api::IStateManager> m_stateManager = nullptr;
+			gfx::api::GraphicsResource<gfx::api::IBuffer> m_buffer = nullptr;
 
-			gfx::gl::TextureArray* m_textureArray = nullptr;
-
-			gfx::gl::TexCache m_texReservations;
+			gfx::api::GraphicsResource<gfx::api::ITextureArray> m_textureArray = nullptr;
+			gfx::TexCache m_texReservations;
 
 			int m_currentLayer = 0;
 		};
@@ -152,7 +147,7 @@ namespace qz
 			Chunk(Chunk&& other);
 			Chunk& operator=(Chunk&& other);
 
-			Chunk(qz::Vector3 chunkPos, unsigned int chunkSize, const std::string& defaultBlockID);
+			Chunk(qz::Vector3 chunkPos, int chunkSize, const std::string& defaultBlockID);
 
 			~Chunk() = default;
 
@@ -178,8 +173,8 @@ namespace qz
 			void renderWater(int* counter);
 
 		private:
-			qz::Vector3 m_chunkPos;
-			unsigned int m_chunkSize;
+			Vector3 m_chunkPos;
+			int m_chunkSize;
 
 			ChunkMesh m_mesh;
 
@@ -187,13 +182,10 @@ namespace qz
 			ChunkRenderer m_objectRenderer;
 			ChunkRenderer m_waterRenderer;
 
-			std::atomic<unsigned int> m_chunkFlags;
+			unsigned int m_chunkFlags;
 
 			std::string m_defaultBlockID;
 			std::vector<BlockInstance> m_chunkBlocks;
-
-			std::mutex m_chunkMutex;
-			threads::ThreadPool<1> m_threadPool;
 
 			std::size_t getVectorIndex(std::size_t x, std::size_t y, std::size_t z) const
 			{

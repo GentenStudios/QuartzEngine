@@ -37,7 +37,7 @@ namespace qz
 		{
 			struct BufferAttribute
 			{
-				std::string name;
+				unsigned int index;
 
 				DataType type;
 
@@ -58,7 +58,7 @@ namespace qz
 				BufferLayout(BufferLayout&& other) = default;
 				BufferLayout& operator=(BufferLayout&& o) = default;
 
-				void registerAttribute(const std::string& name, DataType type, int count, int stride, std::size_t offset, bool normalised);
+				void registerAttribute(unsigned int index, DataType type, int count, int stride, std::size_t offset, bool normalized);
 				void registerAttribute(BufferAttribute attribute);
 
 				const std::vector<BufferAttribute>& getLayouts() const;

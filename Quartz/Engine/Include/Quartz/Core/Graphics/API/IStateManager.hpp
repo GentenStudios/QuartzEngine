@@ -48,7 +48,7 @@ namespace qz
 				virtual GraphicsResource<IBuffer> retrieveBuffer(unsigned int index = 0) = 0;
 
 				virtual void attachBuffer(GraphicsResource<IBuffer> buffer) = 0;
-				virtual void attachBufferLayout(const BufferLayout& bufferLayout, GraphicsResource<IShaderPipeline> shader) = 0;
+				virtual void attachBufferLayout(const BufferLayout& bufferLayout) = 0;
 
 				virtual void render(unsigned int start, unsigned int count) const = 0;
 			};
