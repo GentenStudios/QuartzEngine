@@ -14,6 +14,6 @@ source_group("Textures" FILES ${textures})
 
 add_custom_target(${PROJECT_NAME}
                    COMMAND ${CMAKE_COMMAND} -E copy_directory
-                   ${assetsPath} ${CMAKE_CURRENT_BINARY_DIR}/assets
+                   ${assetsPath} ${CMAKE_CURRENT_BINARY_DIR}
 				   SOURCES ${shaders} ${scripts} ${textures}
 )
