@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(quartz)
+project(Quartz)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/CMakePCHCompiler)
+set(CMAKE_CXX_STANDARD 11)
 
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+if(UNIX)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+endif()
 
-add_subdirectory(third_party)
-add_subdirectory(engine)
-add_subdirectory(sandbox)
+add_subdirectory(Quartz)
+add_subdirectory(QuartzSandbox)
