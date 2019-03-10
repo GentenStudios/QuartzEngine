@@ -26,15 +26,13 @@
 #include <vector>
 #include <mutex>
 
-#include <quartz/core/math/Math.hpp>
+#include <Quartz/Core/Math/Math.hpp>
 
-#include <quartz/voxels/Block.hpp>
+#include <Quartz/Voxels/Block.hpp>
 
-#include <quartz/core/graphics/API/IStateManager.hpp>
-#include <quartz/core/graphics/API/IBuffer.hpp>
-#include <quartz/core/graphics/API/ITextureArray.hpp>
-
-#include <atomic>
+#include <Quartz/Core/Graphics/API/IStateManager.hpp>
+#include <Quartz/Core/Graphics/API/IBuffer.hpp>
+#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
 
 namespace qz
 {

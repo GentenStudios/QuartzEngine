@@ -23,9 +23,9 @@
 
 #pragma once
 
-#include <quartz/core/math/Math.hpp>
-#include <quartz/voxels/Block.hpp>
-#include <quartz/voxels/Chunk.hpp>
+#include <Quartz/Core/Math/Math.hpp>
+#include <Quartz/Voxels/Block.hpp>
+#include <Quartz/Voxels/Chunk.hpp>
 
 namespace qz
 {

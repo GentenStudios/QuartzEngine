@@ -21,13 +21,13 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/voxels/terrain/PerlinNoise.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Voxels/Terrain/PerlinNoise.hpp>
+#include <Quartz/Core/Utilities/FileIO.hpp>
 
 #include <algorithm>
 #include <random>
 #include <numeric>
-#include <quartz/core/utilities/FileIO.hpp>
 #include <functional>
 #include <iostream>
 
@@ -86,7 +86,7 @@ PerlinNoise::PerlinNoise(unsigned int seed) :
 void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, qz::Vector3 chunkPos, int chunkSize)
 {
 	m_chunkSize = chunkSize;
-	float smoothing = m_lua.Call<float>("getSmoothingFactor", chunkPos.x, chunkPos.y, chunkPos.z);
+	const float smoothing = m_lua.Call<float>("getSmoothingFactor", chunkPos.x, chunkPos.y, chunkPos.z);
 
 	for (int x = 0; x < m_chunkSize; ++x)
 	{

@@ -23,8 +23,9 @@
 
 #pragma once
 
-#include <quartz/core/math/Math.hpp>
-#include <quartz/voxels/Block.hpp>
+#include <Quartz/Core/Math/Math.hpp>
+#include <Quartz/Voxels/Block.hpp>
+
 #include <luamod/luastate.h>
 #include <luamod/function.h>
 
