@@ -29,7 +29,6 @@
 #include <random>
 #include <numeric>
 #include <functional>
-#include <iostream>
 
 using namespace qz::voxels;
 

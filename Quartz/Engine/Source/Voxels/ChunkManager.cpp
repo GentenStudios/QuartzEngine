@@ -21,10 +21,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/core/graphics/API/IShaderPipeline.hpp>
-#include <quartz/voxels/ChunkManager.hpp>
-#include <quartz/voxels/terrain/PerlinNoise.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Voxels/ChunkManager.hpp>
+#include <Quartz/Voxels/Terrain/PerlinNoise.hpp>
 
 #include <algorithm>
 

@@ -21,12 +21,12 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <quartz/core/QuartzPCH.hpp>
-#include <quartz/voxels/Chunk.hpp>
-
-#include <quartz/core/graphics/API/BufferLayout.hpp>
-#include <quartz/voxels/terrain/PerlinNoise.hpp>
-#include "quartz/core/graphics/API/gl/GLCommon.hpp"
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Voxels/Chunk.hpp>
+		  
+#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
+#include <Quartz/Voxels/Terrain/PerlinNoise.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
 
 using namespace qz::voxels;
 using namespace qz;
