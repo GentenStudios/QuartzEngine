@@ -353,6 +353,8 @@ void ChunkRenderer::bufferData()
 		temp.emplace_back(m_mesh.vertices[i - 1], m_mesh.uvs[i - 1], m_mesh.texLayers[i - 1]);
 	}
 
+	LDEBUG("Mesh is using: ", sizeof(ChunkVert3D) * m_mesh.vertices.size());
+
 	m_buffer->bind();
 	m_buffer->setData(sizeof(ChunkVert3D) * temp.size(), static_cast<void*>(temp.data()));
 

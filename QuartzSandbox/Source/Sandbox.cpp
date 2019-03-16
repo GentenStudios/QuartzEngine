@@ -94,13 +94,14 @@ void Sandbox::run()
 	using namespace gfx::api;
 	using namespace voxels;
 
+	BlockLibrary::get()->init();
+
 	lm::LuaState luaState;
 	QuickSetupLuaBindingsCommon(luaState);
 	luaState.RunFile("assets/scripts/index.lua");
 
 	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
 
-	BlockLibrary::get()->init();
 	BlockLibrary::get()->registerBlock(air);
 
 	auto shader = IShaderPipeline::generateShaderPipeline();

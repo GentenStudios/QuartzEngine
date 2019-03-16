@@ -27,7 +27,7 @@
 
 using namespace qz::voxels;
 
-RegistryBlock::RegistryBlock(std::string blockID, std::string blockName, int initialHP, BlockType blockType)
+RegistryBlock::RegistryBlock(const std::string& blockID, const std::string& blockName, int initialHP, BlockType blockType)
 {
 	m_blockID = blockID;
 	m_blockName = blockName;
@@ -36,6 +36,12 @@ RegistryBlock::RegistryBlock(std::string blockID, std::string blockName, int ini
 }
 
 const std::string& RegistryBlock::getBlockID() const { return m_blockID; }
+
+int RegistryBlock::getRegistryID() const
+{
+	return m_registryID;
+}
+
 const std::string& RegistryBlock::getBlockName() const { return m_blockName; }
 BlockType RegistryBlock::getBlockType() const { return m_blockType; }
 
@@ -55,33 +61,44 @@ void RegistryBlock::setBreakCallback(const BlockCallback& callback) { m_onBreakC
 void RegistryBlock::setInteractLeftCallback(const InteractionCallback& callback) { m_interactLeftCallback = callback; }
 void RegistryBlock::setInteractRightCallback(const InteractionCallback& callback) { m_interactRightCallback = callback; }
 
-BlockInstance::BlockInstance() :
-	m_blockID("core:unknown")
+BlockInstance::BlockInstance()
 {
-	auto it = BlockLibrary::get()->requestBlock(m_blockID);
+	auto it = BlockLibrary::get()->requestBlock(0); // requests core:unknown.
 	m_hitpoints = it.getInitialHP();
 	m_blockType = it.getBlockType();
+	m_registryID = it.getRegistryID();
 }
 
-BlockInstance::BlockInstance(const std::string& blockID) :
-	m_blockID(blockID)
+BlockInstance::BlockInstance(const std::string& blockID)
 {
 	auto it = BlockLibrary::get()->requestBlock(blockID);
 	m_hitpoints = it.getInitialHP();
 	m_blockType = it.getBlockType();
-	m_blockName = it.getBlockName();
+	m_registryID = it.getRegistryID();
 }
 
-const std::string& BlockInstance::getBlockName() const { return m_blockName; }
-void BlockInstance::setBlockName(const std::string& name) { m_blockName = name; }
+BlockInstance::BlockInstance(int registryID)
+{
+	auto it = BlockLibrary::get()->requestBlock(registryID);
+	m_hitpoints = it.getInitialHP();
+	m_blockType = it.getBlockType();
+	m_registryID = it.getRegistryID();
+}
+
+const std::string& BlockInstance::getBlockName() const { return BlockLibrary::get()->requestBlock(m_registryID).getBlockName(); }
 
 unsigned int BlockInstance::getHitpoints() const { return m_hitpoints; }
 void BlockInstance::setHitpoints(unsigned int hitpoints) { m_hitpoints = hitpoints; }
 
-const std::string& BlockInstance::getBlockID() const { return m_blockID; }
+const std::string& BlockInstance::getBlockID() const { return BlockLibrary::get()->requestBlock(m_registryID).getBlockID(); }
 BlockType BlockInstance::getBlockType() const { return m_blockType; }
 
-const std::vector<std::string>& BlockInstance::getBlockTextures() const { return BlockLibrary::get()->requestBlock(m_blockID).getBlockTextures(); }
+const std::vector<std::string>& BlockInstance::getBlockTextures() const { return BlockLibrary::get()->requestBlock(m_registryID).getBlockTextures(); }
+
+int BlockInstance::getRegistryID() const
+{
+	return m_registryID;
+}
 
 BlockLibrary* BlockLibrary::get()
 {
@@ -91,27 +108,45 @@ BlockLibrary* BlockLibrary::get()
 
 void BlockLibrary::init()
 {
-	m_registeredBlocks.emplace("core:unknown", RegistryBlock{ "core:unknown", "Unkown Block", 1, BlockType::SOLID });
+	m_registeredBlocks.emplace("core:unknown", RegistryBlock{ "core:unknown", "Unknown Block", 1, BlockType::SOLID });
 	m_registeredBlocks.emplace("core:out_of_bounds", RegistryBlock{ "core:out_of_bounds", "Out Of Bounds Block", 1, BlockType::GAS });
+	m_registeredBlockAliases.emplace_back("core:unknown");
+	m_registeredBlockAliases.emplace_back("core:out_of_bounds");
 }
 
-void BlockLibrary::registerBlock(const RegistryBlock& block)
+void BlockLibrary::registerBlock(RegistryBlock block)
 {
-	const char* blockID = block.getBlockID().c_str();
-
-	if (m_registeredBlocks.find(blockID) != m_registeredBlocks.end())
+	if (m_registeredBlocks.find(block.getBlockName()) != m_registeredBlocks.end())
 	{
-		LWARNING("The Block: ", blockID, " has already been registered, please take action!");
+		LWARNING("The Block: ", block.getBlockName(), " has already been registered, please take action!");
 		return;
 	}
 
-	m_registeredBlocks.emplace(blockID, block);
+	block.m_registryID = m_registeredBlockAliases.size();
+	m_registeredBlockAliases.emplace_back(block.getBlockID());
+	m_registeredBlocks.emplace(block.getBlockID(), block);
+}
+
+const RegistryBlock& BlockLibrary::requestBlock(int registryID) const
+{
+	if (registryID == 0)
+		return m_registeredBlocks.at("core:unknown");
+	
+	if (registryID == 1)
+		return m_registeredBlocks.at("core:out_of_bounds");
+
+	if (static_cast<std::size_t>(registryID) >= m_registeredBlockAliases.size())
+	{
+		LWARNING("The Block: ", registryID, " cannot be found, but is being requested. Using core:unknown block type instead. Please take action!");
+		return m_registeredBlocks.at("core:unknown");
+	}
+
+	return m_registeredBlocks.at(m_registeredBlockAliases[registryID]);
 }
 
 const RegistryBlock& BlockLibrary::requestBlock(const std::string& blockID) const
 {
-	auto it = m_registeredBlocks.find(blockID);
-
+	const auto it = m_registeredBlocks.find(blockID);
 	if (it == m_registeredBlocks.end())
 	{
 		LWARNING("The Block: ", blockID, " cannot be found, but is being requested. Using core:unknown block type instead. Please take action!");
