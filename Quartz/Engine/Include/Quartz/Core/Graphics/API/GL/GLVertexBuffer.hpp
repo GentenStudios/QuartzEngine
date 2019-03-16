@@ -21,83 +21,33 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLBuffer.hpp>
+#pragma once
 
-using namespace qz::gfx::api::gl;
-using namespace qz::gfx::api;
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
+#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
 
-GLBuffer::GLBuffer(BufferTarget target, BufferUsage usage) :
-	m_target(gfxToOpenGL(target)), m_usage(gfxToOpenGL(usage))
+namespace qz
 {
-	GLCheck(glGenBuffers(1, &m_id));
-}
+	namespace gfx
+	{
+		namespace api
+		{
+			namespace gl
+			{
+				class QZ_API GLVertexBuffer 
+				{
+				public:
+					void create(BufferLayout layout);
+					void bind();
+					void bufferData(float* data, std::size_t sizebytes);
 
-GLBuffer::~GLBuffer()
-{
-	if (m_id != 0)
-		GLCheck(glDeleteBuffers(1, &m_id));
-}
+				private:
+					GLuint m_id;
+				};
+			}
 
-GLBuffer::GLBuffer(GLBuffer&& o) noexcept
-{
-	m_id = o.m_id;
-	o.m_id = 0;
-
-	m_size = o.m_size;
-	m_target = o.m_target;
-	m_usage = o.m_usage;
-}
-
-GLBuffer& GLBuffer::operator=(GLBuffer&& o) noexcept
-{
-	m_id = o.m_id;
-	o.m_id = 0;
-
-	m_size = o.m_size;
-	m_target = o.m_target;
-	m_usage = o.m_usage;
-
-	return *this;
-}
-
-void GLBuffer::bind()
-{
-	GLCheck(glBindBuffer(m_target, m_id));
-}
-
-void GLBuffer::unbind()
-{
-	GLCheck(glBindBuffer(m_target, 0));
-}
-
-void GLBuffer::resize(unsigned int size)
-{
-	bind();
-
-	GLCheck(glBufferData(m_target, size, nullptr, m_usage));
-	m_size = size;
-}
-
-void GLBuffer::setData(unsigned int size, const void* data)
-{
-	bind();
-	
-	GLCheck(glBufferData(m_target, size, data, m_usage));
-	m_size = size;
-}
-
-void GLBuffer::releaseDataPointer()
-{
-	bind();
-
-	GLCheck(glUnmapBuffer(m_target))
-}
-
-void* GLBuffer::retrievePointerInternal()
-{
-	bind();
-
-	return GLCheck(glMapBuffer(m_target, GL_WRITE_ONLY));
+		}
+	}
 }
 

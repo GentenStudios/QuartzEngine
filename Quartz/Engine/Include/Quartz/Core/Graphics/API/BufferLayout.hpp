@@ -35,16 +35,20 @@ namespace qz
 	{
 		namespace api
 		{
+			struct AttributeType {
+				int numComponents;
+
+				AttributeType(int numComponents) : numComponents(numComponents) {}
+
+				static const AttributeType Vec2;
+				static const AttributeType Vec3;
+				static const AttributeType Vec4;
+			};
+
 			struct BufferAttribute
 			{
-				unsigned int index;
-
-				DataType type;
-
-				int elementCount;
-				int countTillNextElement;
-				std::size_t offset;
-				bool normalised;
+				AttributeType type;
+				bool normalized;
 			};
 
 			class QZ_API BufferLayout
@@ -58,8 +62,7 @@ namespace qz
 				BufferLayout(BufferLayout&& other) = default;
 				BufferLayout& operator=(BufferLayout&& o) = default;
 
-				void registerAttribute(unsigned int index, DataType type, int count, int stride, std::size_t offset, bool normalized);
-				void registerAttribute(BufferAttribute attribute);
+				BufferLayout& registerAttribute(AttributeType type, bool normalized);
 
 				const std::vector<BufferAttribute>& getLayouts() const;
 

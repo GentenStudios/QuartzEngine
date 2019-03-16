@@ -27,14 +27,15 @@
 using namespace qz::gfx::api;
 using namespace qz::gfx;
 
-void BufferLayout::registerAttribute(unsigned int index, DataType type, int count, int stride, std::size_t offset, bool normalised)
-{
-	m_bufferLayout.push_back({ index, type, count, stride, offset, normalised });
-}
+const AttributeType AttributeType::Vec3(2);
+const AttributeType AttributeType::Vec3(3);
+const AttributeType AttributeType::Vec3(4);
 
-void BufferLayout::registerAttribute(BufferAttribute attribute)
+BufferLayout& BufferLayout::registerAttribute(AttributeType type, bool normalized)
 {
-	m_bufferLayout.emplace_back(attribute);
+	m_bufferLayout.push_back({ type, normalized });
+
+	return *this;
 }
 
 const std::vector<BufferAttribute>& BufferLayout::getLayouts() const

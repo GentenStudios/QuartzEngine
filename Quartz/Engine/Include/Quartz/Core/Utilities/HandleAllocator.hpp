@@ -21,45 +21,45 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
+#pragma once
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_sdl.h>
-#include <imgui/imgui_impl_opengl3.h>
+#include <cstdint>
+#include <cstddef>
 
-using namespace qz::gfx;
+namespace qz {
+	namespace utils {
+		class Handle {
+		public:
+			void set(std::uint16_t value) { m_handle = value; }
+			std::uint16_t get() const { return m_handle; }
 
-void SDLGuiLayer::init(SDL_Window* window, SDL_GLContext* context)
-{
-	m_window = window;
-	m_context = context;
+		private:
+			std::uint16_t m_handle;	
+		};
+		
+		template <std::uint16_t TMaxNumHandles, typename THandleType>
+		class HandleAllocator {
+		public:
+			HandleAllocator()
+				: m_size(0) {}
 
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
+			THandleType allocate()
+			{
+				THandleType& handle = m_handles[m_size];
+				handle.set(m_size);
 
-	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+				m_size++;
 
-	ImGui_ImplSDL2_InitForOpenGL(window, context); 
-	ImGui_ImplOpenGL3_Init("#version 330 core");
+				return handle;
+			}
+
+			void free(THandleType handle)
+			{
+			}
+
+		private:
+			THandleType m_handles[TMaxNumHandles];
+			std::uint16_t m_size;
+		};
+	}
 }
-
-void SDLGuiLayer::startFrame()
-{
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_window);
-	ImGui::NewFrame();
-}
-
-void SDLGuiLayer::endFrame()
-{
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
-
-void SDLGuiLayer::pollEvents(SDL_Event* event)
-{
-	ImGui_ImplSDL2_ProcessEvent(event);
-}
-

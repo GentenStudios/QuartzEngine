@@ -21,45 +21,24 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLVertexBuffer.hpp>
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_sdl.h>
-#include <imgui/imgui_impl_opengl3.h>
+using namespace qz::gfx::api::gl;
+using namespace qz::gfx::api;
 
-using namespace qz::gfx;
-
-void SDLGuiLayer::init(SDL_Window* window, SDL_GLContext* context)
+void GLVertexBuffer::create()
 {
-	m_window = window;
-	m_context = context;
-
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-
-	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
-	ImGui_ImplSDL2_InitForOpenGL(window, context); 
-	ImGui_ImplOpenGL3_Init("#version 330 core");
+	glGenBuffers(1, &m_id);
 }
 
-void SDLGuiLayer::startFrame()
+void GLVertexBuffer::bind()
 {
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_window);
-	ImGui::NewFrame();
+	glBindBuffer(GL_ARRAY_BUFFER, m_id);
 }
 
-void SDLGuiLayer::endFrame()
+void GLVertexBuffer::bufferData(float* data, std::size_t sizebytes)
 {
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	glBindBuffer(GL_ARRAY_BUFFER, m_id);
+	glBufferData(GL_ARRAY_BUFFER, sizebytes, data, GL_STATIC_DRAW);
 }
-
-void SDLGuiLayer::pollEvents(SDL_Event* event)
-{
-	ImGui_ImplSDL2_ProcessEvent(event);
-}
-

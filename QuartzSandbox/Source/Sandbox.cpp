@@ -1,4 +1,4 @@
-// Copyright 2019 Genten Studios
+
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
 // following conditions are met:
@@ -23,14 +23,8 @@
 
 #include <Sandbox/Sandbox.hpp>
 #include <Quartz.hpp>
-
-#include <Quartz/Voxels/ChunkManager.hpp>
-
-#include <luamod/luastate.h>
-#include <luamod/table.h>
-
-#include <glad/glad.h>
-#include <imgui/imgui.h>
+#include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLRenderDevice.hpp>
 
 using namespace sandbox;
 using namespace qz;
@@ -46,116 +40,37 @@ Sandbox::Sandbox()
 	m_appRequirements->logVerbosity = utils::LogVerbosity::DEBUG;
 }
 
-static void QuickSetupLuaBindingsCommon(lm::LuaState& state)
-{
-	using namespace voxels;
-	using namespace utils;
-
-	auto luaLog = [&](int verbosity, const char* msg) {
-		Logger::instance()->log((LogVerbosity)verbosity, "", 0, "", msg);
-	};
-
-	state.SetGlobal("DEBUG", (int)LogVerbosity::DEBUG);
-	state.SetGlobal("INFO", (int)LogVerbosity::INFO);
-	state.SetGlobal("WARNING", (int)LogVerbosity::WARNING);
-
-	state.SetGlobal("BLOCK_SOLID", (int)BlockType::SOLID);
-	state.SetGlobal("BLOCK_GAS", (int)BlockType::GAS);
-	state.SetGlobal("BLOCK_LIQUID", (int)BlockType::LIQUID);
-	state.SetGlobal("BLOCK_OBJECT", (int)BlockType::OBJECT);
-	state.SetGlobal("BLOCK_WATER", (int)BlockType::WATER);
-
-	state.Register("px_log", luaLog);
-
-	auto luaRegisterBlock = [&](std::string blockid, lm::Table blockInfo) {
-		std::string displayname = blockInfo.GetProperty<std::string>("displayname", "<unknownblockname>");
-		int blockType = blockInfo.GetProperty("type", (int)BlockType::SOLID);
-		lm::Array textures = blockInfo.GetProperty<lm::Array>("textures");
-		RegistryBlock block(blockid, displayname, 100, (BlockType)blockType);
-		block.setBlockTextures(textures.ToVector<std::string>());
-
-		BlockLibrary::get()->registerBlock(block);
-	};
-
-	state.Register("px_register_block", luaRegisterBlock);
-
-}
-
 void Sandbox::run()
 {
+	using namespace gfx::api;
+	using namespace gfx::api::gl;
+
 	QZ_REGISTER_CONFIG("Controls");
 
 	gfx::IWindow* window = m_appData->window;
 
-	m_camera = new gfx::FPSCamera(window);
+	IRenderDevice* renderDevice = new GLRenderDevice();
 
-	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
+	float vertices[] = {
+		// positions         // colors
+		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
+		 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+	};
 
-	using namespace gfx::api;
-	using namespace voxels;
+	BufferLayout layout;
+	layout.registerAttribute(AttributeType::Vec3, false);
+	layout.registerAttribute(AttributeType::Vec3, false);
 
-	lm::LuaState luaState;
-	QuickSetupLuaBindingsCommon(luaState);
-	luaState.RunFile("assets/scripts/index.lua");
+	VertexBufferHandle vbo = renderDevice->createVertexBuffer(layout);
 
-	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
-
-	BlockLibrary::get()->init();
-	BlockLibrary::get()->registerBlock(air);
-
-	auto shader = IShaderPipeline::generateShaderPipeline();
-	shader->addStage(ShaderType::VERTEX_SHADER, utils::FileIO::readAllFile("assets/shaders/main.vert"));
-	shader->addStage(ShaderType::FRAGMENT_SHADER, utils::FileIO::readAllFile("assets/shaders/main.frag"));
-	shader->build();
-
-	voxels::ChunkManager* world = new voxels::ChunkManager("core:air", 16, time(nullptr));
-
-	world->determineGeneration(m_camera->getPosition());
-
-	const Matrix4x4 model;
-
-	std::size_t fpsLastTime = SDL_GetTicks();
-	int fpsCurrent = 0; // the current FPS.
-	int fpsFrames = 0; // frames passed since the last recorded fps.
-
-	float last = static_cast<float>(SDL_GetTicks());
 	while (window->isRunning())
 	{
 		window->startFrame();
-
-		fpsFrames++;
-		if (fpsLastTime < SDL_GetTicks() - 1000)
-		{
-			fpsLastTime = SDL_GetTicks();
-			fpsCurrent = fpsFrames;
-			fpsFrames = 0;
-		}
-
-		const float now = static_cast<float>(SDL_GetTicks());
-		const float dt = now - last;
-		last = now;
-
-		m_camera->tick(dt);
-
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
-
-		shader->use();
-		shader->setMat4("u_projection", m_camera->getProjection());
-		shader->setMat4("u_view", m_camera->calculateViewMatrix());
-		shader->setMat4("u_model", model);
-
-		world->render(10);  // should be in the settings (the chunks actualisation factor, here: 10 per frame)
-
-		ImGui::Begin("Debug Information");
-		ImGui::Text("FPS: %d", fpsCurrent);
-		ImGui::Text("Frame Time: %f ms", dt);
-		ImGui::End();
-
+		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		window->endFrame();
 	}
-
-	delete world;
 }
 
 void Sandbox::onEvent(events::Event& event)

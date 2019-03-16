@@ -21,45 +21,29 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
+#pragma once
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_sdl.h>
-#include <imgui/imgui_impl_opengl3.h>
+#include <Quartz/Core/Utilities/HandleAllocator.hpp>
+#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
 
-using namespace qz::gfx;
+#define DEFINE_HANDLE(Name) \
+		struct Name : public utils::Handle { }
 
-void SDLGuiLayer::init(SDL_Window* window, SDL_GLContext* context)
-{
-	m_window = window;
-	m_context = context;
+namespace qz {
+	namespace gfx {
+		namespace api {
+			DEFINE_HANDLE(VertexBufferHandle);
 
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-
-	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-
-	ImGui_ImplSDL2_InitForOpenGL(window, context); 
-	ImGui_ImplOpenGL3_Init("#version 330 core");
+			class IRenderDevice {
+			public:
+				virtual void create() = 0;
+				virtual VertexBufferHandle createVertexBuffer(BufferLayout layout) = 0;
+				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
+				virtual void drawArrays(std::size_t first, std::size_t count) = 0;
+				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
+			};
+		}
+	}
 }
 
-void SDLGuiLayer::startFrame()
-{
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_window);
-	ImGui::NewFrame();
-}
-
-void SDLGuiLayer::endFrame()
-{
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
-
-void SDLGuiLayer::pollEvents(SDL_Event* event)
-{
-	ImGui_ImplSDL2_ProcessEvent(event);
-}
-
+#undef DEFINE_HANDLE

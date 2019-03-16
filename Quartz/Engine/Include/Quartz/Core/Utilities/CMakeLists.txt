@@ -5,6 +5,7 @@ set(utilityHeaders
 	${currentDir}/FileIO.hpp
 	${currentDir}/Config.hpp
 	${currentDir}/ThreadPool.hpp
+	${currentDir}/HandleAllocator.hpp
 	
 	PARENT_SCOPE
 )

@@ -23,52 +23,37 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
+#include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
+#include <Quartz/Core/Utilities/HandleAllocator.hpp>
+#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
 
-namespace qz
-{
-	namespace gfx
+#include <Quartz/Core/Graphics/API/GL/GLVertexBuffer.hpp>
+
+namespace qz { namespace gfx { namespace api { namespace gl {
+	struct VertexStream {
+		VertexBufferHandle buffer;
+		int stride, offset;
+		bool active = false;
+	};
+
+	class GLRenderDevice : public IRenderDevice
 	{
-		namespace api
-		{
-			namespace gl
-			{
-				class QZ_API GLBuffer : public IBuffer
-				{
-				public:
-					GLBuffer(BufferTarget target, BufferUsage usage);
+	private:
+		GLuint m_vao;
 
-					~GLBuffer();
+	private:
+		utils::HandleAllocator<32, VertexBufferHandle> m_vertexBufferHandles;
+		GLVertexBuffer                                 m_vertexBuffers[32];
 
-					GLBuffer(const GLBuffer& o) = default;
-					GLBuffer& operator=(const GLBuffer& o) = default;
+		static constexpr int NUM_STREAMS = 32;
+		VertexStream m_vertexStreams[NUM_STREAMS];
 
-					GLBuffer(GLBuffer&& o) noexcept;
-					GLBuffer& operator=(GLBuffer&& o) noexcept;
+	public:
+		virtual void create();
+		virtual VertexBufferHandle createVertexBuffer(BufferLayout layout);
+		virtual void drawArrays(std::size_t first, std::size_t count);
+		virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset);
 
-					void bind() override;
-					void unbind() override;
-
-					void resize(unsigned int size) override;
-					void setData(unsigned int size, const void* data) override;
-
-					void releaseDataPointer() override;
-
-				protected:
-					void* retrievePointerInternal() override;
-
-				private:
-					unsigned int m_id = 0;
-					unsigned int m_size = 0;
-
-					GLenum m_target;
-					GLenum m_usage;
-				};
-			}
-
-		}
-	}
-}
-
+		virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
+	};
+}}}}
