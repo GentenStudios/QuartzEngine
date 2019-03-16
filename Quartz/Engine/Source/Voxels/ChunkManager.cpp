@@ -83,7 +83,7 @@ void ChunkManager::determineGeneration(qz::Vector3 cameraPosition)
 				if (result == m_chunks.end())
 				{
 					m_chunks.emplace_back(chunkToCheck, m_chunkSize, m_defaultBlockID);
-					m_chunks.back().populateData(m_seed);
+					m_chunks.back().generateTerrain(m_seed);
 				}
 			}
 		}
@@ -92,12 +92,16 @@ void ChunkManager::determineGeneration(qz::Vector3 cameraPosition)
 
 void ChunkManager::testGeneration()
 {
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
-		qz::Vector3 pain = { i * 16.f, 0, 0 };
+		for (int j = 0; j < 3; ++j)
+		{
+			qz::Vector3 pain = { i * 16.f, 0.f, j * 16.f };
 
-		m_chunks.emplace_back(pain, m_chunkSize, m_defaultBlockID);
-		m_chunks.back().populateData(m_seed);
+			m_chunks.emplace_back(pain, m_chunkSize, m_defaultBlockID);
+			m_chunks.back().generateTerrain(m_seed);
+		}
+
 	}
 }
 
@@ -310,4 +314,3 @@ void ChunkManager::render(int bufferCounter)
 		chunk.renderBlocks(&count1);
 	}
 }
-

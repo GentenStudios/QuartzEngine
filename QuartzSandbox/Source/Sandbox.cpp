@@ -23,14 +23,14 @@
 
 #include <Sandbox/Sandbox.hpp>
 #include <Quartz.hpp>
-
 #include <Quartz/Voxels/ChunkManager.hpp>
 
 #include <luamod/luastate.h>
 #include <luamod/table.h>
-
 #include <glad/glad.h>
 #include <imgui/imgui.h>
+
+#include <ctime>
 
 using namespace sandbox;
 using namespace qz;
@@ -78,11 +78,13 @@ static void QuickSetupLuaBindingsCommon(lm::LuaState& state)
 	};
 
 	state.Register("px_register_block", luaRegisterBlock);
-
 }
 
 void Sandbox::run()
 {
+	LDEBUG("Size of a single Block Instance: ", sizeof(qz::voxels::BlockInstance));
+	LDEBUG("Size of 4096 Block Instances: ", sizeof(qz::voxels::BlockInstance) * 4096);
+
 	QZ_REGISTER_CONFIG("Controls");
 
 	gfx::IWindow* window = m_appData->window;
@@ -111,7 +113,7 @@ void Sandbox::run()
 
 	voxels::ChunkManager* world = new voxels::ChunkManager("core:air", 16, time(nullptr));
 
-	world->determineGeneration(m_camera->getPosition());
+	world->testGeneration();
 
 	const Matrix4x4 model;
 
@@ -146,7 +148,7 @@ void Sandbox::run()
 		shader->setMat4("u_view", m_camera->calculateViewMatrix());
 		shader->setMat4("u_model", model);
 
-		world->render(10);  // should be in the settings (the chunks actualisation factor, here: 10 per frame)
+		world->render(10);  // should be in the settings (the chunks actualization factor, here: 10 per frame)
 
 		ImGui::Begin("Debug Information");
 		ImGui::Text("FPS: %d", fpsCurrent);

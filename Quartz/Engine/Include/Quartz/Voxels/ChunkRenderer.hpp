@@ -23,34 +23,37 @@
 
 #pragma once
 
-#include <Quartz/Core/Math/Math.hpp>
-#include <Quartz/Voxels/Block.hpp>
-
-#include <luamod/luastate.h>
-#include <luamod/function.h>
+#include <Quartz/Core/Graphics/API/IStateManager.hpp>
+#include <Quartz/Core/Graphics/API/IBuffer.hpp>
+#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
 
 namespace qz
 {
 	namespace voxels
 	{
-		class PerlinNoise
+		struct ChunkMesh;
+
+		class ChunkRenderer
 		{
 		public:
-			PerlinNoise();
-			PerlinNoise(unsigned int seed);
-			~PerlinNoise() = default;
+			ChunkRenderer() = default;
+			~ChunkRenderer() = default;
 
-			void generateFor(std::vector<BlockInstance>& blockArray, qz::Vector3 chunkPos);
-			float at(qz::Vector3 pos) const;
-			float atOctave(qz::Vector3 pos, int octaves, float persitance) const;
+			ChunkRenderer(const ChunkRenderer& other);
+			ChunkRenderer& operator=(const ChunkRenderer& other);
+
+			ChunkRenderer(ChunkRenderer&& other) noexcept;
+			ChunkRenderer& operator=(ChunkRenderer&& other) noexcept;
+
+			void updateMesh(const ChunkMesh& mesh, int* bufferCounter);
+			void render() const;
 
 		private:
-			std::vector<int> m_p;
-			lm::LuaState m_lua;
+			std::size_t m_verticesToDraw = 0;
 
-			float fade(float t) const;
-			float grad(int hash, float x, float y, float z) const;
-			float lerp(float t, float a, float b) const;
+			gfx::api::GraphicsResource<gfx::api::IStateManager> m_stateManager = nullptr;
+			gfx::api::GraphicsResource<gfx::api::IBuffer> m_buffer = nullptr;
+			gfx::api::GraphicsResource<gfx::api::ITextureArray> m_textureArray = nullptr;
 		};
 	}
 }
