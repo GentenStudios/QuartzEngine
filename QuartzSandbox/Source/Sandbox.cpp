@@ -82,9 +82,6 @@ static void QuickSetupLuaBindingsCommon(lm::LuaState& state)
 
 void Sandbox::run()
 {
-	LDEBUG("Size of a single Block Instance: ", sizeof(qz::voxels::BlockInstance));
-	LDEBUG("Size of 4096 Block Instances: ", sizeof(qz::voxels::BlockInstance) * 4096);
-
 	QZ_REGISTER_CONFIG("Controls");
 
 	gfx::IWindow* window = m_appData->window;

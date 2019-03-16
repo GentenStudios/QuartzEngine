@@ -22,6 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Utilities/Logger.hpp>
 #include <Quartz/Core/Graphics/API/BufferLayout.hpp>
 #include <Quartz/Voxels/Chunk.hpp>
 #include <Quartz/Voxels/ChunkBlockVerts.hpp>
@@ -223,8 +224,8 @@ void Chunk::renderBlocks(int* bufferCounter)
 {
 	if (m_hasBeenMeshed)
 	{
-		m_renderer.updateMesh(m_mesh, bufferCounter);
-		m_hasBeenMeshed = false;
+		if (m_renderer.updateMesh(m_mesh, bufferCounter))
+			m_hasBeenMeshed = false;
 	}
 
 	m_renderer.render();

@@ -45,7 +45,7 @@ namespace qz
 			ChunkRenderer(ChunkRenderer&& other) noexcept;
 			ChunkRenderer& operator=(ChunkRenderer&& other) noexcept;
 
-			void updateMesh(const ChunkMesh& mesh, int* bufferCounter);
+			bool updateMesh(const ChunkMesh& mesh, int* bufferCounter);
 			void render() const;
 
 		private:

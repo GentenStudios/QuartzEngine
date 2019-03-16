@@ -305,7 +305,7 @@ void ChunkManager::placeBlockAt(qz::Vector3 position, const BlockInstance& block
 	}
 }
 
-void ChunkManager::render(int bufferCounter)
+void ChunkManager::render(const int bufferCounter)
 {
 	int count1 = bufferCounter;
 

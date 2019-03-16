@@ -76,18 +76,18 @@ ChunkRenderer& ChunkRenderer::operator=(ChunkRenderer&& other) noexcept
 	return *this;
 }
 
-void ChunkRenderer::updateMesh(const ChunkMesh& mesh, int* bufferCounter)
+bool ChunkRenderer::updateMesh(const ChunkMesh& mesh, int* bufferCounter)
 {
+	if ((*bufferCounter) < 2)
+		return false;
+	
 	{
-		if ((*bufferCounter) == 0)
-			return;
-
 		--(*bufferCounter);
 
 		m_verticesToDraw = mesh.vertices.size();
 
 		if (m_verticesToDraw == 0)
-			return;
+			return true;
 
 		if (m_stateManager == nullptr)
 			m_stateManager = gfx::api::IStateManager::generateStateManager();
@@ -123,17 +123,17 @@ void ChunkRenderer::updateMesh(const ChunkMesh& mesh, int* bufferCounter)
 	}
 
 	{
-		if ((*bufferCounter) == 0)
-			return;
-
-		--(*bufferCounter);
-
 		if (m_textureArray == nullptr)
 			m_textureArray = gfx::api::ITextureArray::generateTextureArray();
 
 		if (mesh.textureCache != m_textureArray->getTextureList())
+		{
+			--(*bufferCounter);
 			m_textureArray->add(mesh.textureCache);
+		}
 	}
+
+	return true;
 }
 
 void ChunkRenderer::render() const
