@@ -21,50 +21,55 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/Utilities/Threading/ThreadPool.hpp>
 
-#include <Quartz/Core/Graphics/API/IStateManager.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
+using namespace qz::utils::threading;
 
-namespace qz
+ThreadPool::ThreadPool(const int threadCount)
 {
-	namespace voxels
+	for (std::size_t i = 0; i < threadCount; ++i)
 	{
-		struct ChunkMesh;
-		struct ChunkVert3D
+		m_threads.emplace_back(&ThreadPool::threadHandle, this);
+	}
+}
+
+ThreadPool::~ThreadPool()
+{
+	m_running = false;
+	m_condition.notify_all();
+
+	for (std::thread& taskWorker : m_threads)
+		taskWorker.join();
+}
+
+void ThreadPool::addWork(std::function<void()> fun)
+{
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_scheduledTasks.emplace_back(fun);
+	}
+
+	m_condition.notify_one();
+}
+
+void ThreadPool::threadHandle()
+{
+	while (true)
+	{
+		std::function<void()> task;
+
 		{
-			qz::Vector3 verts;
-			qz::Vector2 uvs;
+			std::unique_lock<std::mutex> lock(m_mutex);
 
-			int texLayer;
+			m_condition.wait(lock, [this]() { return !m_running || !m_scheduledTasks.empty(); });
 
-			ChunkVert3D(const qz::Vector3& vertices, const qz::Vector2& UVs, const int textureLayer) :
-				verts(vertices), uvs(UVs), texLayer(textureLayer)
-			{}
-		};
+			if (!m_running && m_scheduledTasks.empty())
+				return;
 
-		class ChunkRenderer
-		{
-		public:
-			ChunkRenderer() = default;
-			~ChunkRenderer() = default;
+			task = m_scheduledTasks.front();
+			m_scheduledTasks.pop_front();
+		}
 
-			ChunkRenderer(const ChunkRenderer& other);
-			ChunkRenderer& operator=(const ChunkRenderer& other);
-
-			ChunkRenderer(ChunkRenderer&& other) noexcept;
-			ChunkRenderer& operator=(ChunkRenderer&& other) noexcept;
-
-			bool updateMesh(const ChunkMesh& mesh, int* bufferCounter);
-			void render() const;
-
-		private:
-			std::size_t m_verticesToDraw = 0;
-
-			gfx::api::GraphicsResource<gfx::api::IStateManager> m_stateManager = nullptr;
-			gfx::api::GraphicsResource<gfx::api::IBuffer> m_buffer = nullptr;
-			gfx::api::GraphicsResource<gfx::api::ITextureArray> m_textureArray = nullptr;
-		};
+		task();
 	}
 }

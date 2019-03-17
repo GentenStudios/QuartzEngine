@@ -33,19 +33,13 @@ using namespace qz;
 
 void ChunkMesh::reset()
 {
-	vertices.clear();
-	vertices.shrink_to_fit();
-
-	uvs.clear();
-	uvs.shrink_to_fit();
-
-	texLayers.clear();
-	texLayers.shrink_to_fit();
+	verts.clear();
+	verts.shrink_to_fit();
 }
 
 std::size_t ChunkMesh::triangleCount() const
 {
-	return vertices.size() / 3;
+	return verts.size() / 3;
 }
 
 Chunk::Chunk(const Chunk& other) : m_needsMeshing(false)
@@ -232,7 +226,7 @@ void Chunk::renderBlocks(int* bufferCounter)
 
 	if (m_needsMeshing)
 	{
-		buildMesh();
+		m_worker.addWork(std::bind(&Chunk::buildMesh, this));
 		m_needsMeshing = false;
 	}
 }
@@ -269,9 +263,7 @@ void Chunk::addBlockFace(BlockFace face, qz::Vector3 blockPos, const BlockInstan
 
 			qz::Vector2 cubeUVs = CUBE_UV[(static_cast<int>(face) * NUM_FACES_IN_CUBE) + i];
 
-			m_mesh.vertices.push_back(blockVertices);
-			m_mesh.uvs.push_back(cubeUVs);
-			m_mesh.texLayers.push_back(texLayer);
+			m_mesh.verts.emplace_back(blockVertices, cubeUVs, texLayer);
 		}
 	}
 }

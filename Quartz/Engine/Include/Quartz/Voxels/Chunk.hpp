@@ -26,6 +26,7 @@
 #include <Quartz/Core/Math/Math.hpp>
 #include <Quartz/Voxels/Block.hpp>
 #include <Quartz/Voxels/ChunkRenderer.hpp>
+#include <Quartz/Core/Utilities/Threading/SingleWorker.hpp>
 
 #include <vector>
 
@@ -45,18 +46,15 @@ namespace qz
 
 		struct ChunkMesh
 		{
-			std::vector<qz::Vector3> vertices;
-			std::vector<qz::Vector3> normals;
-			std::vector<qz::Vector2> uvs;
-			std::vector<int> texLayers;
+			std::vector<ChunkVert3D> verts;
 
 			gfx::TexCache textureCache;
-			std::size_t currentTexLayer;
+			std::size_t currentTexLayer = 0;
 
 			void reset();
 			std::size_t triangleCount() const;
 
-			ChunkMesh() : currentTexLayer(0) {}
+			ChunkMesh() = default;
 		};
 
 		class Chunk
@@ -98,12 +96,13 @@ namespace qz
 			bool m_needsMeshing = false;
 			bool m_hasBeenMeshed = false;
 
-			ChunkMesh m_mesh;
-
 			std::string m_defaultBlockID;
 			std::vector<BlockInstance> m_chunkBlocks;
 
 			ChunkRenderer m_renderer;
+			ChunkMesh m_mesh;
+
+			utils::threading::SingleWorker m_worker;
 
 		private:
 			void addBlockFace(BlockFace face, qz::Vector3 blockPos, const BlockInstance& block);

@@ -21,50 +21,53 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/Utilities/Threading/SingleWorker.hpp>
 
-#include <Quartz/Core/Graphics/API/IStateManager.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
+using namespace qz::utils::threading;
 
-namespace qz
+SingleWorker::SingleWorker(): m_running(true)
 {
-	namespace voxels
+	std::thread t(&SingleWorker::threadHandle, this);
+	m_thread.swap(t);
+}
+
+SingleWorker::~SingleWorker()
+{
+	m_running = false;
+	m_condition.notify_all();
+
+	if (m_thread.joinable())
+		m_thread.join();
+}
+
+void SingleWorker::addWork(std::function<void()>&& function)
+{
 	{
-		struct ChunkMesh;
-		struct ChunkVert3D
+		std::unique_lock<std::mutex> lock(m_mutex);
+		m_queue.emplace_back(std::move(function));
+	}
+
+	m_condition.notify_one();
+}
+
+void SingleWorker::threadHandle()
+{
+	while (true)
+	{
+		std::function<void()> task;
+
 		{
-			qz::Vector3 verts;
-			qz::Vector2 uvs;
+			std::unique_lock<std::mutex> lock(m_mutex);
 
-			int texLayer;
+			m_condition.wait(lock, [this] { return !m_running || !m_queue.empty(); });
 
-			ChunkVert3D(const qz::Vector3& vertices, const qz::Vector2& UVs, const int textureLayer) :
-				verts(vertices), uvs(UVs), texLayer(textureLayer)
-			{}
-		};
+			if (!m_running && m_queue.empty())
+				return;
 
-		class ChunkRenderer
-		{
-		public:
-			ChunkRenderer() = default;
-			~ChunkRenderer() = default;
+			task = std::move(m_queue.front());
+			m_queue.pop_front();
+		}
 
-			ChunkRenderer(const ChunkRenderer& other);
-			ChunkRenderer& operator=(const ChunkRenderer& other);
-
-			ChunkRenderer(ChunkRenderer&& other) noexcept;
-			ChunkRenderer& operator=(ChunkRenderer&& other) noexcept;
-
-			bool updateMesh(const ChunkMesh& mesh, int* bufferCounter);
-			void render() const;
-
-		private:
-			std::size_t m_verticesToDraw = 0;
-
-			gfx::api::GraphicsResource<gfx::api::IStateManager> m_stateManager = nullptr;
-			gfx::api::GraphicsResource<gfx::api::IBuffer> m_buffer = nullptr;
-			gfx::api::GraphicsResource<gfx::api::ITextureArray> m_textureArray = nullptr;
-		};
+		task();
 	}
 }

@@ -84,7 +84,7 @@ bool ChunkRenderer::updateMesh(const ChunkMesh& mesh, int* bufferCounter)
 	{
 		--(*bufferCounter);
 
-		m_verticesToDraw = mesh.vertices.size();
+		m_verticesToDraw = mesh.verts.size();
 
 		if (m_verticesToDraw == 0)
 			return true;
@@ -97,17 +97,8 @@ bool ChunkRenderer::updateMesh(const ChunkMesh& mesh, int* bufferCounter)
 		if (m_buffer == nullptr)
 			m_buffer = gfx::api::IBuffer::generateBuffer(gfx::api::BufferTarget::ARRAY_BUFFER, gfx::api::BufferUsage::DYNAMIC);
 
-		std::vector<ChunkVert3D> temp;
-
-		// Not doing vector::size() - 1, i >= 0; as std::size_t is a variant of an unsigned int, which does not go below 0, making it an infinitely running loop. 
-		// (i mean, shit would DEFINITELY hit the ceiling first, but who even fucking cares)
-		for (std::size_t i = mesh.vertices.size(); i > 0; i--)
-		{
-			temp.emplace_back(mesh.vertices[i - 1], mesh.uvs[i - 1], mesh.texLayers[i - 1]);
-		}
-
 		m_buffer->bind();
-		m_buffer->setData(sizeof(ChunkVert3D) * temp.size(), static_cast<void*>(temp.data()));
+		m_buffer->setData(sizeof(ChunkVert3D) * mesh.verts.size(), static_cast<const void*>(mesh.verts.data()));
 
 		m_stateManager->attachBuffer(m_buffer);
 

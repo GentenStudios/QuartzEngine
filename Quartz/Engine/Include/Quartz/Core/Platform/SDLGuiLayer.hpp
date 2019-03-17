@@ -23,13 +23,15 @@
 
 #pragma once
 
+#include <Quartz/Core/Core.hpp>
+
 #include <SDL.h>
 
 namespace qz
 {
 	namespace gfx
 	{
-		class SDLGuiLayer
+		class QZ_API SDLGuiLayer
 		{
 		public:
 			void init(SDL_Window* window, SDL_GLContext* context);
@@ -40,8 +42,8 @@ namespace qz
 			void pollEvents(SDL_Event* event);
 
 		private:
-			SDL_Window* m_window;
-			SDL_GLContext* m_context;
+			SDL_Window* m_window = nullptr;
+			SDL_GLContext* m_context = nullptr;
 		};
 	}
 }

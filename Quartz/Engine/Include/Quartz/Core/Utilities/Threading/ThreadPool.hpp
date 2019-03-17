@@ -23,48 +23,43 @@
 
 #pragma once
 
-#include <Quartz/Core/Graphics/API/IStateManager.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
+#include <Quartz/Core/Core.hpp>
+
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
+#include <deque>
+#include <vector>
+#include <functional>
 
 namespace qz
 {
-	namespace voxels
+	namespace utils
 	{
-		struct ChunkMesh;
-		struct ChunkVert3D
+		namespace threading
 		{
-			qz::Vector3 verts;
-			qz::Vector2 uvs;
+			class QZ_API ThreadPool
+			{
+			public:
+				ThreadPool(const int threadCount);
+				~ThreadPool();
 
-			int texLayer;
+				void addWork(std::function<void()> fun);
 
-			ChunkVert3D(const qz::Vector3& vertices, const qz::Vector2& UVs, const int textureLayer) :
-				verts(vertices), uvs(UVs), texLayer(textureLayer)
-			{}
-		};
+			private:
+				bool m_running;
 
-		class ChunkRenderer
-		{
-		public:
-			ChunkRenderer() = default;
-			~ChunkRenderer() = default;
+				std::mutex m_mutex;
+				std::condition_variable m_condition;
 
-			ChunkRenderer(const ChunkRenderer& other);
-			ChunkRenderer& operator=(const ChunkRenderer& other);
+				std::vector<std::thread> m_threads;
+				std::deque<std::function<void()>> m_scheduledTasks;
 
-			ChunkRenderer(ChunkRenderer&& other) noexcept;
-			ChunkRenderer& operator=(ChunkRenderer&& other) noexcept;
-
-			bool updateMesh(const ChunkMesh& mesh, int* bufferCounter);
-			void render() const;
-
-		private:
-			std::size_t m_verticesToDraw = 0;
-
-			gfx::api::GraphicsResource<gfx::api::IStateManager> m_stateManager = nullptr;
-			gfx::api::GraphicsResource<gfx::api::IBuffer> m_buffer = nullptr;
-			gfx::api::GraphicsResource<gfx::api::ITextureArray> m_textureArray = nullptr;
-		};
+			private:
+				void threadHandle();
+			};
+		}
 	}
 }
+
