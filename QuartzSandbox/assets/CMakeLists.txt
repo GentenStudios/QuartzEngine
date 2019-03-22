@@ -4,7 +4,7 @@ project(QuartzSandboxAssets)
 
 set(assetsPath ${CMAKE_CURRENT_SOURCE_DIR})
 
-file(GLOB shaders ${assetsPath}/shaders/*.vert ${assetsPath}/shaders/*.frag)
+file(GLOB shaders ${assetsPath}/shaders/*.vert ${assetsPath}/shaders/*.frag ${assetsPath}/shaders/*.shader)
 file(GLOB scripts ${assetsPath}/scripts/*.lua)
 file(GLOB textures ${assetsPath}/textures/*.png)
 

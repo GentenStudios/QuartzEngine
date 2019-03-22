@@ -31,7 +31,7 @@ void GLRenderDevice::setBufferData(VertexBufferHandle buffer, float *data, std::
 	m_vertexBuffers[buffer.get()].bufferData(data, sizebytes);
 }
 
-void GLRenderDevice::drawArrays(std::size_t first, std::size_t count)
+void GLRenderDevice::draw(std::size_t first, std::size_t count)
 {
 	GLShaderPipeline& shader = m_shaders[m_boundShader.get()];
 	InputLayout& inputLayout = shader.getInputLayout();

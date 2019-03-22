@@ -50,29 +50,28 @@ void Sandbox::run()
 	IRenderDevice* renderDevice = new GLRenderDevice();
 	renderDevice->create();
 	
-	float vertices[] = {
-		// positions         // colors
-		 0.5f, -0.5f, 0.0f,//  1.0f, 0.0f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,//  0.0f, 1.0f, 0.0f,  // bottom left
-		 0.0f,  0.5f, 0.0f//,  0.0f, 0.0f, 1.0f   // top 
+	float bottomTriangleVertices[] = {
+		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f,
+		-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+		 0.0f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f
 	};
 
-	float colors[] = {
-		1.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f,
-		0.0f, 0.0f, 1.0f
+	float topTriangleVertices[] = {
+		 0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
+		-0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 0.0f,
+		 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
 	};
 
 	InputLayout layout = {
-		{ VertexElementType::Vec3f, 0, 0, 0, false },
-		{ VertexElementType::Vec3f, 1, 1, 0, false }
+		{ VertexElementType::Vec3f, 0, 0, 0,                 false },
+		{ VertexElementType::Vec3f, 0, 1, 3 * sizeof(float), false }
 	};
 
 	VertexBufferHandle vbo = renderDevice->createVertexBuffer();
-	renderDevice->setBufferData(vbo, vertices, sizeof(vertices));
+	renderDevice->setBufferData(vbo, bottomTriangleVertices, sizeof(bottomTriangleVertices));
 
-	VertexBufferHandle cbo = renderDevice->createVertexBuffer();
-	renderDevice->setBufferData(cbo, colors, sizeof(colors));
+	VertexBufferHandle vbo2 = renderDevice->createVertexBuffer();
+	renderDevice->setBufferData(vbo2, topTriangleVertices, sizeof(topTriangleVertices));
 
 	ShaderPipelineHandle shader = renderDevice->createShaderPipeline("assets/shaders/basic.shader", layout);
 
@@ -83,9 +82,11 @@ void Sandbox::run()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-		renderDevice->setVertexBufferStream(vbo, 0, 3 * sizeof(float), 0);
-		renderDevice->setVertexBufferStream(cbo, 1, 3 * sizeof(float), 0);
-		renderDevice->drawArrays(0, 3);
+		renderDevice->setVertexBufferStream(vbo, 0, 6 * sizeof(float), 0);
+		renderDevice->draw(0, 3);
+
+		renderDevice->setVertexBufferStream(vbo2, 0, 6 * sizeof(float), 0);
+		renderDevice->draw(0, 3);
 
 		window->endFrame();
 	}

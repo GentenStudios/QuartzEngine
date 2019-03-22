@@ -40,7 +40,7 @@ namespace qz {
 				virtual void create() = 0;
 				virtual VertexBufferHandle createVertexBuffer() = 0;
 				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
-				virtual void drawArrays(std::size_t first, std::size_t count) = 0;
+				virtual void draw(std::size_t first, std::size_t count) = 0;
 				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
 
 				virtual ShaderPipelineHandle createShaderPipeline(const std::string& filepath, const InputLayout& inputLayout) = 0;

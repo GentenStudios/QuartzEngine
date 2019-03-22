@@ -56,7 +56,7 @@ namespace qz { namespace gfx { namespace api { namespace gl {
 	public:
 		virtual void create();
 		virtual VertexBufferHandle createVertexBuffer();
-		virtual void drawArrays(std::size_t first, std::size_t count);
+		virtual void draw(std::size_t first, std::size_t count);
 		virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset);
 
 		virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
