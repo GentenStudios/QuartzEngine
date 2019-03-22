@@ -22,24 +22,16 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
+#include <Quartz/Core/Graphics/API/InputLayout.hpp>
 
 using namespace qz::gfx::api;
 using namespace qz::gfx;
 
-const AttributeType AttributeType::Vec3(2);
-const AttributeType AttributeType::Vec3(3);
-const AttributeType AttributeType::Vec3(4);
+const VertexElementType VertexElementType::Vec2f = { DataType::FLOAT, 2 };
+const VertexElementType VertexElementType::Vec3f = { DataType::FLOAT, 3 };
+const VertexElementType VertexElementType::Vec4f = { DataType::FLOAT, 4 };
 
-BufferLayout& BufferLayout::registerAttribute(AttributeType type, bool normalized)
+InputLayout::InputLayout(std::initializer_list<VertexElement> init)
 {
-	m_bufferLayout.push_back({ type, normalized });
-
-	return *this;
+	elements.assign(init);
 }
-
-const std::vector<BufferAttribute>& BufferLayout::getLayouts() const
-{
-	return m_bufferLayout;
-}
-

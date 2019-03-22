@@ -21,147 +21,216 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
+#include <cassert>
+
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLShaderPipeline.hpp>
+#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Core/Utilities/FileIO.hpp>
+
 
 using namespace qz::gfx::api::gl;
 using namespace qz::gfx::api;
 using namespace qz;
 
-GLShaderPipeline::GLShaderPipeline()
-{
-	m_id = GLCheck(glCreateProgram());
-}
+namespace {
+	struct ShaderParser {
+		struct Result {
+			struct ShaderStage {
+			public:
+				ShaderStage() :
+					m_exists(false) {}
 
-GLShaderPipeline::~GLShaderPipeline()
-{
-	if (m_id != 0)
-		GLCheck(glDeleteProgram(m_id));
-}
+				bool exists() { return m_exists; }
+				void setExists(bool exists) { m_exists = exists; }
+				std::string& source() { return m_source; }
 
-GLShaderPipeline::GLShaderPipeline(GLShaderPipeline&& o) noexcept
-{
-	m_id = o.m_id;
-	o.m_id = 0;
+			private:
+				std::string m_source;
+				bool m_exists;
+			};
 
-	m_shaders = std::move(o.m_shaders);
-}
+			ShaderStage VertexShader;
+			ShaderStage PixelShader;
+		};
 
-GLShaderPipeline& GLShaderPipeline::operator=(GLShaderPipeline&& o) noexcept
-{
-	m_id = o.m_id;
-	o.m_id = 0;
+		Result parse(const std::string& filepath)
+		{
+			Result result;
 
-	m_shaders = std::move(o.m_shaders);
+			Result::ShaderStage* currentStage = nullptr;
+			std::string sourcefile = qz::utils::FileIO::readAllFile(filepath);
 
-	return *this;
-}
+			std::size_t index = 0;
+			while (index < sourcefile.size())
+			{
+				char currentchar = sourcefile[index];
 
-void GLShaderPipeline::addStage(ShaderType stage, const std::string& shaderSource)
-{
-	unsigned int shader = GLCheck(glCreateShader(gfxToOpenGL(stage)));
+				if (currentchar == '#')
+				{
+					parseDirectiveLine(filepath, sourcefile, index, result, &currentStage);
+				}
+				else {
+					assert(currentStage);
+					currentStage->source() += currentchar;
+				}
 
-	const char* source = shaderSource.c_str();
-	GLCheck(glShaderSource(shader, 1, &source, nullptr));
-	GLCheck(glCompileShader(shader));
+				index++;
+			}
 
-	int success;
-	char infoLog[1024];
-	GLCheck(glGetShaderiv(shader, GL_COMPILE_STATUS, &success));
-	if (!success)
+			return result;
+		}
+	private:
+		void parseDirectiveLine(const std::string& shaderfilepath, std::string& sourcefile, std::size_t& index, Result& result, Result::ShaderStage** currentStage)
+		{
+			auto isWhitespace = [](char c) -> bool 
+			{
+				return c == ' ' || c == '\t' || c == '\0' || c == '\n';
+			};
+
+			auto skipToNonWhitespace = [&]() 
+			{
+				char c = sourcefile[index];
+				while (isWhitespace(c)) {
+					index++;
+					
+					if (index >= sourcefile.length()) {
+						break;
+					}
+
+					c = sourcefile[index];
+				}
+			};
+
+			auto getNextToken = [&]() -> std::string
+			{
+				skipToNonWhitespace();
+				
+				char currentchar = sourcefile[index];
+				const char* start = &sourcefile[index];
+				bool inString = false;
+				while (!isWhitespace(currentchar) || inString)
+				{
+					if (currentchar == '"')
+					{
+						inString = !inString;
+					}
+
+					index++;
+
+					if (index >= sourcefile.length()) 
+					{
+						break;
+					}
+
+					currentchar = sourcefile[index];
+				}
+
+				const char* end = &sourcefile[index];
+
+				return std::string(start, end);
+			};
+
+			auto getDirname = [](const std::string& filename) {
+				std::size_t p = filename.find_last_of("\\/");
+				return p == std::string::npos ? "" : filename.substr(0, p+1);
+			};
+
+			int originalIndex = index;
+
+			index++;
+			std::string directive = getNextToken();
+			
+			if (directive == "include") 
+			{
+				std::string filename = getNextToken();
+
+				filename.pop_back(); // remove last "
+				filename.erase(filename.begin());
+
+				std::string path = getDirname(shaderfilepath);
+				std::string filepathtolookfor = path + filename;
+
+				std::string contentsToPaste = qz::utils::FileIO::readAllFile(filepathtolookfor);
+				(*currentStage)->source().append(contentsToPaste);
+			}
+			else if (directive == "shader")
+			{
+				std::string shaderType = getNextToken();
+
+				if (shaderType == "vertex") {
+					*currentStage = &result.VertexShader;
+					(*currentStage)->setExists(true);
+				}
+				else if (shaderType == "pixel") {
+					*currentStage = &result.PixelShader;
+					(*currentStage)->setExists(true);
+				}
+				else {
+					LFATAL("Invalid shader type! -> ", shaderType);
+					assert(false);
+					currentStage = nullptr;
+				}
+			}
+			else {
+				// This is not a custom directive, so try to make the source look like it should
+				// aka undo any manipulation of the index and add a # (that would otherwise ignored when the parser
+				// tries to parse it).
+				index = originalIndex;
+				(*currentStage)->source() += '#';
+			}
+		}
+	};
+
+	struct ShaderCompiler
 	{
-		GLCheck(glGetShaderInfoLog(shader, 1024, nullptr, infoLog));
-		LWARNING("[SHADER COMPILATION]", infoLog);
-	}
+		GLuint compile(const std::string& str, GLenum shaderType)
+		{
+			GLuint shader = GLCheck(glCreateShader(shaderType));
+			const char* src = str.c_str();
+			GLCheck(glShaderSource(shader, 1, &src, nullptr));
+			GLCheck(glCompileShader(shader));
 
-	m_shaders.push_back(shader);
+			int success;
+			GLCheck(glGetShaderiv(shader, GL_COMPILE_STATUS, &success));
+			if (!success)
+			{
+				const int LOG_SIZE = 1024;
+				char infoLog[LOG_SIZE];
+				GLCheck(glGetShaderInfoLog(shader, LOG_SIZE, nullptr, infoLog));
+				LWARNING("[SHADER COMPILE ERROR]", infoLog);
+			}
+
+			return shader;
+		}
+	};
 }
 
-void GLShaderPipeline::build()
+void GLShaderPipeline::create(const std::string& sourcefile, const InputLayout& inputLayout)
 {
-	for (unsigned int shader : m_shaders)
-	{
-		GLCheck(glAttachShader(m_id, shader));
-	}
+	m_inputLayout = inputLayout;
+
+	m_id = GLCheck(glCreateProgram());	
+	
+	ShaderParser shaderParser;
+	ShaderParser::Result result = shaderParser.parse(sourcefile);
+	
+	assert(result.VertexShader.exists() && result.PixelShader.exists());
+
+	ShaderCompiler compiler;
+	GLuint vertexShader = compiler.compile(result.VertexShader.source(), GL_VERTEX_SHADER);
+	GLuint fragmentShader = compiler.compile(result.PixelShader.source(), GL_FRAGMENT_SHADER);
+
+	GLCheck(glAttachShader(m_id, vertexShader));
+	GLCheck(glAttachShader(m_id, fragmentShader));
 
 	GLCheck(glLinkProgram(m_id));
 
-	for (unsigned int shader : m_shaders)
-	{
-		GLCheck(glDetachShader(m_id, shader));
-		GLCheck(glDeleteShader(shader));
-	}
-
-	m_shaders.clear();
+	GLCheck(glDeleteShader(vertexShader));
+	GLCheck(glDeleteShader(fragmentShader));
 }
 
-void GLShaderPipeline::use() const
+void GLShaderPipeline::use()
 {
-	GLCheck(glUseProgram(m_id));
+	glUseProgram(m_id);
 }
-
-void GLShaderPipeline::setUniform1(const std::string& name, int a) const
-{
-	GLCheck(glUniform1i(glGetUniformLocation(m_id, name.c_str()), a));
-}
-
-void GLShaderPipeline::setUniform2(const std::string& name, int a, int b) const
-{
-	GLCheck(glUniform2i(glGetUniformLocation(m_id, name.c_str()), a, b));
-}
-
-void GLShaderPipeline::setUniform3(const std::string& name, int a, int b, int c) const
-{
-	GLCheck(glUniform3i(glGetUniformLocation(m_id, name.c_str()), a, b, c));
-}
-
-void GLShaderPipeline::setUniform4(const std::string& name, int a, int b, int c, int d) const
-{
-	GLCheck(glUniform4i(glGetUniformLocation(m_id, name.c_str()), a, b, c, d));
-}
-
-void GLShaderPipeline::setUniform1(const std::string& name, float a) const
-{
-	GLCheck(glUniform1f(glGetUniformLocation(m_id, name.c_str()), a));
-}
-
-void GLShaderPipeline::setUniform2(const std::string& name, float a, float b) const
-{
-	GLCheck(glUniform2f(glGetUniformLocation(m_id, name.c_str()), a, b));
-}
-
-void GLShaderPipeline::setUniform3(const std::string& name, float a, float b, float c) const
-{
-	GLCheck(glUniform3f(glGetUniformLocation(m_id, name.c_str()), a, b, c));
-}
-
-void GLShaderPipeline::setUniform4(const std::string& name, float a, float b, float c, float d) const
-{
-	GLCheck(glUniform4f(glGetUniformLocation(m_id, name.c_str()), a, b, c, d));
-}
-
-void GLShaderPipeline::setVec2(const std::string& name, const Vector2& data) const
-{
-	GLCheck(glUniform2fv(glGetUniformLocation(m_id, name.c_str()), 1, &data.x));
-}
-
-void GLShaderPipeline::setVec3(const std::string& name, const Vector3& data) const
-{
-	GLCheck(glUniform3fv(glGetUniformLocation(m_id, name.c_str()), 1, &data.x));
-}
-
-void GLShaderPipeline::setMat4(const std::string& name, const Matrix4x4& mat) const
-{
-	GLCheck(glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, &mat.elements[0]));
-}
-
-void GLShaderPipeline::bindAttributeLocation(const std::string& attribName, int index)
-{
-	GLCheck(glBindAttribLocation(m_id, index, attribName.c_str()));
-}
-
-int GLShaderPipeline::retrieveAttributeLocation(const std::string& attribName)
-{
-	return GLCheck(glGetAttribLocation(m_id, attribName.c_str()));
-}
-

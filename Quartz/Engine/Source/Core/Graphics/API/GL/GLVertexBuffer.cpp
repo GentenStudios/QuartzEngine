@@ -41,4 +41,5 @@ void GLVertexBuffer::bufferData(float* data, std::size_t sizebytes)
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_id);
 	glBufferData(GL_ARRAY_BUFFER, sizebytes, data, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

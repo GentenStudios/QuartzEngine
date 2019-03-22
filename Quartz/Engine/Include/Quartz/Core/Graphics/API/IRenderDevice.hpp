@@ -24,7 +24,7 @@
 #pragma once
 
 #include <Quartz/Core/Utilities/HandleAllocator.hpp>
-#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
+#include <Quartz/Core/Graphics/API/InputLayout.hpp>
 
 #define DEFINE_HANDLE(Name) \
 		struct Name : public utils::Handle { }
@@ -33,14 +33,18 @@ namespace qz {
 	namespace gfx {
 		namespace api {
 			DEFINE_HANDLE(VertexBufferHandle);
+			DEFINE_HANDLE(ShaderPipelineHandle);
 
 			class IRenderDevice {
 			public:
 				virtual void create() = 0;
-				virtual VertexBufferHandle createVertexBuffer(BufferLayout layout) = 0;
+				virtual VertexBufferHandle createVertexBuffer() = 0;
 				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
 				virtual void drawArrays(std::size_t first, std::size_t count) = 0;
 				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
+
+				virtual ShaderPipelineHandle createShaderPipeline(const std::string& filepath, const InputLayout& inputLayout) = 0;
+				virtual void setShaderPipeline(ShaderPipelineHandle shader) = 0;
 			};
 		}
 	}

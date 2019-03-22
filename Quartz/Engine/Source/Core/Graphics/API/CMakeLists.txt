@@ -5,7 +5,7 @@ set(apiSources
 	${currentDir}/Context.cpp
 	#	${currentDir}/IStateManager.cpp
 	#${currentDir}/IBuffer.cpp
-	${currentDir}/BufferLayout.cpp
+	${currentDir}/InputLayout.cpp
 	#${currentDir}/ITexture.cpp
 	#${currentDir}/ITextureArray.cpp
 	#${currentDir}/IFramebuffer.cpp

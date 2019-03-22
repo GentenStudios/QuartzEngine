@@ -45,30 +45,48 @@ void Sandbox::run()
 	using namespace gfx::api;
 	using namespace gfx::api::gl;
 
-	QZ_REGISTER_CONFIG("Controls");
-
 	gfx::IWindow* window = m_appData->window;
 
 	IRenderDevice* renderDevice = new GLRenderDevice();
-
+	renderDevice->create();
+	
 	float vertices[] = {
 		// positions         // colors
-		 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-		 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+		 0.5f, -0.5f, 0.0f,//  1.0f, 0.0f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f,//  0.0f, 1.0f, 0.0f,  // bottom left
+		 0.0f,  0.5f, 0.0f//,  0.0f, 0.0f, 1.0f   // top 
 	};
 
-	BufferLayout layout;
-	layout.registerAttribute(AttributeType::Vec3, false);
-	layout.registerAttribute(AttributeType::Vec3, false);
+	float colors[] = {
+		1.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+		0.0f, 0.0f, 1.0f
+	};
 
-	VertexBufferHandle vbo = renderDevice->createVertexBuffer(layout);
+	InputLayout layout = {
+		{ VertexElementType::Vec3f, 0, 0, 0, false },
+		{ VertexElementType::Vec3f, 1, 1, 0, false }
+	};
 
+	VertexBufferHandle vbo = renderDevice->createVertexBuffer();
+	renderDevice->setBufferData(vbo, vertices, sizeof(vertices));
+
+	VertexBufferHandle cbo = renderDevice->createVertexBuffer();
+	renderDevice->setBufferData(cbo, colors, sizeof(colors));
+
+	ShaderPipelineHandle shader = renderDevice->createShaderPipeline("assets/shaders/basic.shader", layout);
+
+	renderDevice->setShaderPipeline(shader);
 	while (window->isRunning())
 	{
 		window->startFrame();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+
+		renderDevice->setVertexBufferStream(vbo, 0, 3 * sizeof(float), 0);
+		renderDevice->setVertexBufferStream(cbo, 1, 3 * sizeof(float), 0);
+		renderDevice->drawArrays(0, 3);
+
 		window->endFrame();
 	}
 }

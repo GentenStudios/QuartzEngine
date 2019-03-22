@@ -25,9 +25,9 @@
 
 #include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
 #include <Quartz/Core/Utilities/HandleAllocator.hpp>
-#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
-
+#include <Quartz/Core/Graphics/API/InputLayout.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLVertexBuffer.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLShaderPipeline.hpp>
 
 namespace qz { namespace gfx { namespace api { namespace gl {
 	struct VertexStream {
@@ -45,15 +45,22 @@ namespace qz { namespace gfx { namespace api { namespace gl {
 		utils::HandleAllocator<32, VertexBufferHandle> m_vertexBufferHandles;
 		GLVertexBuffer                                 m_vertexBuffers[32];
 
+		utils::HandleAllocator<32, ShaderPipelineHandle> m_shaderHandles;
+		GLShaderPipeline m_shaders[32];
+
+		ShaderPipelineHandle m_boundShader;
+
 		static constexpr int NUM_STREAMS = 32;
 		VertexStream m_vertexStreams[NUM_STREAMS];
 
 	public:
 		virtual void create();
-		virtual VertexBufferHandle createVertexBuffer(BufferLayout layout);
+		virtual VertexBufferHandle createVertexBuffer();
 		virtual void drawArrays(std::size_t first, std::size_t count);
 		virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset);
 
 		virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
+		virtual ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout);
+		virtual void setShaderPipeline(ShaderPipelineHandle shader);
 	};
 }}}}

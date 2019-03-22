@@ -28,6 +28,7 @@
 
 #include <vector>
 #include <string>
+#include <initializer_list>
 
 namespace qz
 {
@@ -35,39 +36,32 @@ namespace qz
 	{
 		namespace api
 		{
-			struct AttributeType {
+			struct VertexElementType
+			{
+				DataType type;
 				int numComponents;
 
-				AttributeType(int numComponents) : numComponents(numComponents) {}
-
-				static const AttributeType Vec2;
-				static const AttributeType Vec3;
-				static const AttributeType Vec4;
+				static const VertexElementType Vec2f;
+				static const VertexElementType Vec3f;
+				static const VertexElementType Vec4f;
 			};
 
-			struct BufferAttribute
+			struct VertexElement
 			{
-				AttributeType type;
+				VertexElementType type;
+				int streamIndex;
+				int attributeIndex;
+				int offset;
 				bool normalized;
 			};
 
-			class QZ_API BufferLayout
+			class InputLayout
 			{
 			public:
-				BufferLayout() = default;
-				~BufferLayout() = default;
+				InputLayout(std::initializer_list<VertexElement> init);
+				InputLayout() {}
 
-				BufferLayout(const BufferLayout& other) = default;
-				BufferLayout& operator=(const BufferLayout& o) = default;
-				BufferLayout(BufferLayout&& other) = default;
-				BufferLayout& operator=(BufferLayout&& o) = default;
-
-				BufferLayout& registerAttribute(AttributeType type, bool normalized);
-
-				const std::vector<BufferAttribute>& getLayouts() const;
-
-			private:
-				std::vector<BufferAttribute> m_bufferLayout;
+				std::vector<VertexElement> elements;
 			};
 		}
 	}

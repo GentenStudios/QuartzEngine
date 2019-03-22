@@ -38,7 +38,7 @@
 #include <Quartz/Core/Events/EventEnums.hpp>
 
 #include <Quartz/Core/Graphics/API/Context.hpp>
-#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
+#include <Quartz/Core/Graphics/API/InputLayout.hpp>
 #include <Quartz/Core/Graphics/API/GFXTypes.hpp>
 #include <Quartz/Core/Graphics/API/IBuffer.hpp>
 #include <Quartz/Core/Graphics/API/IFramebuffer.hpp>

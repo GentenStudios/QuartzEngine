@@ -25,7 +25,6 @@
 
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
-#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
 
 namespace qz
 {
@@ -38,7 +37,7 @@ namespace qz
 				class QZ_API GLVertexBuffer 
 				{
 				public:
-					void create(BufferLayout layout);
+					void create();
 					void bind();
 					void bufferData(float* data, std::size_t sizebytes);
 
