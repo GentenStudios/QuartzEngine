@@ -66,7 +66,7 @@ namespace qz
 			Chunk(Chunk&& other) noexcept;
 			Chunk& operator=(Chunk&& other) noexcept;
 
-			Chunk(qz::Vector3 chunkPos, int chunkSize, const std::string& defaultBlockID);
+			Chunk(qz::Vector3 chunkPos, const std::string& defaultBlockID);
 			~Chunk() = default;
 
 			void generateTerrain(unsigned int seed);

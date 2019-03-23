@@ -81,17 +81,17 @@ Chunk& Chunk::operator=(Chunk&& other) noexcept
 	return *this;
 }
 
-Chunk::Chunk(qz::Vector3 chunkPos, int chunkSize, const std::string& defaultBlockID)
+Chunk::Chunk(qz::Vector3 chunkPos, const std::string& defaultBlockID)
 {
 	m_chunkPos = chunkPos;
 	m_defaultBlockID = defaultBlockID;
+
+	for (int i = 0; i < CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPTH; ++i)
+		m_chunkBlocks.emplace_back(m_defaultBlockID);
 }
 
 void Chunk::generateTerrain(unsigned int seed)
 {
-	for (int i = 0; i < CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPTH; ++i)
-		m_chunkBlocks.emplace_back(m_defaultBlockID);
-
 	PerlinNoise* terrainGenerator = new PerlinNoise(seed);
 	terrainGenerator->generateFor(m_chunkBlocks, m_chunkPos);
 	delete terrainGenerator;
@@ -103,7 +103,7 @@ void Chunk::buildMesh()
 {
 	std::vector<BlockInstance> blocks = m_chunkBlocks;
 	m_mesh.reset();
-	
+
 	for (int j = CHUNK_WIDTH * CHUNK_HEIGHT * CHUNK_DEPTH; j > 0; --j)
 	{
 		int i = j - 1;

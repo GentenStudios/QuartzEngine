@@ -82,12 +82,6 @@ static void QuickSetupLuaBindingsCommon(lm::LuaState& state)
 
 void Sandbox::run()
 {
-	LDEBUG("One Block is: ", sizeof(qz::voxels::BlockInstance));
-	LDEBUG("SingleWorker is: ", sizeof(qz::utils::threading::SingleWorker));
-	LDEBUG("One Chunk is: ", sizeof(qz::voxels::Chunk));
-	LDEBUG("One ChunkRenderer is: ", sizeof(qz::voxels::ChunkRenderer));
-	LDEBUG("One ChunkMesh is: ", sizeof(qz::voxels::ChunkMesh));
-
 	QZ_REGISTER_CONFIG("Controls");
 
 	gfx::IWindow* window = m_appData->window;
@@ -114,7 +108,7 @@ void Sandbox::run()
 	shader->addStage(ShaderType::FRAGMENT_SHADER, utils::FileIO::readAllFile("assets/shaders/main.frag"));
 	shader->build();
 
-	voxels::ChunkManager* world = new voxels::ChunkManager("core:air", 16, time(nullptr));
+	voxels::ChunkManager* world = new voxels::ChunkManager("core:air", time(nullptr));
 
 	world->testGeneration();
 

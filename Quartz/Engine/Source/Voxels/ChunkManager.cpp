@@ -32,9 +32,8 @@ using namespace qz;
 
 const int VIEW_DISTANCE = 16; // 96 blocks, 6 chunks.
 
-ChunkManager::ChunkManager(const std::string& blockID, int chunkSize, unsigned int seed) :
-	m_seed(seed), m_chunkSize(chunkSize),
-	m_defaultBlockID(blockID)
+ChunkManager::ChunkManager(const std::string& blockID, unsigned int seed) :
+	m_seed(seed), m_defaultBlockID(blockID)
 {}
 
 void ChunkManager::toggleWireframe()
@@ -53,26 +52,30 @@ void ChunkManager::determineGeneration(qz::Vector3 cameraPosition)
 	cameraPosition = cameraPosition / 2.f;
 	cameraPosition += 0.5f;
 
-	const int posX = static_cast<int>(cameraPosition.x) / m_chunkSize;
-	const int posY = static_cast<int>(cameraPosition.y) / m_chunkSize;
-	const int posZ = static_cast<int>(cameraPosition.z) / m_chunkSize;
+	const int posX = static_cast<int>(cameraPosition.x) / Chunk::CHUNK_WIDTH;
+	const int posY = static_cast<int>(cameraPosition.y) / Chunk::CHUNK_HEIGHT;
+	const int posZ = static_cast<int>(cameraPosition.z) / Chunk::CHUNK_DEPTH;
 
 	// Get diameter to generate for.
-	const int chunkViewDistance = VIEW_DISTANCE / m_chunkSize;
+	const int chunkViewDistanceX = VIEW_DISTANCE / Chunk::CHUNK_WIDTH;
+	const int chunkViewDistanceY = VIEW_DISTANCE / Chunk::CHUNK_HEIGHT;
+	const int chunkViewDistanceZ = VIEW_DISTANCE / Chunk::CHUNK_DEPTH;
 
-	for (int x = -chunkViewDistance; x <= chunkViewDistance; x++)
+	for (int x = -chunkViewDistanceX; x <= chunkViewDistanceX; x++)
 	{
-		for (int y = -chunkViewDistance; y <= chunkViewDistance; y++)
+		for (int y = -chunkViewDistanceY; y <= chunkViewDistanceY; y++)
 		{
-			for (int z = -chunkViewDistance; z <= chunkViewDistance; z++)
+			for (int z = -chunkViewDistanceZ; z <= chunkViewDistanceZ; z++)
 			{
 				qz::Vector3 chunkToCheck = {
-					static_cast<float>(x) * chunkViewDistance + posX,
-					static_cast<float>(y) * chunkViewDistance + posY,
-					static_cast<float>(z) * chunkViewDistance + posZ
+					static_cast<float>(x) * chunkViewDistanceX + posX,
+					static_cast<float>(y) * chunkViewDistanceY + posY,
+					static_cast<float>(z) * chunkViewDistanceZ + posZ
 				};
 
-				chunkToCheck = chunkToCheck * static_cast<float>(m_chunkSize);
+				chunkToCheck.x *= Chunk::CHUNK_WIDTH;
+				chunkToCheck.y *= Chunk::CHUNK_HEIGHT;
+				chunkToCheck.z *= Chunk::CHUNK_DEPTH;
 
 				auto result = std::find_if(m_chunks.begin(), m_chunks.end(),
 					[chunkToCheck](const Chunk& o) -> bool
@@ -82,7 +85,7 @@ void ChunkManager::determineGeneration(qz::Vector3 cameraPosition)
 
 				if (result == m_chunks.end())
 				{
-					m_chunks.emplace_back(chunkToCheck, m_chunkSize, m_defaultBlockID);
+					m_chunks.emplace_back(chunkToCheck, m_defaultBlockID);
 					m_chunks.back().generateTerrain(m_seed);
 				}
 			}
@@ -98,7 +101,7 @@ void ChunkManager::testGeneration()
 		{
 			qz::Vector3 pain = { i * 16.f, 0.f, j * 16.f };
 
-			m_chunks.emplace_back(pain, m_chunkSize, m_defaultBlockID);
+			m_chunks.emplace_back(pain, m_defaultBlockID);
 			m_chunks.back().generateTerrain(m_seed);
 		}
 
@@ -112,34 +115,36 @@ void ChunkManager::unloadRedundant()
 
 void ChunkManager::setBlockAt(qz::Vector3 position, const BlockInstance& block)
 {
-	int posX = static_cast<int>(position.x / m_chunkSize);
-	int posY = static_cast<int>(position.y / m_chunkSize);
-	int posZ = static_cast<int>(position.z / m_chunkSize);
+	int posX = static_cast<int>(position.x / Chunk::CHUNK_WIDTH);
+	int posY = static_cast<int>(position.y / Chunk::CHUNK_HEIGHT);
+	int posZ = static_cast<int>(position.z / Chunk::CHUNK_DEPTH);
 
-	position.x = static_cast<float>(static_cast<int>(position.x) % m_chunkSize);
+	position.x = static_cast<float>(static_cast<int>(position.x) % Chunk::CHUNK_WIDTH);
 	if (position.x < 0)
 	{
 		posX -= 1;
-		position.x += m_chunkSize;
+		position.x += Chunk::CHUNK_WIDTH;
 	}
 
-	position.y = static_cast<float>(static_cast<int>(position.y) % m_chunkSize);
+	position.y = static_cast<float>(static_cast<int>(position.y) % Chunk::CHUNK_HEIGHT);
 	if (position.y < 0)
 	{
 		posY -= 1;
-		position.y += m_chunkSize;
+		position.y += Chunk::CHUNK_HEIGHT;
 	}
 
-	position.z = static_cast<float>(static_cast<int>(position.z) % m_chunkSize);
+	position.z = static_cast<float>(static_cast<int>(position.z) % Chunk::CHUNK_DEPTH);
 	if (position.z < 0)
 	{
 		posZ -= 1;
-		position.z += m_chunkSize;
+		position.z += Chunk::CHUNK_DEPTH;
 	}
 
-	const qz::Vector3 chunkPosition = qz::Vector3(static_cast<float>(posX * m_chunkSize),
-		static_cast<float>(posY * m_chunkSize),
-		static_cast<float>(posZ * m_chunkSize));
+	const qz::Vector3 chunkPosition = {
+		static_cast<float>(posX * Chunk::CHUNK_WIDTH),
+		static_cast<float>(posY * Chunk::CHUNK_HEIGHT),
+		static_cast<float>(posZ * Chunk::CHUNK_DEPTH)
+	};
 
 	for (auto& chunk : m_chunks)
 	{
@@ -161,34 +166,36 @@ void ChunkManager::setBlockAt(qz::Vector3 position, const BlockInstance& block)
 
 BlockInstance ChunkManager::getBlockAt(qz::Vector3 position) const
 {
-	int posX = static_cast<int>(position.x / m_chunkSize);
-	int posY = static_cast<int>(position.y / m_chunkSize);
-	int posZ = static_cast<int>(position.z / m_chunkSize);
+	int posX = static_cast<int>(position.x / Chunk::CHUNK_WIDTH);
+	int posY = static_cast<int>(position.y / Chunk::CHUNK_HEIGHT);
+	int posZ = static_cast<int>(position.z / Chunk::CHUNK_DEPTH);
 
-	position.x = static_cast<float>(static_cast<int>(position.x) % m_chunkSize);
+	position.x = static_cast<float>(static_cast<int>(position.x) % Chunk::CHUNK_WIDTH);
 	if (position.x < 0)
 	{
 		posX -= 1;
-		position.x += m_chunkSize;
+		position.x += Chunk::CHUNK_WIDTH;
 	}
 
-	position.y = static_cast<float>(static_cast<int>(position.y) % m_chunkSize);
+	position.y = static_cast<float>(static_cast<int>(position.y) % Chunk::CHUNK_HEIGHT);
 	if (position.y < 0)
 	{
 		posY -= 1;
-		position.y += m_chunkSize;
+		position.y += Chunk::CHUNK_HEIGHT;
 	}
 
-	position.z = static_cast<float>(static_cast<int>(position.z) % m_chunkSize);
+	position.z = static_cast<float>(static_cast<int>(position.z) % Chunk::CHUNK_DEPTH);
 	if (position.z < 0)
 	{
 		posZ -= 1;
-		position.z += m_chunkSize;
+		position.z += Chunk::CHUNK_DEPTH;
 	}
 
-	const qz::Vector3 chunkPosition = qz::Vector3(static_cast<float>(posX * m_chunkSize),
-		static_cast<float>(posY * m_chunkSize),
-		static_cast<float>(posZ * m_chunkSize));
+	const qz::Vector3 chunkPosition = {
+		static_cast<float>(posX * Chunk::CHUNK_WIDTH),
+		static_cast<float>(posY * Chunk::CHUNK_HEIGHT),
+		static_cast<float>(posZ * Chunk::CHUNK_DEPTH)
+	};
 
 	for (auto& chunk : m_chunks)
 	{
@@ -209,34 +216,36 @@ BlockInstance ChunkManager::getBlockAt(qz::Vector3 position) const
 
 void ChunkManager::breakBlockAt(qz::Vector3 position, const BlockInstance& block)
 {
-	int posX = static_cast<int>(position.x / m_chunkSize);
-	int posY = static_cast<int>(position.y / m_chunkSize);
-	int posZ = static_cast<int>(position.z / m_chunkSize);
+	int posX = static_cast<int>(position.x / Chunk::CHUNK_WIDTH);
+	int posY = static_cast<int>(position.y / Chunk::CHUNK_HEIGHT);
+	int posZ = static_cast<int>(position.z / Chunk::CHUNK_DEPTH);
 
-	position.x = static_cast<float>(static_cast<int>(position.x) % m_chunkSize);
+	position.x = static_cast<float>(static_cast<int>(position.x) % Chunk::CHUNK_WIDTH);
 	if (position.x < 0)
 	{
 		posX -= 1;
-		position.x += m_chunkSize;
+		position.x += Chunk::CHUNK_WIDTH;
 	}
 
-	position.y = static_cast<float>(static_cast<int>(position.y) % m_chunkSize);
+	position.y = static_cast<float>(static_cast<int>(position.y) % Chunk::CHUNK_HEIGHT);
 	if (position.y < 0)
 	{
 		posY -= 1;
-		position.y += m_chunkSize;
+		position.y += Chunk::CHUNK_HEIGHT;
 	}
 
-	position.z = static_cast<float>(static_cast<int>(position.z) % m_chunkSize);
+	position.z = static_cast<float>(static_cast<int>(position.z) % Chunk::CHUNK_DEPTH);
 	if (position.z < 0)
 	{
 		posZ -= 1;
-		position.z += m_chunkSize;
+		position.z += Chunk::CHUNK_DEPTH;
 	}
 
-	const qz::Vector3 chunkPosition = qz::Vector3(static_cast<float>(posX * m_chunkSize),
-		static_cast<float>(posY * m_chunkSize),
-		static_cast<float>(posZ * m_chunkSize));
+	const qz::Vector3 chunkPosition = {
+		static_cast<float>(posX * Chunk::CHUNK_WIDTH),
+		static_cast<float>(posY * Chunk::CHUNK_HEIGHT),
+		static_cast<float>(posZ * Chunk::CHUNK_DEPTH)
+	};
 
 	for (auto& chunk : m_chunks)
 	{
@@ -258,34 +267,36 @@ void ChunkManager::breakBlockAt(qz::Vector3 position, const BlockInstance& block
 
 void ChunkManager::placeBlockAt(qz::Vector3 position, const BlockInstance& block)
 {
-	int posX = static_cast<int>(position.x / m_chunkSize);
-	int posY = static_cast<int>(position.y / m_chunkSize);
-	int posZ = static_cast<int>(position.z / m_chunkSize);
+	int posX = static_cast<int>(position.x / Chunk::CHUNK_WIDTH);
+	int posY = static_cast<int>(position.y / Chunk::CHUNK_HEIGHT);
+	int posZ = static_cast<int>(position.z / Chunk::CHUNK_DEPTH);
 
-	position.x = static_cast<float>(static_cast<int>(position.x) % m_chunkSize);
+	position.x = static_cast<float>(static_cast<int>(position.x) % Chunk::CHUNK_WIDTH);
 	if (position.x < 0)
 	{
 		posX -= 1;
-		position.x += m_chunkSize;
+		position.x += Chunk::CHUNK_WIDTH;
 	}
 
-	position.y = static_cast<float>(static_cast<int>(position.y) % m_chunkSize);
+	position.y = static_cast<float>(static_cast<int>(position.y) % Chunk::CHUNK_HEIGHT);
 	if (position.y < 0)
 	{
 		posY -= 1;
-		position.y += m_chunkSize;
+		position.y += Chunk::CHUNK_HEIGHT;
 	}
 
-	position.z = static_cast<float>(static_cast<int>(position.z) % m_chunkSize);
+	position.z = static_cast<float>(static_cast<int>(position.z) % Chunk::CHUNK_DEPTH);
 	if (position.z < 0)
 	{
 		posZ -= 1;
-		position.z += m_chunkSize;
+		position.z += Chunk::CHUNK_DEPTH;
 	}
 
-	const qz::Vector3 chunkPosition = qz::Vector3(static_cast<float>(posX * m_chunkSize),
-		static_cast<float>(posY * m_chunkSize),
-		static_cast<float>(posZ * m_chunkSize));
+	const qz::Vector3 chunkPosition = {
+		static_cast<float>(posX * Chunk::CHUNK_WIDTH),
+		static_cast<float>(posY * Chunk::CHUNK_HEIGHT),
+		static_cast<float>(posZ * Chunk::CHUNK_DEPTH)
+	};
 
 	for (auto& chunk : m_chunks)
 	{
