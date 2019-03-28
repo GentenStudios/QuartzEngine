@@ -5,7 +5,7 @@ set(glAPIHeaders
 	${currentDir}/GLVertexBuffer.hpp
 	#${currentDir}/GLFramebuffer.hpp
 	${currentDir}/GLShaderPipeline.hpp
-	#${currentDir}/GLTexture.hpp
+	${currentDir}/GLTexture.hpp
 	#${currentDir}/GLTextureArray.hpp
 	#${currentDir}/GLStateManager.hpp
 	${currentDir}/GLRenderDevice.hpp

@@ -28,12 +28,26 @@
 #include <Quartz/Core/Graphics/API/InputLayout.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLVertexBuffer.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLShaderPipeline.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLTexture.hpp>
 
 namespace qz { namespace gfx { namespace api { namespace gl {
 	struct VertexStream {
 		VertexBufferHandle buffer;
 		int stride, offset;
 		bool active = false;
+	};
+
+	struct Uniform {
+		UniformType type;
+		GLint location;
+		ShaderPipelineHandle shader;
+		const char* name;
+		
+		union {
+			float vec2[2];
+			float vec3[3];
+			float vec4[4];
+		} userdata;
 	};
 
 	class GLRenderDevice : public IRenderDevice
@@ -47,6 +61,12 @@ namespace qz { namespace gfx { namespace api { namespace gl {
 
 		utils::HandleAllocator<32, ShaderPipelineHandle> m_shaderHandles;
 		GLShaderPipeline m_shaders[32];
+
+		utils::HandleAllocator<32, UniformHandle>      m_uniformHandleAllocator;
+		Uniform m_uniforms[32];
+
+		utils::HandleAllocator<32, TextureHandle>      m_textureHandleAllocator;
+		GLTexture m_textures[32];
 
 		ShaderPipelineHandle m_boundShader;
 
@@ -62,5 +82,13 @@ namespace qz { namespace gfx { namespace api { namespace gl {
 		virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
 		virtual ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout);
 		virtual void setShaderPipeline(ShaderPipelineHandle shader);
+
+		virtual UniformHandle createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type);
+		virtual void setUniformValue(UniformHandle uniform, const void* value, int num);
+
+		virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height);
+		virtual void setTexture(TextureHandle texture, int slot);
+
+		void showShaderDebugUi();
 	};
 }}}}

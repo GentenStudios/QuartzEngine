@@ -34,18 +34,34 @@ namespace qz {
 		namespace api {
 			DEFINE_HANDLE(VertexBufferHandle);
 			DEFINE_HANDLE(ShaderPipelineHandle);
+			DEFINE_HANDLE(UniformHandle);
+			DEFINE_HANDLE(TextureHandle);
+
+			enum class UniformType {
+				SAMPLER, MAT4, VEC3, VEC2, COLOR3
+			};
 
 			class IRenderDevice {
 			public:
 				virtual void create() = 0;
+				virtual void draw(std::size_t first, std::size_t count) = 0;
+
 				virtual VertexBufferHandle createVertexBuffer() = 0;
 				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
-				virtual void draw(std::size_t first, std::size_t count) = 0;
 				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
-
+				
 				virtual ShaderPipelineHandle createShaderPipeline(const std::string& filepath, const InputLayout& inputLayout) = 0;
 				virtual void setShaderPipeline(ShaderPipelineHandle shader) = 0;
+
+				virtual UniformHandle createUniform(ShaderPipelineHandle shader, const char* name, UniformType type) = 0;
+				virtual void setUniformValue(UniformHandle uniform, const void* value, int num) = 0;
+
+				virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height) = 0;
+				virtual void setTexture(TextureHandle texture, int slot) = 0;
+
+				virtual void showShaderDebugUi() = 0;
 			};
+
 		}
 	}
 }

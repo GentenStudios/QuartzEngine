@@ -24,6 +24,7 @@
 #pragma once
 
 #include <Quartz.hpp>
+#include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
 
 namespace sandbox
 {
@@ -42,10 +43,15 @@ namespace sandbox
 		bool onKeyPress(events::KeyPressedEvent& event);
 
 	private:
+		void showDebugUi();
+
 		qz::ApplicationRequirements* m_appRequirements = nullptr;
 		qz::ApplicationData* m_appData = nullptr;
 
 		qz::gfx::FPSCamera* m_camera = nullptr;
+		qz::gfx::api::IRenderDevice* m_renderDevice = nullptr;
+
+		bool m_debugMode = false;
 	};
 }
 

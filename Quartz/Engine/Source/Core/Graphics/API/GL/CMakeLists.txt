@@ -3,7 +3,7 @@ set(glAPISources
 	#${currentDir}/GLStateManager.cpp
 	${currentDir}/GLVertexBuffer.cpp
 	${currentDir}/GLShaderPipeline.cpp
-	#${currentDir}/GLTexture.cpp
+	${currentDir}/GLTexture.cpp
 	#	${currentDir}/GLTextureArray.cpp
 	#${currentDir}/GLFramebuffer.cpp
 	${currentDir}/GLRenderDevice.cpp

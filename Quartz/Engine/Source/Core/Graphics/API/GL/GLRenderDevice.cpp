@@ -1,6 +1,8 @@
 #include <Quartz/Core/Graphics/API/GL/GLRenderDevice.hpp>
 #include <Quartz/Core/Graphics/API/InputLayout.hpp>
 
+#include <imgui/imgui.h>
+
 using namespace qz::gfx::api::gl;
 using namespace qz::gfx::api;
 
@@ -8,6 +10,31 @@ void GLRenderDevice::create()
 {
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+}
+
+void GLRenderDevice::showShaderDebugUi()
+{
+	ImGui::Begin("Shader Debug UI");
+	if (ImGui::CollapsingHeader("Uniforms", ImGuiTreeNodeFlags_DefaultOpen)) {
+		for (int i = 0; i < m_uniformHandleAllocator.size(); i++)
+		{
+			Uniform& uniform = m_uniforms[i];
+			GLShaderPipeline& shader = m_shaders[uniform.shader.get()];
+			shader.use();
+
+			switch (uniform.type) {
+			case UniformType::COLOR3:
+				if (ImGui::ColorPicker3(uniform.name, uniform.userdata.vec3)) {
+					glUniform3f(uniform.location, uniform.userdata.vec3[0], uniform.userdata.vec3[1], uniform.userdata.vec3[2]);
+				}
+				break;
+			}
+		}
+	}
+	ImGui::End();
 }
 
 VertexBufferHandle GLRenderDevice::createVertexBuffer()
@@ -68,4 +95,61 @@ void GLRenderDevice::setVertexBufferStream(VertexBufferHandle buffer, int stream
 	stream.stride = stride;
 	stream.offset = offset;
 	stream.active = true;
+}
+
+UniformHandle GLRenderDevice::createUniform(ShaderPipelineHandle shaderHandle,const char* name, UniformType type)
+{
+	GLShaderPipeline& shader = m_shaders[shaderHandle.get()];
+	shader.use();
+
+	UniformHandle handle = m_uniformHandleAllocator.allocate();
+	Uniform& uniform = m_uniforms[handle.get()];
+	uniform.location = GLCheck(glGetUniformLocation(shader.getId(), name));
+	uniform.type = type;
+	uniform.shader = shaderHandle;
+	uniform.name = name;
+	return handle;
+}
+
+void GLRenderDevice::setUniformValue(UniformHandle uniform, const void* value, int num)
+{
+	const float* fdata = static_cast<const float*>(value);
+
+	Uniform& uniformData = m_uniforms[uniform.get()];
+	m_shaders[uniformData.shader.get()].use();
+
+	switch (uniformData.type)
+	{
+	case UniformType::MAT4:
+		glUniformMatrix4fv(uniformData.location, num, GL_FALSE, fdata);
+		break;
+	case UniformType::VEC2:
+		glUniform2f(uniformData.location, fdata[0], fdata[1]);
+		std::memcpy(uniformData.userdata.vec2, value, sizeof(float) * 2);
+		break;
+	case UniformType::COLOR3:
+	case UniformType::VEC3:
+		glUniform3f(uniformData.location, fdata[0], fdata[1], fdata[2]);
+		std::memcpy(uniformData.userdata.vec3, value, sizeof(float) * 3);
+		break;
+	case UniformType::SAMPLER:
+		glUniform1i(uniformData.location, *(static_cast<const int*>(value)));
+		std::memcpy(uniformData.userdata.vec4, value, sizeof(float) * 4);
+		break;
+	}
+}
+
+TextureHandle GLRenderDevice::createTexture(unsigned char* pixelData, int width, int height)
+{
+	TextureHandle handle = m_textureHandleAllocator.allocate();
+	m_textures[handle.get()].create(pixelData, width, height);
+	return handle;
+}
+
+void GLRenderDevice::setTexture(TextureHandle texture, int slot)
+{
+	GLTexture& texData = m_textures[texture.get()];
+
+	GLCheck(glActiveTexture(GL_TEXTURE0 + slot));
+	GLCheck(glBindTexture(GL_TEXTURE_2D, texData.getId()))
 }

@@ -33,6 +33,12 @@ namespace qz {
 			void set(std::uint16_t value) { m_handle = value; }
 			std::uint16_t get() const { return m_handle; }
 
+			Handle() {
+				m_handle = -1;
+			}
+
+			bool isValid() { return m_handle == -1; }
+
 		private:
 			std::uint16_t m_handle;	
 		};
@@ -56,6 +62,8 @@ namespace qz {
 			void free(THandleType handle)
 			{
 			}
+
+			std::size_t size() { return m_size; }
 
 		private:
 			THandleType m_handles[TMaxNumHandles];

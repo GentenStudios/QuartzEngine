@@ -2,14 +2,14 @@
 #version 330 core
 
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
+layout(location = 1) in vec2 a_uv;
 
-out vec3 pColor;
+out vec2 pass_uv;
 
 void main()
 {
     gl_Position = vec4(aPos, 1.0);
-	pColor = aColor;
+	pass_uv = a_uv;
 }
 
 #shader pixel
@@ -17,9 +17,12 @@ void main()
 
 out vec4 FragColor;
 
-in vec3 pColor;
+in vec2 pass_uv;
+
+uniform vec3 u_color;
+uniform sampler2D u_sampler;
 
 void main()
 {
-	FragColor = vec4(pColor, 1.0f);
+	FragColor = texture(u_sampler, pass_uv) * vec4(u_color, 1.0f);
 }
