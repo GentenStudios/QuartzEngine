@@ -2,6 +2,7 @@
 #include <Quartz/Core/Graphics/API/InputLayout.hpp>
 
 #include <imgui/imgui.h>
+#include <cstring>
 
 using namespace qz::gfx::api::gl;
 using namespace qz::gfx::api;
