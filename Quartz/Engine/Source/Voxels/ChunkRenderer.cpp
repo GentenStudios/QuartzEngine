@@ -28,18 +28,6 @@
 using namespace qz::voxels;
 using namespace qz;
 
-struct ChunkVert3D
-{
-	qz::Vector3 verts;
-	qz::Vector2 uvs;
-
-	int texLayer;
-
-	ChunkVert3D(const qz::Vector3& vertices, const qz::Vector2& UVs, const int textureLayer) :
-		verts(vertices), uvs(UVs), texLayer(textureLayer)
-	{}
-};
-
 ChunkRenderer::ChunkRenderer(const ChunkRenderer& other)
 {
 	m_stateManager = other.m_stateManager;
