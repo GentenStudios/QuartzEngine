@@ -25,6 +25,8 @@
 #include <Quartz/Voxels/Chunk.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
 
+#include <cstddef>
+
 using namespace qz::voxels;
 using namespace qz;
 
