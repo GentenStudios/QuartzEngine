@@ -23,28 +23,48 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-
-#include <SDL.h>
+#include <Quartz/Core/Graphics/API/IStateManager.hpp>
+#include <Quartz/Core/Graphics/API/IBuffer.hpp>
+#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
 
 namespace qz
 {
-	namespace gfx
+	namespace voxels
 	{
-		class QZ_API SDLGuiLayer
+		struct ChunkMesh;
+		struct ChunkVert3D
+		{
+			qz::Vector3 verts;
+			qz::Vector2 uvs;
+
+			int texLayer;
+
+			ChunkVert3D(const qz::Vector3& vertices, const qz::Vector2& UVs, const int textureLayer) :
+				verts(vertices), uvs(UVs), texLayer(textureLayer)
+			{}
+		};
+
+		class ChunkRenderer
 		{
 		public:
-			void init(SDL_Window* window, SDL_GLContext* context);
+			ChunkRenderer() = default;
+			~ChunkRenderer() = default;
 
-			void startFrame();
-			void endFrame();
+			ChunkRenderer(const ChunkRenderer& other);
+			ChunkRenderer& operator=(const ChunkRenderer& other);
 
-			void pollEvents(SDL_Event* event);
+			ChunkRenderer(ChunkRenderer&& other) noexcept;
+			ChunkRenderer& operator=(ChunkRenderer&& other) noexcept;
+
+			bool updateMesh(const ChunkMesh& mesh, int* bufferCounter);
+			void render() const;
 
 		private:
-			SDL_Window* m_window = nullptr;
-			SDL_GLContext* m_context = nullptr;
+			std::size_t m_verticesToDraw = 0;
+
+			gfx::api::GraphicsResource<gfx::api::IStateManager> m_stateManager = nullptr;
+			gfx::api::GraphicsResource<gfx::api::IBuffer> m_buffer = nullptr;
+			gfx::api::GraphicsResource<gfx::api::ITextureArray> m_textureArray = nullptr;
 		};
 	}
 }
-

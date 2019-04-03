@@ -28,7 +28,6 @@
 #include <Quartz/Core/Events/Event.hpp>
 #include <Quartz/Core/Graphics/IWindow.hpp>
 
-#include <vector>
 #include <functional>
 
 #define SDL_MAIN_HANDLED

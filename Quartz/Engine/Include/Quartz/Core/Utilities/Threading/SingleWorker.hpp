@@ -25,82 +25,37 @@
 
 #include <Quartz/Core/Core.hpp>
 
+#include <deque>
 #include <thread>
 #include <mutex>
 #include <condition_variable>
-
-#include <deque>
-#include <vector>
 #include <functional>
 
 namespace qz
 {
-	namespace threads
+	namespace utils
 	{
-		namespace utils
+		namespace threading
 		{
-			template <int ThreadCount = 4>
-			class QZ_API ThreadPool
+			class QZ_API SingleWorker
 			{
 			public:
-				ThreadPool()
-				{
-					for (std::size_t i = 0; i < ThreadCount; ++i)
-					{
-						m_threads.emplace_back([this]()
-						{
-							while (true)
-							{
-								std::function<void()> task;
+				SingleWorker();
+				~SingleWorker();
 
-								{
-									std::unique_lock<std::mutex> lock(m_taskMutex);
-
-									m_condition.wait(lock, [this]() { return !m_running || !m_scheduledTasks.empty(); });
-
-									if (!m_running && m_scheduledTasks.empty())
-										return;
-
-									task = m_scheduledTasks.front();
-									m_scheduledTasks.pop_front();
-								}
-
-								task();
-							}
-						}
-						);
-					}
-				}
-
-				~ThreadPool()
-				{
-					m_running = false;
-					m_condition.notify_all();
-
-					for (std::thread& taskWorker : m_threads)
-						taskWorker.join();
-				};
-
-				void addWork(std::function<void()> fun)
-				{
-					{
-						std::unique_lock<std::mutex> lock(m_taskMutex);
-						m_scheduledTasks.emplace_back(fun);
-					}
-
-					m_condition.notify_one();
-				}
+				void addWork(std::function<void()>&& function);
 
 			private:
 				bool m_running;
-
-				std::mutex m_taskMutex;
+				std::thread m_thread;
+				std::mutex m_mutex;
 				std::condition_variable m_condition;
 
-				std::vector<std::thread> m_threads;
-				std::deque<std::function<void()>> m_scheduledTasks;
+				std::deque<std::function<void()>> m_queue;
+
+			private:
+				void threadHandle();
 			};
 		}
 	}
 }
-

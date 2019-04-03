@@ -23,14 +23,14 @@
 
 #include <Sandbox/Sandbox.hpp>
 #include <Quartz.hpp>
-
 #include <Quartz/Voxels/ChunkManager.hpp>
 
 #include <luamod/luastate.h>
 #include <luamod/table.h>
-
 #include <glad/glad.h>
 #include <imgui/imgui.h>
+
+#include <ctime>
 
 using namespace sandbox;
 using namespace qz;
@@ -78,7 +78,6 @@ static void QuickSetupLuaBindingsCommon(lm::LuaState& state)
 	};
 
 	state.Register("px_register_block", luaRegisterBlock);
-
 }
 
 void Sandbox::run()
@@ -94,13 +93,14 @@ void Sandbox::run()
 	using namespace gfx::api;
 	using namespace voxels;
 
+	BlockLibrary::get()->init();
+
 	lm::LuaState luaState;
 	QuickSetupLuaBindingsCommon(luaState);
 	luaState.RunFile("assets/scripts/index.lua");
 
 	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
 
-	BlockLibrary::get()->init();
 	BlockLibrary::get()->registerBlock(air);
 
 	auto shader = IShaderPipeline::generateShaderPipeline();
@@ -108,9 +108,9 @@ void Sandbox::run()
 	shader->addStage(ShaderType::FRAGMENT_SHADER, utils::FileIO::readAllFile("assets/shaders/main.frag"));
 	shader->build();
 
-	voxels::ChunkManager* world = new voxels::ChunkManager("core:air", 16, time(nullptr));
+	voxels::ChunkManager* world = new voxels::ChunkManager("core:air", time(nullptr));
 
-	world->determineGeneration(m_camera->getPosition());
+	world->testGeneration();
 
 	const Matrix4x4 model;
 
@@ -145,7 +145,7 @@ void Sandbox::run()
 		shader->setMat4("u_view", m_camera->calculateViewMatrix());
 		shader->setMat4("u_model", model);
 
-		world->render(10);  // should be in the settings (the chunks actualisation factor, here: 10 per frame)
+		world->render(10);  // should be in the settings (the chunks actualization factor, here: 10 per frame)
 
 		ImGui::Begin("Debug Information");
 		ImGui::Text("FPS: %d", fpsCurrent);

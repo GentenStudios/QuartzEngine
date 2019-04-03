@@ -34,9 +34,8 @@
 # Build folders
 build/*
 BUILD/*
-**/COMPILE/bin
-**/COMPILE/lib
-**/docs/html
+Build/*
+**/Quartz/Documentation/html
 **/cmake-build-debug
 
 # CLion

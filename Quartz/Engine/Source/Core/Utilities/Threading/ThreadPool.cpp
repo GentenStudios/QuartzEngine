@@ -21,30 +21,55 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/Utilities/Threading/ThreadPool.hpp>
 
-#include <Quartz/Core/Core.hpp>
+using namespace qz::utils::threading;
 
-#include <SDL.h>
-
-namespace qz
+ThreadPool::ThreadPool(const int threadCount)
 {
-	namespace gfx
+	for (std::size_t i = 0; i < threadCount; ++i)
 	{
-		class QZ_API SDLGuiLayer
-		{
-		public:
-			void init(SDL_Window* window, SDL_GLContext* context);
-
-			void startFrame();
-			void endFrame();
-
-			void pollEvents(SDL_Event* event);
-
-		private:
-			SDL_Window* m_window = nullptr;
-			SDL_GLContext* m_context = nullptr;
-		};
+		m_threads.emplace_back(&ThreadPool::threadHandle, this);
 	}
 }
 
+ThreadPool::~ThreadPool()
+{
+	m_running = false;
+	m_condition.notify_all();
+
+	for (std::thread& taskWorker : m_threads)
+		taskWorker.join();
+}
+
+void ThreadPool::addWork(std::function<void()> fun)
+{
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_scheduledTasks.emplace_back(fun);
+	}
+
+	m_condition.notify_one();
+}
+
+void ThreadPool::threadHandle()
+{
+	while (true)
+	{
+		std::function<void()> task;
+
+		{
+			std::unique_lock<std::mutex> lock(m_mutex);
+
+			m_condition.wait(lock, [this]() { return !m_running || !m_scheduledTasks.empty(); });
+
+			if (!m_running && m_scheduledTasks.empty())
+				return;
+
+			task = m_scheduledTasks.front();
+			m_scheduledTasks.pop_front();
+		}
+
+		task();
+	}
+}

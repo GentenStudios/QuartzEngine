@@ -34,7 +34,7 @@ namespace qz
 		class ChunkManager
 		{
 		public:
-			ChunkManager(const std::string& blockID, int chunkSize, unsigned int seed);
+			ChunkManager(const std::string& blockID, unsigned int seed);
 			ChunkManager(ChunkManager&& other) = default;
 
 			~ChunkManager() = default;
@@ -56,7 +56,6 @@ namespace qz
 
 		private:
 			unsigned int m_seed;
-			int m_chunkSize;
 			std::string m_defaultBlockID;
 
 			std::vector<Chunk> m_chunks;
