@@ -33,7 +33,7 @@ namespace qz
 	{
 		namespace api
 		{
-			class QZ_API IFramebuffer
+			class IFramebuffer
 			{
 			public:
 				static GraphicsResource<IFramebuffer> generateFramebuffer();

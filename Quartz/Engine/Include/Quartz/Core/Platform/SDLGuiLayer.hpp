@@ -31,7 +31,7 @@ namespace qz
 {
 	namespace gfx
 	{
-		class QZ_API SDLGuiLayer
+		class SDLGuiLayer
 		{
 		public:
 			void init(SDL_Window* window, SDL_GLContext* context);

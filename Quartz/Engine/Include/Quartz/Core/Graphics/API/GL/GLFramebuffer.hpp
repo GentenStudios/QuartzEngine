@@ -35,7 +35,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				class QZ_API GLFramebuffer : public IFramebuffer
+				class GLFramebuffer : public IFramebuffer
 				{
 				public:
 					GLFramebuffer();

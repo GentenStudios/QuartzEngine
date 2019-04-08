@@ -40,7 +40,7 @@ namespace qz
 		 * just the position of the mouse within the window. If the mouse positions are required to be relative, you must track the previous
 		 * position yourself.
 		 */
-		class QZ_API MouseMovedEvent : public Event
+		class MouseMovedEvent : public Event
 		{
 		public:
 			/**
@@ -72,7 +72,7 @@ namespace qz
 		 * up and down, however, some mice allow scrolling sideways, allowing 2 possible pieces of data to be used. These are stored in a
 		 * Vector2, with the "x" component being the sideways-scroll offset, and the "y" component being the "normal", up-down-scroll offset.
 		 */
-		class QZ_API MouseScrolledEvent : public Event
+		class MouseScrolledEvent : public Event
 		{
 		public:
 			/**
@@ -107,7 +107,7 @@ namespace qz
 		 * The mouse position when a button is pressed/released is not always important, as for example, with a camera in a potential voxel game, when the left button 
 		 * is clicked, a Ray is casted from the camera position in the direction it's facing. It does NOT actually use the button press/release position.
 		 */
-		class QZ_API MouseButtonEvent : public Event
+		class MouseButtonEvent : public Event
 		{
 		public:
 			/**
@@ -146,7 +146,7 @@ namespace qz
 		 * Mouse Button Presses don't require any extra pieces of data above what is already provided by the MouseButtonEvent parent class. This event is polled and only has
 		 * the specialized functions associated with them through the dispatcher called once every game loop when pollEvents() in the Windowing class(es) is called.
 		 */
-		class QZ_API MouseButtonPressedEvent : public MouseButtonEvent
+		class MouseButtonPressedEvent : public MouseButtonEvent
 		{
 		public:
 			/**
@@ -166,7 +166,7 @@ namespace qz
 		 * Mouse Button releases don't require any extra pieces of data above what is already provided by the MouseButtonEvent parent class. This event is polled and only has
 		 * the specialized functions associated with them through the dispatcher called once every game loop when pollEvents() in the Windowing class(es) is called.
 		 */
-		class QZ_API MouseButtonReleasedEvent : public MouseButtonEvent
+		class MouseButtonReleasedEvent : public MouseButtonEvent
 		{
 		public:
 			/**

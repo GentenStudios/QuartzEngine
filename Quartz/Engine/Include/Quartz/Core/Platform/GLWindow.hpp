@@ -50,7 +50,7 @@ namespace qz
 				 * the docs provided with the IWindow class, as GLWindow is only an implementation based on the public
 				 * API as defined in IWindow.
 				 */
-				class QZ_API GLWindow : public gfx::IWindow
+				class GLWindow : public gfx::IWindow
 				{
 				public:
 					GLWindow(const std::string& title, int width, int height);

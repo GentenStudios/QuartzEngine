@@ -39,7 +39,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				class QZ_API GLShaderPipeline : public IShaderPipeline
+				class GLShaderPipeline : public IShaderPipeline
 				{
 				public:
 					GLShaderPipeline();

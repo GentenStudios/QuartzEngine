@@ -72,7 +72,7 @@ namespace qz
 		 * @brief Base Class for all event objects, allowing the universal movement of event objects,
 		 *		and simplifying dispatching events to various specialized functions.
 		 */
-		class QZ_API Event
+		class Event
 		{
 		public:
 			virtual ~Event() = default;
@@ -125,7 +125,7 @@ namespace qz
 		 *	E.g. If the template parameter is events::MouseButtonPressedEvent, the function specified will only be called (with the appropriate data) if the event has
 		 *		 an EventType that matches the internal type of the MouseButtonPressedEvent.
 		 */
-		class QZ_API EventDispatcher
+		class EventDispatcher
 		{
 			/**
 			 * @brief Alias for an Function which MUST return a boolean and takes a const reference to a specific event.
