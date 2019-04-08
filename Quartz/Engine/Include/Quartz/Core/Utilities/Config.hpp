@@ -44,7 +44,7 @@ namespace qz
 		 * @brief Class for Configuration File loading and interpreting.
 		 *
 		 */
-		class QZ_API ConfigFile
+		class ConfigFile
 		{
 		public:
 			/*

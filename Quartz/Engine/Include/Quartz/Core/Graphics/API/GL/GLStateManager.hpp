@@ -37,7 +37,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				class QZ_API GLStateManager : public IStateManager
+				class GLStateManager : public IStateManager
 				{
 				public:
 					GLStateManager();

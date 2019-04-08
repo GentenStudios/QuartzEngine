@@ -34,7 +34,7 @@ namespace qz
 			NONE, OPENGL
 		};
 
-		class QZ_API Context
+		class Context
 		{
 		public:
 			static RenderingAPI getRenderingAPI();

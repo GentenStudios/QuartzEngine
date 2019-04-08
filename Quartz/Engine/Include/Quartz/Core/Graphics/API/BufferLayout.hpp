@@ -47,7 +47,7 @@ namespace qz
 				bool normalised;
 			};
 
-			class QZ_API BufferLayout
+			class BufferLayout
 			{
 			public:
 				BufferLayout() = default;

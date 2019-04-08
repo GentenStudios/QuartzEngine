@@ -39,7 +39,7 @@ namespace qz
 	{
 		namespace threading
 		{
-			class QZ_API ThreadPool
+			class ThreadPool
 			{
 			public:
 				ThreadPool(const int threadCount);

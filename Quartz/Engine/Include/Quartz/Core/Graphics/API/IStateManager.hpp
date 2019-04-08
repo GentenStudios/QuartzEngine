@@ -36,7 +36,7 @@ namespace qz
 	{
 		namespace api
 		{
-			class QZ_API IStateManager
+			class IStateManager
 			{
 			public:
 				static GraphicsResource<IStateManager> generateStateManager();

@@ -46,7 +46,7 @@ namespace qz
 				UNIFORM_BUFFER
 			};
 
-			class QZ_API IBuffer
+			class IBuffer
 			{
 			public:
 				static GraphicsResource<IBuffer> generateBuffer(BufferTarget target = BufferTarget::ARRAY_BUFFER, BufferUsage usage = BufferUsage::STATIC);

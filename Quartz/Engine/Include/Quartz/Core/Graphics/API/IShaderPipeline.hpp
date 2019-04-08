@@ -42,7 +42,7 @@ namespace qz
 				FRAGMENT_SHADER,
 			};
 
-			class QZ_API IShaderPipeline
+			class IShaderPipeline
 			{
 			public:
 				static GraphicsResource<IShaderPipeline> generateShaderPipeline();

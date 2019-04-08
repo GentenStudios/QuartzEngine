@@ -47,7 +47,7 @@ namespace qz
 		~ApplicationData() = default;
 	};
 
-	class QZ_API Application
+	class Application
 	{
 	public:
 		Application() = default;

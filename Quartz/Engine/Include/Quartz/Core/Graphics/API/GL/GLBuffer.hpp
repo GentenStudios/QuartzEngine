@@ -35,7 +35,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				class QZ_API GLBuffer : public IBuffer
+				class GLBuffer : public IBuffer
 				{
 				public:
 					GLBuffer(BufferTarget target, BufferUsage usage);

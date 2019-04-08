@@ -35,7 +35,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				class QZ_API GLTexture : public ITexture
+				class GLTexture : public ITexture
 				{
 				public:
 					GLTexture();

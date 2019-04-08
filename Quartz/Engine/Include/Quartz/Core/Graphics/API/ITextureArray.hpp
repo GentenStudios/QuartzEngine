@@ -39,7 +39,7 @@ namespace qz
 		namespace api
 		{
 
-			class QZ_API ITextureArray : public ITextureObject
+			class ITextureArray : public ITextureObject
 			{
 			public:
 				static GraphicsResource<ITextureArray> generateTextureArray();

@@ -84,7 +84,7 @@ namespace qz
 		/**
 		 * @brief The Logger for the engine, and probably clients.
 		 */
-		class QZ_API Logger
+		class Logger
 		{
 		public:
 			/**
