@@ -49,12 +49,14 @@ namespace qz
 		{
 		public:
 			RegistryBlock() = delete;
-			RegistryBlock(std::string blockID, std::string blockName, int initialHP, BlockType blockType);
+			RegistryBlock(const std::string& blockID, const std::string& blockName, int initialHP, BlockType blockType);
 			RegistryBlock(const RegistryBlock& other) = default;
 
 			~RegistryBlock() = default;
 
 			const std::string& getBlockID() const;
+			int getRegistryID() const;
+			
 			const std::string& getBlockName() const;
 			BlockType getBlockType() const;
 
@@ -87,6 +89,10 @@ namespace qz
 			InteractionCallback m_interactRightCallback;
 
 			unsigned int m_initialHealthPoints;
+
+		private:
+			int m_registryID = -1;
+			friend class BlockLibrary;
 		};
 
 		class BlockInstance
@@ -94,16 +100,17 @@ namespace qz
 		public:
 			BlockInstance();
 			BlockInstance(const std::string& blockID);
+			BlockInstance(int registryID);
 
 			~BlockInstance() = default;
 
 			unsigned int getHitpoints() const;
 			void setHitpoints(unsigned int hitpoints);
 
-			const std::string& getBlockName() const;
-			void setBlockName(const std::string& name);
-
 			const std::string& getBlockID() const;
+			int getRegistryID() const;
+
+			const std::string& getBlockName() const;
 			BlockType getBlockType() const;
 
 			const std::vector<std::string>& getBlockTextures() const;
@@ -111,8 +118,7 @@ namespace qz
 		private:
 			unsigned int m_hitpoints;
 
-			std::string m_blockID;
-			std::string m_blockName;
+			int m_registryID;
 			BlockType m_blockType;
 		};
 
@@ -123,8 +129,9 @@ namespace qz
 			
 			void init();
 
-			void registerBlock(const RegistryBlock& block);
+			void registerBlock(RegistryBlock block);
 			
+			const RegistryBlock& requestBlock(int registryID) const;
 			const RegistryBlock& requestBlock(const std::string& blockID) const;
 
 		private:
@@ -135,6 +142,7 @@ namespace qz
 			~BlockLibrary() = default;
 
 			std::unordered_map<std::string, RegistryBlock> m_registeredBlocks;
+			std::vector<std::string> m_registeredBlockAliases;
 		};
 	}
 }

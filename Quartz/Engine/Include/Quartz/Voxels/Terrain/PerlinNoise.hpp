@@ -40,23 +40,17 @@ namespace qz
 			PerlinNoise(unsigned int seed);
 			~PerlinNoise() = default;
 
-			void generateFor(std::vector<BlockInstance>& blockArray, qz::Vector3 chunkPos, int chunkSize);
+			void generateFor(std::vector<BlockInstance>& blockArray, qz::Vector3 chunkPos);
 			float at(qz::Vector3 pos) const;
 			float atOctave(qz::Vector3 pos, int octaves, float persitance) const;
 
 		private:
 			std::vector<int> m_p;
-			int m_chunkSize;
 			lm::LuaState m_lua;
 
 			float fade(float t) const;
 			float grad(int hash, float x, float y, float z) const;
 			float lerp(float t, float a, float b) const;
-
-			std::size_t getVectorIndex(const int x, const int y, const int z) const
-			{
-				return x + m_chunkSize * (y + m_chunkSize * z);
-			}
 		};
 	}
 }

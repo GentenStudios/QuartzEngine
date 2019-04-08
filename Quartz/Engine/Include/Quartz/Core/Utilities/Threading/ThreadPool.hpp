@@ -25,26 +25,41 @@
 
 #include <Quartz/Core/Core.hpp>
 
-#include <SDL.h>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+
+#include <deque>
+#include <vector>
+#include <functional>
 
 namespace qz
 {
-	namespace gfx
+	namespace utils
 	{
-		class QZ_API SDLGuiLayer
+		namespace threading
 		{
-		public:
-			void init(SDL_Window* window, SDL_GLContext* context);
+			class QZ_API ThreadPool
+			{
+			public:
+				ThreadPool(const int threadCount);
+				~ThreadPool();
 
-			void startFrame();
-			void endFrame();
+				void addWork(std::function<void()> fun);
 
-			void pollEvents(SDL_Event* event);
+			private:
+				bool m_running;
 
-		private:
-			SDL_Window* m_window = nullptr;
-			SDL_GLContext* m_context = nullptr;
-		};
+				std::mutex m_mutex;
+				std::condition_variable m_condition;
+
+				std::vector<std::thread> m_threads;
+				std::deque<std::function<void()>> m_scheduledTasks;
+
+			private:
+				void threadHandle();
+			};
+		}
 	}
 }
 

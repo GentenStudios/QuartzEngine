@@ -24,6 +24,7 @@
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Voxels/Terrain/PerlinNoise.hpp>
 #include <Quartz/Core/Utilities/FileIO.hpp>
+#include <Quartz/Voxels/Chunk.hpp>
 
 #include <algorithm>
 #include <random>
@@ -47,8 +48,7 @@ static int s_permutation[] = {
 	50, 45, 127, 4, 150, 254, 138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215,
 	61, 156, 180 };
 
-PerlinNoise::PerlinNoise() :
-	m_chunkSize(16)
+PerlinNoise::PerlinNoise()
 {
 	for (int i : s_permutation)
 	{
@@ -64,8 +64,7 @@ PerlinNoise::PerlinNoise() :
 	m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/PerlinNoise.lua").c_str());
 }
 
-PerlinNoise::PerlinNoise(unsigned int seed) :
-	m_chunkSize(16)
+PerlinNoise::PerlinNoise(unsigned int seed)
 {
 	m_p.resize(256);
 
@@ -82,34 +81,33 @@ PerlinNoise::PerlinNoise(unsigned int seed) :
 	m_lua.RunString(qz::utils::FileIO::readAllFile("assets/scripts/PerlinNoise.lua").c_str());
 }
 
-void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, qz::Vector3 chunkPos, int chunkSize)
+void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, qz::Vector3 chunkPos)
 {
-	m_chunkSize = chunkSize;
 	const float smoothing = m_lua.Call<float>("getSmoothingFactor", chunkPos.x, chunkPos.y, chunkPos.z);
 
-	for (int x = 0; x < m_chunkSize; ++x)
+	for (int x = 0; x < Chunk::CHUNK_WIDTH; ++x)
 	{
-		for (int y = 0; y < m_chunkSize; ++y)
+		for (int y = 0; y < Chunk::CHUNK_HEIGHT; ++y)
 		{
 			if (chunkPos.y + y >= 16)
 			{
-				for (int z = 0; z < m_chunkSize; ++z)
+				for (int z = 0; z < Chunk::CHUNK_DEPTH; ++z)
 				{
-					blockArray[getVectorIndex(x, y, z)] = BlockInstance("core:air");
+					blockArray[Chunk::getVectorIndex(x, y, z)] = BlockInstance("core:air");
 				}
 				continue;
 			}
 
 			if (chunkPos.y + y < 0)
 			{
-				for (int z = 0; z < m_chunkSize; ++z)
+				for (int z = 0; z < Chunk::CHUNK_DEPTH; ++z)
 				{
-					blockArray[getVectorIndex(x, y, z)] = BlockInstance("core:air");
+					blockArray[Chunk::getVectorIndex(x, y, z)] = BlockInstance("core:air");
 				}
 				continue;
 			}
 
-			for (int z = 0; z < m_chunkSize; ++z)
+			for (int z = 0; z < Chunk::CHUNK_DEPTH; ++z)
 			{
 				// Block Position with the smoothing factor applied to it.
 				// The division by 'smoothing' helps "decide" how smooth the generated terrain will be.
@@ -120,13 +118,13 @@ void PerlinNoise::generateFor(std::vector<BlockInstance>& blockArray, qz::Vector
 				};
 				const float noise = at(blockPosWithSmoothingApplied);
 
-				const int newY = static_cast<int>(noise * m_chunkSize) % m_chunkSize;
+				const int newY = static_cast<int>(noise * Chunk::CHUNK_HEIGHT) % Chunk::CHUNK_HEIGHT;
 
-				blockArray[getVectorIndex(x, newY, z)] = BlockInstance("core:grass");
+				blockArray[Chunk::getVectorIndex(x, newY, z)] = BlockInstance("core:grass");
 
 				for (int y2 = 0; y2 < newY; ++y2)
 				{
-					blockArray[getVectorIndex(x, y2, z)] = BlockInstance("core:dirt");
+					blockArray[Chunk::getVectorIndex(x, y2, z)] = BlockInstance("core:dirt");
 				}
 			}
 		}

@@ -115,30 +115,27 @@ void GLTextureArray::add(const TexCache& cache)
 
 	for (const auto& current : cache)
 	{
-		if (m_texNames.find(current.first) == m_texNames.end())
+		int width = -1, height = -1, nbChannels = -1;
+		unsigned char* image = stbi_load(current.first.c_str(), &width, &height, &nbChannels, 0);
+		if (image != nullptr)
 		{
-			int width = -1, height = -1, nbChannels = -1;
-			unsigned char* image = stbi_load(current.first.c_str(), &width, &height, &nbChannels, 0);
-			if (image != nullptr)
-			{
-				GLCheck(glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, current.second, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image));
+			GLCheck(glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, current.second, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, image));
 
-				m_texNames[current.first] = current.second;
-			}
-			else
-			{
-				utils::Logger::instance()->log(utils::LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", current.first, " could not be found.");
-				return;
-			}
-			stbi_image_free(image);
-
-			GLCheck(glGenerateMipmap(GL_TEXTURE_2D_ARRAY));
-			GLCheck(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
-			GLCheck(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-			GLCheck(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT));
-			GLCheck(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT));
-			GLCheck(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f));
+			m_texNames[current.first] = current.second;
 		}
+		else
+		{
+			utils::Logger::instance()->log(utils::LogVerbosity::WARNING, __FILE__, __LINE__, "[RENDERING][TEXTURING]", "The texture: ", current.first, " could not be found.");
+			return;
+		}
+		stbi_image_free(image);
+
+		GLCheck(glGenerateMipmap(GL_TEXTURE_2D_ARRAY));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT));
+		GLCheck(glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT));
+		GLCheck(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 16.0f));
 	}
 
 	unbind();

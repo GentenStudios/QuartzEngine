@@ -4,6 +4,10 @@ set(voxelSources
 	#	${currentDir}/Chunk.cpp
 	#	${currentDir}/ChunkManager.cpp
 
+  #${currentDir}/Chunk.cpp
+	#${currentDir}/ChunkRenderer.cpp
+	#${currentDir}/ChunkManager.cpp
+
 	${currentDir}/Entities/Item.cpp
 	${currentDir}/Entities/ItemInstance.cpp
 
