@@ -11,7 +11,7 @@ set(voxelSources
 	${currentDir}/Entities/Item.cpp
 	${currentDir}/Entities/ItemInstance.cpp
 
-	${currentDir}/Terrain/PerlinNoise.cpp
+	#	${currentDir}/Terrain/PerlinNoise.cpp
 
 	PARENT_SCOPE
 )
