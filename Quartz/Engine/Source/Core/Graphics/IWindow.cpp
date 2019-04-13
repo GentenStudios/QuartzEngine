@@ -27,18 +27,33 @@
 
 using namespace qz::gfx;
 
-IWindow* IWindow::create(const std::string& title, const unsigned int width, const unsigned int height, std::size_t flags, RenderingAPI renderingAPI)
+IWindow* IWindow::requestWindow(RenderingAPI renderingAPI, const std::string& title, const unsigned int width, const unsigned int height, std::size_t flags)
 {
-	Context::setRenderingAPI(RenderingAPI::NONE);
-
 	switch (renderingAPI)
 	{
-	case RenderingAPI::OPENGL:	
-		Context::setRenderingAPI(RenderingAPI::OPENGL); 
+	case RenderingAPI::OPENGL:
 		return new api::gl::GLWindow(title, width, height);
 	
 	default:
 		return nullptr;
 	}
+}
+
+void IWindow::destroyWindow(IWindow* window)
+{
+	window->close();
+
+	delete window;
+}
+
+qz::Vector2 IWindow::requestPrimaryMonitorResolution()
+{
+	SDL_DisplayMode dm;
+	SDL_GetCurrentDisplayMode(0, &dm);
+
+	return {
+		dm.w,
+		dm.h
+	};
 }
 

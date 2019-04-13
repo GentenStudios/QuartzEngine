@@ -27,13 +27,12 @@
 #include <Quartz/Core/Math/Math.hpp>
 #include <Quartz/Core/Events/Event.hpp>
 #include <Quartz/Core/Graphics/IWindow.hpp>
-
-#include <functional>
+#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
 
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
-#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
+#include <vector>
 
 namespace qz
 {
@@ -50,16 +49,21 @@ namespace qz
 				 * the docs provided with the IWindow class, as GLWindow is only an implementation based on the public
 				 * API as defined in IWindow.
 				 */
-				class QZ_API GLWindow : public gfx::IWindow
+				class GLWindow : public gfx::IWindow
 				{
 				public:
 					GLWindow(const std::string& title, int width, int height);
 					~GLWindow();
 
+					RenderingAPI getRenderAPI() { return RenderingAPI::OPENGL; }
+
+					void startFrame() override;
+					void endFrame() override;
+
 					void pollEvents() override;
 					void swapBuffers() const override;
 
-					void registerEventListener(std::function<void(events::Event&)> listener) override;
+					void registerEventListener(events::IEventListener* listener) override;
 
 					void show() const override;
 					void hide() const override;
@@ -84,11 +88,8 @@ namespace qz
 					void setCursorState(gfx::CursorState state) override;
 					void setCursorPosition(Vector2 pos) override;
 					Vector2 getCursorPosition() const override;
-					bool isKeyDown(events::Key key) const override;
+					bool isKeyDown(events::Keys key) const override;
 					
-					void startFrame() override;
-					void endFrame() override;
-
 				private:
 					SDL_Window* m_window;
 					SDL_GLContext m_context;
@@ -102,7 +103,10 @@ namespace qz
 					Vector2 m_cachedScreenSize;
 
 				private:
-					void dispatchToListeners(events::Event&& event);
+					/// @brief Stores event listeners for the event dispatching system.
+					std::vector<events::IEventListener*> m_eventListeners;
+
+					void dispatchToListeners(const events::Event& event);
 				};
 			}
 		}

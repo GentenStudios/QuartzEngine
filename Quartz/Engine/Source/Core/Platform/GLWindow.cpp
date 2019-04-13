@@ -24,10 +24,6 @@
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Platform/GLWindow.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-
 #include <Quartz/Core/Utilities/Logger.hpp>
 
 #include <glad/glad.h>
@@ -48,11 +44,11 @@ void GLWindow::endFrame()
 	pollEvents();
 }
 
-void GLWindow::dispatchToListeners(events::Event&& event)
+void GLWindow::dispatchToListeners(const events::Event& event)
 {
-	for (std::function<void(events::Event&)>& eventListener : m_eventListeners)
+	for (events::IEventListener* eventListener : m_eventListeners)
 	{
-		eventListener(event);
+		eventListener->onEvent(event);
 	}
 }
 
@@ -64,7 +60,7 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-	#ifdef QZ_DEBUG
+#ifdef QZ_DEBUG
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
 #	endif
 
@@ -132,35 +128,53 @@ void GLWindow::pollEvents()
 	SDL_Event event;
 	while (SDL_PollEvent(&event) > 0)
 	{
+		using namespace events;
+		Event e;
+
 		m_gui.pollEvents(&event);
 		switch (event.type)
 		{
 		case SDL_QUIT:
-			dispatchToListeners(events::WindowCloseEvent());
-			m_running = false;
+			e.type = EventType::WINDOW_CLOSED; dispatchToListeners(e); m_running = false; break;
+		case SDL_MOUSEBUTTONDOWN:
+			e.type = EventType::MOUSE_BUTTON_PRESSED; e.mouse.button = static_cast<MouseButtons>(event.button.button);
+			e.mouse.x = event.button.x; e.mouse.y = event.button.y;
 			break;
-		case SDL_MOUSEBUTTONDOWN:	
-			dispatchToListeners(events::MouseButtonReleasedEvent(static_cast<events::MouseButton>(event.button.button), { static_cast<float>(event.button.x), static_cast<float>(event.button.y) }));
+		case SDL_MOUSEBUTTONUP:
+			e.type = EventType::MOUSE_BUTTON_RELEASED; e.mouse.button = static_cast<MouseButtons>(event.button.button);
+			dispatchToListeners(e);
 			break;
-		case SDL_MOUSEBUTTONUP:		
-			dispatchToListeners(events::MouseButtonReleasedEvent(static_cast<events::MouseButton>(event.button.button), { static_cast<float>(event.button.x), static_cast<float>(event.button.y) }));
+		case SDL_MOUSEMOTION:
+			e.type = EventType::CURSOR_MOVED; e.position.x = event.motion.x; e.position.y = event.motion.y;
+			dispatchToListeners(e);
 			break;
-		case SDL_MOUSEMOTION:		
-			dispatchToListeners(events::MouseMovedEvent({ static_cast<float>(event.motion.x), static_cast<float>(event.motion.y) }));
+		case SDL_KEYDOWN:
+			e.type = EventType::KEY_PRESSED; e.keyboard.key = static_cast<Keys>(event.key.keysym.scancode);
+			e.keyboard.mods = static_cast<Mods>(event.key.keysym.mod); // access these with bitwise operators like AND (&) and OR (|)
+			dispatchToListeners(e);
 			break;
-		case SDL_KEYDOWN:			
-			dispatchToListeners(events::KeyPressedEvent(static_cast<events::Key>(event.key.keysym.scancode), event.key.repeat));
-			break;
-		case SDL_KEYUP:				
-			dispatchToListeners(events::KeyReleasedEvent(static_cast<events::Key>(event.key.keysym.scancode)));
+		case SDL_KEYUP:
+			e.type = EventType::KEY_RELEASED; e.keyboard.key = static_cast<Keys>(event.key.keysym.scancode);
+			e.keyboard.mods = static_cast<Mods>(event.key.keysym.mod); // access these with bitwise operators like AND (&) and OR (|)
+			dispatchToListeners(e);
 			break;
 		case SDL_WINDOWEVENT:
 			switch (event.window.event)
 			{
-			case SDL_WINDOWEVENT_RESIZED:		dispatchToListeners(events::WindowResizeEvent(event.window.data1, event.window.data2)); break;
-			case SDL_WINDOWEVENT_SIZE_CHANGED:	dispatchToListeners(events::WindowResizeEvent(event.window.data1, event.window.data2)); break;
-			case SDL_WINDOWEVENT_FOCUS_GAINED:	dispatchToListeners(events::WindowFocusEvent()); break;
-			case SDL_WINDOWEVENT_FOCUS_LOST:	dispatchToListeners(events::WindowLostFocusEvent()); break;
+			case SDL_WINDOWEVENT_RESIZED:
+			case SDL_WINDOWEVENT_SIZE_CHANGED:	e.type = EventType::WINDOW_RESIZED; e.size.width = event.window.data1; 
+				e.size.width = event.window.data1; dispatchToListeners(e);
+				break;
+			case SDL_WINDOWEVENT_FOCUS_GAINED:	e.type = EventType::WINDOW_FOCUSED;   dispatchToListeners(e); break;
+			case SDL_WINDOWEVENT_FOCUS_LOST:	e.type = EventType::WINDOW_DEFOCUSED; dispatchToListeners(e); break;
+			case SDL_WINDOWEVENT_CLOSE:         e.type = EventType::WINDOW_CLOSED;    dispatchToListeners(e); break;
+			case SDL_WINDOWEVENT_MINIMIZED:     e.type = EventType::WINDOW_MINIMIZED; dispatchToListeners(e); break;
+			case SDL_WINDOWEVENT_MAXIMIZED:     e.type = EventType::WINDOW_MAXIMIZED; dispatchToListeners(e); break;
+			case SDL_WINDOWEVENT_RESTORED:      e.type = EventType::WINDOW_RESTORED;  dispatchToListeners(e); break;
+			case SDL_WINDOWEVENT_LEAVE:         e.type = EventType::CURSOR_LEFT;      dispatchToListeners(e); break;
+			case SDL_WINDOWEVENT_ENTER:         e.type = EventType::CURSOR_ENTERED;   dispatchToListeners(e); break;
+			case SDL_WINDOWEVENT_MOVED:         e.type = EventType::WINDOW_MOVED; e.position.x = event.window.data1;
+												e.position.y = event.window.data2;    dispatchToListeners(e); break;
 			default: break;
 			}
 		}
@@ -172,7 +186,7 @@ void GLWindow::swapBuffers() const
 	SDL_GL_SwapWindow(m_window);
 }
 
-void GLWindow::registerEventListener(std::function<void(events::Event&)> listener)
+void GLWindow::registerEventListener(events::IEventListener* listener)
 {
 	m_eventListeners.emplace_back(listener);
 }
@@ -242,7 +256,7 @@ bool GLWindow::isVSync() const
 	return m_vsync;
 }
 
-void GLWindow::setTitle(const std::string& title) const
+void GLWindow::setTitle(const std::string & title) const
 {
 	SDL_SetWindowTitle(m_window, title.c_str());
 }
@@ -301,7 +315,7 @@ Vector2 GLWindow::getCursorPosition() const
 	return { static_cast<float>(x), static_cast<float>(y) };
 }
 
-bool GLWindow::isKeyDown(events::Key key) const
+bool GLWindow::isKeyDown(events::Keys key) const
 {
 	return SDL_GetKeyboardState(nullptr)[static_cast<SDL_Scancode>(key)];
 }

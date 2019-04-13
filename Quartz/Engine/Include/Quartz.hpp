@@ -28,14 +28,8 @@
 #include <Quartz/Core/Utilities/FileIO.hpp>
 #include <Quartz/Core/Utilities/Config.hpp>
 
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
-
 #include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
+#include <Quartz/Core/Events/Keys.hpp>
 
 #include <Quartz/Core/Graphics/API/Context.hpp>
 #include <Quartz/Core/Graphics/API/InputLayout.hpp>
