@@ -39,6 +39,7 @@ void SDLGuiLayer::init(SDL_Window* window, SDL_GLContext* context)
 
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	ImGui_ImplSDL2_InitForOpenGL(window, context); 
 	ImGui_ImplOpenGL3_Init("#version 330 core");

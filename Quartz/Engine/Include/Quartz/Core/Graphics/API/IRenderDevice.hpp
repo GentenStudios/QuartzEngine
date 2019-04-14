@@ -21,83 +21,53 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLBuffer.hpp>
+#pragma once
 
-using namespace qz::gfx::api::gl;
-using namespace qz::gfx::api;
+#include <Quartz/Core/Utilities/HandleAllocator.hpp>
+#include <Quartz/Core/Graphics/API/InputLayout.hpp>
 
-GLBuffer::GLBuffer(BufferTarget target, BufferUsage usage) :
-	m_target(gfxToOpenGL(target)), m_usage(gfxToOpenGL(usage))
+#define DEFINE_HANDLE(Name) \
+		struct Name : public utils::Handle { }
+
+namespace qz
 {
-	GLCheck(glGenBuffers(1, &m_id));
+	namespace gfx
+	{
+		namespace api
+		{
+			DEFINE_HANDLE(VertexBufferHandle);
+			DEFINE_HANDLE(ShaderPipelineHandle);
+			DEFINE_HANDLE(UniformHandle);
+			DEFINE_HANDLE(TextureHandle);
+
+			enum class UniformType
+			{
+				SAMPLER, MAT4, VEC3, VEC2, COLOR3, INVALID
+			};
+
+			class IRenderDevice
+			{
+			public:
+				virtual void create() = 0;
+				virtual void draw(std::size_t first, std::size_t count) = 0;
+
+				virtual VertexBufferHandle createVertexBuffer() = 0;
+				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
+				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
+				
+				virtual ShaderPipelineHandle createShaderPipeline(const std::string& filepath, const InputLayout& inputLayout) = 0;
+				virtual void setShaderPipeline(ShaderPipelineHandle shader) = 0;
+
+				virtual UniformHandle createUniform(ShaderPipelineHandle shader, const char* name, UniformType type) = 0;
+				virtual void setUniformValue(UniformHandle uniform, const void* value, int num) = 0;
+
+				virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height) = 0;
+				virtual void setTexture(TextureHandle texture, int slot) = 0;
+
+				virtual void showShaderDebugUI() = 0;
+			};
+		}
+	}
 }
 
-GLBuffer::~GLBuffer()
-{
-	if (m_id != 0)
-		GLCheck(glDeleteBuffers(1, &m_id));
-}
-
-GLBuffer::GLBuffer(GLBuffer&& o) noexcept
-{
-	m_id = o.m_id;
-	o.m_id = 0;
-
-	m_size = o.m_size;
-	m_target = o.m_target;
-	m_usage = o.m_usage;
-}
-
-GLBuffer& GLBuffer::operator=(GLBuffer&& o) noexcept
-{
-	m_id = o.m_id;
-	o.m_id = 0;
-
-	m_size = o.m_size;
-	m_target = o.m_target;
-	m_usage = o.m_usage;
-
-	return *this;
-}
-
-void GLBuffer::bind()
-{
-	GLCheck(glBindBuffer(m_target, m_id));
-}
-
-void GLBuffer::unbind()
-{
-	GLCheck(glBindBuffer(m_target, 0));
-}
-
-void GLBuffer::resize(unsigned int size)
-{
-	bind();
-
-	GLCheck(glBufferData(m_target, size, nullptr, m_usage));
-	m_size = size;
-}
-
-void GLBuffer::setData(unsigned int size, const void* data)
-{
-	bind();
-	
-	GLCheck(glBufferData(m_target, size, data, m_usage));
-	m_size = size;
-}
-
-void GLBuffer::releaseDataPointer()
-{
-	bind();
-
-	GLCheck(glUnmapBuffer(m_target))
-}
-
-void* GLBuffer::retrievePointerInternal()
-{
-	bind();
-
-	return GLCheck(glMapBuffer(m_target, GL_WRITE_ONLY));
-}
-
+#undef DEFINE_HANDLE

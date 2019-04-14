@@ -7,6 +7,7 @@ set(utilityHeaders
 	${currentDir}/Logger.hpp
 	${currentDir}/FileIO.hpp
 	${currentDir}/Config.hpp
+	${currentDir}/HandleAllocator.hpp
 	
 	PARENT_SCOPE
 )

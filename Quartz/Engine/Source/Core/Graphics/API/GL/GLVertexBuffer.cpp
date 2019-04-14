@@ -21,54 +21,25 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLVertexBuffer.hpp>
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
+using namespace qz::gfx::api::gl;
+using namespace qz::gfx::api;
 
-namespace qz
+void GLVertexBuffer::create()
 {
-	namespace gfx
-	{
-		namespace api
-		{
-			namespace gl
-			{
-				class GLBuffer : public IBuffer
-				{
-				public:
-					GLBuffer(BufferTarget target, BufferUsage usage);
-
-					~GLBuffer();
-
-					GLBuffer(const GLBuffer& o) = default;
-					GLBuffer& operator=(const GLBuffer& o) = default;
-
-					GLBuffer(GLBuffer&& o) noexcept;
-					GLBuffer& operator=(GLBuffer&& o) noexcept;
-
-					void bind() override;
-					void unbind() override;
-
-					void resize(unsigned int size) override;
-					void setData(unsigned int size, const void* data) override;
-
-					void releaseDataPointer() override;
-
-				protected:
-					void* retrievePointerInternal() override;
-
-				private:
-					unsigned int m_id = 0;
-					unsigned int m_size = 0;
-
-					GLenum m_target;
-					GLenum m_usage;
-				};
-			}
-
-		}
-	}
+	glGenBuffers(1, &m_id);
 }
 
+void GLVertexBuffer::bind()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, m_id);
+}
+
+void GLVertexBuffer::bufferData(float* data, std::size_t sizebytes)
+{
+	glBindBuffer(GL_ARRAY_BUFFER, m_id);
+	glBufferData(GL_ARRAY_BUFFER, sizebytes, data, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}

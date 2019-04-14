@@ -23,50 +23,56 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Graphics/API/GFXTypes.hpp>
-
-#include <vector>
-#include <string>
+#include <cstdint>
+#include <cstddef>
 
 namespace qz
 {
-	namespace gfx
+	namespace utils
 	{
-		namespace api
+		class Handle
 		{
-			struct BufferAttribute
+		public:
+			void set(std::uint16_t value) { m_handle = value; }
+			std::uint16_t get() const { return m_handle; }
+
+			Handle()
+				: m_handle(-1)
 			{
-				unsigned int index;
+			}
 
-				DataType type;
+			bool isValid() { return m_handle == -1; }
 
-				int elementCount;
-				int countTillNextElement;
-				std::size_t offset;
-				bool normalised;
-			};
+		private:
+			std::uint16_t m_handle;	
+		};
+		
+		template <std::uint16_t TMaxNumHandles, typename THandleType>
+		class HandleAllocator
+		{
+		public:
+			HandleAllocator()
+				: m_size(0) {}
 
-			class BufferLayout
+			THandleType allocate()
 			{
-			public:
-				BufferLayout() = default;
-				~BufferLayout() = default;
+				THandleType& handle = m_handles[m_size];
+				handle.set(m_size);
 
-				BufferLayout(const BufferLayout& other) = default;
-				BufferLayout& operator=(const BufferLayout& o) = default;
-				BufferLayout(BufferLayout&& other) = default;
-				BufferLayout& operator=(BufferLayout&& o) = default;
+				m_size++;
 
-				void registerAttribute(unsigned int index, DataType type, int count, int stride, std::size_t offset, bool normalized);
-				void registerAttribute(BufferAttribute attribute);
+				return handle;
+			}
 
-				const std::vector<BufferAttribute>& getLayouts() const;
+			void free(THandleType handle)
+			{
+			}
 
-			private:
-				std::vector<BufferAttribute> m_bufferLayout;
-			};
-		}
+			std::size_t size() { return m_size; }
+
+		private:
+			THandleType   m_handles[TMaxNumHandles];
+			std::uint16_t m_size;
+		};
 	}
 }
-

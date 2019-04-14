@@ -21,24 +21,32 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
+#pragma once
 
-using namespace qz::gfx::api;
-using namespace qz::gfx;
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
 
-void BufferLayout::registerAttribute(unsigned int index, DataType type, int count, int stride, std::size_t offset, bool normalised)
+namespace qz
 {
-	m_bufferLayout.push_back({ index, type, count, stride, offset, normalised });
-}
+	namespace gfx
+	{
+		namespace api
+		{
+			namespace gl
+			{
+				class GLVertexBuffer 
+				{
+				public:
+					void create();
+					void bind();
+					void bufferData(float* data, std::size_t sizeBytes);
 
-void BufferLayout::registerAttribute(BufferAttribute attribute)
-{
-	m_bufferLayout.emplace_back(attribute);
-}
+				private:
+					GLuint m_id;
+				};
+			}
 
-const std::vector<BufferAttribute>& BufferLayout::getLayouts() const
-{
-	return m_bufferLayout;
+		}
+	}
 }
 

@@ -21,42 +21,17 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Core/Graphics/API/InputLayout.hpp>
 
-#include <Quartz.hpp>
-#include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
+using namespace qz::gfx::api;
+using namespace qz::gfx;
 
-namespace sandbox
+const VertexElementType VertexElementType::Vec2f = { DataType::FLOAT, 2 };
+const VertexElementType VertexElementType::Vec3f = { DataType::FLOAT, 3 };
+const VertexElementType VertexElementType::Vec4f = { DataType::FLOAT, 4 };
+
+InputLayout::InputLayout(std::initializer_list<VertexElement> init)
 {
-	class Sandbox : public qz::Application
-	{
-	public:
-		Sandbox();
-		~Sandbox() = default;
-
-		const ApplicationRequirements* getAppRequirements() override { return m_appRequirements; }
-		void setAppData(qz::ApplicationData* appData) override { m_appData = appData; }
-
-		void run() override;
-
-		void onEvent(events::Event& event);
-		bool onKeyPress(events::KeyPressedEvent& event);
-
-	private:
-		void showDebugUi();
-
-		qz::ApplicationRequirements* m_appRequirements = nullptr;
-		qz::ApplicationData* m_appData = nullptr;
-
-		qz::gfx::FPSCamera* m_camera = nullptr;
-		qz::gfx::api::IRenderDevice* m_renderDevice = nullptr;
-
-		bool m_debugMode = false;
-	};
+	elements.assign(init);
 }
-
-inline qz::Application* qz::createApplication()
-{
-	return new sandbox::Sandbox();
-}
-

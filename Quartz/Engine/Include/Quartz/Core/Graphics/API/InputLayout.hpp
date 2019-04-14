@@ -23,40 +23,47 @@
 
 #pragma once
 
-#include <Quartz.hpp>
-#include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Graphics/API/GFXTypes.hpp>
 
-namespace sandbox
+#include <vector>
+#include <string>
+#include <initializer_list>
+
+namespace qz
 {
-	class Sandbox : public qz::Application
+	namespace gfx
 	{
-	public:
-		Sandbox();
-		~Sandbox() = default;
+		namespace api
+		{
+			struct VertexElementType
+			{
+				DataType type;
+				int numComponents;
 
-		const ApplicationRequirements* getAppRequirements() override { return m_appRequirements; }
-		void setAppData(qz::ApplicationData* appData) override { m_appData = appData; }
+				static const VertexElementType Vec2f;
+				static const VertexElementType Vec3f;
+				static const VertexElementType Vec4f;
+			};
 
-		void run() override;
+			struct VertexElement
+			{
+				VertexElementType type;
+				int streamIndex;
+				int attributeIndex;
+				int offset;
+				bool normalized;
+			};
 
-		void onEvent(events::Event& event);
-		bool onKeyPress(events::KeyPressedEvent& event);
+			class InputLayout
+			{
+			public:
+				InputLayout(std::initializer_list<VertexElement> init);
+				InputLayout() {}
 
-	private:
-		void showDebugUi();
-
-		qz::ApplicationRequirements* m_appRequirements = nullptr;
-		qz::ApplicationData* m_appData = nullptr;
-
-		qz::gfx::FPSCamera* m_camera = nullptr;
-		qz::gfx::api::IRenderDevice* m_renderDevice = nullptr;
-
-		bool m_debugMode = false;
-	};
-}
-
-inline qz::Application* qz::createApplication()
-{
-	return new sandbox::Sandbox();
+				std::vector<VertexElement> elements;
+			};
+		}
+	}
 }
 

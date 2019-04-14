@@ -24,12 +24,10 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Math/Math.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
-#include <Quartz/Core/Graphics/API/IShaderPipeline.hpp>
+#include <Quartz/Core/Graphics/API/InputLayout.hpp>
 
 #include <vector>
-#include <string>
 
 namespace qz
 {
@@ -39,44 +37,19 @@ namespace qz
 		{
 			namespace gl
 			{
-				class GLShaderPipeline : public IShaderPipeline
+				class GLShaderPipeline
 				{
-				public:
-					GLShaderPipeline();
-					~GLShaderPipeline();
-
-					GLShaderPipeline(const GLShaderPipeline& o) = default;
-					GLShaderPipeline& operator=(const GLShaderPipeline& o) = default;
-
-					GLShaderPipeline(GLShaderPipeline&& o) noexcept;
-					GLShaderPipeline& operator=(GLShaderPipeline&& o) noexcept;
-
-					void addStage(ShaderType stage, const std::string& shaderSource) override;
-					void build() override;
-
-					void use() const override;
-
-					void setUniform1(const std::string& name, int a) const override;
-					void setUniform2(const std::string& name, int a, int b) const override;
-					void setUniform3(const std::string& name, int a, int b, int c) const override;
-					void setUniform4(const std::string& name, int a, int b, int c, int d) const override;
-
-					void setUniform1(const std::string& name, float a) const override;
-					void setUniform2(const std::string& name, float a, float b) const override;
-					void setUniform3(const std::string& name, float a, float b, float c) const override;
-					void setUniform4(const std::string& name, float a, float b, float c, float d) const override;
-
-					void setVec2(const std::string& name, const Vector2& data) const override;
-					void setVec3(const std::string& name, const Vector3& data) const override;
-					void setMat4(const std::string& name, const Matrix4x4& mat) const override;
-
-					void bindAttributeLocation(const std::string& attribName, int index) override;
-					int retrieveAttributeLocation(const std::string& attribName) override;
-
 				private:
-					unsigned int m_id;
+					GLuint m_id;
+					InputLayout m_inputLayout;
 
-					std::vector<unsigned int> m_shaders;
+				public:
+					void create(const std::string& filepath, const InputLayout& inputLayout);
+					void use();
+
+					GLuint getID() const { return m_id; }
+
+					InputLayout& getInputLayout() { return m_inputLayout; }
 				};
 			}
 		}

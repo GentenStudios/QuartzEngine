@@ -25,7 +25,6 @@
 
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
-#include <Quartz/Core/Graphics/API/ITexture.hpp>
 
 namespace qz
 {
@@ -35,36 +34,14 @@ namespace qz
 		{
 			namespace gl
 			{
-				class GLTexture : public ITexture
+				class GLTexture
 				{
 				public:
-					GLTexture();
-					~GLTexture();
-
-					GLTexture(const GLTexture& o) = default;
-					GLTexture& operator=(const GLTexture& o) = default;
-
-					GLTexture(GLTexture&& o) noexcept;
-					GLTexture& operator=(GLTexture&& o) noexcept;
-
-					void setOptions(TextureOptions options) override;
-
-					void bind(int slot = -1) const override;
-					void unbind() const override;
-
-					void setDataFromFile(const std::string& filepath) override;
-					void setDataFromMemory(const void* dataPointer) override;
+					void create(unsigned char* pixelData, int width, int height);
+					GLuint getID() const { return m_id; }
 
 				private:
-					unsigned int m_id;
-					mutable int m_slot;
-
-					bool m_flipOnX;
-					bool m_flipOnY;
-
-					GLenum m_format;
-					GLenum m_filter;
-					GLenum m_wrap;
+					GLuint m_id;
 				};
 			}
 		}

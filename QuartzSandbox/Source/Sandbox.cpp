@@ -1,4 +1,4 @@
-// Copyright 2019 Genten Studios
+
 // 
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the 
 // following conditions are met:
@@ -23,14 +23,13 @@
 
 #include <Sandbox/Sandbox.hpp>
 #include <Quartz.hpp>
-#include <Quartz/Voxels/ChunkManager.hpp>
 
-#include <luamod/luastate.h>
-#include <luamod/table.h>
-#include <glad/glad.h>
+#include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLRenderDevice.hpp>
 #include <imgui/imgui.h>
 
-#include <ctime>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 using namespace sandbox;
 using namespace qz;
@@ -46,116 +45,125 @@ Sandbox::Sandbox()
 	m_appRequirements->logVerbosity = utils::LogVerbosity::DEBUG;
 }
 
-static void QuickSetupLuaBindingsCommon(lm::LuaState& state)
+static void showHintUi()
 {
-	using namespace voxels;
-	using namespace utils;
+	const float DISTANCE = 10.0f;
+	static int corner = 1;
+	static bool p_open = true;
 
-	auto luaLog = [&](int verbosity, const char* msg) {
-		Logger::instance()->log((LogVerbosity)verbosity, "", 0, "", msg);
-	};
+	ImGuiIO& io = ImGui::GetIO();
+	if (corner != -1)
+	{
+		ImVec2 window_pos = ImVec2((corner & 1) ? io.DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? io.DisplaySize.y - DISTANCE : DISTANCE);
+		ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+		ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+	}
+	ImGui::SetNextWindowBgAlpha(0.3f); // Transparent background
+	if (ImGui::Begin("Example: Simple overlay", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
+	{
+		ImGui::Text("Press K to toggle developer mode!");
+	}
+	ImGui::End();
+}
 
-	state.SetGlobal("DEBUG", (int)LogVerbosity::DEBUG);
-	state.SetGlobal("INFO", (int)LogVerbosity::INFO);
-	state.SetGlobal("WARNING", (int)LogVerbosity::WARNING);
+void Sandbox::showDebugUi()
+{
+		static bool shaderDebugUi = true, imguiDemo = false;
+	if (m_debugMode)
+	{
 
-	state.SetGlobal("BLOCK_SOLID", (int)BlockType::SOLID);
-	state.SetGlobal("BLOCK_GAS", (int)BlockType::GAS);
-	state.SetGlobal("BLOCK_LIQUID", (int)BlockType::LIQUID);
-	state.SetGlobal("BLOCK_OBJECT", (int)BlockType::OBJECT);
-	state.SetGlobal("BLOCK_WATER", (int)BlockType::WATER);
+		ImGui::BeginMainMenuBar();
+		if (ImGui::MenuItem("Shader Debug UI"))
+		{
+			shaderDebugUi = !shaderDebugUi;
+		}
+		if (ImGui::MenuItem("ImGui Demo"))
+		{
+			imguiDemo = !imguiDemo;
+		}
 
-	state.Register("px_log", luaLog);
+		ImGui::EndMainMenuBar();
 
-	auto luaRegisterBlock = [&](std::string blockid, lm::Table blockInfo) {
-		std::string displayname = blockInfo.GetProperty<std::string>("displayname", "<unknownblockname>");
-		int blockType = blockInfo.GetProperty("type", (int)BlockType::SOLID);
-		lm::Array textures = blockInfo.GetProperty<lm::Array>("textures");
-		RegistryBlock block(blockid, displayname, 100, (BlockType)blockType);
-		block.setBlockTextures(textures.ToVector<std::string>());
+		if (imguiDemo)
+		{
+			ImGui::ShowDemoWindow();
+		}
 
-		BlockLibrary::get()->registerBlock(block);
-	};
-
-	state.Register("px_register_block", luaRegisterBlock);
+		if (shaderDebugUi)
+		{
+			m_renderDevice->showShaderDebugUI();
+		}
+	}
 }
 
 void Sandbox::run()
 {
-	QZ_REGISTER_CONFIG("Controls");
+	using namespace gfx::api;
+	using namespace gfx::api::gl;
 
 	gfx::IWindow* window = m_appData->window;
+	window->registerEventListener([&](qz::events::Event& e) { onEvent(e); });
 
-	m_camera = new gfx::FPSCamera(window);
+	m_renderDevice = new GLRenderDevice();
+	m_renderDevice->create();
+	
+	float bottomTriangleVertices[] = {
+		 0.5f, -0.5f, 0.0f, 1.f, 0.f,
+		-0.5f, -0.5f, 0.0f, 0.f, 0.0f,
+		 0.0f,  0.0f, 0.0f, 0.5f, 0.5f
+	};
 
-	window->registerEventListener(std::bind(&Sandbox::onEvent, this, std::placeholders::_1));
+	float topTriangleVertices[] = {
+		 0.5f, 0.5f, 0.0f, 0.f, 1.f,
+		-0.5f, 0.5f, 0.0f, 1.f, 1.f,
+		 0.0f, 0.0f, 0.0f, 0.5f, 0.5f
+	};
 
-	using namespace gfx::api;
-	using namespace voxels;
+	InputLayout layout = {
+		{ VertexElementType::Vec3f, 0, 0, 0,                 false },
+		{ VertexElementType::Vec2f, 0, 1, 3 * sizeof(float), false }
+	};
 
-	BlockLibrary::get()->init();
+	VertexBufferHandle bufferTriangleBuffer = m_renderDevice->createVertexBuffer();
+	m_renderDevice->setBufferData(bufferTriangleBuffer, bottomTriangleVertices, sizeof(bottomTriangleVertices));
 
-	lm::LuaState luaState;
-	QuickSetupLuaBindingsCommon(luaState);
-	luaState.RunFile("assets/scripts/index.lua");
+	VertexBufferHandle topTriangleBuffer = m_renderDevice->createVertexBuffer();
+	m_renderDevice->setBufferData(topTriangleBuffer, topTriangleVertices, sizeof(topTriangleVertices));
 
-	RegistryBlock air("core:air", "Air", 100, BlockType::GAS);
+	ShaderPipelineHandle shader = m_renderDevice->createShaderPipeline("assets/shaders/basic.shader", layout);
+	UniformHandle colorHandle = m_renderDevice->createUniform(shader, "u_color", UniformType::COLOR3);
+	UniformHandle samplerUniform = m_renderDevice->createUniform(shader, "u_sampler", UniformType::SAMPLER);
+	int id = 0;
+	m_renderDevice->setUniformValue(samplerUniform, &id, 1);
 
-	BlockLibrary::get()->registerBlock(air);
+	int width = -1, height = -1, nbChannels = -1;
+	unsigned char* image = stbi_load("assets/textures/dirt.png", &width, &height, &nbChannels, 0);
+	TextureHandle texture = m_renderDevice->createTexture(image, width, height);
 
-	auto shader = IShaderPipeline::generateShaderPipeline();
-	shader->addStage(ShaderType::VERTEX_SHADER, utils::FileIO::readAllFile("assets/shaders/main.vert"));
-	shader->addStage(ShaderType::FRAGMENT_SHADER, utils::FileIO::readAllFile("assets/shaders/main.frag"));
-	shader->build();
+	float color[3] = { 1.0f, 1.0f, 1.0f };
+	m_renderDevice->setUniformValue(colorHandle, color, 1);
 
-	voxels::ChunkManager* world = new voxels::ChunkManager("core:air", time(nullptr));
-
-	world->testGeneration();
-
-	const Matrix4x4 model;
-
-	std::size_t fpsLastTime = SDL_GetTicks();
-	int fpsCurrent = 0; // the current FPS.
-	int fpsFrames = 0; // frames passed since the last recorded fps.
-
-	float last = static_cast<float>(SDL_GetTicks());
+	m_renderDevice->setShaderPipeline(shader);
 	while (window->isRunning())
 	{
 		window->startFrame();
-
-		fpsFrames++;
-		if (fpsLastTime < SDL_GetTicks() - 1000)
-		{
-			fpsLastTime = SDL_GetTicks();
-			fpsCurrent = fpsFrames;
-			fpsFrames = 0;
-		}
-
-		const float now = static_cast<float>(SDL_GetTicks());
-		const float dt = now - last;
-		last = now;
-
-		m_camera->tick(dt);
-
+		
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.3f, 0.5f, 0.7f, 1.0f);
+		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
-		shader->use();
-		shader->setMat4("u_projection", m_camera->getProjection());
-		shader->setMat4("u_view", m_camera->calculateViewMatrix());
-		shader->setMat4("u_model", model);
+		showHintUi();
+		showDebugUi();
 
-		world->render(10);  // should be in the settings (the chunks actualization factor, here: 10 per frame)
+		m_renderDevice->setTexture(texture, 0);
 
-		ImGui::Begin("Debug Information");
-		ImGui::Text("FPS: %d", fpsCurrent);
-		ImGui::Text("Frame Time: %f ms", dt);
-		ImGui::End();
+		m_renderDevice->setVertexBufferStream(bufferTriangleBuffer, 0, 5 * sizeof(float), 0);
+		m_renderDevice->draw(0, 3);
+
+		m_renderDevice->setVertexBufferStream(topTriangleBuffer, 0, 5 * sizeof(float), 0);
+		m_renderDevice->draw(0, 3);
 
 		window->endFrame();
 	}
-
-	delete world;
 }
 
 void Sandbox::onEvent(events::Event& event)
@@ -170,6 +178,10 @@ bool Sandbox::onKeyPress(events::KeyPressedEvent& event)
 	if (event.getKeyCode() == events::Key::KEY_ESCAPE)
 	{
 		m_camera->enable(!m_camera->isEnabled());
+	}
+	else if (event.getKeyCode() == events::Key::KEY_K)
+	{
+		m_debugMode = !m_debugMode;
 	}
 
 	return true;
