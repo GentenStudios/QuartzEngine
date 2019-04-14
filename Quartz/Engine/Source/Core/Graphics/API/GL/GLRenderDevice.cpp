@@ -25,22 +25,27 @@ void GLRenderDevice::create()
 void GLRenderDevice::showShaderDebugUI()
 {
 	ImGui::Begin("Shader Debug UI");
-	if (ImGui::CollapsingHeader("Uniforms", ImGuiTreeNodeFlags_DefaultOpen)) {
-		for (int i = 0; i < m_uniformHandleAllocator.size(); i++)
+
+	if (ImGui::CollapsingHeader("Uniforms", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		for (std::size_t i = 0; i < m_uniformHandleAllocator.size(); i++)
 		{
 			Uniform& uniform = m_uniforms[i];
 			GLShaderPipeline& shader = m_shaders[uniform.shader.get()];
 			shader.use();
 
-			switch (uniform.type) {
+			switch (uniform.type)
+			{
 			case UniformType::COLOR3:
-				if (ImGui::ColorPicker3(uniform.name, uniform.userdata.vec3)) {
+				if (ImGui::ColorPicker3(uniform.name, uniform.userdata.vec3))
+				{
 					glUniform3f(uniform.location, uniform.userdata.vec3[0], uniform.userdata.vec3[1], uniform.userdata.vec3[2]);
 				}
 				break;
 			}
 		}
 	}
+
 	ImGui::End();
 }
 
