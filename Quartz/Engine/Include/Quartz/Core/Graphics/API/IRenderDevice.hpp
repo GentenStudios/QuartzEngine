@@ -38,7 +38,7 @@ namespace qz {
 			DEFINE_HANDLE(TextureHandle);
 
 			enum class UniformType {
-				SAMPLER, MAT4, VEC3, VEC2, COLOR3
+				SAMPLER, MAT4, VEC3, VEC2, COLOR3, INVALID
 			};
 
 			class IRenderDevice {

@@ -7,6 +7,12 @@
 using namespace qz::gfx::api::gl;
 using namespace qz::gfx::api;
 
+Uniform::Uniform()
+	: type(UniformType::INVALID), location(-1), name(nullptr)
+{
+	std::memset(userdata.vec2, 0, sizeof(userdata));
+}
+
 void GLRenderDevice::create()
 {
 	glGenVertexArrays(1, &m_vao);
