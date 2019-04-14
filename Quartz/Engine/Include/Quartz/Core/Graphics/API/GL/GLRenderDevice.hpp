@@ -65,27 +65,6 @@ namespace qz
 
 				class GLRenderDevice : public IRenderDevice
 				{
-				private:
-					GLuint m_vao;
-
-				private:
-					utils::HandleAllocator<32, VertexBufferHandle> m_vertexBufferHandles;
-					GLVertexBuffer                                 m_vertexBuffers[32];
-
-					utils::HandleAllocator<32, ShaderPipelineHandle> m_shaderHandles;
-					GLShaderPipeline m_shaders[32];
-
-					utils::HandleAllocator<32, UniformHandle>      m_uniformHandleAllocator;
-					Uniform m_uniforms[32];
-
-					utils::HandleAllocator<32, TextureHandle>      m_textureHandleAllocator;
-					GLTexture m_textures[32];
-
-					ShaderPipelineHandle m_boundShader;
-
-					static constexpr int NUM_STREAMS = 32;
-					VertexStream m_vertexStreams[NUM_STREAMS];
-
 				public:
 					GLRenderDevice() = default;
 					~GLRenderDevice() = default;
@@ -108,6 +87,26 @@ namespace qz
 					virtual void setTexture(TextureHandle texture, int slot);
 
 					void showShaderDebugUI();
+
+				private:
+					GLuint m_vao;
+
+					utils::HandleAllocator<32, VertexBufferHandle>   m_vertexBufferHandles;
+					GLVertexBuffer                                   m_vertexBuffers[32];
+
+					utils::HandleAllocator<32, ShaderPipelineHandle> m_shaderHandles;
+					GLShaderPipeline                                 m_shaders[32];
+
+					utils::HandleAllocator<32, UniformHandle>        m_uniformHandleAllocator;
+					Uniform                                          m_uniforms[32];
+
+					utils::HandleAllocator<32, TextureHandle>        m_textureHandleAllocator;
+					GLTexture                                        m_textures[32];
+
+					ShaderPipelineHandle                             m_boundShader;
+
+					static constexpr int                             NUM_STREAMS = 32;
+					VertexStream                                     m_vertexStreams[NUM_STREAMS];
 				};
 			}
 		}
