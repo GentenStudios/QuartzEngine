@@ -37,7 +37,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				class QZ_API GLShaderPipeline
+				class GLShaderPipeline
 				{
 				private:
 					GLuint m_id;

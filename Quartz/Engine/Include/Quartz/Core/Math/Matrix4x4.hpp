@@ -34,7 +34,7 @@ namespace qz
 		/**
 		 * @brief Represents a column major 4x4 Matrix of floats.
 		 */
-		struct QZ_API Matrix4x4
+		struct Matrix4x4
 		{
 			/// @brief The 16 float array that stores the matrix's elements sequentially.
 			float elements[16];

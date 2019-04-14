@@ -36,7 +36,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				class QZ_API GLTextureArray : public ITextureArray
+				class GLTextureArray : public ITextureArray
 				{
 				public:
 					GLTextureArray();

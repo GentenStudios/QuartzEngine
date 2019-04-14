@@ -65,7 +65,7 @@ namespace qz
 		 * This class in particular just returns a pointer to a new window created and allocated on the heap. The window created isn't really a "window", but more like an
 		 * object of a class, such as SDLWindow.
 		 */
-		class QZ_API IWindow
+		class IWindow
 		{
 		public:
 			/**

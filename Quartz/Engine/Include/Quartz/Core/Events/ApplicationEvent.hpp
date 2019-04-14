@@ -38,7 +38,7 @@ namespace qz
 		 * just for convenience. This does NOT have to be used. It is only recommended so a game can properly shut down, or continue being run
 		 * properly after the window closes.
 		 */
-		class QZ_API WindowCloseEvent : public Event
+		class WindowCloseEvent : public Event
 		{
 		public:
 			WindowCloseEvent() = default;
@@ -57,7 +57,7 @@ namespace qz
 		 * width and height of the window. These variables can be accessed through the getWidth and getHeight methods, and used for things
 		 * such as resizing a camera's projection matrix, or resizing an OpenGL Viewport.
 		 */
-		class QZ_API WindowResizeEvent : public Event
+		class WindowResizeEvent : public Event
 		{
 		public:
 			/**
@@ -97,7 +97,7 @@ namespace qz
 		 * Window Focusing is still important as things should lose control of things such as mice once a window has lost focus, and
 		 * should retake control of things such as, you guessed it, mice, once a window has regained focus.
 		 */
-		class QZ_API WindowFocusEvent : public Event
+		class WindowFocusEvent : public Event
 		{
 		public:
 			/**
@@ -119,7 +119,7 @@ namespace qz
 		 * Losing focus is still important as things should lose control of things such as mice once a window has lost focus, and
 		 * should retake control of things such as, you guessed it, mice, once a window has regained focus.
 		 */
-		class QZ_API WindowLostFocusEvent : public Event
+		class WindowLostFocusEvent : public Event
 		{
 		public:
 			/**
@@ -140,7 +140,7 @@ namespace qz
 		 * Each "tick" (for the engine's definition) is the start of a new iteration of the main game loop. This is NOT implemented as of yet,
 		 * and may even be removed at a later date if a necessary need/implementation is not necessary or already completed.
 		 */
-		class QZ_API AppTickEvent : public Event
+		class AppTickEvent : public Event
 		{
 		public:
 			/**

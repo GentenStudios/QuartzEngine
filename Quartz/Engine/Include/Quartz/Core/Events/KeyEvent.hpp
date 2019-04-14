@@ -39,7 +39,7 @@ namespace qz
 		 * tracks all input. These events are polled like all other events, and are therefore NOT viable solutions for input in things like
 		 * Cameras and other modules which require key data on the spot.
 		 */
-		class QZ_API KeyEvent : public Event
+		class KeyEvent : public Event
 		{
 		public:
 			/**
@@ -72,7 +72,7 @@ namespace qz
 		 * then after a second, it starts to spam the same letter again and again, and you don't have to keep pressing it. This piece of data is often
 		 * not required, but it is provided in the slim case that it may be needed.
 		 */
-		class QZ_API KeyPressedEvent : public KeyEvent
+		class KeyPressedEvent : public KeyEvent
 		{
 		public:
 			/**
@@ -102,7 +102,7 @@ namespace qz
 		 * Key Release Events don't require any more data than is provided by the KeyEvent. Key Releases are when a key is released from being pressed down. This
 		 * often is not required, however can be useful in certain circumstances, so is there in case.
 		 */
-		class QZ_API KeyReleasedEvent : public KeyEvent
+		class KeyReleasedEvent : public KeyEvent
 		{
 		public:
 			/**

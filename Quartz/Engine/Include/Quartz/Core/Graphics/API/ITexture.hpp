@@ -76,7 +76,7 @@ namespace qz
 				{}
 			};
 
-			class QZ_API ITextureObject
+			class ITextureObject
 			{
 			public:
 				virtual ~ITextureObject() = default;
@@ -85,7 +85,7 @@ namespace qz
 				virtual void unbind() const = 0;
 			};
 
-			class QZ_API ITexture : public ITextureObject
+			class ITexture : public ITextureObject
 			{
 			public:
 				static GraphicsResource<ITexture> generateTexture(TextureOptions options);

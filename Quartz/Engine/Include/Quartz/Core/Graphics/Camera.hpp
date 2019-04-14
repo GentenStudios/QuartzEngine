@@ -41,7 +41,7 @@ namespace qz
 		 * This uses the "tick" function on every iteration of the main game loop to determine movement
 		 * from the user.
 		 */
-		class QZ_API FPSCamera
+		class FPSCamera
 		{
 		public:
 			/**
