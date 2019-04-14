@@ -116,7 +116,7 @@ UniformHandle GLRenderDevice::createUniform(ShaderPipelineHandle shaderHandle,co
 
 	UniformHandle handle = m_uniformHandleAllocator.allocate();
 	Uniform& uniform = m_uniforms[handle.get()];
-	uniform.location = GLCheck(glGetUniformLocation(shader.getId(), name));
+	uniform.location = GLCheck(glGetUniformLocation(shader.getID(), name));
 	uniform.type = type;
 	uniform.shader = shaderHandle;
 	uniform.name = name;
