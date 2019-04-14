@@ -29,19 +29,24 @@
 #define DEFINE_HANDLE(Name) \
 		struct Name : public utils::Handle { }
 
-namespace qz {
-	namespace gfx {
-		namespace api {
+namespace qz
+{
+	namespace gfx
+	{
+		namespace api
+		{
 			DEFINE_HANDLE(VertexBufferHandle);
 			DEFINE_HANDLE(ShaderPipelineHandle);
 			DEFINE_HANDLE(UniformHandle);
 			DEFINE_HANDLE(TextureHandle);
 
-			enum class UniformType {
+			enum class UniformType
+			{
 				SAMPLER, MAT4, VEC3, VEC2, COLOR3, INVALID
 			};
 
-			class IRenderDevice {
+			class IRenderDevice
+			{
 			public:
 				virtual void create() = 0;
 				virtual void draw(std::size_t first, std::size_t count) = 0;
@@ -61,7 +66,6 @@ namespace qz {
 
 				virtual void showShaderDebugUI() = 0;
 			};
-
 		}
 	}
 }

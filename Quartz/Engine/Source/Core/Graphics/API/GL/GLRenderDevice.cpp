@@ -163,5 +163,5 @@ void GLRenderDevice::setTexture(TextureHandle texture, int slot)
 	GLTexture& texData = m_textures[texture.get()];
 
 	GLCheck(glActiveTexture(GL_TEXTURE0 + slot));
-	GLCheck(glBindTexture(GL_TEXTURE_2D, texData.getId()))
+	GLCheck(glBindTexture(GL_TEXTURE_2D, texData.getID()))
 }
