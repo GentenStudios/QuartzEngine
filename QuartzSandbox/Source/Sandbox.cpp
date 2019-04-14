@@ -91,7 +91,7 @@ void Sandbox::showDebugUi()
 
 		if (shaderDebugUi)
 		{
-			m_renderDevice->showShaderDebugUi();
+			m_renderDevice->showShaderDebugUI();
 		}
 	}
 }

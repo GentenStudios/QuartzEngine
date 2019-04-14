@@ -16,7 +16,7 @@ void GLRenderDevice::create()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 }
 
-void GLRenderDevice::showShaderDebugUi()
+void GLRenderDevice::showShaderDebugUI()
 {
 	ImGui::Begin("Shader Debug UI");
 	if (ImGui::CollapsingHeader("Uniforms", ImGuiTreeNodeFlags_DefaultOpen)) {

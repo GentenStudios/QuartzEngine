@@ -59,7 +59,7 @@ namespace qz {
 				virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height) = 0;
 				virtual void setTexture(TextureHandle texture, int slot) = 0;
 
-				virtual void showShaderDebugUi() = 0;
+				virtual void showShaderDebugUI() = 0;
 			};
 
 		}

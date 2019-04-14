@@ -33,7 +33,8 @@
 namespace qz { namespace gfx { namespace api { namespace gl {
 	struct VertexStream {
 		VertexBufferHandle buffer;
-		int stride, offset;
+		int stride = 0;
+		int offset = 0;
 		bool active = false;
 	};
 
@@ -74,6 +75,12 @@ namespace qz { namespace gfx { namespace api { namespace gl {
 		VertexStream m_vertexStreams[NUM_STREAMS];
 
 	public:
+		GLRenderDevice() = default;
+		~GLRenderDevice() = default;
+
+		GLRenderDevice(const GLRenderDevice& other) = delete;
+
+
 		virtual void create();
 		virtual VertexBufferHandle createVertexBuffer();
 		virtual void draw(std::size_t first, std::size_t count);
@@ -89,6 +96,6 @@ namespace qz { namespace gfx { namespace api { namespace gl {
 		virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height);
 		virtual void setTexture(TextureHandle texture, int slot);
 
-		void showShaderDebugUi();
+		void showShaderDebugUI();
 	};
 }}}}
