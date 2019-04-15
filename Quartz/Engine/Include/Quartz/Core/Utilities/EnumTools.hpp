@@ -43,7 +43,7 @@ namespace qz
 	template<typename Enum, typename = typename std::enable_if<EnableBitWiseOperators<Enum>::value>::type>
 	bool hasFlag(Enum flags, Enum lookFor)
 	{
-		using Underlying = typename std::underlying_type_t<Enum>;
+		using Underlying = typename std::underlying_type<Enum>::type;
 		return static_cast<Underlying>(flags & lookFor);
 	}
 }
