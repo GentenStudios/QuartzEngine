@@ -60,9 +60,18 @@ int main(int argc, char** argv)
 
 	Engine::instance()->initialize(EngineOptions::INIT_EVERYTHING, { "quartz.log", utils::LogVerbosity::DEBUG, gfx::RenderingAPI::OPENGL });
 
-	Sandbox* application = new Sandbox();
-	application->run();
-	delete application;
+	auto time = Measure<>::execution([]()
+	{
+		for (int i = 0; i < 10000; ++i)
+			LDEBUG("This is an amazing debug message: ", i);
+	});
+
+	LDEBUG("It takes, ", time, " milliseconds to push 10k log messages.");
+	LDEBUG("It takes, ", time / 10000.f, " milliseconds to push a single log message.");
+
+	//Sandbox* application = new Sandbox();
+	//application->run();
+	//delete application;
 
 	Engine::instance()->shutdown();
 

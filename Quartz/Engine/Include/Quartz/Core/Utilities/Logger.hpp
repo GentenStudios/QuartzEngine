@@ -111,7 +111,7 @@ namespace qz
 				ss << message;
 				log(ss, args...);
 
-				if (m_useThreads)
+				if (verbosity != LogVerbosity::FATAL && m_useThreads)
 					m_worker->enqueueData({ verbosity, errorFile, lineNumber, ss.str() });
 				else
 					logMessage(verbosity, errorFile, lineNumber, ss.str());
