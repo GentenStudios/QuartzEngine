@@ -34,7 +34,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				class QZ_API GLTexture
+				class GLTexture
 				{
 				public:
 					void create(unsigned char* pixelData, int width, int height);

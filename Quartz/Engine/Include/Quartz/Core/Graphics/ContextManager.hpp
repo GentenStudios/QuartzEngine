@@ -23,32 +23,24 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Graphics/API/GraphicsResource.hpp>
-#include <Quartz/Core/Graphics/API/ITexture.hpp>
-
 namespace qz
 {
 	namespace gfx
 	{
-		namespace api
+		enum class RenderingAPI
 		{
-			class QZ_API IFramebuffer
-			{
-			public:
-				static GraphicsResource<IFramebuffer> generateFramebuffer();
-				virtual ~IFramebuffer() = default;
+			OPENGL
+		};
 
-				virtual void bind() const = 0;
-				virtual void unbind() const = 0;
+		class ContextManager
+		{
+		public:
+			static RenderingAPI getRenderingAPI() { return m_renderingAPI; }
+			static void setRenderingAPI(RenderingAPI api) { m_renderingAPI = api; }
 
-				virtual void reset() = 0;
-
-				virtual void getSize(int& x, int& y) const = 0;
-
-				virtual ITexture* getTexture() const = 0;
-			};
-		}
+		private:
+			static RenderingAPI m_renderingAPI;
+		};
 	}
 }
 

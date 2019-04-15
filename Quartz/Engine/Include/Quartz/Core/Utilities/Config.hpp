@@ -24,7 +24,7 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
+#include <Quartz/Core/Events/Keys.hpp>
 
 #include <string>
 #include <unordered_map>
@@ -44,7 +44,7 @@ namespace qz
 		 * @brief Class for Configuration File loading and interpreting.
 		 *
 		 */
-		class QZ_API ConfigFile
+		class ConfigFile
 		{
 		public:
 			/*
@@ -103,7 +103,7 @@ namespace qz
 			 * @param defaultReturn The integer to be returned if the key/value/section doesn't exist.
 			 * @return If the key/value/section all exist then return the loaded value from the ini file, otherwise return the default.
 			 */
-			events::Key getScancode(const std::string& section, const std::string& key, events::Key defaultReturn) const;
+			events::Keys getScancode(const std::string& section, const std::string& key, events::Keys defaultReturn) const;
 
 			/**
 			 * @brief Return's if the .ini file for this config file exists on disk. This allows for cleaner handling of the file not existing.

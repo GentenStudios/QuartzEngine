@@ -22,21 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/Context.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLBuffer.hpp>
+#include <Quartz/Core/Graphics/ContextManager.hpp>
 
-using namespace qz::gfx::api;
-
-GraphicsResource<IBuffer> IBuffer::generateBuffer(BufferTarget target, BufferUsage usage)
-{
-	switch (Context::getRenderingAPI())
-	{
-	case RenderingAPI::OPENGL:
-		return GraphicsResource<IBuffer>(new gl::GLBuffer(target, usage));
-
-	default:
-		return nullptr;
-	}
-}
-
+using namespace qz::gfx;
+RenderingAPI ContextManager::m_renderingAPI = RenderingAPI::OPENGL;

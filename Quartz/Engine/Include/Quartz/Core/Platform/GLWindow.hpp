@@ -52,10 +52,10 @@ namespace qz
 				class GLWindow : public gfx::IWindow
 				{
 				public:
-					GLWindow(const std::string& title, int width, int height);
+					GLWindow(const std::string& title, int width, int height, WindowFlags flags);
 					~GLWindow();
 
-					RenderingAPI getRenderAPI() { return RenderingAPI::OPENGL; }
+					RenderingAPI getRenderAPI() const override { return RenderingAPI::OPENGL; }
 
 					void startFrame() override;
 					void endFrame() override;

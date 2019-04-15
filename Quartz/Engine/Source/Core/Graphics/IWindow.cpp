@@ -24,15 +24,27 @@
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Graphics/IWindow.hpp>
 #include <Quartz/Core/Platform/GLWindow.hpp>
+#include <Quartz/Core/Graphics/ContextManager.hpp>
+#include <Quartz/Core/Engine.hpp>
 
 using namespace qz::gfx;
 
-IWindow* IWindow::requestWindow(RenderingAPI renderingAPI, const std::string& title, const unsigned int width, const unsigned int height, std::size_t flags)
+IWindow* IWindow::requestWindow(const std::string& title, const unsigned int width, const unsigned int height, WindowFlags flags)
 {
+	if (!Engine::instance()->graphicsReady())
+	{
+		LFATAL("A window is being created without initialization of Quartz's Graphics subsystem. \n"
+			"Please initialize the graphics subsystem through the Engine class.");
+
+		exit(EXIT_FAILURE);
+	}
+
+	RenderingAPI renderingAPI = ContextManager::getRenderingAPI();
+
 	switch (renderingAPI)
 	{
 	case RenderingAPI::OPENGL:
-		return new api::gl::GLWindow(title, width, height);
+		return new api::gl::GLWindow(title, width, height, flags);
 	
 	default:
 		return nullptr;
@@ -52,8 +64,7 @@ qz::Vector2 IWindow::requestPrimaryMonitorResolution()
 	SDL_GetCurrentDisplayMode(0, &dm);
 
 	return {
-		dm.w,
-		dm.h
+		static_cast<float>(dm.w),
+		static_cast<float>(dm.h)
 	};
 }
-

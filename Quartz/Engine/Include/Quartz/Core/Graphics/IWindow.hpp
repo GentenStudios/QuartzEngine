@@ -10,8 +10,8 @@
 // following disclaimer in the documentation and/or other materials provided with the distribution.
 // 
 // 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote 
-// products derived from this software without specific prior written permission.
-// 
+// // products derived from this software without specific prior written permission.
+
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED 
 // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A 
 // PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY 
@@ -20,13 +20,16 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
-
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Core/Math/Math.hpp>
+#include <Quartz/Core/Graphics/ContextManager.hpp>
 #include <Quartz/Core/Events/IEventListener.hpp>
 #include <Quartz/Core/Events/Event.hpp>
+#include <Quartz/Core/Utilities/EnumTools.hpp>
+
+#include <string>
 
 namespace qz
 {
@@ -35,7 +38,7 @@ namespace qz
 		/**
 		 * @brief The flags for when creating a window. Currently unused, however, is not too difficult to implement.
 		 * 
-		 * These should be used like bitflags, using bitwise operators. They are currently unimplemented but will be in the near future.
+		 * These should be used like bitflags, using bitwise operators.
 		 */
 		enum class WindowFlags : unsigned int
 		{
@@ -60,20 +63,12 @@ namespace qz
 		};
 
 		/**
-		 * @brief An enum for selecting the Rendering API an application desires.
-		 */
-		enum class RenderingAPI : int
-		{
-			OPENGL
-		};
-
-		/**
 		 * @brief The interfacing class for creating a window.
 		 *
 		 * This class in particular just returns a pointer to a new window created and allocated on the heap. The window created isn't really a "window", but more like an
 		 * object of a class, such as SDLWindow.
 		 */
-		class QZ_API IWindow
+		class IWindow
 		{
 		public:
 			/**
@@ -85,7 +80,7 @@ namespace qz
 			 * @param flags     Special flags dictating certain behaviour within the window.
 			 * @return IWindow* The respective object for the class depicted by the WindowingAPI parameter.
 			 */
-			static IWindow* requestWindow(RenderingAPI renderingAPI, const std::string& title, unsigned int width, unsigned int height, std::size_t flags);
+			static IWindow* requestWindow(const std::string& title, unsigned int width, unsigned int height, WindowFlags flags);
 
 			/**
 			 * @brief Destroys the window object provided.
@@ -104,7 +99,7 @@ namespace qz
 			/**
 			 * @brief Gets the Render API/Backend used for the window, like OpenGL.
 			 */
-			virtual RenderingAPI getRenderAPI() = 0;
+			virtual RenderingAPI getRenderAPI() const = 0;
 
 			/**
 			 * @brief Calls specific functions which should be ready for the start of a frame.
@@ -280,10 +275,9 @@ namespace qz
 			 * @return True if the key is being pressed, false if not.
 			 */
 			virtual bool isKeyDown(events::Keys key)	const = 0;
-			
-
-		protected:
-
 		};
 	}
 }
+
+// Enables the bitwise operator overloads so we can use WindowFlags like actual bitflags.
+ENABLE_BITMASK_OPERATORS(qz::gfx::WindowFlags)

@@ -32,7 +32,7 @@ namespace qz
 		/**
 		 * @brief File Input/Output wrapping class.
 		 */
-		class QZ_API FileIO
+		class FileIO
 		{
 		public:
 			/**

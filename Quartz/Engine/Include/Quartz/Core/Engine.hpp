@@ -23,20 +23,51 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Core/Graphics/ContextManager.hpp>
 
-#include <Quartz/Core/Graphics/API/GraphicsResource.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/InputLayout.hpp>
-#include <Quartz/Core/Graphics/API/IShaderPipeline.hpp>
+#include <SDL.h>
 
 namespace qz
 {
-	namespace gfx
+	struct ApplicationRequirements
 	{
-		namespace api
-		{
-		}
-	}
-}
+		std::string logFile;
+		utils::LogVerbosity logVerbosity;
 
+		gfx::RenderingAPI renderAPI = gfx::RenderingAPI::OPENGL;
+
+		ApplicationRequirements(const std::string& logFile, utils::LogVerbosity logVerb = utils::LogVerbosity::INFO, gfx::RenderingAPI renderAPI = gfx::RenderingAPI::OPENGL) :
+			logFile(logFile), logVerbosity(logVerb), renderAPI(renderAPI)
+		{}
+	};
+
+	class Engine
+	{
+	public:
+		enum Options : int
+		{
+			ENGINE_ALLOW_THREADS = 1 << 0,
+			ENGINE_INIT_LOGGER = 1 << 1,
+			ENGINE_INIT_GRAPHICS = 1 << 2,
+
+			ENGINE_INIT_EVERYTHING = ENGINE_ALLOW_THREADS | ENGINE_INIT_LOGGER | ENGINE_INIT_GRAPHICS,
+			ENGINE_INIT_MINIMAL = ENGINE_ALLOW_THREADS | ENGINE_INIT_LOGGER,
+		};
+
+		static Engine* instance();
+
+		void initialize(Options flags, const ApplicationRequirements& requirements);
+		void shutdown();
+
+		bool threadsAllowed() const { return m_threadsAllowed; }
+		bool graphicsReady() const { return m_graphicsInitialized; }
+
+	private:
+		Engine() {}
+		~Engine() {}
+
+		bool m_threadsAllowed = false;
+		bool m_graphicsInitialized = false;
+	};
+}

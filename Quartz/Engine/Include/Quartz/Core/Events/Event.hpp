@@ -25,14 +25,12 @@
 
 #include <SDL.h>
 
+#include <Quartz/Core/Events/Keys.hpp>
+
 namespace qz
 {
 	namespace events
 	{
-		enum class Keys;
-		enum class Mods;
-		enum class MouseButtons;
-
 		struct Position
 		{
 			int x;

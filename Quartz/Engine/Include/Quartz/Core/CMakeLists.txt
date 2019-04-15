@@ -14,6 +14,7 @@ set(coreHeaders
 	${utilityHeaders}
 
 	${currentDir}/Core.hpp
+	${currentDir}/Engine.hpp
 
 	${currentDir}/UniversalDoxygenComments.hpp
 	${currentDir}/QuartzPCH.hpp

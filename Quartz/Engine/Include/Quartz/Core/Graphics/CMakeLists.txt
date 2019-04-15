@@ -5,6 +5,7 @@ set(graphicsHeaders
 	${apiHeaders}
 	
 	${currentDir}/IWindow.hpp
+	${currentDir}/ContextManager.hpp
 	${currentDir}/Camera.hpp
 
 	PARENT_SCOPE

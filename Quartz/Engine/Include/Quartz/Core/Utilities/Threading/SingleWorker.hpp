@@ -37,7 +37,7 @@ namespace qz
 	{
 		namespace threading
 		{
-			class QZ_API SingleWorker
+			class SingleWorker
 			{
 			public:
 				SingleWorker();

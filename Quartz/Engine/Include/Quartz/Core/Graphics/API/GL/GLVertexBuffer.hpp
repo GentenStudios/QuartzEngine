@@ -34,7 +34,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				class QZ_API GLVertexBuffer 
+				class GLVertexBuffer 
 				{
 				public:
 					void create();

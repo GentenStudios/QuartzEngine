@@ -26,9 +26,6 @@
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
 #include <Quartz/Core/Graphics/API/GFXTypes.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/IShaderPipeline.hpp>
-#include <Quartz/Core/Graphics/API/ITexture.hpp>
 
 #include <glad/glad.h>
 
@@ -151,79 +148,6 @@ namespace qz
 					case DataType::UBYTE:	return GL_UNSIGNED_BYTE;
 					}
 				
-					return GL_INVALID_VALUE;
-				}
-
-				inline GLenum gfxToOpenGL(BufferUsage type)
-				{
-					switch (type)
-					{
-					case BufferUsage::STATIC:	return GL_STATIC_DRAW;
-					case BufferUsage::DYNAMIC:	return GL_DYNAMIC_DRAW;
-					}
-
-					return GL_INVALID_VALUE;
-				}
-
-				inline GLenum gfxToOpenGL(BufferTarget type)
-				{
-					switch (type)
-					{
-					case BufferTarget::ARRAY_BUFFER:	return GL_ARRAY_BUFFER;
-					case BufferTarget::INDEX_BUFFER:	return GL_ELEMENT_ARRAY_BUFFER;
-					case BufferTarget::TEXTURE_BUFFER:	return GL_TEXTURE_BUFFER;
-					case BufferTarget::UNIFORM_BUFFER:	return GL_UNIFORM_BUFFER;
-					}
-
-					return GL_INVALID_VALUE;
-				}
-
-				inline GLenum gfxToOpenGL(ShaderType type)
-				{
-					switch (type)
-					{
-					case ShaderType::VERTEX_SHADER:		return GL_VERTEX_SHADER;
-					case ShaderType::FRAGMENT_SHADER:	return GL_FRAGMENT_SHADER;
-					}
-
-					return GL_INVALID_VALUE;
-				}
-
-				inline GLenum gfxToOpenGL(TexFilter type)
-				{
-					switch (type)
-					{
-					case TexFilter::LINEAR:		return GL_LINEAR;
-					case TexFilter::NEAREST:	return GL_NEAREST;
-					}
-
-					return GL_INVALID_VALUE;
-				}
-
-				inline GLenum gfxToOpenGL(TexFormat type)
-				{
-					switch (type)
-					{
-					case TexFormat::RGB:	return GL_RGB;
-					case TexFormat::RGBA:	return GL_RGBA;
-					case TexFormat::BGR:	return GL_BGR;
-					case TexFormat::BGRA:	return GL_BGRA;
-					}
-
-					return GL_INVALID_VALUE;
-				}
-
-				inline GLenum gfxToOpenGL(TexWrap type)
-				{
-					switch (type)
-					{
-					case TexWrap::NONE:				return GL_NONE;
-					case TexWrap::REPEAT:			return GL_REPEAT;
-					case TexWrap::MIRRORED_REPEAT:	return GL_MIRRORED_REPEAT;
-					case TexWrap::CLAMP_TO_EDGE:	return GL_CLAMP_TO_EDGE;
-					case TexWrap::CLAMP_TO_BORDER:	return GL_CLAMP_TO_BORDER;
-					}
-
 					return GL_INVALID_VALUE;
 				}
 			}

@@ -29,6 +29,7 @@
 #include <glad/glad.h>
 
 using namespace qz::gfx::api::gl;
+using namespace qz::gfx;
 using namespace qz;
 
 void GLWindow::startFrame()
@@ -52,10 +53,8 @@ void GLWindow::dispatchToListeners(const events::Event& event)
 	}
 }
 
-GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(false), m_fullscreen(false)
+GLWindow::GLWindow(const std::string& title, int width, int height, WindowFlags flags) : m_vsync(false), m_fullscreen(false)
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -69,12 +68,35 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
 
-	m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+	int windowOptions = SDL_WINDOW_OPENGL;
+
+	if (hasFlag(flags, WindowFlags::WINDOW_FULLSCREEN))
+	{
+		windowOptions |= SDL_WINDOW_FULLSCREEN | SDL_WINDOW_BORDERLESS;
+		m_fullscreen = true;
+	}
+	else if (hasFlag(flags, WindowFlags::WINDOW_WINDOWED_FULLSCREEN))
+		windowOptions |= SDL_WINDOW_MAXIMIZED;
+	else if (hasFlag(flags, WindowFlags::WINDOW_MAXIMIZED))
+		windowOptions |= SDL_WINDOW_MAXIMIZED;
+
+	if (hasFlag(flags, WindowFlags::WINDOW_HIDDEN))
+		windowOptions |= SDL_WINDOW_HIDDEN;
+
+	if (hasFlag(flags, WindowFlags::WINDOW_RESIZABLE))
+		windowOptions |= SDL_WINDOW_RESIZABLE;
+
+	m_window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, windowOptions);
 	if (m_window == nullptr)
 	{
-		SDL_Quit();
 		LFATAL("Couldn't create window, need OpenGL >= 3.3");
 		exit(EXIT_FAILURE);
+	}
+
+	if (hasFlag(flags, WindowFlags::WINDOW_VSYNC))
+	{
+		SDL_GL_SetSwapInterval(1);
+		m_vsync = true;
 	}
 
 	m_cachedScreenSize = { static_cast<float>(width), static_cast<float>(height) };
@@ -89,12 +111,12 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 	}
 
 #ifdef QZ_DEBUG
-	GLint flags; glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+	GLint glFlags; glGetIntegerv(GL_CONTEXT_FLAGS, &glFlags);
+	if (glFlags & GL_CONTEXT_FLAG_DEBUG_BIT)
 	{
 		glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(gfx::api::gl::glDebugOutput, nullptr);
+		glDebugMessageCallback(glDebugOutput, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 	}
 #endif
@@ -162,7 +184,7 @@ void GLWindow::pollEvents()
 			switch (event.window.event)
 			{
 			case SDL_WINDOWEVENT_RESIZED:
-			case SDL_WINDOWEVENT_SIZE_CHANGED:	e.type = EventType::WINDOW_RESIZED; e.size.width = event.window.data1; 
+			case SDL_WINDOWEVENT_SIZE_CHANGED:	e.type = EventType::WINDOW_RESIZED; e.size.width = event.window.data1;
 				e.size.width = event.window.data1; dispatchToListeners(e);
 				break;
 			case SDL_WINDOWEVENT_FOCUS_GAINED:	e.type = EventType::WINDOW_FOCUSED;   dispatchToListeners(e); break;
@@ -174,7 +196,7 @@ void GLWindow::pollEvents()
 			case SDL_WINDOWEVENT_LEAVE:         e.type = EventType::CURSOR_LEFT;      dispatchToListeners(e); break;
 			case SDL_WINDOWEVENT_ENTER:         e.type = EventType::CURSOR_ENTERED;   dispatchToListeners(e); break;
 			case SDL_WINDOWEVENT_MOVED:         e.type = EventType::WINDOW_MOVED; e.position.x = event.window.data1;
-												e.position.y = event.window.data2;    dispatchToListeners(e); break;
+				e.position.y = event.window.data2;    dispatchToListeners(e); break;
 			default: break;
 			}
 		}
@@ -297,9 +319,9 @@ bool GLWindow::isFullscreen() const
 	return m_fullscreen;
 }
 
-void GLWindow::setCursorState(gfx::CursorState state)
+void GLWindow::setCursorState(CursorState state)
 {
-	const bool on = state == gfx::CursorState::NORMAL;
+	const bool on = state == CursorState::NORMAL;
 	SDL_ShowCursor(on);
 }
 

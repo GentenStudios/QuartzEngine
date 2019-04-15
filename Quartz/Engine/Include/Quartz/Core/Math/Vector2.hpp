@@ -33,7 +33,7 @@ namespace qz
 		/**
 		 * @brief A 2 Component Vector. Simplifies maths, and management of parameters.
 		 */
-		struct QZ_API Vector2
+		struct Vector2
 		{
 			union { float x; float u; };
 			union { float y; float v; };
@@ -108,7 +108,7 @@ namespace qz
 		 * This is for allowing more data to be passed more easily, or to store them tidily and simplify code usage.
 		 */
 		template <typename T>
-		struct QZ_API TemplateVector2
+		struct TemplateVector2
 		{
 			union { T x; T u; };
 			union {	T y; T v; };

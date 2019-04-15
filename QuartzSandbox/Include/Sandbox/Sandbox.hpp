@@ -23,11 +23,19 @@
 
 #pragma once
 
+#include <Quartz.hpp>
+
 namespace sandbox
 {
 	class Sandbox
 	{
 	public:
+		Sandbox();
+		~Sandbox();
 
+		void run();
+
+	private:
+		qz::gfx::IWindow* m_window;
 	};
 }
