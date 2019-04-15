@@ -33,6 +33,7 @@ Engine* Engine::instance()
 
 void Engine::initialize(Options flags, const ApplicationRequirements& requirements)
 {
+	SDL_SetMainReady();
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	if (flags & ENGINE_ALLOW_THREADS)

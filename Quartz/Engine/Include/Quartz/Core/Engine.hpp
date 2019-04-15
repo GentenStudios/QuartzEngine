@@ -26,7 +26,9 @@
 #include <Quartz/Core/Utilities/Logger.hpp>
 #include <Quartz/Core/Graphics/ContextManager.hpp>
 
+#define SDL_MAIN_HANDLED
 #include <SDL.h>
+#undef main
 
 namespace qz
 {

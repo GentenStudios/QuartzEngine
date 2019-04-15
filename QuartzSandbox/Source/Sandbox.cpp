@@ -31,7 +31,8 @@ using namespace sandbox;
 Sandbox::Sandbox()
 {
 	using namespace qz::gfx;
-	m_window = IWindow::requestWindow("test", 1280, 720, WindowFlags::WINDOW_VSYNC | WindowFlags::WINDOW_FULLSCREEN);
+	auto size = IWindow::requestPrimaryMonitorResolution();
+	m_window = IWindow::requestWindow("test", size.x, size.y, WindowFlags::WINDOW_VSYNC | WindowFlags::WINDOW_FULLSCREEN);
 	LDEBUG("WElcome to sandbox!");
 }
 
@@ -67,4 +68,3 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-

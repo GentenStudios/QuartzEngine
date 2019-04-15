@@ -10,7 +10,7 @@ add_subdirectory(Source)
 add_library(${PROJECT_NAME} STATIC ${quartzSources} ${quartzHeaders})
 add_precompiled_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/Include/Quartz/Core/QuartzPCH.hpp ${CMAKE_CURRENT_LIST_DIR}/Source/Core/QuartzPCH.cpp)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE SDL2-static SDL2main glad luamod imgui)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2-static glad luamod imgui)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../ThirdParty)
 target_include_directories(${PROJECT_NAME} PUBLIC 
