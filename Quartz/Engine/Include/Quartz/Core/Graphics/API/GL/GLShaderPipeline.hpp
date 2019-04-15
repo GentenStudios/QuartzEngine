@@ -47,7 +47,7 @@ namespace qz
 					void create(const std::string& filepath, const InputLayout& inputLayout);
 					void use();
 
-					GLuint getId() const { return m_id; }
+					GLuint getID() const { return m_id; }
 
 					InputLayout& getInputLayout() { return m_inputLayout; }
 				};

@@ -33,10 +33,14 @@ using namespace qz::gfx::api::gl;
 using namespace qz::gfx::api;
 using namespace qz;
 
-namespace {
-	struct ShaderParser {
-		struct Result {
-			struct ShaderStage {
+namespace
+{
+	struct ShaderParser
+	{
+		struct Result
+		{
+			struct ShaderStage
+			{
 			public:
 				ShaderStage() :
 					m_exists(false) {}
@@ -70,7 +74,8 @@ namespace {
 				{
 					parseDirectiveLine(filepath, sourcefile, index, result, &currentStage);
 				}
-				else {
+				else
+				{
 					assert(currentStage);
 					currentStage->source() += currentchar;
 				}
@@ -80,6 +85,7 @@ namespace {
 
 			return result;
 		}
+
 	private:
 		void parseDirectiveLine(const std::string& shaderfilepath, std::string& sourcefile, std::size_t& index, Result& result, Result::ShaderStage** currentStage)
 		{
@@ -131,7 +137,8 @@ namespace {
 				return std::string(start, end);
 			};
 
-			auto getDirname = [](const std::string& filename) {
+			auto getDirname = [](const std::string& filename)
+			{
 				std::size_t p = filename.find_last_of("\\/");
 				return p == std::string::npos ? "" : filename.substr(0, p+1);
 			};
@@ -158,21 +165,25 @@ namespace {
 			{
 				std::string shaderType = getNextToken();
 
-				if (shaderType == "vertex") {
+				if (shaderType == "vertex")
+				{
 					*currentStage = &result.VertexShader;
 					(*currentStage)->setExists(true);
 				}
-				else if (shaderType == "pixel") {
+				else if (shaderType == "pixel")
+				{
 					*currentStage = &result.PixelShader;
 					(*currentStage)->setExists(true);
 				}
-				else {
+				else
+				{
 					LFATAL("Invalid shader type! -> ", shaderType);
 					assert(false);
 					currentStage = nullptr;
 				}
 			}
-			else {
+			else
+			{
 				// This is not a custom directive, so try to make the source look like it should
 				// aka undo any manipulation of the index and add a # (that would otherwise ignored when the parser
 				// tries to parse it).

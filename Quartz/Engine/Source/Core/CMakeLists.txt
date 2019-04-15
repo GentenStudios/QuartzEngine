@@ -12,5 +12,7 @@ set(coreSources
 
 	${currentDir}/Engine.cpp
 
+	${currentDir}/QuartzPCH.cpp
+
 	PARENT_SCOPE
 )

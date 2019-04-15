@@ -30,65 +30,85 @@
 #include <Quartz/Core/Graphics/API/GL/GLShaderPipeline.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLTexture.hpp>
 
-namespace qz { namespace gfx { namespace api { namespace gl {
-	struct VertexStream {
-		VertexBufferHandle buffer;
-		int stride, offset;
-		bool active = false;
-	};
-
-	struct Uniform {
-		UniformType type;
-		GLint location;
-		ShaderPipelineHandle shader;
-		const char* name;
-		
-		union {
-			float vec2[2];
-			float vec3[3];
-			float vec4[4];
-		} userdata;
-	};
-
-	class GLRenderDevice : public IRenderDevice
+namespace qz
+{
+	namespace gfx
 	{
-	private:
-		GLuint m_vao;
+		namespace api
+		{
+			namespace gl
+			{
+				struct VertexStream
+				{
+					VertexBufferHandle buffer;
+					int stride = 0;
+					int offset = 0;
+					bool active = false;
+				};
 
-	private:
-		utils::HandleAllocator<32, VertexBufferHandle> m_vertexBufferHandles;
-		GLVertexBuffer                                 m_vertexBuffers[32];
+				struct Uniform
+				{
+					UniformType type;
+					GLint location;
+					ShaderPipelineHandle shader;
+					const char* name;
 
-		utils::HandleAllocator<32, ShaderPipelineHandle> m_shaderHandles;
-		GLShaderPipeline m_shaders[32];
+					union
+					{
+						float vec2[2];
+						float vec3[3];
+						float vec4[4];
+					} userdata;
 
-		utils::HandleAllocator<32, UniformHandle>      m_uniformHandleAllocator;
-		Uniform m_uniforms[32];
+					Uniform();
+				};
 
-		utils::HandleAllocator<32, TextureHandle>      m_textureHandleAllocator;
-		GLTexture m_textures[32];
+				class GLRenderDevice : public IRenderDevice
+				{
+				public:
+					GLRenderDevice() = default;
+					~GLRenderDevice() = default;
 
-		ShaderPipelineHandle m_boundShader;
+					GLRenderDevice(const GLRenderDevice& other) = delete;
 
-		static constexpr int NUM_STREAMS = 32;
-		VertexStream m_vertexStreams[NUM_STREAMS];
+					virtual void create();
+					virtual VertexBufferHandle createVertexBuffer();
+					virtual void draw(std::size_t first, std::size_t count);
+					virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset);
 
-	public:
-		virtual void create();
-		virtual VertexBufferHandle createVertexBuffer();
-		virtual void draw(std::size_t first, std::size_t count);
-		virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset);
+					virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
+					virtual ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout);
+					virtual void setShaderPipeline(ShaderPipelineHandle shader);
 
-		virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
-		virtual ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout);
-		virtual void setShaderPipeline(ShaderPipelineHandle shader);
+					virtual UniformHandle createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type);
+					virtual void setUniformValue(UniformHandle uniform, const void* value, int num);
 
-		virtual UniformHandle createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type);
-		virtual void setUniformValue(UniformHandle uniform, const void* value, int num);
+					virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height);
+					virtual void setTexture(TextureHandle texture, int slot);
 
-		virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height);
-		virtual void setTexture(TextureHandle texture, int slot);
+					void showShaderDebugUI();
 
-		void showShaderDebugUi();
-	};
-}}}}
+				private:
+					GLuint m_vao;
+
+					utils::HandleAllocator<32, VertexBufferHandle>   m_vertexBufferHandles;
+					GLVertexBuffer                                   m_vertexBuffers[32];
+
+					utils::HandleAllocator<32, ShaderPipelineHandle> m_shaderHandles;
+					GLShaderPipeline                                 m_shaders[32];
+
+					utils::HandleAllocator<32, UniformHandle>        m_uniformHandleAllocator;
+					Uniform                                          m_uniforms[32];
+
+					utils::HandleAllocator<32, TextureHandle>        m_textureHandleAllocator;
+					GLTexture                                        m_textures[32];
+
+					ShaderPipelineHandle                             m_boundShader;
+
+					static constexpr int                             NUM_STREAMS = 32;
+					VertexStream                                     m_vertexStreams[NUM_STREAMS];
+				};
+			}
+		}
+	}
+}

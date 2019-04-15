@@ -7,6 +7,12 @@
 using namespace qz::gfx::api::gl;
 using namespace qz::gfx::api;
 
+Uniform::Uniform()
+	: type(UniformType::INVALID), location(-1), name(nullptr)
+{
+	std::memset(userdata.vec2, 0, sizeof(userdata));
+}
+
 void GLRenderDevice::create()
 {
 	glGenVertexArrays(1, &m_vao);
@@ -16,25 +22,30 @@ void GLRenderDevice::create()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 }
 
-void GLRenderDevice::showShaderDebugUi()
+void GLRenderDevice::showShaderDebugUI()
 {
 	ImGui::Begin("Shader Debug UI");
-	if (ImGui::CollapsingHeader("Uniforms", ImGuiTreeNodeFlags_DefaultOpen)) {
-		for (int i = 0; i < m_uniformHandleAllocator.size(); i++)
+
+	if (ImGui::CollapsingHeader("Uniforms", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		for (std::size_t i = 0; i < m_uniformHandleAllocator.size(); i++)
 		{
 			Uniform& uniform = m_uniforms[i];
 			GLShaderPipeline& shader = m_shaders[uniform.shader.get()];
 			shader.use();
 
-			switch (uniform.type) {
+			switch (uniform.type)
+			{
 			case UniformType::COLOR3:
-				if (ImGui::ColorPicker3(uniform.name, uniform.userdata.vec3)) {
+				if (ImGui::ColorPicker3(uniform.name, uniform.userdata.vec3))
+				{
 					glUniform3f(uniform.location, uniform.userdata.vec3[0], uniform.userdata.vec3[1], uniform.userdata.vec3[2]);
 				}
 				break;
 			}
 		}
 	}
+
 	ImGui::End();
 }
 
@@ -105,7 +116,7 @@ UniformHandle GLRenderDevice::createUniform(ShaderPipelineHandle shaderHandle,co
 
 	UniformHandle handle = m_uniformHandleAllocator.allocate();
 	Uniform& uniform = m_uniforms[handle.get()];
-	uniform.location = GLCheck(glGetUniformLocation(shader.getId(), name));
+	uniform.location = GLCheck(glGetUniformLocation(shader.getID(), name));
 	uniform.type = type;
 	uniform.shader = shaderHandle;
 	uniform.name = name;
@@ -152,5 +163,5 @@ void GLRenderDevice::setTexture(TextureHandle texture, int slot)
 	GLTexture& texData = m_textures[texture.get()];
 
 	GLCheck(glActiveTexture(GL_TEXTURE0 + slot));
-	GLCheck(glBindTexture(GL_TEXTURE_2D, texData.getId()))
+	GLCheck(glBindTexture(GL_TEXTURE_2D, texData.getID()))
 }

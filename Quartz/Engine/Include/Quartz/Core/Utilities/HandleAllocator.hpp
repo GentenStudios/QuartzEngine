@@ -26,15 +26,19 @@
 #include <cstdint>
 #include <cstddef>
 
-namespace qz {
-	namespace utils {
-		class Handle {
+namespace qz
+{
+	namespace utils
+	{
+		class Handle
+		{
 		public:
 			void set(std::uint16_t value) { m_handle = value; }
 			std::uint16_t get() const { return m_handle; }
 
-			Handle() {
-				m_handle = -1;
+			Handle()
+				: m_handle(-1)
+			{
 			}
 
 			bool isValid() { return m_handle == -1; }
@@ -44,7 +48,8 @@ namespace qz {
 		};
 		
 		template <std::uint16_t TMaxNumHandles, typename THandleType>
-		class HandleAllocator {
+		class HandleAllocator
+		{
 		public:
 			HandleAllocator()
 				: m_size(0) {}
@@ -66,7 +71,7 @@ namespace qz {
 			std::size_t size() { return m_size; }
 
 		private:
-			THandleType m_handles[TMaxNumHandles];
+			THandleType   m_handles[TMaxNumHandles];
 			std::uint16_t m_size;
 		};
 	}

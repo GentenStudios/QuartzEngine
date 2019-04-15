@@ -38,7 +38,8 @@ namespace qz
 				{
 				public:
 					void create(unsigned char* pixelData, int width, int height);
-					GLuint getId() const { return m_id; }
+					GLuint getID() const { return m_id; }
+
 				private:
 					GLuint m_id;
 				};

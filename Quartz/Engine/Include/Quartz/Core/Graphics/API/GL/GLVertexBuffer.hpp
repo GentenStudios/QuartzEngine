@@ -39,7 +39,7 @@ namespace qz
 				public:
 					void create();
 					void bind();
-					void bufferData(float* data, std::size_t sizebytes);
+					void bufferData(float* data, std::size_t sizeBytes);
 
 				private:
 					GLuint m_id;

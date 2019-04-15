@@ -23,10 +23,6 @@
 
 #pragma once
 
-#define QZ_BUILD_DLL
-
-#pragma warning(disable : 4251)
-
 #if defined(_DEBUG)
 #	define QZ_DEBUG
 #endif
