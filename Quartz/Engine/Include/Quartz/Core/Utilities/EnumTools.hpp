@@ -40,7 +40,7 @@ struct EnableBitWiseOperators
 
 namespace qz
 {
-	template<typename Enum, typename = std::enable_if_t<EnableBitWiseOperators<Enum>::value>>
+	template<typename Enum, typename = std::enable_if_t<EnableBitWiseOperators<Enum>::value, void>>
 	bool hasFlag(Enum flags, Enum lookFor)
 	{
 		using Underlying = std::underlying_type_t<Enum>;
@@ -48,7 +48,7 @@ namespace qz
 	}
 }
 
-template<typename Enum, typename = std::enable_if_t<::EnableBitWiseOperators<Enum>::value>>
+template<typename Enum, typename = std::enable_if_t<::EnableBitWiseOperators<Enum>::value, void>>
 Enum operator |(Enum lhs, Enum rhs)
 {
 	return static_cast<Enum>(
@@ -57,7 +57,7 @@ Enum operator |(Enum lhs, Enum rhs)
 		);
 }
 
-template<typename Enum, typename = std::enable_if_t<::EnableBitWiseOperators<Enum>::value>>
+template<typename Enum, typename = std::enable_if_t<::EnableBitWiseOperators<Enum>::value, void>>
 Enum operator &(Enum lhs, Enum rhs)
 {
 	return static_cast<Enum>(
@@ -66,7 +66,7 @@ Enum operator &(Enum lhs, Enum rhs)
 		);
 }
 
-template<typename Enum, typename = std::enable_if_t<EnableBitWiseOperators<Enum>::value>>
+template<typename Enum, typename = std::enable_if_t<EnableBitWiseOperators<Enum>::value, void>>
 Enum operator ^(Enum lhs, Enum rhs)
 {
 	return static_cast<Enum>(
@@ -75,7 +75,7 @@ Enum operator ^(Enum lhs, Enum rhs)
 		);
 }
 
-template<typename Enum, typename = std::enable_if_t<EnableBitWiseOperators<Enum>::value>>
+template<typename Enum, typename = std::enable_if_t<EnableBitWiseOperators<Enum>::value, void>>
 Enum operator ~(Enum rhs)
 {
 	return static_cast<Enum>(
@@ -83,7 +83,7 @@ Enum operator ~(Enum rhs)
 		);
 }
 
-template<typename Enum, typename = std::enable_if_t<EnableBitWiseOperators<Enum>::value>>
+template<typename Enum, typename = std::enable_if_t<EnableBitWiseOperators<Enum>::value, void>>
 Enum& operator |=(Enum& lhs, Enum rhs)
 {
 	lhs = static_cast<Enum>(
