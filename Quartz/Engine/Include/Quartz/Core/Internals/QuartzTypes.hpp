@@ -26,37 +26,29 @@
 #include <Quartz/Core/Internals/QuartzDefines.hpp>
 
 #if defined(QZ_MSVC)
-	using int8_t   = signed   __int8;
-	using uint8_t  = unsigned __int8;
-	using int16_t  = signed   __int16;
-	using uint16_t = unsigned __int16;
-	using int32_t  = signed   __int32;
-	using uint32_t = unsigned __int32;
-	using int64_t  = signed   __int64;
-	using uint64_t = unsigned __int64;
+	using int8   = signed   __int8;
+	using uint8  = unsigned __int8;
+	using int16  = signed   __int16;
+	using uint16 = unsigned __int16;
+	using int32  = signed   __int32;
+	using uint32 = unsigned __int32;
+	using int64  = signed   __int64;
+	using uint64 = unsigned __int64;
 #else
-	using int8_t   = signed   char;
-	using uint8_t  = unsigned char;
-	using int16_t  = signed   short int;
-	using uint16_t = unsigned short int;
-	using int32_t  = signed   int;
-	using uint32_t = unsigned int;
-	using int64_t  =          long long int;
-	using uint64_t = unsigned long long int;
+	using int8   = signed   char;
+	using uint8  = unsigned char;
+	using int16  = signed   short int;
+	using uint16 = unsigned short int;
+	using int32  = signed   int;
+	using uint32 = unsigned int;
+	using int64  =          long long int;
+	using uint64 = unsigned long long int;
 #endif
 
-using byte = int8_t;
-using int8 = int8_t;
-using int16 = int16_t;
-using int32 = int32_t;
-using int64 = int64_t;
+using byte = int8;
+using ubyte = uint8;
 
-using ubyte = uint8_t;
-using uint8 = uint8_t;
-using uint16 = uint16_t;
-using uint32 = uint32_t;
-using uint = uint32_t;
-using uint64 = uint64_t;
+using uint = uint32;
 
 // Makes sure everything is the right size and compilers haven't messed it all up (highly unlikely but still)
 static_assert(sizeof(uint64) == 8, "Custom aliased type \'uint64\' is not of size 8 bytes!");
