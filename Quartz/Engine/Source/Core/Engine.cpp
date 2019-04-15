@@ -31,15 +31,15 @@ Engine* Engine::instance()
 	return &engine;
 }
 
-void Engine::initialize(Options flags, const ApplicationRequirements& requirements)
+void Engine::initialize(EngineOptions flags, const ApplicationRequirements& requirements)
 {
 	SDL_SetMainReady();
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	if (flags & ENGINE_ALLOW_THREADS)
+	if (hasFlag(flags, EngineOptions::ALLOW_THREADS))
 		m_threadsAllowed = true;
 
-	if (flags & ENGINE_INIT_GRAPHICS)
+	if (hasFlag(flags, EngineOptions::INIT_GRAPHICS))
 	{
 		// There will be more here, but first we have to ya know... actually have the code for it.
 		// You could argue lets save this for a later date, but it's good to get the architecture in
@@ -48,7 +48,7 @@ void Engine::initialize(Options flags, const ApplicationRequirements& requiremen
 		gfx::ContextManager::setRenderingAPI(requirements.renderAPI);
 	}
 
-	if (flags & ENGINE_INIT_LOGGER)
+	if (hasFlag(flags, EngineOptions::INIT_LOGGER))
 	{
 		utils::LogConfigurations logFlags = utils::LogConfigurations::LOG_TO_FILE | utils::LogConfigurations::USE_COLORS;
 

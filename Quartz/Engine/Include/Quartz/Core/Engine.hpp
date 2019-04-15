@@ -26,6 +26,7 @@
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
 #include <Quartz/Core/Graphics/ContextManager.hpp>
+#include <Quartz/Core/Utilities/EnumTools.hpp>
 
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
@@ -45,22 +46,22 @@ namespace qz
 		{}
 	};
 
+	enum class EngineOptions : uint
+	{
+		ALLOW_THREADS = 1 << 0,
+		INIT_LOGGER = 1 << 1,
+		INIT_GRAPHICS = 1 << 2,
+
+		INIT_EVERYTHING = ALLOW_THREADS | INIT_LOGGER | INIT_GRAPHICS,
+		INIT_MINIMAL = ALLOW_THREADS | INIT_LOGGER,
+	};
+
 	class Engine
 	{
 	public:
-		enum Options : uint
-		{
-			ENGINE_ALLOW_THREADS = 1 << 0,
-			ENGINE_INIT_LOGGER = 1 << 1,
-			ENGINE_INIT_GRAPHICS = 1 << 2,
-
-			ENGINE_INIT_EVERYTHING = ENGINE_ALLOW_THREADS | ENGINE_INIT_LOGGER | ENGINE_INIT_GRAPHICS,
-			ENGINE_INIT_MINIMAL = ENGINE_ALLOW_THREADS | ENGINE_INIT_LOGGER,
-		};
-
 		static Engine* instance();
 
-		void initialize(Options flags, const ApplicationRequirements& requirements);
+		void initialize(EngineOptions flags, const ApplicationRequirements& requirements);
 		void shutdown();
 
 		bool threadsAllowed() const { return m_threadsAllowed; }
@@ -74,3 +75,5 @@ namespace qz
 		bool m_graphicsInitialized = false;
 	};
 }
+
+ENABLE_BITMASK_OPERATORS(qz::EngineOptions)

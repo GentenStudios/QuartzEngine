@@ -31,8 +31,8 @@ using namespace sandbox;
 Sandbox::Sandbox()
 {
 	using namespace qz::gfx;
-	auto size = IWindow::requestPrimaryMonitorResolution();
-	m_window = IWindow::requestWindow("test", size.x, size.y, WindowFlags::WINDOW_VSYNC | WindowFlags::WINDOW_FULLSCREEN);
+	const auto size = IWindow::requestPrimaryMonitorResolution();
+	m_window = IWindow::requestWindow("test", static_cast<uint>(size.x), static_cast<uint>(size.y), WindowFlags::WINDOW_VSYNC | WindowFlags::WINDOW_FULLSCREEN);
 	LDEBUG("WElcome to sandbox!");
 }
 
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 {
 	using namespace qz;
 
-	Engine::instance()->initialize(Engine::ENGINE_INIT_EVERYTHING, { "quartz.log", utils::LogVerbosity::DEBUG, gfx::RenderingAPI::OPENGL });
+	Engine::instance()->initialize(EngineOptions::INIT_EVERYTHING, { "quartz.log", utils::LogVerbosity::DEBUG, gfx::RenderingAPI::OPENGL });
 
 	Sandbox* application = new Sandbox();
 	application->run();
