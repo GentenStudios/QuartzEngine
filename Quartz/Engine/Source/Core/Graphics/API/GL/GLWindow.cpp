@@ -22,7 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Platform/GLWindow.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLWindow.hpp>
 #include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
 

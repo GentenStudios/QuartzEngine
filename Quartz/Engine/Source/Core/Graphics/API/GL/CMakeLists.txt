@@ -5,5 +5,8 @@ set(glAPISources
 	${currentDir}/GLTexture.cpp
 	${currentDir}/GLRenderDevice.cpp
     
+	${currentDir}/GLGUILayer.cpp
+	${currentDir}/GLWindow.cpp
+
 	PARENT_SCOPE
 )

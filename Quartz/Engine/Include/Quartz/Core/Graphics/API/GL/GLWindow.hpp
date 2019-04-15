@@ -26,7 +26,7 @@
 #include <Quartz/Core/Math/Math.hpp>
 #include <Quartz/Core/Events/Event.hpp>
 #include <Quartz/Core/Graphics/IWindow.hpp>
-#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLGUILayer.hpp>
 
 #include <SDL.h>
 
@@ -91,7 +91,7 @@ namespace qz
 				private:
 					SDL_Window* m_window;
 					SDL_GLContext m_context;
-					SDLGuiLayer m_gui;
+					GLGUILayer m_gui;
 
 					bool m_running;
 

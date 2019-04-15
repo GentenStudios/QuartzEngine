@@ -21,45 +21,28 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
+#pragma once
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_sdl.h>
-#include <imgui/imgui_impl_opengl3.h>
+#include <SDL.h>
 
-using namespace qz::gfx;
-
-void SDLGuiLayer::init(SDL_Window* window, SDL_GLContext* context)
+namespace qz
 {
-	m_window = window;
-	m_context = context;
+	namespace gfx
+	{
+		class GLGUILayer
+		{
+		public:
+			void init(SDL_Window* window, SDL_GLContext* context);
 
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
+			void startFrame();
+			void endFrame();
 
-	ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NoMouseCursorChange;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+			void pollEvents(SDL_Event* event);
 
-	ImGui_ImplSDL2_InitForOpenGL(window, context); 
-	ImGui_ImplOpenGL3_Init("#version 330 core");
-}
-
-void SDLGuiLayer::startFrame()
-{
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(m_window);
-	ImGui::NewFrame();
-}
-
-void SDLGuiLayer::endFrame()
-{
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
-
-void SDLGuiLayer::pollEvents(SDL_Event* event)
-{
-	ImGui_ImplSDL2_ProcessEvent(event);
+		private:
+			SDL_Window* m_window = nullptr;
+			SDL_GLContext* m_context = nullptr;
+		};
+	}
 }
 

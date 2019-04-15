@@ -23,7 +23,7 @@
 
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Graphics/IWindow.hpp>
-#include <Quartz/Core/Platform/GLWindow.hpp>
+#include <Quartz/Core/Graphics/API/GL/GLWindow.hpp>
 #include <Quartz/Core/Graphics/ContextManager.hpp>
 #include <Quartz/Core/Engine.hpp>
 

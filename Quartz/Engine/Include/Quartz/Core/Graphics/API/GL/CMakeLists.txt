@@ -6,6 +6,9 @@ set(glAPIHeaders
 	${currentDir}/GLShaderPipeline.hpp
 	${currentDir}/GLTexture.hpp
 	${currentDir}/GLRenderDevice.hpp
+
+	${currentDir}/GLGUILayer.hpp
+	${currentDir}/GLWindow.hpp
 	
 	PARENT_SCOPE
 )
