@@ -34,6 +34,9 @@
 #include <queue>
 #include <deque>
 
-#include <glad/glad.h>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 
+#include <glad/glad.h>
 #include <SDL.h>

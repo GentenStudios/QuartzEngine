@@ -21,53 +21,41 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/Utilities/Threading/SingleWorker.hpp>
+#pragma once
 
-using namespace qz::utils::threading;
+#include <deque>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <functional>
 
-SingleWorker::SingleWorker(): m_running(true)
+namespace qz
 {
-	std::thread t(&SingleWorker::threadHandle, this);
-	m_thread.swap(t);
-}
-
-SingleWorker::~SingleWorker()
-{
-	m_running = false;
-	m_condition.notify_all();
-
-	if (m_thread.joinable())
-		m_thread.join();
-}
-
-void SingleWorker::addWork(std::function<void()>&& function)
-{
+	namespace utils
 	{
-		std::unique_lock<std::mutex> lock(m_mutex);
-		m_queue.emplace_back(std::move(function));
-	}
-
-	m_condition.notify_one();
-}
-
-void SingleWorker::threadHandle()
-{
-	while (true)
-	{
-		std::function<void()> task;
-
+		namespace threading
 		{
-			std::unique_lock<std::mutex> lock(m_mutex);
+			class SimpleWorker
+			{
+			public:
+				SimpleWorker();
+				~SimpleWorker();
 
-			m_condition.wait(lock, [this] { return !m_running || !m_queue.empty(); });
+				void cleanExit();
 
-			if (!m_running && m_queue.empty())
-				return;
+				void enqueueWork(std::function<void()> task);
 
-			task = std::move(m_queue.front());
-			m_queue.pop_front();
+			private:
+				bool m_running;
+
+				std::deque<std::function<void()>> m_queue;
+				std::mutex m_mutex;
+				std::condition_variable m_condition;
+				std::thread m_thread;
+
+			private:
+				void threadHandle();
+			};
 		}
-
-		task();
 	}
 }

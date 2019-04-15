@@ -24,10 +24,13 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
+
 #include <Quartz/Core/Engine.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
 #include <Quartz/Core/Utilities/FileIO.hpp>
 #include <Quartz/Core/Utilities/Config.hpp>
+#include <Quartz/Core/Utilities/Threading/SimpleWorker.hpp>
+#include <Quartz/Core/Utilities/Threading/CustomWorker.hpp>
 
 #include <Quartz/Core/Events/Event.hpp>
 #include <Quartz/Core/Events/Keys.hpp>
@@ -38,3 +41,4 @@
 #include <Quartz/Core/Graphics/ContextManager.hpp>
 #include <Quartz/Core/Graphics/IWindow.hpp>
 #include <Quartz/Core/Graphics/Camera.hpp>
+

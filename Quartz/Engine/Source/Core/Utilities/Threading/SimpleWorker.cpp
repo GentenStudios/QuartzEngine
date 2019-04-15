@@ -23,43 +23,60 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Utilities/Threading/SimpleWorker.hpp>
 
-#include <thread>
-#include <mutex>
-#include <condition_variable>
+using namespace qz::utils::threading;
 
-#include <deque>
-#include <vector>
-#include <functional>
-
-namespace qz
+SimpleWorker::SimpleWorker()
 {
-	namespace utils
-	{
-		namespace threading
-		{
-			class ThreadPool
-			{
-			public:
-				ThreadPool(const int threadCount);
-				~ThreadPool();
+	m_running = true;
 
-				void addWork(std::function<void()> fun);
-
-			private:
-				bool m_running;
-
-				std::mutex m_mutex;
-				std::condition_variable m_condition;
-
-				std::vector<std::thread> m_threads;
-				std::deque<std::function<void()>> m_scheduledTasks;
-
-			private:
-				void threadHandle();
-			};
-		}
-	}
+	std::thread t(&SimpleWorker::threadHandle, this);
+	m_thread.swap(t);
 }
 
+SimpleWorker::~SimpleWorker()
+{
+	if (m_running)
+		cleanExit();
+}
+
+void SimpleWorker::cleanExit()
+{
+	m_running = false;
+	m_condition.notify_all();
+
+	if (m_thread.joinable())
+		m_thread.join();
+}
+
+void SimpleWorker::enqueueWork(std::function<void()> task)
+{
+	{
+		std::unique_lock<std::mutex> lock(m_mutex);
+		m_queue.emplace_back(std::move(task));
+	}
+
+	m_condition.notify_one();
+}
+
+void SimpleWorker::threadHandle()
+{
+	while (true)
+	{
+		std::function<void()> task;
+
+		{
+			std::unique_lock<std::mutex> lock(m_mutex);
+			m_condition.wait(lock, [this]() { return !m_running || !m_queue.empty(); });
+
+			if (!m_running && m_queue.empty())
+				return;
+
+			task = std::move(m_queue.front());
+			m_queue.pop_front();
+		}
+
+		task();
+	}
+}

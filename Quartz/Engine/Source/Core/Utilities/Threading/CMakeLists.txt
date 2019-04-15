@@ -1,7 +1,6 @@
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 set(threadingSources
-	${currentDir}/SingleWorker.cpp
-	${currentDir}/ThreadPool.cpp
-	
+	${currentDir}/SimpleWorker.cpp
+
 	PARENT_SCOPE
 )

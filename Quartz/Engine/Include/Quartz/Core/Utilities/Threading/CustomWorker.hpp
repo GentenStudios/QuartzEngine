@@ -23,8 +23,6 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-
 #include <deque>
 #include <thread>
 #include <mutex>
@@ -37,24 +35,95 @@ namespace qz
 	{
 		namespace threading
 		{
-			class SingleWorker
+			template <typename QueueType>
+			class CustomWorker
 			{
-			public:
-				SingleWorker();
-				~SingleWorker();
+				using QueueFunc = std::function<void(const QueueType& taskData)>;
 
-				void addWork(std::function<void()>&& function);
+			public:
+				CustomWorker()
+				{
+					m_running = true;
+
+					std::thread t(&CustomWorker::threadHandle, this);
+					m_thread.swap(t);
+				}
+
+				CustomWorker(QueueFunc function)
+				{
+					m_running = true;
+
+					std::thread t(&CustomWorker::threadHandle, this);
+					m_thread.swap(t);
+
+					m_function = std::move(function);
+					m_functionSet = true;
+				}
+
+				~CustomWorker()
+				{
+					if (m_running)
+						cleanExit();
+				}
+
+				void cleanExit()
+				{
+					m_running = false;
+					m_condition.notify_all();
+
+					if (m_thread.joinable())
+						m_thread.join();
+				}
+
+				void setFunction(QueueFunc function)
+				{
+					std::lock_guard<std::mutex> lock(m_mutex);
+					m_function = std::move(function);
+					m_functionSet = true;
+				}
+
+				void enqueueData(QueueType&& data)
+				{
+					{
+						std::lock_guard<std::mutex> lock(m_mutex);
+						m_queue.emplace_back(std::move(data));
+					}
+
+					m_condition.notify_one();
+				}
 
 			private:
 				bool m_running;
-				std::thread m_thread;
+				bool m_functionSet = false;
+
+				std::function<void(const QueueType& taskData)> m_function;
+
+				std::deque<QueueType> m_queue;
 				std::mutex m_mutex;
 				std::condition_variable m_condition;
-
-				std::deque<std::function<void()>> m_queue;
+				std::thread m_thread;
 
 			private:
-				void threadHandle();
+				void threadHandle()
+				{
+					while (true)
+					{
+						QueueType taskData;
+
+						{
+							std::unique_lock<std::mutex> lock(m_mutex);
+							m_condition.wait(lock, [this]() { return !m_running || !m_queue.empty(); });
+
+							if (!m_running && m_queue.empty())
+								return;
+
+							taskData = std::move(m_queue.front());
+							m_queue.pop_front();
+						}
+
+						m_function(taskData);
+					}
+				}
 			};
 		}
 	}
