@@ -25,6 +25,8 @@
 
 #include <Quartz/Core/Core.hpp>
 
+#include <cstddef>
+
 namespace qz
 {
 	namespace utils
