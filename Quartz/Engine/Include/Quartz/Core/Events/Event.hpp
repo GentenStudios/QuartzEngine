@@ -23,9 +23,9 @@
 
 #pragma once
 
-#include <SDL.h>
-
 #include <Quartz/Core/Events/Keys.hpp>
+
+#include <SDL.h>
 
 namespace qz
 {
@@ -88,9 +88,9 @@ namespace qz
 		{
 			EventType type;
 
-			// this union MUST be used correctly or shit will go south and you might end up with corrupted memory :(
-			// I'm using a union, so it's sort of like SDLs Event system, and so we don't have a huge amount of painful
-			// polymorphism that will end in me having to restart anyway.
+			// This union MUST be used correctly or shit will go south and you might end up with corrupted memory :(
+			// We're using a union, so it's sort of like SDLs Event system, and so we don't have a huge amount of painful
+			// polymorphism that will end in us having to restart anyway.
 			union
 			{
 				Position position;
@@ -102,7 +102,7 @@ namespace qz
 
 			Event()
 			{
-				// this is to make sure that *everything* in the struct + it's union is initialised to 0;
+				// This is to make sure that *everything* in the struct + it's union is initialized to 0;
 				memset(this, 0, sizeof(Event));
 			}
 		};

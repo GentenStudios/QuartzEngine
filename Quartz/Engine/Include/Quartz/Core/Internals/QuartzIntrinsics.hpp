@@ -23,24 +23,29 @@
 
 #pragma once
 
-#include <string>
+#include <Quartz/Core/Internals/QuartzDefines.hpp>
+#include <Quartz/Core/Internals/QuartzTypes.hpp>
 
-namespace qz
-{
-	namespace utils
-	{
-		/**
-		 * @brief File Input/Output wrapping class.
-		 */
-		class FileIO
-		{
-		public:
-			/**
-			 * @brief Reads a whole file into a string.
-			 * @param filepath The path to the file needing to be read.
-			 * @return A string containing the contents of the file.
-			 */
-			static std::string readAllFile(const std::string& filepath);
-		};
-	}
-}
+#if defined(QZ_MSVC)
+#	define PV_FORCE_INLINE __forceinline
+#elif defined(QZ_CLANG) || defined(QZ_GNUC)
+#	define QZ_FORCE_INLINE __attribute__((always_inline))
+#endif
+
+#if defined(QZ_DEBUG)
+#	if defined(QZ_MSVC)
+#		define BREAKPOINT() { __debugbreak(); }
+#	elif defined(QZ_CLANG) || defined(QZ_GNUC)
+#		define BREAKPOINT()
+#	endif
+#else
+#	define BREAKPOINT()
+#endif
+
+// TODO: (vfadia) Log the assertion fail & allow all the extra arguments to go straight to the logger and all that jazz.
+#if defined(QZ_DEBUG)
+#	define QZ_ASSERT(condition, ...) if (!(condition)) { BREAKPOINT(); }
+#else
+#	define QZ_ASSERT(condition, ...) 
+#endif
+

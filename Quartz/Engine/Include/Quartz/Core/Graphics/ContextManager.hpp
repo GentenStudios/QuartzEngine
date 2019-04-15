@@ -23,11 +23,13 @@
 
 #pragma once
 
+#include <Quartz/Core/Internals/QuartzTypes.hpp>
+
 namespace qz
 {
 	namespace gfx
 	{
-		enum class RenderingAPI
+		enum class RenderingAPI : uint
 		{
 			OPENGL
 		};

@@ -1,3 +1,4 @@
+add_subdirectory(Internals)
 add_subdirectory(Math)
 add_subdirectory(Events)
 add_subdirectory(Graphics)
@@ -7,6 +8,7 @@ add_subdirectory(Utilities)
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 
 set(coreHeaders
+	${internalHeaders}
 	${mathHeaders}
 	${eventHeaders}
 	${graphicsHeaders}

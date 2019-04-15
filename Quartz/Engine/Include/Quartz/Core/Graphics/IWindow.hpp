@@ -20,6 +20,7 @@
 // CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
+
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
@@ -40,7 +41,7 @@ namespace qz
 		 * 
 		 * These should be used like bitflags, using bitwise operators.
 		 */
-		enum class WindowFlags : unsigned int
+		enum class WindowFlags : uint
 		{
 			WINDOW_FULLSCREEN          = 1 << 0,
 			WINDOW_WINDOWED_FULLSCREEN = 1 << 1,
@@ -55,7 +56,7 @@ namespace qz
 		 * 
 		 * This would be used in the function IWindow::setCursorState().
 		 */
-		enum class CursorState : int
+		enum class CursorState : uint
 		{
 			NORMAL,		/// @brief Sets the cursor back to "normal", visible & controllable, not locked to the window at all.
 			HIDDEN,		/// @brief Hides the cursor, but allows "normal" use.
@@ -80,7 +81,7 @@ namespace qz
 			 * @param flags     Special flags dictating certain behaviour within the window.
 			 * @return IWindow* The respective object for the class depicted by the WindowingAPI parameter.
 			 */
-			static IWindow* requestWindow(const std::string& title, unsigned int width, unsigned int height, WindowFlags flags);
+			static IWindow* requestWindow(const std::string& title, uint width, uint height, WindowFlags flags);
 
 			/**
 			 * @brief Destroys the window object provided.
@@ -281,3 +282,4 @@ namespace qz
 
 // Enables the bitwise operator overloads so we can use WindowFlags like actual bitflags.
 ENABLE_BITMASK_OPERATORS(qz::gfx::WindowFlags)
+

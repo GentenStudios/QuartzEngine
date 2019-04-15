@@ -23,14 +23,6 @@
 
 #pragma once
 
-#if defined(_DEBUG)
-#	define QZ_DEBUG
-#endif
-
-#if defined(_WIN32) || defined(_WIN64)
-#   define QZ_PLATFORM_WINDOWS
-#endif
-
-#if defined(__linux__)
-#   define QZ_PLATFORM_LINUX
-#endif
+#include <Quartz/Core/Internals/QuartzDefines.hpp>
+#include <Quartz/Core/Internals/QuartzIntrinsics.hpp>
+#include <Quartz/Core/Internals/QuartzTypes.hpp>

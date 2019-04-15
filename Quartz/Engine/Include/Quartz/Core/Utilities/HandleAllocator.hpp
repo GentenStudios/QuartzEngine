@@ -23,8 +23,7 @@
 
 #pragma once
 
-#include <cstdint>
-#include <cstddef>
+#include <Quartz/Core/Core.hpp>
 
 namespace qz
 {
@@ -33,8 +32,8 @@ namespace qz
 		class Handle
 		{
 		public:
-			void set(std::uint16_t value) { m_handle = value; }
-			std::uint16_t get() const { return m_handle; }
+			void set(uint16 value) { m_handle = value; }
+			uint16 get() const { return m_handle; }
 
 			Handle()
 				: m_handle(-1)
@@ -44,10 +43,10 @@ namespace qz
 			bool isValid() { return m_handle == -1; }
 
 		private:
-			std::uint16_t m_handle;	
+			uint16 m_handle;	
 		};
 		
-		template <std::uint16_t TMaxNumHandles, typename THandleType>
+		template <uint16 TMaxNumHandles, typename THandleType>
 		class HandleAllocator
 		{
 		public:
@@ -68,11 +67,11 @@ namespace qz
 			{
 			}
 
-			std::size_t size() { return m_size; }
+			std::size_t size() const { return m_size; }
 
 		private:
-			THandleType   m_handles[TMaxNumHandles];
-			std::uint16_t m_size;
+			THandleType m_handles[TMaxNumHandles];
+			uint16 m_size;
 		};
 	}
 }

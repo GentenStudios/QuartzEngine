@@ -23,6 +23,10 @@
 
 #pragma once
 
+#include <Quartz/Core/Internals/QuartzDefines.hpp>
+#include <Quartz/Core/Internals/QuartzIntrinsics.hpp>
+#include <Quartz/Core/Internals/QuartzTypes.hpp>
+
 #include <string>
 #include <vector>
 #include <unordered_map>

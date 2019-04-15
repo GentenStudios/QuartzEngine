@@ -23,6 +23,7 @@
 
 #pragma once
 
+#include <Quartz/Core/Core.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
 #include <Quartz/Core/Graphics/ContextManager.hpp>
 
@@ -47,7 +48,7 @@ namespace qz
 	class Engine
 	{
 	public:
-		enum Options : int
+		enum Options : uint
 		{
 			ENGINE_ALLOW_THREADS = 1 << 0,
 			ENGINE_INIT_LOGGER = 1 << 1,

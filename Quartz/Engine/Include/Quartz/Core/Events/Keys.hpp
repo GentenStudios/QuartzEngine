@@ -166,14 +166,14 @@ namespace qz
 			MOD_LEFT_ALT    = KMOD_LALT,   // Left Alt
 			MOD_RIGHT_ALT   = KMOD_RALT,   // Right Alt
 			MOD_LEFT_SUPER  = KMOD_LGUI,   // Left Super (like windows key or command key)
-			MOD_RIGHT_SUPER = KMOD_RGUI,   // Right Super ("")
+			MOD_RIGHT_SUPER = KMOD_RGUI,   // Right Super
 			MOD_NUM         = KMOD_NUM,	   // Num Lock
 			MOD_CAPS        = KMOD_CAPS,   // Caps Lock
-//			MOD_MODE        = KMOD_MODE,   // AltGr
-//			MOD_SHIFT       = KMOD_SHIFT,  // I NEED TO ENABLE WIN32_LEAN_AND_MEAN for these to work.
-//			MOD_CTRL        = KMOD_CTRL,
-//			MOD_ALT         = KMOD_ALT,
-//			MOD_GUI         = KMOD_GUI,
+			MOD_MODE        = KMOD_MODE,   // AltGr
+			MOD_EITHER_SHIFT = KMOD_SHIFT,
+			MOD_EITHER_CTRL  = KMOD_CTRL,
+			MOD_EITHER_ALT   = KMOD_ALT,
+			MOD_EITHER_SUPER = KMOD_GUI,
 		};
 	}
 }

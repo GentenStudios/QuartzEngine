@@ -23,24 +23,38 @@
 
 #pragma once
 
-#include <string>
+#if defined(_DEBUG)
+#	define QZ_DEBUG
+#endif
 
-namespace qz
-{
-	namespace utils
-	{
-		/**
-		 * @brief File Input/Output wrapping class.
-		 */
-		class FileIO
-		{
-		public:
-			/**
-			 * @brief Reads a whole file into a string.
-			 * @param filepath The path to the file needing to be read.
-			 * @return A string containing the contents of the file.
-			 */
-			static std::string readAllFile(const std::string& filepath);
-		};
-	}
-}
+// Determine the compiler and set the corresponding defines for it.
+#ifdef _MSC_VER
+#	define QZ_MSVC
+#elif defined(__clang__)
+#	define QZ_CLANG
+#elif defined(__GNUC__)
+#	define QZ_GNUC
+#endif
+
+// Determine the OS and set the corresponding defines for it.
+#if defined(_WIN32) || defined(_WIN64)
+#   define QZ_PLATFORM_WINDOWS
+#	ifndef WIN32_LEAN_AND_MEAN
+#		define WIN32_LEAN_AND_MEAN
+#	endif
+#elif defined(__linux__)
+#   define QZ_PLATFORM_LINUX
+#endif
+
+#if defined(QZ_PLATFORM_WINDOWS)
+#	define IF_WINDOWS(x) x
+#else
+#	define IF_WINDOWS(x)
+#endif
+
+#if defined(QZ_PLATFORM_LINUX)
+#	define IF_LINUX(x) x
+#else
+#	define IF_LINUX(x)
+#endif
+

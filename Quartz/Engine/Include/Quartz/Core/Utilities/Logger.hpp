@@ -24,34 +24,21 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
+#include <Quartz/Core/Utilities/Threading/CustomWorker.hpp>
+#include <Quartz/Core/Utilities/EnumTools.hpp>
 
 #include <string>
 #include <sstream>
 #include <fstream>
 
-#define LOGGER_INIT(x, y) qz::utils::Logger::instance()->initialise(x, y);
-#define LOGGER_DESTROY() qz::utils::Logger::instance()->destroy();
-
-#ifdef QZ_PLATFORM_WINDOWS
-#	define LFATAL(message, ...)            qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL, __FILE__, __LINE__, "", message, __VA_ARGS__)
-#	define LINFO(message, ...)             qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO, __FILE__, __LINE__, "", message, __VA_ARGS__)
-#	ifdef QZ_DEBUG
-#		define LDEBUG(message, ...)        qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::DEBUG, __FILE__, __LINE__, "", message, __VA_ARGS__)
-#		define LWARNING(message, ...)      qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::WARNING, __FILE__, __LINE__, "", message, __VA_ARGS__)
-#	else
-#		define LDEBUG(message, ...)
-#		define LWARNING(message, ...)
-#	endif
+#define LFATAL(message, ...)            qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
+#define LINFO(message, ...)             qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
+#ifdef QZ_DEBUG
+#	define LDEBUG(message, ...)        qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::DEBUG, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
+#	define LWARNING(message, ...)      qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::WARNING, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
 #else
-#	define LFATAL(message, ...)            qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
-#	define LINFO(message, ...)             qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
-#	ifdef QZ_DEBUG
-#		define LDEBUG(message, ...)        qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::DEBUG, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
-#		define LWARNING(message, ...)      qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::WARNING, __FILE__, __LINE__, "", message, ##__VA_ARGS__)
-#	else
-#		define LDEBUG(message, ...)
-#		define LWARNING(message, ...)
-#	endif
+#	define LDEBUG(message, ...)
+#	define LWARNING(message, ...)
 #endif
 
 namespace qz
@@ -59,100 +46,163 @@ namespace qz
 	namespace utils
 	{
 		/**
-		 * @brief The fixed list colors that text can be set to in the console.
+		 * @brief Enumerators for setting the verbosity of log messages.
 		 */
-		enum class TextColor : int
+		enum class LogVerbosity : uint
 		{
-			RED = 0,
-			GREEN = 1,
-			BLUE = 2,
-			YELLOW = 3,
-			WHITE = 4,
+			FATAL = 0,	 //< An error that is basically unrecoverable, the engine should most likely be at a state of quitting/crashing at this point.
+			WARNING = 1, //< Something that is not right, but still recoverable, or non-critical - allowing a game to work like normal.
+			INFO = 2,	 //< Something which is just information, like OpenGL details, or quitting/starting messages.
+			DEBUG = 3,	 //< Messages useful when debugging an issue, or allowing a developer to have more verbose insights into what's happening.
+			NONE = 4     //< Something which is just not important. (I (beeperdeeper) can't remember why i put it here, but ima keep it in case i ever do.)
 		};
 
 		/**
-		 * @brief This is what will define whether certain messages are low enough a verbosity to be outputted.
+		 * @brief Configurations for the logger to adapt it's functionality towards.
 		 */
-		enum class LogVerbosity : int
+		enum class LogConfigurations : uint
 		{
-			FATAL = 0,
-			WARNING = 1,
-			INFO = 2,
-			DEBUG = 3,
+			LOG_TO_FILE = 1 << 0,
+			USE_COLORS = 1 << 1,
+			USE_THREADS = 1 << 2,
 		};
 
 		/**
-		 * @brief The Logger for the engine, and probably clients.
+		 * @brief A fast, multi-threaded Logger, which logs to both file and stdout (console).
 		 */
 		class Logger
 		{
 		public:
 			/**
-			 * @brief Returns the singleton instance of the logger.
-			 * @return A pointer to the logger object.
+			 * @brief Returns a pointer to the singleton object of the logger.
+			 * @return The singleton object of the class.
 			 */
 			static Logger* instance();
 
 			/**
-			 * @brief Initializes the logger.
-			 * @param logFile The file that should be logged to
-			 * @param verbLevel The level of verbosity that should be logged.
+			 * @brief Initializes the logger for use. (It is useable even without initialization.)
+			 * @param filePath The file for the logger to log to.
+			 * @param verbLevel The level of verbosity to log.
+			 * @param flags Flags using LogConfigurations to configure certain options.
 			 */
-			void initialise(const std::string& logFile, LogVerbosity verbLevel);
-			
+			void initialize(const std::string& filePath, LogVerbosity verbLevel, LogConfigurations flags);
+
 			/**
-			* @brief Destroys the logger.
-			* 
-			* Closes the file handle, and puts an extra newline character so the next
-			* terminal prompt doesn't extend on the last logged line.
-			*/
+			 * @brief Destroys the current instance of the logger, can be re-initialized whenever wanted.
+			 */
 			void destroy();
 
 			/**
-			 * @brief Logs the actual message.
-			 * @tparam Args This allows the function to be variadic
-			 * @param verbosity The verbosity of the message being logged.
-			 * @param errorFile The file that the message is coming from.
-			 * @param lineNumber The line in the file that the message is coming from.
-			 * @param subSectors Extra narrowing down sectors for error messages.
+			 * @brief Logs a message with as many arguments a person needs. Does NOT work like a format string, but a continuous flow.
+			 * @tparam Args Variadic template for basically "unlimited" arguments to log.
+			 * @param verbosity The verbosity of the message.
+			 * @param errorFile The file from which the message is being logged.
+			 * @param lineNumber The line in the file from which the message is being logged.
 			 * @param message The message itself.
-			 * @param args The rest of the arguments to be parsed and logged.
+			 * @param args The other remaining arguments to log.
 			 */
 			template <typename... Args>
-			void log(LogVerbosity verbosity, const std::string& errorFile, int lineNumber, const std::string& subSectors, const std::string& message, const Args&... args)
+			void log(LogVerbosity verbosity, const std::string& errorFile, int lineNumber, const std::string& message, const Args&... args)
 			{
+				if (verbosity > m_verbosity)
+					return;
+
 				std::stringstream ss;
 				ss << message;
 				log(ss, args...);
-				logMessage(errorFile, lineNumber, verbosity, subSectors, ss.str());
+
+				if (m_useThreads)
+					m_worker->enqueueData({ verbosity, errorFile, lineNumber, ss.str() });
+				else
+					logMessage(verbosity, errorFile, lineNumber, ss.str());
 			}
 
 		private:
-			Logger() = default;
+			/// @brief Tells the logger whether to use colors or not.
+			bool m_useColors = false;
 
-			/// @brief The log file.
-			std::string m_logFile = "quartz.log";
+			/// @brief Tells the logger whether to use threads or not.
+			bool m_useThreads = false;
 
-			/// @brief The handle to the actual log file, once it's opened.
-			std::ofstream m_logFileHandle;
+			/// @brief Tells the logger upto what verbosity it should be logging.
+			LogVerbosity m_verbosity = LogVerbosity::INFO;
 
-			/// @brief The verbosity level that the initialise function sets up.
-			LogVerbosity m_vbLevel = LogVerbosity::INFO;
-
+			/// @brief This is the last message logged.
 			std::string m_prevMessage;
-			std::size_t m_currentDuplicates;
+
+			/// @brief This is the amount of duplicate messages being logged, mainly so they aren't logged again and that line is updated.
+			std::size_t m_currentDuplicates = 0;
+
+			/// @brief This is the file handle used when outputting into the file.
+			std::ofstream m_fileHandle;
+
+			/**
+			 * @brief Allows messages to be stored in a queue before they are logged.
+			 */
+			struct LogMessage
+			{
+				LogMessage() = default;
+				LogMessage(LogVerbosity verbosity, const std::string& errorFileName, int errorFileNumber,
+					const std::string& errorMessage);
+
+				LogVerbosity vbLevel = LogVerbosity::INFO;
+				std::string errorFile;
+				int lineNumber = 0;
+				std::string message;
+			};
+
+			/**
+			 * @brief The thread worker that will be used if threading is enabled.
+			 */
+			std::unique_ptr<threading::CustomWorker<LogMessage>> m_worker;
 
 		private:
+			/**
+			 * @brief Private constructor to allow for only a singleton.
+			 */
+			Logger();
+
+			/**
+			 * @brief Private destructor because... well use your brain.
+			 */
+			~Logger();
+
+			/**
+			 * @brief Resursively adds all the parameters into the provided stream.
+			 * @tparam T The type being pushed into the stream at this point.
+			 * @tparam Args The rest of the arguments being logged.
+			 * @param sstream The stream being pushed into.
+			 * @param msg The current message being pushed into the stream.
+			 * @param args The rest of the args being logged.
+			 */
 			template <typename T, typename... Args>
 			void log(std::stringstream& sstream, const T& msg, const Args&... args) {
 				sstream << msg;
 				log(sstream, args...);
 			}
 
+			/**
+			 * @brief Just returns when there are no arguments and just the stream left now.
+			 * @param sstream The completed stream.
+			 */
 			void log(std::stringstream& sstream) {}
 
-			void logMessage(const std::string& errorFile, int lineNumber, LogVerbosity verbosity, const std::string& subSectors, const std::string& message);
+			/**
+			 * @brief Actually logs the message, the final step of the process.
+			 * @param verbosity The verbosity of the message being logged.
+			 * @param errorFile The file from which the message originates.
+			 * @param lineNumber The line in the file from which the message was dispatched.
+			 * @param message The actual message itself.
+			 */
+			void logMessage(LogVerbosity verbosity, const std::string& errorFile, int lineNumber, const std::string& message);
+
+			/**
+			 * @brief Facilitating function to pass each LogMessage member individually to the above logMessage function.
+			 * @param message The data needing to be logged.
+			 */
+			void logMessage(const LogMessage& message);
 		};
 	}
 }
 
+ENABLE_BITMASK_OPERATORS(qz::utils::LogConfigurations);

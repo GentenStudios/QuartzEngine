@@ -21,80 +21,48 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Core.hpp>
 
-#include <iostream>
-
-#ifdef QZ_PLATFORM_WINDOWS
-#	include <Windows.h>
+#if defined(QZ_PLATFORM_WINDOWS)
+#include <Windows.h>
 #endif
 
-using namespace qz::utils;
-
-/**
- * @brief The lookup table for converting the verbosity enums to text.
- */
-static const char* g_logVerbToText[] = {
-		"FATAL ERROR",
+static const char* g_logVerbosityTable[] = {
+		"ERROR",
 		"WARNING",
 		"INFO",
 		"DEBUG"
 };
 
-#ifdef QZ_PLATFORM_WINDOWS
+#if defined(QZ_PLATFORM_WINDOWS)
 static WORD s_windowsTermCol[] =
 {
 	FOREGROUND_INTENSITY | FOREGROUND_RED,										// Red
-	FOREGROUND_INTENSITY | FOREGROUND_GREEN,									// Green
 	FOREGROUND_INTENSITY | FOREGROUND_BLUE,										// Blue
 	FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN,					// Yellow
+	FOREGROUND_INTENSITY | FOREGROUND_GREEN,									// Green
 	FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE, // White
 };
 #endif
 
-#ifdef QZ_PLATFORM_LINUX
+#if defined(QZ_PLATFORM_LINUX)
 static const char* s_linuxTermCol[] =
 {
 	"\033[1;31m", // Red
-	"\033[1;32m", // Green
 	"\033[1;34m", // Blue
 	"\033[0;33m", // Yellow
+	"\033[1;32m", // Green
 	"\033[1;37m"  // White
 };
 #endif
 
-static void setTerminalTextColor(TextColor color)
+using namespace qz::utils;
+using namespace qz;
+
+Logger::LogMessage::LogMessage(LogVerbosity verbosity, const std::string& errorFileName, int errorFileNumber,
+					   const std::string& errorMessage):
+	vbLevel(verbosity), errorFile(errorFileName), lineNumber(errorFileNumber), message(errorMessage)
 {
-#ifdef QZ_PLATFORM_WINDOWS
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(console, s_windowsTermCol[static_cast<std::size_t>(color)]);
-#endif
-
-#ifdef QZ_PLATFORM_LINUX
-	std::cout << s_linuxTermCol[static_cast<std::size_t>(color)];
-#endif
-}
-
-/**
- * @brief Sets the color of the terminal using the verbosity provided
- * @param vb The verbosity corresponding the color wanted.
- */
-static void setTerminalTextColor(LogVerbosity vb)
-{
-	TextColor color;
-
-	switch (vb)
-	{
-	case LogVerbosity::FATAL:   color = TextColor::RED;		break;
-	case LogVerbosity::WARNING: color = TextColor::YELLOW;	break;
-	case LogVerbosity::INFO:    color = TextColor::WHITE;	break;
-	case LogVerbosity::DEBUG:   color = TextColor::GREEN;	break;
-	default:                    color = TextColor::WHITE;	break;
-	}
-
-	setTerminalTextColor(color);
 }
 
 Logger* Logger::instance()
@@ -103,29 +71,48 @@ Logger* Logger::instance()
 	return &logger;
 }
 
-void Logger::initialise(const std::string& logFile, LogVerbosity verbLevel)
+void Logger::initialize(const std::string& filePath, const LogVerbosity verbLevel, LogConfigurations flags)
 {
-	m_logFile = logFile;
-	m_vbLevel = verbLevel;
+	m_verbosity = verbLevel;
 
-	m_logFileHandle.open(Logger::m_logFile, std::ios::out | std::ios::app);
+	if (hasFlag(flags, LogConfigurations::LOG_TO_FILE))
+		m_fileHandle.open(filePath, std::ios::out | std::ios::app);
+
+	if (hasFlag(flags, LogConfigurations::USE_COLORS))
+		m_useColors = true;
+	
+	if (hasFlag(flags, LogConfigurations::USE_THREADS))
+		m_useThreads = true;
+
+	if (m_useThreads)
+	{
+		std::unique_ptr<threading::CustomWorker<LogMessage>> tempPtr(std::make_unique<threading::CustomWorker<LogMessage>>());
+		m_worker = std::move(tempPtr);
+
+		// This is some painful C++, the Logger::* is a member pointer thingy. The static_cast is to help C++ determine which overload of logMessage
+		// that std::bind should use.
+		m_worker->setFunction(std::bind(static_cast<void(Logger::*)(const LogMessage&)>(&Logger::logMessage), this, std::placeholders::_1));
+	}
 }
 
 void Logger::destroy()
 {
-	std::cout << '\n';
-	m_logFileHandle.close();
+	if (m_useThreads)
+		m_worker->cleanExit();
+	
+	m_useColors = false;
+	m_useThreads = false;
+	m_verbosity = LogVerbosity::INFO;
+	m_currentDuplicates = 0;
+	m_worker.reset(); // resetting the smart ptr. (there's no reset function on the actual worker) :)
+	m_fileHandle.close();
 }
 
-void Logger::logMessage(const std::string& errorFile, int lineNumber, LogVerbosity verbosity, const std::string& subSectors, const std::string& message)
+Logger::Logger() {}
+Logger::~Logger() { destroy(); }
+
+void Logger::logMessage(LogVerbosity verbosity, const std::string& errorFile, int lineNumber, const std::string& message)
 {
-	if (verbosity > m_vbLevel)
-		return;
-
-	setTerminalTextColor(verbosity);
-
-	const char* verbosityString = g_logVerbToText[static_cast<size_t>(verbosity)];
-
 	/*
 		Log messages are in the format:
 			[ERROR/INFO/DEBUG/WARNING] <file of log>: <line number> <message>
@@ -133,37 +120,59 @@ void Logger::logMessage(const std::string& errorFile, int lineNumber, LogVerbosi
 		  Message importance/verbosity   If verbosity != INFO    The actual message
 	*/
 
-	std::stringstream logMessageStream;
-	logMessageStream << "[" << verbosityString << "] " << subSectors;
-
-	// Print the erroring file and line number if the message is not just an INFO message
-	if (verbosity != LogVerbosity::INFO)
+	if (m_useColors)
 	{
-		logMessageStream << errorFile << ":" << lineNumber << " ";
+		IF_WINDOWS(SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), s_windowsTermCol[static_cast<std::size_t>(verbosity)]));
+		IF_LINUX(std::cout << s_linuxTermCol[static_cast<std::size_t>(verbosity)]);
 	}
 
-	logMessageStream << message;
+	const std::string verbosityString = g_logVerbosityTable[static_cast<size_t>(verbosity)];
 
-	std::string logMessageString = logMessageStream.str();
+	char* finalMessage = nullptr;
 
-	if (message == m_prevMessage)
+	// Calculates the size of the buffer, dependent on the layout of the log output.
+	// The general layout is "[%s] %s:%d %s". The +6 at the end is the extra 5 characters in the format string (3 for the info one), and an extra one for a null terminator
+	if (verbosity == LogVerbosity::INFO)
+	{
+		const std::size_t bufferSize = verbosityString.length() + message.length() + 4;
+		finalMessage = new char[bufferSize];
+		snprintf(finalMessage, bufferSize, "[%s] %s", verbosityString.c_str(), message.c_str());
+	}
+	else
+	{
+		const std::size_t bufferSize = verbosityString.length() + errorFile.length() + std::to_string(lineNumber).length() + message.length() + 6;
+		finalMessage = new char[bufferSize];
+		snprintf(finalMessage, bufferSize, "[%s] %s:%d %s", verbosityString.c_str(), errorFile.c_str(), lineNumber, message.c_str());
+	}
+
+	if (finalMessage == m_prevMessage)
 	{
 		m_currentDuplicates++;
 
-		// The "\r" prefix makes sure that if there is a new message, but it is the same, it will rewrite that line to the console, 
-		// rather than to print it out again and waste terminal space. Really useful, but may confuse people just as it did confuse me.
-		m_logFileHandle << '\r' << m_prevMessage << " (" << m_currentDuplicates << ")";
-		std::cout << '\r' << logMessageString << " (" << m_currentDuplicates << ")";
+		// The "\r" prefix makes sure that if the current message is the same as before, it will use the capabilities of a "carriage return"
+		// to not waste space and "edit" the line so it doesn't spam the console like heck. We aren't printing the \r lines to a file because
+		// they don't work and it will just exponentially grow the log file size.
+		printf("\r %s (%zu)", finalMessage, m_currentDuplicates);
 	}
 	else
 	{
 		m_currentDuplicates = 1;
-		m_prevMessage = message;
+		m_prevMessage = finalMessage;
 
-		m_logFileHandle << '\n' << logMessageString;
-		std::cout << '\n' << logMessageString;
+		m_fileHandle << '\n' << finalMessage;
+		printf("\n %s ", finalMessage);
 	}
 
-	setTerminalTextColor(TextColor::WHITE);
+	delete[] finalMessage;
+
+	if (m_useColors)
+	{
+		IF_WINDOWS(SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), s_windowsTermCol[static_cast<std::size_t>(LogVerbosity::NONE)]););
+		IF_LINUX(std::cout << s_linuxTermCol[static_cast<std::size_t>(LogVerbosity::NONE)];)
+	}
 }
 
+void Logger::logMessage(const LogMessage& message)
+{
+	logMessage(message.vbLevel, message.errorFile, message.lineNumber, message.message);
+}

@@ -48,6 +48,9 @@ namespace qz
 			class IRenderDevice
 			{
 			public:
+				IRenderDevice() = default;
+				virtual ~IRenderDevice() = default;
+
 				virtual void create() = 0;
 				virtual void draw(std::size_t first, std::size_t count) = 0;
 

@@ -39,9 +39,9 @@ ConfigManager* ConfigManager::get()
 
 ConfigFile* ConfigManager::registerConfig(const std::string & name)
 {
-	m_configfiles.insert(std::make_pair(name, ConfigFile(name + ".ini")));
+	m_configFiles.insert(std::make_pair(name, ConfigFile(name + ".ini")));
 	
-	ConfigFile *configFile = &m_configfiles[name];
+	ConfigFile *configFile = &m_configFiles[name];
 	configFile->reload(); // do initial load
 
 	return configFile;
@@ -50,13 +50,13 @@ ConfigFile* ConfigManager::registerConfig(const std::string & name)
 ConfigFile* ConfigManager::getConfigFile(const std::string & name)
 {
 	// Config file has not been registered so return an empty config.
-	if (m_configfiles.find(name) == m_configfiles.end())
+	if (m_configFiles.find(name) == m_configFiles.end())
 	{
 		static ConfigFile file;
 		LWARNING("Config file \"", name, "\" has not been registered. Returning default config file.");
 		return &file;
 	}
-	return &m_configfiles[name];
+	return &m_configFiles[name];
 }
 
 int ConfigFile::getInteger(const std::string & section, const std::string & key, int defaultReturn) const

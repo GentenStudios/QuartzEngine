@@ -50,7 +50,12 @@ void Engine::initialize(Options flags, const ApplicationRequirements& requiremen
 
 	if (flags & ENGINE_INIT_LOGGER)
 	{
-		utils::Logger::instance()->initialise(requirements.logFile, requirements.logVerbosity);
+		utils::LogConfigurations logFlags = utils::LogConfigurations::LOG_TO_FILE | utils::LogConfigurations::USE_COLORS;
+
+		if (m_threadsAllowed)
+			logFlags |= utils::LogConfigurations::USE_THREADS;
+
+		utils::Logger::instance()->initialize(requirements.logFile, requirements.logVerbosity, logFlags);
 	}
 }
 

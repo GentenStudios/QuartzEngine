@@ -146,7 +146,7 @@ namespace qz
 			ConfigFile* getConfigFile(const std::string& name);
 
 		private:
-			std::unordered_map<std::string, ConfigFile> m_configfiles;
+			std::unordered_map<std::string, ConfigFile> m_configFiles;
 		};
 	}
 }
