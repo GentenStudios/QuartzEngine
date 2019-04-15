@@ -103,7 +103,7 @@ namespace qz
 			Event()
 			{
 				// This is to make sure that *everything* in the struct + it's union is initialized to 0;
-				memset(this, 0, sizeof(Event));
+				std::memset(this, 0, sizeof(Event));
 			}
 		};
 	}
