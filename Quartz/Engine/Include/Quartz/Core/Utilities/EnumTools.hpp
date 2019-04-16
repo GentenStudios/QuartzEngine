@@ -44,7 +44,7 @@ namespace qz
 	bool hasFlag(Enum flags, Enum lookFor)
 	{
 		using Underlying = typename std::underlying_type<Enum>::type;
-		return static_cast<Underlying>(flags & lookFor);
+		return static_cast<Underlying>(flags) & static_cast<Underlying>(lookFor);
 	}
 }
 

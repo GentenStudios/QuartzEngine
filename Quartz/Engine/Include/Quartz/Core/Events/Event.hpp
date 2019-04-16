@@ -27,6 +27,8 @@
 
 #include <SDL.h>
 
+#include <cstring>
+
 namespace qz
 {
 	namespace events
