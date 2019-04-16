@@ -89,8 +89,7 @@ void Logger::initialize(const std::string& filePath, const LogVerbosity verbLeve
 
 	if (m_useThreads)
 	{
-		std::unique_ptr<threading::CustomWorker<LogMessage>> tempPtr(std::make_unique<threading::CustomWorker<LogMessage>>());
-		m_worker = std::move(tempPtr);
+		m_worker = std::unique_ptr<threading::CustomWorker<LogMessage>>();
 
 		// This is some painful C++, the Logger::* is a member pointer thingy. The static_cast is to help C++ determine which overload of logMessage
 		// that std::bind should use.
