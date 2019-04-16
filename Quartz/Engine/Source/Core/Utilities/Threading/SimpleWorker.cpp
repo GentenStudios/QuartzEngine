@@ -21,8 +21,7 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
-
+#include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Utilities/Threading/SimpleWorker.hpp>
 
 using namespace qz::utils::threading;
