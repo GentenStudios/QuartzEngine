@@ -21,7 +21,10 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
+#include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
+
+#include <iostream>
 
 #if defined(QZ_PLATFORM_WINDOWS)
 #include <Windows.h>

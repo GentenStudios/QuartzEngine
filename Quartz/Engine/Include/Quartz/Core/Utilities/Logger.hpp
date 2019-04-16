@@ -30,6 +30,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <memory>
 
 #define LFATAL(message, ...)            qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL, __FILE__, __LINE__, message, ##__VA_ARGS__)
 #define LINFO(message, ...)             qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO, __FILE__, __LINE__, message, ##__VA_ARGS__)
