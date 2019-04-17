@@ -124,8 +124,8 @@ void Logger::logMessage(LogVerbosity verbosity, const std::string& errorFile, in
 
 	if (m_useColors)
 	{
-		IF_WINDOWS(SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), s_windowsTermCol[static_cast<std::size_t>(verbosity)]));
-		IF_LINUX(std::cout << s_linuxTermCol[static_cast<std::size_t>(verbosity)]);
+		QZ_IF_WINDOWS(SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), s_windowsTermCol[static_cast<std::size_t>(verbosity)]));
+		QZ_IF_LINUX(std::cout << s_linuxTermCol[static_cast<std::size_t>(verbosity)]);
 	}
 
 	const std::string verbosityString = g_logVerbosityTable[static_cast<size_t>(verbosity)];
@@ -169,8 +169,8 @@ void Logger::logMessage(LogVerbosity verbosity, const std::string& errorFile, in
 
 	if (m_useColors)
 	{
-		IF_WINDOWS(SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), s_windowsTermCol[static_cast<std::size_t>(LogVerbosity::NONE)]););
-		IF_LINUX(std::cout << s_linuxTermCol[static_cast<std::size_t>(LogVerbosity::NONE)];)
+		QZ_IF_WINDOWS(SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), s_windowsTermCol[static_cast<std::size_t>(LogVerbosity::NONE)]););
+		QZ_IF_LINUX(std::cout << s_linuxTermCol[static_cast<std::size_t>(LogVerbosity::NONE)];)
 	}
 }
 

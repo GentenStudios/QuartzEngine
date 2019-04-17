@@ -25,28 +25,18 @@
 
 #include <Quartz/Core/Internals/QuartzDefines.hpp>
 
-#if defined(QZ_MSVC)
-	using int8   = signed   __int8;
-	using uint8  = unsigned __int8;
-	using int16  = signed   __int16;
-	using uint16 = unsigned __int16;
-	using int32  = signed   __int32;
-	using uint32 = unsigned __int32;
-	using int64  = signed   __int64;
-	using uint64 = unsigned __int64;
-#else
-	using int8   = signed   char;
-	using uint8  = unsigned char;
-	using int16  = signed   short int;
-	using uint16 = unsigned short int;
-	using int32  = signed   int;
-	using uint32 = unsigned int;
-	using int64  =          long long int;
-	using uint64 = unsigned long long int;
-#endif
+#include <cstdint>
 
-using byte = int8;
-using ubyte = uint8;
+using int8   = std::int8_t;
+using uint8  = std::uint8_t;
+using int16  = std::int16_t;
+using uint16 = std::uint16_t;
+using int32  = std::int32_t;
+using uint32 = std::uint32_t;
+using int64  = std::int64_t;
+using uint64 = std::uint64_t;
+
+using byte = uint8;
 
 using uint = uint32;
 
@@ -54,13 +44,10 @@ using uint = uint32;
 static_assert(sizeof(uint64) == 8, "Custom aliased type \'uint64\' is not of size 8 bytes!");
 static_assert(sizeof(uint32) == 4, "Custom aliased type \'uint64\' is not of size 8 bytes!");
 static_assert(sizeof(uint16) == 2, "Custom aliased type \'uint64\' is not of size 8 bytes!");
-static_assert(sizeof(uint8)  == 1, "Custom aliased type \'uint8\'  is not of size 1 bytes!");
-static_assert(sizeof(ubyte)  == 1, "Custom aliased type \'ubyte\'  is not of size 1 bytes!");
+static_assert(sizeof(uint8) == 1, "Custom aliased type \'uint8\'  is not of size 1 bytes!");
+static_assert(sizeof(byte) == 1, "Custom aliased type \'byte\'  is not of size 1 bytes!");
 
-
-static_assert(sizeof(int64)  == 8, "Custom aliased type \'int64\' is not of size 8 bytes!");
-static_assert(sizeof(int32)  == 4, "Custom aliased type \'int32\' is not of size 8 bytes!");
-static_assert(sizeof(int16)  == 2, "Custom aliased type \'int16\' is not of size 8 bytes!");
-static_assert(sizeof(int8)   == 1, "Custom aliased type \'int8\'  is not of size 1 bytes!");
-static_assert(sizeof(byte)   == 1, "Custom aliased type \'byte\'  is not of size 1 bytes!");
-
+static_assert(sizeof(int64) == 8, "Custom aliased type \'int64\' is not of size 8 bytes!");
+static_assert(sizeof(int32) == 4, "Custom aliased type \'int32\' is not of size 8 bytes!");
+static_assert(sizeof(int16) == 2, "Custom aliased type \'int16\' is not of size 8 bytes!");
+static_assert(sizeof(int8) == 1, "Custom aliased type \'int8\'  is not of size 1 bytes!");

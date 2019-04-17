@@ -29,11 +29,11 @@
 
 // Determine the compiler and set the corresponding defines for it.
 #ifdef _MSC_VER
-#	define QZ_MSVC
+#	define QZ_COMPILER_MSVC
 #elif defined(__clang__)
-#	define QZ_CLANG
+#	define QZ_COMPILER_CLANG
 #elif defined(__GNUC__)
-#	define QZ_GNUC
+#	define QZ_COMPILER_GCC
 #endif
 
 // Determine the OS and set the corresponding defines for it.
@@ -47,14 +47,14 @@
 #endif
 
 #if defined(QZ_PLATFORM_WINDOWS)
-#	define IF_WINDOWS(x) x
+#	define QZ_IF_WINDOWS(x) x
 #else
-#	define IF_WINDOWS(x)
+#	define QZ_IF_WINDOWS(x)
 #endif
 
 #if defined(QZ_PLATFORM_LINUX)
-#	define IF_LINUX(x) x
+#	define QZ_IF_LINUX(x) x
 #else
-#	define IF_LINUX(x)
+#	define QZ_IF_LINUX(x)
 #endif
 

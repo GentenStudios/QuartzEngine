@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <Quartz/Core/Internals/QuartzTypes.hpp>
+#include <Quartz/Core/Core.hpp>
 
 namespace qz
 {

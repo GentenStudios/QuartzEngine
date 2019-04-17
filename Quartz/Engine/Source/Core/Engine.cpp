@@ -23,6 +23,8 @@
 
 #include <Quartz/Core/Engine.hpp>
 
+#include <SDL.h>
+
 using namespace qz;
 
 Engine* Engine::instance()
@@ -31,15 +33,15 @@ Engine* Engine::instance()
 	return &engine;
 }
 
-void Engine::initialize(EngineOptions flags, const ApplicationRequirements& requirements)
+void Engine::initialize(EngineConfigFlags flags, const ApplicationRequirements& requirements)
 {
 	SDL_SetMainReady();
 	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 
-	if (hasFlag(flags, EngineOptions::ALLOW_THREADS))
+	if (hasFlag(flags, EngineConfigFlags::ALLOW_THREADS))
 		m_threadsAllowed = true;
 
-	if (hasFlag(flags, EngineOptions::INIT_GRAPHICS))
+	if (hasFlag(flags, EngineConfigFlags::INIT_GRAPHICS))
 	{
 		// There will be more here, but first we have to ya know... actually have the code for it.
 		// You could argue lets save this for a later date, but it's good to get the architecture in
@@ -48,7 +50,7 @@ void Engine::initialize(EngineOptions flags, const ApplicationRequirements& requ
 		gfx::ContextManager::setRenderingAPI(requirements.renderAPI);
 	}
 
-	if (hasFlag(flags, EngineOptions::INIT_LOGGER))
+	if (hasFlag(flags, EngineConfigFlags::INIT_LOGGER))
 	{
 		utils::LogConfigurations logFlags = utils::LogConfigurations::LOG_TO_FILE | utils::LogConfigurations::USE_COLORS;
 

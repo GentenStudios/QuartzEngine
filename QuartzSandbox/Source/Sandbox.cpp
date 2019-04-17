@@ -58,7 +58,7 @@ int main(int argc, char** argv)
 {
 	using namespace qz;
 
-	Engine::instance()->initialize(EngineOptions::INIT_EVERYTHING, { "quartz.log", utils::LogVerbosity::DEBUG, gfx::RenderingAPI::OPENGL });
+	Engine::instance()->initialize(EngineConfigFlags::INIT_EVERYTHING, { "quartz.log", utils::LogVerbosity::DEBUG, gfx::RenderingAPI::OPENGL });
 
 	auto time = Measure<>::execution([]()
 	{

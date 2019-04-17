@@ -28,8 +28,6 @@
 #include <Quartz/Core/Graphics/ContextManager.hpp>
 #include <Quartz/Core/Utilities/EnumTools.hpp>
 
-#include <SDL.h>
-
 namespace qz
 {
 	struct ApplicationRequirements
@@ -44,7 +42,7 @@ namespace qz
 		{}
 	};
 
-	enum class EngineOptions : uint
+	enum class EngineConfigFlags : uint
 	{
 		ALLOW_THREADS = 1 << 0,
 		INIT_LOGGER = 1 << 1,
@@ -59,7 +57,7 @@ namespace qz
 	public:
 		static Engine* instance();
 
-		void initialize(EngineOptions flags, const ApplicationRequirements& requirements);
+		void initialize(EngineConfigFlags flags, const ApplicationRequirements& requirements);
 		void shutdown();
 
 		bool threadsAllowed() const { return m_threadsAllowed; }
@@ -74,4 +72,4 @@ namespace qz
 	};
 }
 
-ENABLE_BITMASK_OPERATORS(qz::EngineOptions)
+ENABLE_BITMASK_OPERATORS(qz::EngineConfigFlags)

@@ -26,25 +26,25 @@
 #include <Quartz/Core/Internals/QuartzDefines.hpp>
 #include <Quartz/Core/Internals/QuartzTypes.hpp>
 
-#if defined(QZ_MSVC)
-#	define PV_FORCE_INLINE __forceinline
+#if defined(QZ_COMPILER_MSVC)
+#	define QZ_FORCE_INLINE __forceinline
 #elif defined(QZ_CLANG) || defined(QZ_GNUC)
 #	define QZ_FORCE_INLINE __attribute__((always_inline))
 #endif
 
 #if defined(QZ_DEBUG)
-#	if defined(QZ_MSVC)
-#		define BREAKPOINT() { __debugbreak(); }
+#	if defined(QZ_COMPILER_MSVC)
+#		define QZ_BREAKPOINT() { __debugbreak(); }
 #	elif defined(QZ_CLANG) || defined(QZ_GNUC)
-#		define BREAKPOINT()
+#		define QZ_BREAKPOINT()
 #	endif
 #else
-#	define BREAKPOINT()
+#	define QZ_BREAKPOINT()
 #endif
 
 // TODO: (vfadia) Log the assertion fail & allow all the extra arguments to go straight to the logger and all that jazz.
 #if defined(QZ_DEBUG)
-#	define QZ_ASSERT(condition, ...) if (!(condition)) { BREAKPOINT(); }
+#	define QZ_ASSERT(condition, ...) if (!(condition)) { QZ_BREAKPOINT(); }
 #else
 #	define QZ_ASSERT(condition, ...) 
 #endif
