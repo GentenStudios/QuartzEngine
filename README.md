@@ -18,17 +18,20 @@ https://discord.gg/5JmwPJf
 
 #### Building
 
-- Either clone https://github.com/GentenStudios/quartz-engine or fork and then clone your fork. You will have to either clone with the
-``--recursive`` option, or you can run: ``git submodule update --init`` after cloning.
+- (https://help.github.com/en/articles/cloning-a-repository) Clone https://github.com/GentenStudios/quartz-engine using GitBash or fork (https://help.github.com/en/articles/fork-a-repo) and then clone (See beginning of sentence) your fork.
 
-- Run `cmake -H. -Bbuild` inside the root directory
+- Inside of the folder that you've just cloned right click on an empty space and click GitBash Here.
 
-- Then either build with `cmake --build build` or follow the instructions for your compiler
+- Then run cmake -H. -Bbuild in the terminal
 
   ##### Visual Studio
 
-  - Right click on `quartz-sandbox` and click `Set as StartUp project`
-  - Click `Local Windows Debugger` to run
+  - Open up Quartz.sln in Visual Studios
+  - Click on the Build tab at the top of VS
+  - Then click Build Solution
+  
+  - After it's built go to the folder for the engine search .exe
+  - Move QuartzSandbox.exe file to the QuartzSandbox folder
 
   ##### Make
 
