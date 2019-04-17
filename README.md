@@ -33,12 +33,6 @@ https://discord.gg/5JmwPJf
   - After it's built go to the folder for the engine search .exe
   - Move QuartzSandbox.exe file to the QuartzSandbox folder
 
-  ##### Make
-
-  - run `cd build` and then `make`.
-  - Run the resulting binary
-
-
 
 ## Coding Standards
 
