@@ -69,9 +69,9 @@ int main(int argc, char** argv)
 	LDEBUG("It takes, ", time, " milliseconds to push 10k log messages.");
 	LDEBUG("It takes, ", time / 10000.f, " milliseconds to push a single log message.");
 
-	//Sandbox* application = new Sandbox();
-	//application->run();
-	//delete application;
+	Sandbox* application = new Sandbox();
+	application->run();
+	delete application;
 
 	Engine::instance()->shutdown();
 

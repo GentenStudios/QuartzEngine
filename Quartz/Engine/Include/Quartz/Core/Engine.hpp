@@ -28,9 +28,7 @@
 #include <Quartz/Core/Graphics/ContextManager.hpp>
 #include <Quartz/Core/Utilities/EnumTools.hpp>
 
-#define SDL_MAIN_HANDLED
 #include <SDL.h>
-#undef main
 
 namespace qz
 {

@@ -34,7 +34,7 @@ Engine* Engine::instance()
 void Engine::initialize(EngineOptions flags, const ApplicationRequirements& requirements)
 {
 	SDL_SetMainReady();
-	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS);
 
 	if (hasFlag(flags, EngineOptions::ALLOW_THREADS))
 		m_threadsAllowed = true;
