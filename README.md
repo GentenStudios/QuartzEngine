@@ -17,22 +17,28 @@ https://discord.gg/5JmwPJf
 - OpenGL (Version >= 3.3)
 
 #### Building
+Building of this project is a simple endeavour, requiring only a few commands.
 
-- (https://help.github.com/en/articles/cloning-a-repository) Clone https://github.com/GentenStudios/quartz-engine using GitBash or fork (https://help.github.com/en/articles/fork-a-repo) and then clone (See beginning of sentence) your fork.
+Initially, a [clone](https://help.github.com/en/articles/cloning-a-repository) of the repository will be required, however, if you plan on making edits first, make sure you [fork](https://help.github.com/en/articles/fork-a-repo) the repo beforehand, and clone that.
 
-- Inside of the folder that you've just cloned right click on an empty space and click GitBash Here.
+An example command for cloning the repository is:
 
-- Then run cmake -H. -Bbuild in the terminal
+<dl>
+git clone https://github.com/GentenStudios/quartz-engine.git
+</dl>
 
-  ##### Visual Studio
+Once cloned, enter the directory, by doing `cd quartz-engine``, and complete the following commands:
 
-  - Open up Quartz.sln in Visual Studios
-  - Click on the Build tab at the top of VS
-  - Then click Build Solution
-  
-  - After it's built go to the folder for the engine search .exe
-  - Move QuartzSandbox.exe file to the QuartzSandbox folder
+<dl>
+cmake -H. -BBuild
+cmake --build Build
+</dl>
 
+These commands will take a fair amount of time to complete, the first one configures the project and appropriate compilers, whereas the second command actually builds the project using those configurations. To run the executable, for MSVC/Windows users, go into Build/QuartzSandbox and move QuartzSandbox.exe out of Debug and into this folder. You can then run it.
+
+An alternative way of building is executing the initial cmake -H. -BBuild command to generate Visual Studio Solution files, After doing so, go into the Build folder, and open Quartz.sln. Then find the build button and press it, or press F5. The initial run of the application may fail and there will be an error about a startup project. If so, locate the QuartzSandbox project in the sidebar, and right click, then select Set as Startup Project, then press F5 or the Run button.
+
+Voila! You've successfully built QuartzEngine and run the sandbox application, now feel free to start contributing in any way you can!
 
 ## Coding Standards
 
