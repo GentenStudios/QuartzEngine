@@ -1,14 +1,9 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/ryoqb5xj56jq0e04?svg=true)](https://ci.appveyor.com/project/GentenStudios/quartz-engine) [![Build Status](https://travis-ci.org/GentenStudios/quartz-engine.svg?branch=develop)](https://travis-ci.org/GentenStudios/quartz-engine)
 # QUARTZ ENGINE
 
-## Community
+The standalone engine that powers the multiplayer first person shooter [Unvanquished](https://github.com/Unvanquished/Unvanquished).
 
-Here is a link to our public discord where we generally collaborate and discuss the development of the engine.
-https://discord.gg/5JmwPJf
-
-## Development
-
-#### Dependencies
+## Dependencies
 
 - CMake (Version >= 3.0)
 - A C++11 compatible compiler. The following have been tested
@@ -16,16 +11,8 @@ https://discord.gg/5JmwPJf
   - Clang/Clang++ (Clang 7.0.0-3)
 - OpenGL (Version >= 3.3)
 
-#### Building
-Building of this project is a simple endeavour, requiring only a few commands.
-
-Initially, a [clone](https://help.github.com/en/articles/cloning-a-repository) of the repository will be required, however, if you plan on making edits first, make sure you [fork](https://help.github.com/en/articles/fork-a-repo) the repo beforehand, and clone that.
-
-An example command for cloning the repository is:
-
-<dl>
-git clone https://github.com/GentenStudios/quartz-engine.git
-</dl>
+## Build Instructions
+### Visual Studio
 
 Once cloned, enter the directory, by doing `cd quartz-engine``, and complete the following commands:
 
@@ -33,6 +20,21 @@ Once cloned, enter the directory, by doing `cd quartz-engine``, and complete the
 cmake -H. -BBuild
 cmake --build Build
 </dl>
+
+### Linux, Mac OS X, MSYS
+
+  1. `mkdir build && cd build`
+  2. `cmake ..`
+  3. `make`¹
+
+### Linux cross-compile to Windows
+
+  1. `mkdir build && cd build`
+  2. `cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/cross-toolchain-mingw32.cmake ..`²
+  3. `make`¹
+
+¹ *Use `make -j$(nproc)` to speed up compilation by using all CPU cores (`make -jN` for `N` threads).*  
+² *Use `cross-toolchain-mingw64.cmake` for a Win64 build.*
 
 These commands will take a fair amount of time to complete, the first one configures the project and appropriate compilers, whereas the second command actually builds the project using those configurations. To run the executable, for MSVC/Windows users, go into Build/QuartzSandbox and move QuartzSandbox.exe out of Debug and into this folder. You can then run it.
 
