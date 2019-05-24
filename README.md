@@ -1,8 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/ryoqb5xj56jq0e04?svg=true)](https://ci.appveyor.com/project/GentenStudios/quartz-engine) [![Build Status](https://travis-ci.org/GentenStudios/quartz-engine.svg?branch=develop)](https://travis-ci.org/GentenStudios/quartz-engine)
 # QUARTZ ENGINE
 
-The standalone engine that powers the multiplayer first person shooter [Unvanquished](https://github.com/Unvanquished/Unvanquished).
-
 ## Dependencies
 
 - CMake (Version >= 3.0)
