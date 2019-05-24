@@ -77,3 +77,8 @@ public:
 
 - Prefer C++ casts over C style casts (e.g. `static_cast` or `const_cast` rather than `(<type>) ... `)
 - Try not to use features more modern than C++11, although this isn't a fast rule and is open for discussion.
+
+
+## Community
+Here is a link to our public discord where we generally collaborate and discuss the development of the engine.
+https://discord.gg/RBsZh4
