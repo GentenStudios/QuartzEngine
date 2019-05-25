@@ -50,10 +50,25 @@ namespace qz
 			public:
 				virtual ~IRenderDevice() {}
 
+				/**
+				 * @brief Initialise the RenderDevice. Must be called before
+				 *        any other methods on the RenderDevice.
+				 */
 				virtual void create() = 0;
+
+				/**
+				 * @brief Draw a non-indexed set of vertices (as triangles).
+				 * @param first The index of the first vertex to draw.
+				 * @param count The number of vertices to draw.
+				 */
 				virtual void draw(std::size_t first, std::size_t count) = 0;
 
+				/**
+				 * @brief Create a vertex buffer.
+				 * @return A handle pointing to a vertex buffer ready for use.
+				 */
 				virtual VertexBufferHandle createVertexBuffer() = 0;
+
 				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
 				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
 				
