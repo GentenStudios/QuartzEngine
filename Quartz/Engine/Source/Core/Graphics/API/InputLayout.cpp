@@ -22,7 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/InputLayout.hpp>
+#include <Quartz/Graphics/API/InputLayout.hpp>
 
 using namespace qz::gfx::api;
 using namespace qz::gfx;

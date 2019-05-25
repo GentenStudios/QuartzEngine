@@ -22,7 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLVertexBuffer.hpp>
+#include <Quartz/Graphics/API/GL/GLVertexBuffer.hpp>
 
 using namespace qz::gfx::api::gl;
 using namespace qz::gfx::api;

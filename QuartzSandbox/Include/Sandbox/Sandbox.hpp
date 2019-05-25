@@ -24,7 +24,7 @@
 #pragma once
 
 #include <Quartz.hpp>
-#include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
+#include <Quartz/Graphics/API/IRenderDevice.hpp>
 
 namespace sandbox
 {

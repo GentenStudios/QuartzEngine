@@ -21,25 +21,40 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Math/Ray.hpp>
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
+using namespace qz::math;
 
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
+Ray::Ray(const Vector3& start, const Vector3& direction)
+	: m_start(start), m_direction(direction), 
+	m_currentPosition(start), m_length(0.f)
+{
+}
 
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
+Vector3 Ray::advance(float scale)
+{
+	m_currentPosition += m_direction * scale;
+	m_length += scale;
 
-#include <Quartz/Graphics/API/Context.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
+	return m_currentPosition;
+}
 
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>
+Vector3 Ray::backtrace(float scale)
+{
+	m_currentPosition -= m_direction * scale;
+	m_length -= scale;
+
+	return m_currentPosition;
+}
+
+float Ray::getLength() const
+{
+	return m_length;
+}
+
+Vector3 Ray::getCurrentPosition() const
+{
+	return m_currentPosition;
+}
+

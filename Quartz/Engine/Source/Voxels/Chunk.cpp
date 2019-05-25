@@ -23,7 +23,7 @@
 
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Graphics/API/BufferLayout.hpp>
+#include <Quartz/Graphics/API/BufferLayout.hpp>
 #include <Quartz/Voxels/Chunk.hpp>
 #include <Quartz/Voxels/ChunkBlockVerts.hpp>
 #include <Quartz/Voxels/Terrain/PerlinNoise.hpp>

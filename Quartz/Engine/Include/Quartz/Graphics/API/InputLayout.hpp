@@ -24,22 +24,46 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
-
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
-
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
-
-#include <Quartz/Graphics/API/Context.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
 #include <Quartz/Graphics/API/DataTypes.hpp>
 
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>
+#include <vector>
+#include <string>
+#include <initializer_list>
+
+namespace qz
+{
+	namespace gfx
+	{
+		namespace api
+		{
+			struct VertexElementType
+			{
+				DataType type;
+				int numComponents;
+
+				static const VertexElementType Vec2f;
+				static const VertexElementType Vec3f;
+				static const VertexElementType Vec4f;
+			};
+
+			struct VertexElement
+			{
+				VertexElementType type;
+				int streamIndex;
+				int attributeIndex;
+				int offset;
+				bool normalized;
+			};
+
+			class InputLayout
+			{
+			public:
+				InputLayout(std::initializer_list<VertexElement> init);
+				InputLayout() {}
+
+				std::vector<VertexElement> elements;
+			};
+		}
+	}
+}
+

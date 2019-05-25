@@ -23,7 +23,7 @@
 
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Platform/GLWindow.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLCommon.hpp>
+#include <Quartz/Graphics/API/GL/GLCommon.hpp>
 #include <Quartz/Core/Events/KeyEvent.hpp>
 #include <Quartz/Core/Events/MouseEvent.hpp>
 #include <Quartz/Core/Events/ApplicationEvent.hpp>

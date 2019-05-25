@@ -22,7 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/Context.hpp>
+#include <Quartz/Graphics/API/Context.hpp>
 
 using namespace qz::gfx;
 

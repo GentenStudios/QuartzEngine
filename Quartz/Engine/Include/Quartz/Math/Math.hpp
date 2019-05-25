@@ -23,23 +23,22 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
+#include <Quartz/Math/MathUtils.hpp>
+#include <Quartz/Math/Matrix4x4.hpp>
+#include <Quartz/Math/Vector3.hpp>
+#include <Quartz/Math/Vector2.hpp>
+#include <Quartz/Math/Ray.hpp>
 
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
+namespace qz
+{
+	typedef math::Matrix4x4				Matrix4x4;
 
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
+	typedef math::Vector2				Vector2;
+	typedef math::Vector3				Vector3;
+	typedef math::TemplateVector2<int>	Vector2i;
+	typedef math::TemplateVector3<int>	Vector3i;
 
-#include <Quartz/Graphics/API/Context.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
+	template <typename T> using TVector2 = math::TemplateVector2<T>;
+	template <typename T> using TVector3 = math::TemplateVector3<T>;
+}
 
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>

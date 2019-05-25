@@ -1,5 +1,5 @@
-#include <Quartz/Core/Graphics/API/GL/GLRenderDevice.hpp>
-#include <Quartz/Core/Graphics/API/InputLayout.hpp>
+#include <Quartz/Graphics/API/GL/GLRenderDevice.hpp>
+#include <Quartz/Graphics/API/InputLayout.hpp>
 
 #include <imgui/imgui.h>
 #include <cstring>
@@ -84,7 +84,7 @@ void GLRenderDevice::draw(std::size_t first, std::size_t count)
 		GLuint attributeIndex = static_cast<GLuint>(vertexElement.attributeIndex);
 		glVertexAttribPointer(
 			attributeIndex, vertexElement.type.numComponents, 
-			gfxToOpenGL(vertexElement.type.type), vertexElement.normalized ? GL_TRUE : GL_FALSE, 
+			ralTypeToGLType(vertexElement.type.type), vertexElement.normalized ? GL_TRUE : GL_FALSE,
 			stream.stride, (void*) (stream.offset + vertexElement.offset)
 		);
 

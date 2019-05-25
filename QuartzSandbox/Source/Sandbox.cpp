@@ -24,8 +24,8 @@
 #include <Sandbox/Sandbox.hpp>
 #include <Quartz.hpp>
 
-#include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLRenderDevice.hpp>
+#include <Quartz/Graphics/API/IRenderDevice.hpp>
+#include <Quartz/Graphics/API/GL/GLRenderDevice.hpp>
 #include <imgui/imgui.h>
 
 #define STB_IMAGE_IMPLEMENTATION

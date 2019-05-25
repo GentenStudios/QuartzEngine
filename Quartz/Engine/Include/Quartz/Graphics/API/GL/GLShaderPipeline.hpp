@@ -24,22 +24,35 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
-
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
-
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
-
-#include <Quartz/Graphics/API/Context.hpp>
+#include <Quartz/Graphics/API/GL/GLCommon.hpp>
 #include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
 
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>
+#include <vector>
+
+namespace qz
+{
+	namespace gfx
+	{
+		namespace api
+		{
+			namespace gl
+			{
+				class GLShaderPipeline
+				{
+				private:
+					GLuint m_id;
+					InputLayout m_inputLayout;
+
+				public:
+					void create(const std::string& filepath, const InputLayout& inputLayout);
+					void use();
+
+					GLuint getID() const { return m_id; }
+
+					InputLayout& getInputLayout() { return m_inputLayout; }
+				};
+			}
+		}
+	}
+}
+

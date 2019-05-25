@@ -22,7 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLTexture.hpp>
+#include <Quartz/Graphics/API/GL/GLTexture.hpp>
 
 using namespace qz::gfx::api::gl;
 using namespace qz::gfx::api;

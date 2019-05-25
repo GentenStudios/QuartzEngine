@@ -24,22 +24,29 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
+#include <Quartz/Graphics/API/GL/GLCommon.hpp>
 
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
+namespace qz
+{
+	namespace gfx
+	{
+		namespace api
+		{
+			namespace gl
+			{
+				class GLVertexBuffer 
+				{
+				public:
+					void create();
+					void bind();
+					void bufferData(float* data, std::size_t sizeBytes);
 
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
+				private:
+					GLuint m_id;
+				};
+			}
 
-#include <Quartz/Graphics/API/Context.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
+		}
+	}
+}
 
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>

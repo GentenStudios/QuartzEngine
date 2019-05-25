@@ -21,25 +21,20 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Math/Vector2.hpp>
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
+using namespace qz::math;
 
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
+void Vector2::floor()
+{
+	x = std::floor(x);
+	y = std::floor(y);
+}
 
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
+void Vector2::ceil()
+{
+	x = std::ceil(x);
+	y = std::ceil(y);
+}
 
-#include <Quartz/Graphics/API/Context.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
-
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>

@@ -23,9 +23,9 @@
 
 #pragma once
 
-#include <Quartz/Core/Graphics/API/IStateManager.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
+#include <Quartz/Graphics/API/IStateManager.hpp>
+#include <Quartz/Graphics/API/IBuffer.hpp>
+#include <Quartz/Graphics/API/ITextureArray.hpp>
 
 namespace qz
 {

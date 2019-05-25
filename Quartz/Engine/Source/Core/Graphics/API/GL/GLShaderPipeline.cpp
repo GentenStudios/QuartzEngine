@@ -24,7 +24,7 @@
 #include <cassert>
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLShaderPipeline.hpp>
+#include <Quartz/Graphics/API/GL/GLShaderPipeline.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
 #include <Quartz/Core/Utilities/FileIO.hpp>
 

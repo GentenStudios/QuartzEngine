@@ -23,23 +23,53 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
-
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
-
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
-
-#include <Quartz/Graphics/API/Context.hpp>
+#include <Quartz/Core/Utilities/HandleAllocator.hpp>
 #include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
 
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>
+#define DEFINE_HANDLE(Name) \
+		struct Name : public utils::Handle { }
+
+namespace qz
+{
+	namespace gfx
+	{
+		namespace api
+		{
+			DEFINE_HANDLE(VertexBufferHandle);
+			DEFINE_HANDLE(ShaderPipelineHandle);
+			DEFINE_HANDLE(UniformHandle);
+			DEFINE_HANDLE(TextureHandle);
+
+			enum class UniformType
+			{
+				SAMPLER, MAT4, VEC3, VEC2, COLOR3, INVALID
+			};
+
+			class IRenderDevice
+			{
+			public:
+				virtual ~IRenderDevice() {}
+
+				virtual void create() = 0;
+				virtual void draw(std::size_t first, std::size_t count) = 0;
+
+				virtual VertexBufferHandle createVertexBuffer() = 0;
+				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
+				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
+				
+				virtual ShaderPipelineHandle createShaderPipeline(const std::string& filepath, const InputLayout& inputLayout) = 0;
+				virtual void setShaderPipeline(ShaderPipelineHandle shader) = 0;
+
+				virtual UniformHandle createUniform(ShaderPipelineHandle shader, const char* name, UniformType type) = 0;
+				virtual void setUniformValue(UniformHandle uniform, const void* value, int num) = 0;
+
+				virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height) = 0;
+				virtual void setTexture(TextureHandle texture, int slot) = 0;
+
+				virtual void showShaderDebugUI() = 0;
+			};
+		}
+	}
+}
+
+#undef DEFINE_HANDLE

@@ -21,25 +21,57 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Math/Vector3.hpp>
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
+using namespace qz::math;
 
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
+void Vector3::floor()
+{
+	x = std::floor(x);
+	y = std::floor(y);
+	z = std::floor(z);
+}
 
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
+void Vector3::ceil()
+{
+	x = std::ceil(x);
+	y = std::ceil(y);
+	z = std::ceil(z);
+}
 
-#include <Quartz/Graphics/API/Context.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
+void Vector3::normalize()
+{
+	const float len = std::sqrt(dotProduct({ x, y, z }, { x, y, z }));
 
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>
+	x /= len;
+	y /= len;
+	z /= len;
+}
+
+Vector3 Vector3::cross(const Vector3& vec1, const Vector3& vec2)
+{
+	return {
+	vec1.y * vec2.z - vec1.z * vec2.y,
+	vec1.z * vec2.x - vec1.x * vec2.z,
+	vec1.x * vec2.y - vec1.y * vec2.x
+	};
+}
+
+Vector3 Vector3::normalize(const Vector3& vec1)
+{
+	const float len = std::sqrt(dotProduct(vec1, vec1));
+
+	return {
+		vec1.x / len,
+		vec1.y / len,
+		vec1.z / len
+	};
+}
+
+float Vector3::dotProduct(const Vector3& vec1, const Vector3& vec2)
+{
+	return	vec1.x * vec2.x +
+		vec1.y * vec2.y +
+		vec1.z * vec2.z;
+}

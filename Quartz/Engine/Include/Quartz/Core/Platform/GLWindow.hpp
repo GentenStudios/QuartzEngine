@@ -24,9 +24,9 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Math/Math.hpp>
+#include <Quartz/Math/Math.hpp>
 #include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Graphics/IWindow.hpp>
+#include <Quartz/Graphics/IWindow.hpp>
 
 #include <functional>
 

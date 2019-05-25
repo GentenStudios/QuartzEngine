@@ -22,7 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Graphics/Camera.hpp>
+#include <Quartz/Graphics/Camera.hpp>
 
 #include <cmath>
 

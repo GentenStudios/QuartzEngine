@@ -23,23 +23,59 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
+#include <Quartz/Math/Vector3.hpp>
 
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
+namespace qz
+{
+	namespace math
+	{
+		/**
+		 * @brief Produces a castable ray for helping find things at positions/intervals along the ray.
+		 */
+		class Ray
+		{
+		public:
+			/**
+			 * @brief Constructs a Ray object.
+			 * @param start The position of the start of the ray.
+			 * @param direction The direction the ray is "traveling" in.
+			 */
+			Ray(const Vector3& start, const Vector3& direction);
 
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
+			Ray(const Ray& other) = default;
+			~Ray() = default;
 
-#include <Quartz/Graphics/API/Context.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
+			/**
+			 * @brief Advances along a ray.
+			 * @param scale The distance to advance along the ray
+			 * @return The new position along the ray.
+			 */
+			Vector3 advance(float scale);
 
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>
+			/**
+			 * @brief Backtracks (goes backwards) along a ray.
+			 * @param scale The distance to backtrack along the ray.
+			 * @return The new position along the ray.
+			 */
+			Vector3 backtrace(float scale);
+
+			/**
+			 * @brief Gets the current length of the ray.
+			 * @return The length of the ray.
+			 */
+			float getLength() const;
+
+			/**
+			 * @brief Gets the current position along the ray.
+			 * @return The current position along the ray
+			 */
+			Vector3 getCurrentPosition() const;
+
+		private:
+			float m_length;
+			Vector3 m_start;
+			Vector3 m_direction;
+			Vector3 m_currentPosition;
+		};
+	}
+}
