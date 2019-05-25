@@ -26,14 +26,14 @@
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Math/Math.hpp>
 #include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Graphics/IWindow.hpp>
+#include <Quartz/Platform/IWindow.hpp>
 
 #include <functional>
 
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
-#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
+#include <Quartz/Platform/SDLGuiLayer.hpp>
 
 namespace qz
 {

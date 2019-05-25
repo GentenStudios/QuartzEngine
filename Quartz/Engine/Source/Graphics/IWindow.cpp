@@ -22,8 +22,8 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Core/Platform/GLWindow.hpp>
+#include <Quartz/Platform/IWindow.hpp>
+#include <Quartz/Platform/GLWindow.hpp>
 
 using namespace qz::gfx;
 

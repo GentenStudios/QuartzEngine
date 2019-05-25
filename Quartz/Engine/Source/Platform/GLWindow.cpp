@@ -22,7 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Platform/GLWindow.hpp>
+#include <Quartz/Platform/GLWindow.hpp>
 #include <Quartz/Graphics/RHI/OpenGL/GLCommon.hpp>
 #include <Quartz/Core/Events/KeyEvent.hpp>
 #include <Quartz/Core/Events/MouseEvent.hpp>

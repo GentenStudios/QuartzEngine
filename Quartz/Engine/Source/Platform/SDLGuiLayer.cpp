@@ -21,7 +21,7 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/Platform/SDLGuiLayer.hpp>
+#include <Quartz/Platform/SDLGuiLayer.hpp>
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl.h>

@@ -25,7 +25,7 @@
 
 using namespace qz::utils::threading;
 
-ThreadPool::ThreadPool(const int threadCount)
+ThreadPool::ThreadPool(const std::size_t threadCount)
 {
 	for (std::size_t i = 0; i < threadCount; ++i)
 	{

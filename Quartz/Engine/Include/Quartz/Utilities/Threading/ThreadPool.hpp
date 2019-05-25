@@ -32,6 +32,7 @@
 #include <deque>
 #include <vector>
 #include <functional>
+#include <cstddef>
 
 namespace qz
 {
@@ -42,7 +43,7 @@ namespace qz
 			class ThreadPool
 			{
 			public:
-				ThreadPool(const int threadCount);
+				ThreadPool(const std::size_t threadCount);
 				~ThreadPool();
 
 				void addWork(std::function<void()> fun);

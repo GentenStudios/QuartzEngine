@@ -25,7 +25,7 @@
 
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Math/Math.hpp>
-#include <Quartz/Graphics/IWindow.hpp>
+#include <Quartz/Platform/IWindow.hpp>
 #include <Quartz/Core/Events/ApplicationEvent.hpp>
 
 #include <cmath>

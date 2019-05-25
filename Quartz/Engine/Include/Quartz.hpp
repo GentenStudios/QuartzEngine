@@ -41,5 +41,5 @@
 #include <Quartz/Graphics/RHI/InputLayout.hpp>
 #include <Quartz/Graphics/RHI/DataTypes.hpp>
 
-#include <Quartz/Graphics/IWindow.hpp>
+#include <Quartz/Platform/IWindow.hpp>
 #include <Quartz/Graphics/Camera.hpp>

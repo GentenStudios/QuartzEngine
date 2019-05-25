@@ -24,7 +24,7 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Graphics/IWindow.hpp>
+#include <Quartz/Platform/IWindow.hpp>
 #include <Quartz/Utilities/Logger.hpp>
 
 namespace qz
