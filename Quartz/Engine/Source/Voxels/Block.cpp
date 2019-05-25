@@ -23,7 +23,7 @@
 
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Voxels/Block.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Utilities/Logger.hpp>
 
 using namespace qz::voxels;
 

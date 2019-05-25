@@ -1,6 +1,5 @@
 add_subdirectory(Events)
 add_subdirectory(Platform)
-add_subdirectory(Utilities)
 
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 

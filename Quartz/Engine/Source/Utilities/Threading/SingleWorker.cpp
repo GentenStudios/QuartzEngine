@@ -21,24 +21,53 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
+#include <Quartz/Utilities/Threading/SingleWorker.hpp>
 
-using namespace qz::utils;
+using namespace qz::utils::threading;
 
-std::string FileIO::readAllFile(const std::string& filepath)
+SingleWorker::SingleWorker(): m_running(true)
 {
-	std::fstream fileHandle;
-	fileHandle.open(filepath.c_str());
-
-	std::string fileString;
-	fileString.assign(
-		(std::istreambuf_iterator<char>(fileHandle)),
-		(std::istreambuf_iterator<char>())
-	);
-
-	fileHandle.close();
-
-	return fileString;
+	std::thread t(&SingleWorker::threadHandle, this);
+	m_thread.swap(t);
 }
 
+SingleWorker::~SingleWorker()
+{
+	m_running = false;
+	m_condition.notify_all();
+
+	if (m_thread.joinable())
+		m_thread.join();
+}
+
+void SingleWorker::addWork(std::function<void()>&& function)
+{
+	{
+		std::unique_lock<std::mutex> lock(m_mutex);
+		m_queue.emplace_back(std::move(function));
+	}
+
+	m_condition.notify_one();
+}
+
+void SingleWorker::threadHandle()
+{
+	while (true)
+	{
+		std::function<void()> task;
+
+		{
+			std::unique_lock<std::mutex> lock(m_mutex);
+
+			m_condition.wait(lock, [this] { return !m_running || !m_queue.empty(); });
+
+			if (!m_running && m_queue.empty())
+				return;
+
+			task = std::move(m_queue.front());
+			m_queue.pop_front();
+		}
+
+		task();
+	}
+}

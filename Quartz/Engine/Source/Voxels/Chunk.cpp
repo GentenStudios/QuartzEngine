@@ -22,7 +22,7 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Utilities/Logger.hpp>
 #include <Quartz/Graphics/RHI/BufferLayout.hpp>
 #include <Quartz/Voxels/Chunk.hpp>
 #include <Quartz/Voxels/ChunkBlockVerts.hpp>

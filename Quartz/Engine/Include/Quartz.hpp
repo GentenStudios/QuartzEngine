@@ -24,9 +24,9 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
+#include <Quartz/Utilities/Logger.hpp>
+#include <Quartz/Utilities/FileIO.hpp>
+#include <Quartz/Utilities/Config.hpp>
 
 #include <Quartz/Core/Application.hpp>
 #include <Quartz/Core/EntryPoint.hpp>

@@ -24,7 +24,7 @@
 #pragma once
 
 #include <Quartz/Graphics/RHI/IRenderDevice.hpp>
-#include <Quartz/Core/Utilities/HandleAllocator.hpp>
+#include <Quartz/Utilities/HandleAllocator.hpp>
 #include <Quartz/Graphics/RHI/InputLayout.hpp>
 #include <Quartz/Graphics/RHI/OpenGL/GLVertexBuffer.hpp>
 #include <Quartz/Graphics/RHI/OpenGL/GLShaderPipeline.hpp>

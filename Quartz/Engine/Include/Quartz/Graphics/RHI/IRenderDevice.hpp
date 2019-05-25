@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <Quartz/Core/Utilities/HandleAllocator.hpp>
+#include <Quartz/Utilities/HandleAllocator.hpp>
 #include <Quartz/Graphics/RHI/InputLayout.hpp>
 
 #define DEFINE_HANDLE(Name) \

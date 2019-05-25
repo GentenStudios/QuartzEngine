@@ -24,7 +24,7 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Utilities/Logger.hpp>
 #include <Quartz/Graphics/RHI/DataTypes.hpp>
 
 #include <glad/glad.h>

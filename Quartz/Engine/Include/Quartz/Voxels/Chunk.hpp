@@ -26,7 +26,7 @@
 #include <Quartz/Core/Math/Math.hpp>
 #include <Quartz/Voxels/Block.hpp>
 #include <Quartz/Voxels/ChunkRenderer.hpp>
-#include <Quartz/Core/Utilities/Threading/SingleWorker.hpp>
+#include <Quartz/Utilities/Threading/SingleWorker.hpp>
 
 #include <vector>
 

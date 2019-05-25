@@ -22,8 +22,8 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Utilities/Config.hpp>
+#include <Quartz/Utilities/Logger.hpp>
 
 #include <SDL.h>
 #include <fstream>

@@ -21,36 +21,38 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/Utilities/Threading/SingleWorker.hpp>
+#include <Quartz/Utilities/Threading/ThreadPool.hpp>
 
 using namespace qz::utils::threading;
 
-SingleWorker::SingleWorker(): m_running(true)
+ThreadPool::ThreadPool(const int threadCount)
 {
-	std::thread t(&SingleWorker::threadHandle, this);
-	m_thread.swap(t);
+	for (std::size_t i = 0; i < threadCount; ++i)
+	{
+		m_threads.emplace_back(&ThreadPool::threadHandle, this);
+	}
 }
 
-SingleWorker::~SingleWorker()
+ThreadPool::~ThreadPool()
 {
 	m_running = false;
 	m_condition.notify_all();
 
-	if (m_thread.joinable())
-		m_thread.join();
+	for (std::thread& taskWorker : m_threads)
+		taskWorker.join();
 }
 
-void SingleWorker::addWork(std::function<void()>&& function)
+void ThreadPool::addWork(std::function<void()> fun)
 {
 	{
-		std::unique_lock<std::mutex> lock(m_mutex);
-		m_queue.emplace_back(std::move(function));
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_scheduledTasks.emplace_back(fun);
 	}
 
 	m_condition.notify_one();
 }
 
-void SingleWorker::threadHandle()
+void ThreadPool::threadHandle()
 {
 	while (true)
 	{
@@ -59,13 +61,13 @@ void SingleWorker::threadHandle()
 		{
 			std::unique_lock<std::mutex> lock(m_mutex);
 
-			m_condition.wait(lock, [this] { return !m_running || !m_queue.empty(); });
+			m_condition.wait(lock, [this]() { return !m_running || !m_scheduledTasks.empty(); });
 
-			if (!m_running && m_queue.empty())
+			if (!m_running && m_scheduledTasks.empty())
 				return;
 
-			task = std::move(m_queue.front());
-			m_queue.pop_front();
+			task = m_scheduledTasks.front();
+			m_scheduledTasks.pop_front();
 		}
 
 		task();

@@ -25,7 +25,7 @@
 
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Graphics/IWindow.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Utilities/Logger.hpp>
 
 namespace qz
 {

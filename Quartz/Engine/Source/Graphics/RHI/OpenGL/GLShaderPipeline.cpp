@@ -25,8 +25,8 @@
 
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Graphics/RHI/OpenGL/GLShaderPipeline.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
+#include <Quartz/Utilities/Logger.hpp>
+#include <Quartz/Utilities/FileIO.hpp>
 
 
 using namespace qz::gfx::rhi::gl;

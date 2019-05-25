@@ -21,55 +21,24 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/Utilities/Threading/ThreadPool.hpp>
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Utilities/FileIO.hpp>
 
-using namespace qz::utils::threading;
+using namespace qz::utils;
 
-ThreadPool::ThreadPool(const int threadCount)
+std::string FileIO::readAllFile(const std::string& filepath)
 {
-	for (std::size_t i = 0; i < threadCount; ++i)
-	{
-		m_threads.emplace_back(&ThreadPool::threadHandle, this);
-	}
+	std::fstream fileHandle;
+	fileHandle.open(filepath.c_str());
+
+	std::string fileString;
+	fileString.assign(
+		(std::istreambuf_iterator<char>(fileHandle)),
+		(std::istreambuf_iterator<char>())
+	);
+
+	fileHandle.close();
+
+	return fileString;
 }
 
-ThreadPool::~ThreadPool()
-{
-	m_running = false;
-	m_condition.notify_all();
-
-	for (std::thread& taskWorker : m_threads)
-		taskWorker.join();
-}
-
-void ThreadPool::addWork(std::function<void()> fun)
-{
-	{
-		std::lock_guard<std::mutex> lock(m_mutex);
-		m_scheduledTasks.emplace_back(fun);
-	}
-
-	m_condition.notify_one();
-}
-
-void ThreadPool::threadHandle()
-{
-	while (true)
-	{
-		std::function<void()> task;
-
-		{
-			std::unique_lock<std::mutex> lock(m_mutex);
-
-			m_condition.wait(lock, [this]() { return !m_running || !m_scheduledTasks.empty(); });
-
-			if (!m_running && m_scheduledTasks.empty())
-				return;
-
-			task = m_scheduledTasks.front();
-			m_scheduledTasks.pop_front();
-		}
-
-		task();
-	}
-}

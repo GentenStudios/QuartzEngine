@@ -23,7 +23,7 @@
 
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Voxels/Terrain/PerlinNoise.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
+#include <Quartz/Utilities/FileIO.hpp>
 #include <Quartz/Voxels/Chunk.hpp>
 
 #include <algorithm>

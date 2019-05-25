@@ -2,6 +2,7 @@ add_subdirectory(Core)
 add_subdirectory(Voxels)
 add_subdirectory(Math)
 add_subdirectory(Graphics)
+add_subdirectory(Utilities)
 
 set(coreHeaderSystem
 	${coreHeaders}
@@ -9,6 +10,7 @@ set(coreHeaderSystem
 
 	${graphicsHeaders}
 	${mathHeaders}
+	${utilityHeaders}
 
 	PARENT_SCOPE
 )

@@ -28,7 +28,7 @@
 #include <Quartz/Core/Events/MouseEvent.hpp>
 #include <Quartz/Core/Events/ApplicationEvent.hpp>
 
-#include <Quartz/Core/Utilities/Logger.hpp>
+#include <Quartz/Utilities/Logger.hpp>
 
 #include <glad/glad.h>
 
