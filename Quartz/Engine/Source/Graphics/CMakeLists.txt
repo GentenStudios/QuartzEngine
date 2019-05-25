@@ -1,4 +1,4 @@
-add_subdirectory(API)
+add_subdirectory(RHI)
 
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 set(graphicsSources

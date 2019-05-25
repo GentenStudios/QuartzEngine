@@ -26,7 +26,7 @@
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Math/Math.hpp>
 #include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Graphics/API/Context.hpp>
+#include <Quartz/Graphics/RHI/Context.hpp>
 #include <Quartz/Core/Events/EventEnums.hpp>
 
 #include <vector>

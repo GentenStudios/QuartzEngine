@@ -21,24 +21,49 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Graphics/API/GL/GLTexture.hpp>
+#pragma once
 
-using namespace qz::gfx::api::gl;
-using namespace qz::gfx::api;
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Graphics/RHI/DataTypes.hpp>
 
-void GLTexture::create(unsigned char* pixelData, int width, int height)
+#include <vector>
+#include <string>
+#include <initializer_list>
+
+namespace qz
 {
-	GLCheck(glGenTextures(1, &m_id));
-	GLCheck(glBindTexture(GL_TEXTURE_2D, m_id));
+	namespace gfx
+	{
+		namespace rhi
+		{
+			struct VertexElementType
+			{
+				DataType type;
+				int      numComponents;
 
-	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
-	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+				static const VertexElementType Vec2f;
+				static const VertexElementType Vec3f;
+				static const VertexElementType Vec4f;
+			};
 
-	GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData));
-	GLCheck(glGenerateMipmap(GL_TEXTURE_2D));
+			struct VertexElement
+			{
+				VertexElementType type;
+				int               streamIndex;
+				int               attributeIndex;
+				int               offset;
+				bool              normalized;
+			};
 
-	GLCheck(glBindTexture(GL_TEXTURE_2D, 0));
+			class InputLayout
+			{
+			public:
+				InputLayout(std::initializer_list<VertexElement> init);
+				InputLayout() {}
+
+				std::vector<VertexElement> elements;
+			};
+		}
+	}
 }
+

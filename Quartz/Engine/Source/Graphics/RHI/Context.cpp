@@ -21,38 +21,20 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Graphics/RHI/Context.hpp>
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Graphics/API/GL/GLCommon.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
+using namespace qz::gfx;
 
-#include <vector>
+RenderingAPI Context::m_renderingAPI = RenderingAPI::NONE;
 
-namespace qz
+RenderingAPI Context::getRenderingAPI()
 {
-	namespace gfx
-	{
-		namespace api
-		{
-			namespace gl
-			{
-				class GLShaderPipeline
-				{
-				private:
-					GLuint m_id;
-					InputLayout m_inputLayout;
+	return m_renderingAPI;
+}
 
-				public:
-					void create(const std::string& filepath, const InputLayout& inputLayout);
-					void use();
-
-					GLuint getID() const { return m_id; }
-
-					InputLayout& getInputLayout() { return m_inputLayout; }
-				};
-			}
-		}
-	}
+void Context::setRenderingAPI(RenderingAPI api)
+{
+	m_renderingAPI = api;
 }
 

@@ -22,19 +22,16 @@
 // DAMAGE.
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Graphics/API/Context.hpp>
+#include <Quartz/Graphics/RHI/InputLayout.hpp>
 
+using namespace qz::gfx::rhi;
 using namespace qz::gfx;
 
-RenderingAPI Context::m_renderingAPI = RenderingAPI::NONE;
+const VertexElementType VertexElementType::Vec2f = { DataType::FLOAT, 2 };
+const VertexElementType VertexElementType::Vec3f = { DataType::FLOAT, 3 };
+const VertexElementType VertexElementType::Vec4f = { DataType::FLOAT, 4 };
 
-RenderingAPI Context::getRenderingAPI()
+InputLayout::InputLayout(std::initializer_list<VertexElement> init)
 {
-	return m_renderingAPI;
+	elements.assign(init);
 }
-
-void Context::setRenderingAPI(RenderingAPI api)
-{
-	m_renderingAPI = api;
-}
-

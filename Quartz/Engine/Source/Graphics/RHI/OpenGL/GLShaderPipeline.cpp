@@ -24,13 +24,13 @@
 #include <cassert>
 
 #include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Graphics/API/GL/GLShaderPipeline.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLShaderPipeline.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
 #include <Quartz/Core/Utilities/FileIO.hpp>
 
 
-using namespace qz::gfx::api::gl;
-using namespace qz::gfx::api;
+using namespace qz::gfx::rhi::gl;
+using namespace qz::gfx::rhi;
 using namespace qz;
 
 namespace

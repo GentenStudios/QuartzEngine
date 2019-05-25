@@ -21,17 +21,38 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
+#pragma once
 
-using namespace qz::gfx::api;
-using namespace qz::gfx;
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLCommon.hpp>
+#include <Quartz/Graphics/RHI/InputLayout.hpp>
 
-const VertexElementType VertexElementType::Vec2f = { DataType::FLOAT, 2 };
-const VertexElementType VertexElementType::Vec3f = { DataType::FLOAT, 3 };
-const VertexElementType VertexElementType::Vec4f = { DataType::FLOAT, 4 };
+#include <vector>
 
-InputLayout::InputLayout(std::initializer_list<VertexElement> init)
+namespace qz
 {
-	elements.assign(init);
+	namespace gfx
+	{
+		namespace rhi
+		{
+			namespace gl
+			{
+				class GLShaderPipeline
+				{
+				private:
+					GLuint m_id;
+					InputLayout m_inputLayout;
+
+				public:
+					void create(const std::string& filepath, const InputLayout& inputLayout);
+					void use();
+
+					GLuint getID() const { return m_id; }
+
+					InputLayout& getInputLayout() { return m_inputLayout; }
+				};
+			}
+		}
+	}
 }
+

@@ -39,7 +39,7 @@ namespace qz
 {
 	namespace gfx
 	{
-		namespace api
+		namespace rhi
 		{
 			namespace gl
 			{

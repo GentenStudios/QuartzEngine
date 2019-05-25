@@ -23,35 +23,35 @@
 
 #pragma once
 
-#include <Quartz/Graphics/API/IRenderDevice.hpp>
+#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
 #include <Quartz/Core/Utilities/HandleAllocator.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/GL/GLVertexBuffer.hpp>
-#include <Quartz/Graphics/API/GL/GLShaderPipeline.hpp>
-#include <Quartz/Graphics/API/GL/GLTexture.hpp>
+#include <Quartz/Graphics/RHI/InputLayout.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLVertexBuffer.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLShaderPipeline.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLTexture.hpp>
 
 namespace qz
 {
 	namespace gfx
 	{
-		namespace api
+		namespace rhi
 		{
 			namespace gl
 			{
 				struct VertexStream
 				{
 					VertexBufferHandle buffer;
-					int stride = 0;
-					int offset = 0;
-					bool active = false;
+					int                stride = 0;
+					int                offset = 0;
+					bool               active = false;
 				};
 
 				struct Uniform
 				{
-					UniformType type;
-					GLint location;
+					UniformType          type;
+					GLint                location;
 					ShaderPipelineHandle shader;
-					const char* name;
+					const char*          name;
 
 					union
 					{
@@ -66,27 +66,27 @@ namespace qz
 				class GLRenderDevice : public IRenderDevice
 				{
 				public:
-					GLRenderDevice() = default;
+					GLRenderDevice()  = default;
 					~GLRenderDevice() = default;
 
 					GLRenderDevice(const GLRenderDevice& other) = delete;
 
-					virtual void create();
-					virtual VertexBufferHandle createVertexBuffer();
-					virtual void draw(std::size_t first, std::size_t count);
-					virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset);
+					virtual void                 create();
+					virtual VertexBufferHandle   createVertexBuffer();
+					virtual void                 draw(std::size_t first, std::size_t count);
+					virtual void                 setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset);
 
-					virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
+					virtual void                 setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
 					virtual ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout);
-					virtual void setShaderPipeline(ShaderPipelineHandle shader);
+					virtual void                 setShaderPipeline(ShaderPipelineHandle shader);
 
-					virtual UniformHandle createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type);
-					virtual void setUniformValue(UniformHandle uniform, const void* value, int num);
+					virtual UniformHandle        createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type);
+					virtual void                 setUniformValue(UniformHandle uniform, const void* value, int num);
 
-					virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height);
-					virtual void setTexture(TextureHandle texture, int slot);
+					virtual TextureHandle        createTexture(unsigned char* pixelData, int width, int height);
+					virtual void                 setTexture(TextureHandle texture, int slot);
 
-					void showShaderDebugUI();
+					void                         showShaderDebugUI();
 
 				private:
 					GLuint m_vao;

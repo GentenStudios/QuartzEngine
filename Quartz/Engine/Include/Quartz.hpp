@@ -37,9 +37,9 @@
 #include <Quartz/Core/Events/MouseEvent.hpp>
 #include <Quartz/Core/Events/EventEnums.hpp>
 
-#include <Quartz/Graphics/API/Context.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
+#include <Quartz/Graphics/RHI/Context.hpp>
+#include <Quartz/Graphics/RHI/InputLayout.hpp>
+#include <Quartz/Graphics/RHI/DataTypes.hpp>
 
 #include <Quartz/Graphics/IWindow.hpp>
 #include <Quartz/Graphics/Camera.hpp>

@@ -1,11 +1,11 @@
-#include <Quartz/Graphics/API/GL/GLRenderDevice.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLRenderDevice.hpp>
+#include <Quartz/Graphics/RHI/InputLayout.hpp>
 
 #include <imgui/imgui.h>
 #include <cstring>
 
-using namespace qz::gfx::api::gl;
-using namespace qz::gfx::api;
+using namespace qz::gfx::rhi::gl;
+using namespace qz::gfx::rhi;
 
 Uniform::Uniform()
 	: type(UniformType::INVALID), location(-1), name(nullptr)

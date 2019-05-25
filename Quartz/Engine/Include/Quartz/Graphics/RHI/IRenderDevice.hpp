@@ -23,47 +23,53 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
+#include <Quartz/Core/Utilities/HandleAllocator.hpp>
+#include <Quartz/Graphics/RHI/InputLayout.hpp>
 
-#include <vector>
-#include <string>
-#include <initializer_list>
+#define DEFINE_HANDLE(Name) \
+		struct Name : public utils::Handle { }
 
 namespace qz
 {
 	namespace gfx
 	{
-		namespace api
+		namespace rhi
 		{
-			struct VertexElementType
-			{
-				DataType type;
-				int numComponents;
+			DEFINE_HANDLE(VertexBufferHandle);
+			DEFINE_HANDLE(ShaderPipelineHandle);
+			DEFINE_HANDLE(UniformHandle);
+			DEFINE_HANDLE(TextureHandle);
 
-				static const VertexElementType Vec2f;
-				static const VertexElementType Vec3f;
-				static const VertexElementType Vec4f;
+			enum class UniformType
+			{
+				SAMPLER, MAT4, VEC3, VEC2, COLOR3, INVALID
 			};
 
-			struct VertexElement
-			{
-				VertexElementType type;
-				int streamIndex;
-				int attributeIndex;
-				int offset;
-				bool normalized;
-			};
-
-			class InputLayout
+			class IRenderDevice
 			{
 			public:
-				InputLayout(std::initializer_list<VertexElement> init);
-				InputLayout() {}
+				virtual ~IRenderDevice() {}
 
-				std::vector<VertexElement> elements;
+				virtual void create() = 0;
+				virtual void draw(std::size_t first, std::size_t count) = 0;
+
+				virtual VertexBufferHandle createVertexBuffer() = 0;
+				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
+				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
+				
+				virtual ShaderPipelineHandle createShaderPipeline(const std::string& filepath, const InputLayout& inputLayout) = 0;
+				virtual void setShaderPipeline(ShaderPipelineHandle shader) = 0;
+
+				virtual UniformHandle createUniform(ShaderPipelineHandle shader, const char* name, UniformType type) = 0;
+				virtual void setUniformValue(UniformHandle uniform, const void* value, int num) = 0;
+
+				virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height) = 0;
+				virtual void setTexture(TextureHandle texture, int slot) = 0;
+
+				virtual void showShaderDebugUI() = 0;
 			};
 		}
 	}
 }
 
+#undef DEFINE_HANDLE

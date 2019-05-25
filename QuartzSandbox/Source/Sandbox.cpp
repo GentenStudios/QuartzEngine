@@ -24,8 +24,8 @@
 #include <Sandbox/Sandbox.hpp>
 #include <Quartz.hpp>
 
-#include <Quartz/Graphics/API/IRenderDevice.hpp>
-#include <Quartz/Graphics/API/GL/GLRenderDevice.hpp>
+#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLRenderDevice.hpp>
 #include <imgui/imgui.h>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -98,8 +98,8 @@ void Sandbox::showDebugUi()
 
 void Sandbox::run()
 {
-	using namespace gfx::api;
-	using namespace gfx::api::gl;
+	using namespace gfx::rhi;
+	using namespace gfx::rhi::gl;
 
 	gfx::IWindow* window = m_appData->window;
 	window->registerEventListener([&](qz::events::Event& e) { onEvent(e); });

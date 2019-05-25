@@ -25,12 +25,12 @@
 
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Graphics/API/DataTypes.hpp>
+#include <Quartz/Graphics/RHI/DataTypes.hpp>
 
 #include <glad/glad.h>
 
 #ifdef QZ_DEBUG
-#	define GLCheck(x) x; qz::gfx::api::gl::checkError(__FILE__, __LINE__);
+#	define GLCheck(x) x; qz::gfx::rhi::gl::checkError(__FILE__, __LINE__);
 #else
 #	define GLCheck(x) x;
 #endif
@@ -43,7 +43,7 @@ namespace qz
 {
 	namespace gfx
 	{
-		namespace api
+		namespace rhi
 		{
 			namespace gl
 			{

@@ -21,55 +21,24 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLTexture.hpp>
 
-#include <Quartz/Core/Utilities/HandleAllocator.hpp>
-#include <Quartz/Graphics/API/InputLayout.hpp>
+using namespace qz::gfx::rhi::gl;
+using namespace qz::gfx::rhi;
 
-#define DEFINE_HANDLE(Name) \
-		struct Name : public utils::Handle { }
-
-namespace qz
+void GLTexture::create(unsigned char* pixelData, int width, int height)
 {
-	namespace gfx
-	{
-		namespace api
-		{
-			DEFINE_HANDLE(VertexBufferHandle);
-			DEFINE_HANDLE(ShaderPipelineHandle);
-			DEFINE_HANDLE(UniformHandle);
-			DEFINE_HANDLE(TextureHandle);
+	GLCheck(glGenTextures(1, &m_id));
+	GLCheck(glBindTexture(GL_TEXTURE_2D, m_id));
 
-			enum class UniformType
-			{
-				SAMPLER, MAT4, VEC3, VEC2, COLOR3, INVALID
-			};
+	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
 
-			class IRenderDevice
-			{
-			public:
-				virtual ~IRenderDevice() {}
+	GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData));
+	GLCheck(glGenerateMipmap(GL_TEXTURE_2D));
 
-				virtual void create() = 0;
-				virtual void draw(std::size_t first, std::size_t count) = 0;
-
-				virtual VertexBufferHandle createVertexBuffer() = 0;
-				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
-				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
-				
-				virtual ShaderPipelineHandle createShaderPipeline(const std::string& filepath, const InputLayout& inputLayout) = 0;
-				virtual void setShaderPipeline(ShaderPipelineHandle shader) = 0;
-
-				virtual UniformHandle createUniform(ShaderPipelineHandle shader, const char* name, UniformType type) = 0;
-				virtual void setUniformValue(UniformHandle uniform, const void* value, int num) = 0;
-
-				virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height) = 0;
-				virtual void setTexture(TextureHandle texture, int slot) = 0;
-
-				virtual void showShaderDebugUI() = 0;
-			};
-		}
-	}
+	GLCheck(glBindTexture(GL_TEXTURE_2D, 0));
 }
-
-#undef DEFINE_HANDLE

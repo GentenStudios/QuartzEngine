@@ -21,25 +21,30 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/QuartzPCH.hpp>
-#include <Quartz/Graphics/API/GL/GLVertexBuffer.hpp>
+#pragma once
 
-using namespace qz::gfx::api::gl;
-using namespace qz::gfx::api;
+#include <Quartz/Core/Core.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLCommon.hpp>
 
-void GLVertexBuffer::create()
+namespace qz
 {
-	glGenBuffers(1, &m_id);
+	namespace gfx
+	{
+		namespace rhi
+		{
+			namespace gl
+			{
+				class GLTexture
+				{
+				public:
+					void create(unsigned char* pixelData, int width, int height);
+					GLuint getID() const { return m_id; }
+
+				private:
+					GLuint m_id;
+				};
+			}
+		}
+	}
 }
 
-void GLVertexBuffer::bind()
-{
-	glBindBuffer(GL_ARRAY_BUFFER, m_id);
-}
-
-void GLVertexBuffer::bufferData(float* data, std::size_t sizebytes)
-{
-	glBindBuffer(GL_ARRAY_BUFFER, m_id);
-	glBufferData(GL_ARRAY_BUFFER, sizebytes, data, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}

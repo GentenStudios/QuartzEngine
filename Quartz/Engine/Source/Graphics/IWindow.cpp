@@ -35,7 +35,7 @@ IWindow* IWindow::create(const std::string& title, const unsigned int width, con
 	{
 	case RenderingAPI::OPENGL:	
 		Context::setRenderingAPI(RenderingAPI::OPENGL); 
-		return new api::gl::GLWindow(title, width, height);
+		return new rhi::gl::GLWindow(title, width, height);
 	
 	default:
 		return nullptr;

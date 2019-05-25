@@ -23,7 +23,7 @@
 
 #include <Quartz/Core/QuartzPCH.hpp>
 #include <Quartz/Core/Platform/GLWindow.hpp>
-#include <Quartz/Graphics/API/GL/GLCommon.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLCommon.hpp>
 #include <Quartz/Core/Events/KeyEvent.hpp>
 #include <Quartz/Core/Events/MouseEvent.hpp>
 #include <Quartz/Core/Events/ApplicationEvent.hpp>
@@ -32,7 +32,7 @@
 
 #include <glad/glad.h>
 
-using namespace qz::gfx::api::gl;
+using namespace qz::gfx::rhi::gl;
 using namespace qz;
 
 void GLWindow::startFrame()
@@ -98,7 +98,7 @@ GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(fa
 	{
 		glEnable(GL_DEBUG_OUTPUT);
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(gfx::api::gl::glDebugOutput, nullptr);
+		glDebugMessageCallback(gfx::rhi::gl::glDebugOutput, nullptr);
 		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
 	}
 #endif

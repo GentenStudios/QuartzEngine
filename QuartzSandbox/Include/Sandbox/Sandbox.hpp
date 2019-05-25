@@ -24,7 +24,7 @@
 #pragma once
 
 #include <Quartz.hpp>
-#include <Quartz/Graphics/API/IRenderDevice.hpp>
+#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
 
 namespace sandbox
 {
@@ -49,7 +49,7 @@ namespace sandbox
 		qz::ApplicationData* m_appData = nullptr;
 
 		qz::gfx::FPSCamera* m_camera = nullptr;
-		qz::gfx::api::IRenderDevice* m_renderDevice = nullptr;
+		qz::gfx::rhi::IRenderDevice* m_renderDevice = nullptr;
 
 		bool m_debugMode = false;
 	};

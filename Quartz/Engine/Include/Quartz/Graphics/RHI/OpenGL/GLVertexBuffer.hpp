@@ -24,26 +24,28 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Graphics/API/GL/GLCommon.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLCommon.hpp>
 
 namespace qz
 {
 	namespace gfx
 	{
-		namespace api
+		namespace rhi
 		{
 			namespace gl
 			{
-				class GLTexture
+				class GLVertexBuffer 
 				{
 				public:
-					void create(unsigned char* pixelData, int width, int height);
-					GLuint getID() const { return m_id; }
+					void create();
+					void bind();
+					void bufferData(float* data, std::size_t sizeBytes);
 
 				private:
 					GLuint m_id;
 				};
 			}
+
 		}
 	}
 }
