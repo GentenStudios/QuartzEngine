@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include <Quartz/Core/API/IRenderDevice.hpp>
-#include <Quartz/Core/Mesh.hpp>
+#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
+#include <Quartz/Graphics/Mesh.hpp>
 
 #include <vector>
 
@@ -35,11 +35,11 @@ namespace qz
 		class ForwardMeshRenderer
 		{
 		private:
-			api::IRenderDevice* m_renderDevice;
+			rhi::IRenderDevice* m_renderDevice;
 			std::vector<Mesh*> m_meshes;
 
 		public:
-			ForwardMeshRenderer(api::IRenderDevice* renderDevice);
+			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
 
 			void submitMesh(Mesh* mesh);
 
