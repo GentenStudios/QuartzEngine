@@ -27,6 +27,11 @@
 using namespace qz::gfx::rhi::gl;
 using namespace qz::gfx::rhi;
 
+void GLTexture::free()
+{
+	GLCheck(glDeleteTextures(1, &m_id));
+}
+
 void GLTexture::create(unsigned char* pixelData, int width, int height)
 {
 	GLCheck(glGenTextures(1, &m_id));

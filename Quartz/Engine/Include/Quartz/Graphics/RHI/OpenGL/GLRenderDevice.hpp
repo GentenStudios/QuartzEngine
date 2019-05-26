@@ -67,26 +67,30 @@ namespace qz
 				{
 				public:
 					GLRenderDevice()  = default;
-					~GLRenderDevice() = default;
 
 					GLRenderDevice(const GLRenderDevice& other) = delete;
 
-					virtual void                 create();
-					virtual VertexBufferHandle   createVertexBuffer();
-					virtual void                 draw(std::size_t first, std::size_t count);
-					virtual void                 setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset);
+					virtual void                 create() override;
+					virtual VertexBufferHandle   createVertexBuffer() override;
+					virtual void                 draw(std::size_t first, std::size_t count) override;
+					virtual void                 setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) override;
 
-					virtual void                 setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
-					virtual ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout);
-					virtual void                 setShaderPipeline(ShaderPipelineHandle shader);
+					virtual void                 setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) override;
+					virtual ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout) override;
+					virtual void                 setShaderPipeline(ShaderPipelineHandle shader) override;
 
-					virtual UniformHandle        createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type);
-					virtual void                 setUniformValue(UniformHandle uniform, const void* value, int num);
+					virtual UniformHandle        createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type) override;
+					virtual void                 setUniformValue(UniformHandle uniform, const void* value, int num) override;
 
-					virtual TextureHandle        createTexture(unsigned char* pixelData, int width, int height);
-					virtual void                 setTexture(TextureHandle texture, int slot);
+					virtual TextureHandle        createTexture(unsigned char* pixelData, int width, int height) override;
+					virtual void                 setTexture(TextureHandle texture, int slot) override;
 
-					void                         showShaderDebugUI();
+					void                         showShaderDebugUI() override;
+
+					void                         freeVertexBuffer(VertexBufferHandle buffer) override;
+					void                         freeShaderPipeline(ShaderPipelineHandle shader) override;
+					void                         freeUniform(UniformHandle uniform) override;
+					void                         freeTexture(TextureHandle texture) override;
 
 				private:
 					GLuint m_vao;

@@ -27,7 +27,7 @@
 #include <Quartz/Graphics/RHI/InputLayout.hpp>
 
 #define DEFINE_HANDLE(Name) \
-		struct Name : public utils::Handle { }
+		struct Name : public utils::HandleBase { }
 
 namespace qz
 {
@@ -68,20 +68,25 @@ namespace qz
 				 * @return A handle pointing to a vertex buffer ready for use.
 				 */
 				virtual VertexBufferHandle createVertexBuffer() = 0;
+				virtual	void freeVertexBuffer(VertexBufferHandle buffer) = 0;
 
 				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
 				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
 				
 				virtual ShaderPipelineHandle createShaderPipeline(const std::string& filepath, const InputLayout& inputLayout) = 0;
 				virtual void setShaderPipeline(ShaderPipelineHandle shader) = 0;
+				virtual void freeShaderPipeline(ShaderPipelineHandle shader) = 0;
 
 				virtual UniformHandle createUniform(ShaderPipelineHandle shader, const char* name, UniformType type) = 0;
 				virtual void setUniformValue(UniformHandle uniform, const void* value, int num) = 0;
+				virtual void freeUniform(UniformHandle uniform) = 0;
 
 				virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height) = 0;
 				virtual void setTexture(TextureHandle texture, int slot) = 0;
+				virtual void freeTexture(TextureHandle texture) = 0;
 
 				virtual void showShaderDebugUI() = 0;
+
 			};
 		}
 	}

@@ -28,6 +28,8 @@
 #include <Quartz/Graphics/RHI/OpenGL/GLRenderDevice.hpp>
 #include <imgui/imgui.h>
 
+#include <Quartz/Utilities/HandleAllocator.hpp>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
@@ -43,6 +45,7 @@ Sandbox::Sandbox()
 
 	m_appRequirements->logFilePath = "Sandbox.log";
 	m_appRequirements->logVerbosity = utils::LogVerbosity::DEBUG;
+
 }
 
 static void showHintUi()
@@ -106,7 +109,7 @@ void Sandbox::run()
 
 	m_renderDevice = new GLRenderDevice();
 	m_renderDevice->create();
-	
+
 	float bottomTriangleVertices[] = {
 		 0.5f, -0.5f, 0.0f, 1.f, 0.f,
 		-0.5f, -0.5f, 0.0f, 0.f, 0.0f,
@@ -164,6 +167,11 @@ void Sandbox::run()
 
 		window->endFrame();
 	}
+
+	m_renderDevice->freeShaderPipeline(shader);
+	m_renderDevice->freeVertexBuffer(bufferTriangleBuffer);
+	m_renderDevice->freeVertexBuffer(topTriangleBuffer);
+	m_renderDevice->freeTexture(texture);
 }
 
 void Sandbox::onEvent(events::Event& event)

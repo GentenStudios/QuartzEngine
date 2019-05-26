@@ -2,10 +2,37 @@
 #include <Quartz/Graphics/RHI/InputLayout.hpp>
 
 #include <imgui/imgui.h>
+
 #include <cstring>
+#include <cassert>
 
 using namespace qz::gfx::rhi::gl;
 using namespace qz::gfx::rhi;
+
+void GLRenderDevice::freeTexture(TextureHandle texture)
+{
+	m_textures[texture.get()].free();
+	m_textureHandleAllocator.free(texture);
+}
+
+void GLRenderDevice::freeUniform(UniformHandle uniform)
+{
+	// nb: no specific code needed here to deallocate uniforms.
+
+	m_uniformHandleAllocator.free(uniform);
+}
+
+void GLRenderDevice::freeVertexBuffer(VertexBufferHandle buffer)
+{
+	m_vertexBuffers[buffer.get()].free();
+	m_vertexBufferHandles.free(buffer);
+}
+
+void GLRenderDevice::freeShaderPipeline(ShaderPipelineHandle shader)
+{
+	m_shaders[shader.get()].free();
+	m_shaderHandles.free(shader);
+}
 
 Uniform::Uniform()
 	: type(UniformType::INVALID), location(-1), name(nullptr)
@@ -42,6 +69,8 @@ void GLRenderDevice::showShaderDebugUI()
 					glUniform3f(uniform.location, uniform.userdata.vec3[0], uniform.userdata.vec3[1], uniform.userdata.vec3[2]);
 				}
 				break;
+			default:
+				assert(!"Cannot show shader debug UI for given uniform type!");
 			}
 		}
 	}
@@ -73,6 +102,7 @@ void GLRenderDevice::setBufferData(VertexBufferHandle buffer, float *data, std::
 void GLRenderDevice::draw(std::size_t first, std::size_t count)
 {
 	GLShaderPipeline& shader = m_shaders[m_boundShader.get()];
+
 	InputLayout& inputLayout = shader.getInputLayout();
 
 	for (const VertexElement& vertexElement : inputLayout.elements)
@@ -97,11 +127,15 @@ void GLRenderDevice::draw(std::size_t first, std::size_t count)
 
 void GLRenderDevice::setShaderPipeline(ShaderPipelineHandle shader)
 {
+	assert(m_shaderHandles.isValid(shader));
+
 	m_boundShader = shader;
 }
 
 void GLRenderDevice::setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset)
 {
+	assert(m_vertexBufferHandles.isValid(buffer));
+
 	VertexStream& stream = m_vertexStreams[streamId];
 	stream.buffer = buffer;
 	stream.stride = stride;
@@ -111,6 +145,8 @@ void GLRenderDevice::setVertexBufferStream(VertexBufferHandle buffer, int stream
 
 UniformHandle GLRenderDevice::createUniform(ShaderPipelineHandle shaderHandle,const char* name, UniformType type)
 {
+	assert(m_shaderHandles.isValid(shaderHandle));
+
 	GLShaderPipeline& shader = m_shaders[shaderHandle.get()];
 	shader.use();
 
@@ -125,6 +161,8 @@ UniformHandle GLRenderDevice::createUniform(ShaderPipelineHandle shaderHandle,co
 
 void GLRenderDevice::setUniformValue(UniformHandle uniform, const void* value, int num)
 {
+	assert(m_uniformHandleAllocator.isValid(uniform));
+
 	const float* fdata = static_cast<const float*>(value);
 
 	Uniform& uniformData = m_uniforms[uniform.get()];
@@ -148,6 +186,8 @@ void GLRenderDevice::setUniformValue(UniformHandle uniform, const void* value, i
 		glUniform1i(uniformData.location, *(static_cast<const int*>(value)));
 		std::memcpy(uniformData.userdata.vec4, value, sizeof(float) * 4);
 		break;
+	case UniformType::INVALID:
+		assert(!"Invalid shader value (cannot set)...");
 	}
 }
 
@@ -160,8 +200,10 @@ TextureHandle GLRenderDevice::createTexture(unsigned char* pixelData, int width,
 
 void GLRenderDevice::setTexture(TextureHandle texture, int slot)
 {
+	assert(m_textureHandleAllocator.isValid(texture));
+
 	GLTexture& texData = m_textures[texture.get()];
 
-	GLCheck(glActiveTexture(GL_TEXTURE0 + slot));
+	GLCheck(glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + slot)));
 	GLCheck(glBindTexture(GL_TEXTURE_2D, texData.getID()))
 }

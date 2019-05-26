@@ -27,6 +27,11 @@
 using namespace qz::gfx::rhi::gl;
 using namespace qz::gfx::rhi;
 
+void GLVertexBuffer::free()
+{
+	glDeleteBuffers(1, &m_id);
+}
+
 void GLVertexBuffer::create()
 {
 	glGenBuffers(1, &m_id);

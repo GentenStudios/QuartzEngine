@@ -25,23 +25,24 @@
 
 #include <cstdint>
 #include <cstddef>
+#include <cassert>
 
 namespace qz
 {
 	namespace utils
 	{
-		class Handle
+		class HandleBase
 		{
 		public:
-			void set(std::uint16_t value) { m_handle = value; }
+			static const std::uint16_t INVALID_HANDLE_VALUE = 0xFFFF;
+
+		public:
+			void          set(std::uint16_t value) { m_handle = value; }
 			std::uint16_t get() const { return m_handle; }
 
-			Handle()
-				: m_handle(-1)
-			{
-			}
-
-			bool isValid() { return m_handle == -1; }
+			HandleBase()
+				: m_handle(INVALID_HANDLE_VALUE)
+			{ }
 
 		private:
 			std::uint16_t m_handle;	
@@ -56,6 +57,8 @@ namespace qz
 
 			THandleType allocate()
 			{
+				assert(m_size < TMaxNumHandles);
+
 				THandleType& handle = m_handles[m_size];
 				handle.set(m_size);
 
@@ -64,8 +67,14 @@ namespace qz
 				return handle;
 			}
 
+			bool isValid(THandleType handle)
+			{
+				return m_handles[handle.get()].get() != HandleBase::INVALID_HANDLE_VALUE;
+			}
+
 			void free(THandleType handle)
 			{
+				m_handles[handle.get()].set(HandleBase::INVALID_HANDLE_VALUE);
 			}
 
 			std::size_t size() { return m_size; }

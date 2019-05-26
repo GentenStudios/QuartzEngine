@@ -38,6 +38,7 @@ namespace qz
 				{
 				public:
 					void create();
+					void free();
 					void bind();
 					void bufferData(float* data, std::size_t sizeBytes);
 

@@ -217,6 +217,11 @@ namespace
 	};
 }
 
+void GLShaderPipeline::free()
+{
+	GLCheck(glDeleteProgram(m_id));
+}
+
 void GLShaderPipeline::create(const std::string& sourcefile, const InputLayout& inputLayout)
 {
 	m_inputLayout = inputLayout;
