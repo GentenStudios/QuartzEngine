@@ -69,8 +69,12 @@ void GLRenderDevice::showShaderDebugUI()
 					glUniform3f(uniform.location, uniform.userdata.vec3[0], uniform.userdata.vec3[1], uniform.userdata.vec3[2]);
 				}
 				break;
-			default:
-				assert(!"Cannot show shader debug UI for given uniform type!");
+			case UniformType::MAT4:
+			case UniformType::VEC2:
+			case UniformType::VEC3:
+			case UniformType::SAMPLER:
+			case UniformType::INVALID:
+				break;
 			}
 		}
 	}

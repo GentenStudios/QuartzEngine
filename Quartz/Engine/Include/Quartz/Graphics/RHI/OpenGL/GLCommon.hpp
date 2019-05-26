@@ -39,6 +39,9 @@
 #	define __stdcall
 #endif
 
+// Uncomment this in order to enable detailed OpenGL logging
+// #define OPENGL_DIAGNOSTICS_ENABLED
+
 namespace qz
 {
 	namespace gfx
@@ -112,6 +115,8 @@ namespace qz
 					const GLchar* message,
 					const void* userParam)
 				{
+
+#ifdef OPENGL_DIAGNOSTICS_ENABLED
 					(void) id;
 					(void) length;
 					(void) userParam;
@@ -158,6 +163,7 @@ namespace qz
 					subCategories << " ";
 
 					Logger::instance()->log(verb, "OpenGL Debugger", 0, subCategories.str(), message);
+#endif
 				}
 			}
 		}
