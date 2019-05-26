@@ -8,6 +8,7 @@ set(utilityHeaders
 	${currentDir}/FileIO.hpp
 	${currentDir}/Config.hpp
 	${currentDir}/HandleAllocator.hpp
+	${currentDir}/Singleton.hpp
 	
 	PARENT_SCOPE
 )

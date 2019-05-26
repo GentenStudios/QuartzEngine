@@ -23,35 +23,19 @@
 
 #pragma once
 
-#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
-#include <Quartz/Graphics/Mesh.hpp>
-
-#include <vector>
-
 namespace qz
 {
-	namespace gfx
+	namespace utils
 	{
-		class ForwardMeshRenderer
+		template <typename T>
+		class Singleton
 		{
-		private:
-			struct MeshRenderData
-			{
-				rhi::VertexBufferHandle vertexBuffer;
-				Mesh* mesh;
-			};
-
-			rhi::IRenderDevice* m_renderDevice;
-			std::vector<MeshRenderData> m_meshes;
-
 		public:
-			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
-
-			void submitMesh(Mesh* mesh);
-
-			void render();
-
-			std::size_t countTotalNumVertices();
+			static T* get()
+			{
+				static T instance;
+				return &instance;
+			}
 		};
 	}
 }

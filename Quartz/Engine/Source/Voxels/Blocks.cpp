@@ -21,37 +21,25 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#pragma once
 
-#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
-#include <Quartz/Graphics/Mesh.hpp>
+#include <Quartz/Voxels/Blocks.hpp>
 
-#include <vector>
+#include <algorithm>
+#include <cstring>
 
-namespace qz
+using namespace qz::voxels;
+
+BlockType* BlockRegistery::registerBlock(BlockType blockInfo)
 {
-	namespace gfx
-	{
-		class ForwardMeshRenderer
-		{
-		private:
-			struct MeshRenderData
-			{
-				rhi::VertexBufferHandle vertexBuffer;
-				Mesh* mesh;
-			};
+	m_blocks.push_back(blockInfo);
+	return &m_blocks.back();
+}
 
-			rhi::IRenderDevice* m_renderDevice;
-			std::vector<MeshRenderData> m_meshes;
+BlockType* BlockRegistery::getBlockFromID(const char *id)
+{
+	auto it = std::find_if(m_blocks.begin(), m_blocks.end(), [id](const BlockType& block){
+		return std::strcmp(block.id, id) == 0;
+	});
 
-		public:
-			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
-
-			void submitMesh(Mesh* mesh);
-
-			void render();
-
-			std::size_t countTotalNumVertices();
-		};
-	}
+	return it == m_blocks.end() ? nullptr : &(*it);
 }

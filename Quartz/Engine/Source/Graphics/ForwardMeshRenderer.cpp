@@ -21,37 +21,45 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Graphics/ForwardMeshRenderer.hpp>
+#include <Quartz/Utilities/Logger.hpp>
 
-#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
-#include <Quartz/Graphics/Mesh.hpp>
+#include <numeric>
 
-#include <vector>
+using namespace qz::gfx;
 
-namespace qz
+ForwardMeshRenderer::ForwardMeshRenderer(rhi::IRenderDevice* renderDevice)
+	: m_renderDevice(renderDevice)
+{}
+
+void ForwardMeshRenderer::submitMesh(Mesh* mesh)
 {
-	namespace gfx
+	MeshRenderData renderData;
+	renderData.mesh = mesh;
+
+	const std::vector<Vertex3D>& vertices = mesh->getVertices();
+	float* verticesPtr = reinterpret_cast<float*>(const_cast<Vertex3D*>(vertices.data()));
+	const std::size_t sizebytes = vertices.size() * sizeof(Vertex3D);
+
+	rhi::VertexBufferHandle buffer = m_renderDevice->createVertexBuffer();
+	m_renderDevice->setBufferData(buffer, verticesPtr, sizebytes);
+
+	renderData.vertexBuffer = buffer;
+	m_meshes.push_back(renderData);
+}
+
+void ForwardMeshRenderer::render()
+{
+	for(MeshRenderData& mesh : m_meshes)
 	{
-		class ForwardMeshRenderer
-		{
-		private:
-			struct MeshRenderData
-			{
-				rhi::VertexBufferHandle vertexBuffer;
-				Mesh* mesh;
-			};
-
-			rhi::IRenderDevice* m_renderDevice;
-			std::vector<MeshRenderData> m_meshes;
-
-		public:
-			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
-
-			void submitMesh(Mesh* mesh);
-
-			void render();
-
-			std::size_t countTotalNumVertices();
-		};
+		m_renderDevice->setVertexBufferStream(mesh.vertexBuffer, 0, sizeof(Vertex3D), 0);
+		m_renderDevice->draw(0, mesh.mesh->getVertices().size());
 	}
+}
+
+std::size_t ForwardMeshRenderer::countTotalNumVertices()
+{
+	return std::accumulate(m_meshes.begin(), m_meshes.end(), std::size_t(0), [](std::size_t acu, const MeshRenderData& data){
+		return acu + data.mesh->getVertices().size();
+	});
 }

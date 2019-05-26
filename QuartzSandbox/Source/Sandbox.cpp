@@ -28,7 +28,9 @@
 #include <Quartz/Graphics/RHI/OpenGL/GLRenderDevice.hpp>
 #include <imgui/imgui.h>
 
-#include <Quartz/Utilities/HandleAllocator.hpp>
+#include <Quartz/Graphics/ForwardMeshRenderer.hpp>
+#include <Quartz/Voxels/Blocks.hpp>
+#include <Quartz/Graphics/Camera.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -71,7 +73,7 @@ static void showHintUi()
 
 void Sandbox::showDebugUi()
 {
-		static bool shaderDebugUi = true, imguiDemo = false;
+	static bool shaderDebugUi = true, imguiDemo = false;
 	if (m_debugMode)
 	{
 
@@ -107,71 +109,87 @@ void Sandbox::run()
 	gfx::IWindow* window = m_appData->window;
 	window->registerEventListener([&](qz::events::Event& e) { onEvent(e); });
 
+	voxels::BlockRegistery* blocksRegistery = voxels::BlockRegistery::get();
+	voxels::BlockType* air = blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR});
+	voxels::BlockType* dirt = blocksRegistery->registerBlock({"Dirt", "core:dirt", voxels::BlockTypeCategory::SOLID});
+
+
 	m_renderDevice = new GLRenderDevice();
 	m_renderDevice->create();
 
-	float bottomTriangleVertices[] = {
-		 0.5f, -0.5f, 0.0f, 1.f, 0.f,
-		-0.5f, -0.5f, 0.0f, 0.f, 0.0f,
-		 0.0f,  0.0f, 0.0f, 0.5f, 0.5f
-	};
+	gfx::Mesh mesh(3);
+	mesh.addVertex({{1.f, 1.f, 1.0f}, {0.f, 1.f}});
+	mesh.addVertex({{-1.f, 1.f, 1.0f}, {1.f, 1.f}});
+	mesh.addVertex({{0.0f, 0.0f, 1.0f}, {0.5f, 0.5f}});
 
-	float topTriangleVertices[] = {
-		 0.5f, 0.5f, 0.0f, 0.f, 1.f,
-		-0.5f, 0.5f, 0.0f, 1.f, 1.f,
-		 0.0f, 0.0f, 0.0f, 0.5f, 0.5f
-	};
+	gfx::ForwardMeshRenderer renderer(m_renderDevice);
+	renderer.submitMesh(&mesh);
 
 	InputLayout layout = {
 		{ VertexElementType::Vec3f, 0, 0, 0,                 false },
 		{ VertexElementType::Vec2f, 0, 1, 3 * sizeof(float), false }
 	};
 
-	VertexBufferHandle bufferTriangleBuffer = m_renderDevice->createVertexBuffer();
-	m_renderDevice->setBufferData(bufferTriangleBuffer, bottomTriangleVertices, sizeof(bottomTriangleVertices));
-
-	VertexBufferHandle topTriangleBuffer = m_renderDevice->createVertexBuffer();
-	m_renderDevice->setBufferData(topTriangleBuffer, topTriangleVertices, sizeof(topTriangleVertices));
-
 	ShaderPipelineHandle shader = m_renderDevice->createShaderPipeline("assets/shaders/basic.shader", layout);
-	UniformHandle colorHandle = m_renderDevice->createUniform(shader, "u_color", UniformType::COLOR3);
-	UniformHandle samplerUniform = m_renderDevice->createUniform(shader, "u_sampler", UniformType::SAMPLER);
-	int id = 0;
-	m_renderDevice->setUniformValue(samplerUniform, &id, 1);
-
-	int width = -1, height = -1, nbChannels = -1;
-	unsigned char* image = stbi_load("assets/textures/dirt.png", &width, &height, &nbChannels, 0);
-	TextureHandle texture = m_renderDevice->createTexture(image, width, height);
-
-	float color[3] = { 1.0f, 1.0f, 1.0f };
-	m_renderDevice->setUniformValue(colorHandle, color, 1);
 
 	m_renderDevice->setShaderPipeline(shader);
+
+	m_camera = new gfx::FPSCamera(window);
+	m_camera->setProjection(Matrix4x4::perspective(1280.f / 720.f, 90.f, 100.f, 0.1f));
+
+	auto viewUniform = m_renderDevice->createUniform(shader, "u_view", UniformType::MAT4);
+	auto projectionUniform = m_renderDevice->createUniform(shader, "u_projection", UniformType::MAT4);
+
+	Matrix4x4 projection = m_camera->getProjection();
+	m_renderDevice->setUniformValue(projectionUniform, &projection, 1);
+
+	std::size_t fpsLastTime = SDL_GetTicks();
+	int fpsCurrent = 0; // the current FPS.
+	int fpsFrames = 0; // frames passed since the last recorded fps.
+
+	float last = static_cast<float>(SDL_GetTicks());
 	while (window->isRunning())
 	{
+		fpsFrames++;
+		if (fpsLastTime < SDL_GetTicks() - 1000)
+		{
+			fpsLastTime = SDL_GetTicks();
+			fpsCurrent = fpsFrames;
+			fpsFrames = 0;
+		}
+
+		const float now = static_cast<float>(SDL_GetTicks());
+		const float dt = now - last;
+		last = now;
+
 		window->startFrame();
 		
+		if(m_debugMode)
+		{
+			ImGui::Begin("Stats");
+			ImGui::Text("FPS: %i", fpsCurrent);
+			ImGui::Text("Delta: %f", dt);
+			ImGui::Text("Vertices: %i", renderer.countTotalNumVertices());
+			ImGui::End();
+		}
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+
+		m_camera->tick(dt);
+
+		Matrix4x4 view = m_camera->calculateViewMatrix();
+		m_renderDevice->setUniformValue(viewUniform, &view, 1);
 
 		showHintUi();
 		showDebugUi();
 
-		m_renderDevice->setTexture(texture, 0);
-
-		m_renderDevice->setVertexBufferStream(bufferTriangleBuffer, 0, 5 * sizeof(float), 0);
-		m_renderDevice->draw(0, 3);
-
-		m_renderDevice->setVertexBufferStream(topTriangleBuffer, 0, 5 * sizeof(float), 0);
-		m_renderDevice->draw(0, 3);
+		renderer.render();
 
 		window->endFrame();
 	}
 
 	m_renderDevice->freeShaderPipeline(shader);
-	m_renderDevice->freeVertexBuffer(bufferTriangleBuffer);
-	m_renderDevice->freeVertexBuffer(topTriangleBuffer);
-	m_renderDevice->freeTexture(texture);
 }
 
 void Sandbox::onEvent(events::Event& event)

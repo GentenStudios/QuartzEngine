@@ -6,6 +6,8 @@ set(graphicsSources
 
 	${currentDir}/IWindow.cpp
 	${currentDir}/Camera.cpp
+	${currentDir}/ForwardMeshRenderer.cpp
+	${currentDir}/Mesh.cpp
 
 	PARENT_SCOPE
 )

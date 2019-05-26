@@ -21,37 +21,29 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#pragma once
-
-#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
 #include <Quartz/Graphics/Mesh.hpp>
 
-#include <vector>
+using namespace qz::gfx;
 
-namespace qz
+Mesh::Mesh()
+{}
+
+Mesh::Mesh(const std::vector<Vertex3D>& vertices)
 {
-	namespace gfx
-	{
-		class ForwardMeshRenderer
-		{
-		private:
-			struct MeshRenderData
-			{
-				rhi::VertexBufferHandle vertexBuffer;
-				Mesh* mesh;
-			};
+	m_vertices = vertices;
+}
 
-			rhi::IRenderDevice* m_renderDevice;
-			std::vector<MeshRenderData> m_meshes;
+Mesh::Mesh(std::size_t vertexCapacity)
+{
+	m_vertices.reserve(vertexCapacity);
+}
 
-		public:
-			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
+void Mesh::addVertex(const Vertex3D &vertex)
+{
+	m_vertices.push_back(vertex);
+}
 
-			void submitMesh(Mesh* mesh);
-
-			void render();
-
-			std::size_t countTotalNumVertices();
-		};
-	}
+void Mesh::setMaterial(const PhongMaterial &material)
+{
+	m_material = material;
 }

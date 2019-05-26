@@ -23,35 +23,28 @@
 
 #pragma once
 
-#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
-#include <Quartz/Graphics/Mesh.hpp>
-
 #include <vector>
+#include <cstddef>
+
+#include <Quartz/Voxels/Blocks.hpp>
 
 namespace qz
 {
-	namespace gfx
-	{
-		class ForwardMeshRenderer
+    namespace voxels
+    {
+		class Chunk
 		{
 		private:
-			struct MeshRenderData
-			{
-				rhi::VertexBufferHandle vertexBuffer;
-				Mesh* mesh;
-			};
+			static const std::size_t CHUNK_SIZE = 16;
 
-			rhi::IRenderDevice* m_renderDevice;
-			std::vector<MeshRenderData> m_meshes;
-
-		public:
-			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
-
-			void submitMesh(Mesh* mesh);
-
-			void render();
-
-			std::size_t countTotalNumVertices();
+		private:
+			std::vector<BlockType*> m_voxelData;
 		};
-	}
+
+		class Terrain
+		{
+
+		};
+    }
 }
+

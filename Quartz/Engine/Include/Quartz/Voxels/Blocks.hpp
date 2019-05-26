@@ -23,35 +23,38 @@
 
 #pragma once
 
-#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
-#include <Quartz/Graphics/Mesh.hpp>
+#include <list>
 
-#include <vector>
+#include <Quartz/Utilities/Singleton.hpp>
 
 namespace qz
 {
-	namespace gfx
-	{
-		class ForwardMeshRenderer
+    namespace voxels
+    {
+		enum class BlockTypeCategory
 		{
-		private:
-			struct MeshRenderData
-			{
-				rhi::VertexBufferHandle vertexBuffer;
-				Mesh* mesh;
-			};
-
-			rhi::IRenderDevice* m_renderDevice;
-			std::vector<MeshRenderData> m_meshes;
-
-		public:
-			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
-
-			void submitMesh(Mesh* mesh);
-
-			void render();
-
-			std::size_t countTotalNumVertices();
+			AIR, SOLID, LIQUID
 		};
-	}
+
+		struct BlockType
+		{
+			const char* displayName;
+			const char* id;
+
+			BlockTypeCategory category;
+		};
+
+		class BlockRegistery : public utils::Singleton<BlockRegistery>
+		{
+		public:
+			BlockType* registerBlock(BlockType blockInfo);
+
+			BlockType* getBlockFromID(const char* id);
+
+		private:
+			// This is a std::list as we don't want to invalidate any pointers when resizing...
+			// #todo (bwilks): Maybe use HandleAllocator for this as well??
+			std::list<BlockType> m_blocks;
+		};
+    }
 }
