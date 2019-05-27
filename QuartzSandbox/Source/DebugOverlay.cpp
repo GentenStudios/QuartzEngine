@@ -21,52 +21,11 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#pragma once
+#include <Sandbox/DebugOverlay.hpp>
 
-#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
-#include <Quartz/Graphics/Mesh.hpp>
-#include <Quartz/Math/Matrix4x4.hpp>
+using namespace sandbox;
 
-#include <vector>
-
-namespace qz
+void DebugOverlay::show()
 {
-	namespace gfx
-	{
-		class ForwardMeshRenderer
-		{
-		private:
-			rhi::IRenderDevice*         m_renderDevice;
-			rhi::ShaderPipelineHandle   m_shader;
-			rhi::UniformHandle          m_viewMatrixUniform,
-			                            m_projectionMatrixUniform;
 
-			struct MeshRenderData
-			{
-				rhi::VertexBufferHandle vertexBuffer;
-				Mesh*                   mesh;
-			};
-
-			std::vector<MeshRenderData> m_meshes;
-
-			Matrix4x4                   m_viewMatrix,
-			                            m_projectionMatrix;
-
-		public:
-			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
-
-			void        create();
-			void        destroy();
-			void        submitMesh(Mesh* mesh);
-			void        render();
-
-			void        setProjectionMatrix(const Matrix4x4& projection);
-			void        setViewMatrix(const Matrix4x4& view);
-
-			Matrix4x4   getProjectionMatrix() const { return m_projectionMatrix; }
-			Matrix4x4   getViewMatrix()        const { return m_viewMatrix; }
-
-			std::size_t countTotalNumVertices();
-		};
-	}
 }

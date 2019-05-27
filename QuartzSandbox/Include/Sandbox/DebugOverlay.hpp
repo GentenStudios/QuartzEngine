@@ -23,50 +23,14 @@
 
 #pragma once
 
-#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
-#include <Quartz/Graphics/Mesh.hpp>
-#include <Quartz/Math/Matrix4x4.hpp>
-
 #include <vector>
 
-namespace qz
+namespace sandbox
 {
-	namespace gfx
+	class DebugOverlay
 	{
-		class ForwardMeshRenderer
-		{
-		private:
-			rhi::IRenderDevice*         m_renderDevice;
-			rhi::ShaderPipelineHandle   m_shader;
-			rhi::UniformHandle          m_viewMatrixUniform,
-			                            m_projectionMatrixUniform;
-
-			struct MeshRenderData
-			{
-				rhi::VertexBufferHandle vertexBuffer;
-				Mesh*                   mesh;
-			};
-
-			std::vector<MeshRenderData> m_meshes;
-
-			Matrix4x4                   m_viewMatrix,
-			                            m_projectionMatrix;
-
-		public:
-			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
-
-			void        create();
-			void        destroy();
-			void        submitMesh(Mesh* mesh);
-			void        render();
-
-			void        setProjectionMatrix(const Matrix4x4& projection);
-			void        setViewMatrix(const Matrix4x4& view);
-
-			Matrix4x4   getProjectionMatrix() const { return m_projectionMatrix; }
-			Matrix4x4   getViewMatrix()        const { return m_viewMatrix; }
-
-			std::size_t countTotalNumVertices();
-		};
-	}
+	private:
+	public:
+		void show();
+	};
 }

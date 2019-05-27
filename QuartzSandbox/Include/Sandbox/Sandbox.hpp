@@ -26,13 +26,14 @@
 #include <Quartz.hpp>
 #include <Quartz/Graphics/RHI/IRenderDevice.hpp>
 
+#include <Sandbox/DebugOverlay.hpp>
+
 namespace sandbox
 {
 	class Sandbox : public qz::Application
 	{
 	public:
 		Sandbox();
-		~Sandbox() = default;
 
 		const ApplicationRequirements* getAppRequirements() override { return m_appRequirements; }
 		void setAppData(qz::ApplicationData* appData) override { m_appData = appData; }
@@ -43,15 +44,15 @@ namespace sandbox
 		bool onKeyPress(events::KeyPressedEvent& event);
 
 	private:
-		void showDebugUi();
-
 		qz::ApplicationRequirements* m_appRequirements = nullptr;
-		qz::ApplicationData* m_appData = nullptr;
+		qz::ApplicationData*         m_appData         = nullptr;
 
-		qz::gfx::FPSCamera* m_camera = nullptr;
-		qz::gfx::rhi::IRenderDevice* m_renderDevice = nullptr;
+		qz::gfx::FPSCamera*          m_camera          = nullptr;
+		qz::gfx::rhi::IRenderDevice* m_renderDevice    = nullptr;
 
-		bool m_debugMode = false;
+		bool                         m_debugMode       = false;
+
+		sandbox::DebugOverlay        m_debug;
 	};
 }
 

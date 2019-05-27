@@ -51,6 +51,8 @@ namespace qz
 				float m03, float m13, float m23, float m33
 			);
 
+			void setIdentity();
+
 			~Matrix4x4() = default;
 
 			/**

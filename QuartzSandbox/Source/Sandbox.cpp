@@ -47,58 +47,28 @@ Sandbox::Sandbox()
 
 	m_appRequirements->logFilePath = "Sandbox.log";
 	m_appRequirements->logVerbosity = utils::LogVerbosity::DEBUG;
-
 }
 
 static void showHintUi()
 {
 	const float DISTANCE = 10.0f;
-	static int corner = 1;
+	const int corner = 1;
 	static bool p_open = true;
 
 	ImGuiIO& io = ImGui::GetIO();
-	if (corner != -1)
-	{
-		ImVec2 window_pos = ImVec2((corner & 1) ? io.DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? io.DisplaySize.y - DISTANCE : DISTANCE);
-		ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
-		ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
-	}
-	ImGui::SetNextWindowBgAlpha(0.3f); // Transparent background
-	if (ImGui::Begin("Example: Simple overlay", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
+
+	ImVec2 window_pos = ImVec2((corner & 1) ? io.DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? io.DisplaySize.y - DISTANCE : DISTANCE);
+	ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+	ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+
+	ImGui::SetNextWindowBgAlpha(0.3f);
+
+	if (ImGui::Begin("Debug Overlay Hint", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 	{
 		ImGui::Text("Press K to toggle developer mode!");
 	}
+
 	ImGui::End();
-}
-
-void Sandbox::showDebugUi()
-{
-	static bool shaderDebugUi = true, imguiDemo = false;
-	if (m_debugMode)
-	{
-
-		ImGui::BeginMainMenuBar();
-		if (ImGui::MenuItem("Shader Debug UI"))
-		{
-			shaderDebugUi = !shaderDebugUi;
-		}
-		if (ImGui::MenuItem("ImGui Demo"))
-		{
-			imguiDemo = !imguiDemo;
-		}
-
-		ImGui::EndMainMenuBar();
-
-		if (imguiDemo)
-		{
-			ImGui::ShowDemoWindow();
-		}
-
-		if (shaderDebugUi)
-		{
-			m_renderDevice->showShaderDebugUI();
-		}
-	}
 }
 
 void Sandbox::run()
@@ -113,7 +83,6 @@ void Sandbox::run()
 	voxels::BlockType* air = blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR});
 	voxels::BlockType* dirt = blocksRegistery->registerBlock({"Dirt", "core:dirt", voxels::BlockTypeCategory::SOLID});
 
-
 	m_renderDevice = new GLRenderDevice();
 	m_renderDevice->create();
 
@@ -123,29 +92,17 @@ void Sandbox::run()
 	mesh.addVertex({{0.0f, 0.0f, 1.0f}, {0.5f, 0.5f}});
 
 	gfx::ForwardMeshRenderer renderer(m_renderDevice);
+	renderer.create();
+
 	renderer.submitMesh(&mesh);
-
-	InputLayout layout = {
-		{ VertexElementType::Vec3f, 0, 0, 0,                 false },
-		{ VertexElementType::Vec2f, 0, 1, 3 * sizeof(float), false }
-	};
-
-	ShaderPipelineHandle shader = m_renderDevice->createShaderPipeline("assets/shaders/basic.shader", layout);
-
-	m_renderDevice->setShaderPipeline(shader);
 
 	m_camera = new gfx::FPSCamera(window);
 	m_camera->setProjection(Matrix4x4::perspective(1280.f / 720.f, 90.f, 100.f, 0.1f));
-
-	auto viewUniform = m_renderDevice->createUniform(shader, "u_view", UniformType::MAT4);
-	auto projectionUniform = m_renderDevice->createUniform(shader, "u_projection", UniformType::MAT4);
-
-	Matrix4x4 projection = m_camera->getProjection();
-	m_renderDevice->setUniformValue(projectionUniform, &projection, 1);
+	renderer.setProjectionMatrix(m_camera->getProjection());
 
 	std::size_t fpsLastTime = SDL_GetTicks();
-	int fpsCurrent = 0; // the current FPS.
-	int fpsFrames = 0; // frames passed since the last recorded fps.
+	int fpsCurrent = 0;
+	int fpsFrames = 0;
 
 	float last = static_cast<float>(SDL_GetTicks());
 	while (window->isRunning())
@@ -166,9 +123,11 @@ void Sandbox::run()
 		
 		if(m_debugMode)
 		{
+			m_debug.show();
+
 			ImGui::Begin("Stats");
-			ImGui::Text("FPS: %i", fpsCurrent);
-			ImGui::Text("Delta: %f", dt);
+			ImGui::Text("FPS: %i frame/s", fpsCurrent);
+			ImGui::Text("Delta: %.2f ms/frame", static_cast<double>(dt));
 			ImGui::Text("Vertices: %i", renderer.countTotalNumVertices());
 			ImGui::End();
 		}
@@ -178,18 +137,16 @@ void Sandbox::run()
 
 		m_camera->tick(dt);
 
-		Matrix4x4 view = m_camera->calculateViewMatrix();
-		m_renderDevice->setUniformValue(viewUniform, &view, 1);
+		renderer.setViewMatrix(m_camera->calculateViewMatrix());
 
 		showHintUi();
-		showDebugUi();
 
 		renderer.render();
 
 		window->endFrame();
 	}
 
-	m_renderDevice->freeShaderPipeline(shader);
+	renderer.destroy();
 }
 
 void Sandbox::onEvent(events::Event& event)

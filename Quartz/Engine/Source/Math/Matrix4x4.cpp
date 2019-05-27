@@ -31,6 +31,11 @@ using namespace qz::math;
 
 Matrix4x4::Matrix4x4()
 {
+	setIdentity();
+}
+
+void Matrix4x4::setIdentity()
+{
 	for (float& element : elements)
 		element = 0.f;
 

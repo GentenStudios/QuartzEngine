@@ -27,10 +27,57 @@
 #include <numeric>
 
 using namespace qz::gfx;
+using namespace qz;
+
+//#todo (bwilks): this shouldn't always be hardcoded.
+static const char* SHADER_FILEPATH = "assets/shaders/basic.shader";
+
+void ForwardMeshRenderer::create()
+{
+	// #todo (bwilks): currently these are not required as the Matrix4x4 default
+	// constructor will init to identity (may change that soon tho)
+	m_viewMatrix.setIdentity();
+	m_projectionMatrix.setIdentity();
+
+	rhi::InputLayout layout = {
+		{ rhi::VertexElementType::Vec3f, 0, 0, 0,                 false },
+		{ rhi::VertexElementType::Vec2f, 0, 1, 3 * sizeof(float), false }
+	};
+
+	m_shader = m_renderDevice->createShaderPipeline(SHADER_FILEPATH, layout);
+	m_renderDevice->setShaderPipeline(m_shader);
+
+	m_viewMatrixUniform = m_renderDevice->createUniform(m_shader, "u_view", rhi::UniformType::MAT4);
+	m_projectionMatrixUniform = m_renderDevice->createUniform(m_shader, "u_projection", rhi::UniformType::MAT4);
+}
+
+void ForwardMeshRenderer::destroy()
+{
+	for(MeshRenderData& mesh : m_meshes)
+	{
+		m_renderDevice->freeVertexBuffer(mesh.vertexBuffer);
+	}
+
+	m_renderDevice->freeUniform(m_viewMatrixUniform);
+	m_renderDevice->freeUniform(m_projectionMatrixUniform);
+	m_renderDevice->freeShaderPipeline(m_shader);
+}
 
 ForwardMeshRenderer::ForwardMeshRenderer(rhi::IRenderDevice* renderDevice)
 	: m_renderDevice(renderDevice)
 {}
+
+void ForwardMeshRenderer::setViewMatrix(const Matrix4x4& view)
+{
+	m_viewMatrix = view;
+	m_renderDevice->setUniformValue(m_viewMatrixUniform, &m_viewMatrix, 1);
+}
+
+void ForwardMeshRenderer::setProjectionMatrix(const Matrix4x4& projection)
+{
+	m_projectionMatrix = projection;
+	m_renderDevice->setUniformValue(m_projectionMatrixUniform, &m_projectionMatrix, 1);
+}
 
 void ForwardMeshRenderer::submitMesh(Mesh* mesh)
 {
