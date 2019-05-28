@@ -32,9 +32,6 @@
 #include <Quartz/Voxels/Blocks.hpp>
 #include <Quartz/Graphics/Camera.hpp>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
-
 using namespace sandbox;
 using namespace qz;
 
@@ -80,16 +77,41 @@ void Sandbox::run()
 	window->registerEventListener([&](qz::events::Event& e) { onEvent(e); });
 
 	voxels::BlockRegistery* blocksRegistery = voxels::BlockRegistery::get();
-	voxels::BlockType* air = blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR});
-	voxels::BlockType* dirt = blocksRegistery->registerBlock({"Dirt", "core:dirt", voxels::BlockTypeCategory::SOLID});
+	blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR});
+
+	voxels::BlockType* dirtBlockType = blocksRegistery->registerBlock({"Dirt", "core:dirt", voxels::BlockTypeCategory::SOLID});
 
 	m_renderDevice = new GLRenderDevice();
 	m_renderDevice->create();
 
-	gfx::Mesh mesh(3);
-	mesh.addVertex({{1.f, 1.f, 1.0f}, {0.f, 1.f}});
-	mesh.addVertex({{-1.f, 1.f, 1.0f}, {1.f, 1.f}});
-	mesh.addVertex({{0.0f, 0.0f, 1.0f}, {0.5f, 0.5f}});
+	// #todo find some way of returning the sprite ID on creation (instead of having to do a lookup with the filepath again)
+	voxels::BlockTextureAtlas atlas(16, 16);
+	atlas.addTextureFile("assets/textures/grass_top.png");
+	atlas.addTextureFile("assets/textures/dirt.png");
+	atlas.addTextureFile("assets/textures/grass_side.png");
+	atlas.patch();
+
+	// #todo (fix) temporary == remove.
+	dirtBlockType->textures.top =
+			dirtBlockType->textures.bottom =
+			dirtBlockType->textures.left =
+			dirtBlockType->textures.right =
+			dirtBlockType->textures.front =
+			dirtBlockType->textures.back =
+			atlas.getSpriteIDFromFilepath("assets/textures/dirt.png");
+
+	auto grassTextureCoordinates = atlas.getSpriteIDFromFilepath("assets/textures/grass_top.png");
+
+	RectAABB uvs = atlas.getSpriteFromID(dirtBlockType->textures.front);
+
+	gfx::Mesh mesh(6);
+	mesh.addVertex({{0.f, 0.f, 1.0f}, uvs.topLeft });
+	mesh.addVertex({{0.f, 1.f, 1.0f}, uvs.bottomLeft });
+	mesh.addVertex({{1.0f, 1.0f, 1.0f}, uvs.bottomRight });
+
+	mesh.addVertex({{1.f, 1.f, 1.0f}, uvs.bottomRight });
+	mesh.addVertex({{1.f, 0.f, 1.0f}, uvs.topRight });
+	mesh.addVertex({{0.0f, 0.0f, 1.0f}, uvs.topLeft });
 
 	gfx::ForwardMeshRenderer renderer(m_renderDevice);
 	renderer.create();
@@ -99,6 +121,10 @@ void Sandbox::run()
 	m_camera = new gfx::FPSCamera(window);
 	m_camera->setProjection(Matrix4x4::perspective(1280.f / 720.f, 90.f, 100.f, 0.1f));
 	renderer.setProjectionMatrix(m_camera->getProjection());
+
+
+	TextureHandle texture = m_renderDevice->createTexture(atlas.getPatchedTetureData(), atlas.getPatchedTextureWidth(), atlas.getPatchedTextureHeight());
+	m_renderDevice->setTexture(texture, 0);
 
 	std::size_t fpsLastTime = SDL_GetTicks();
 	int fpsCurrent = 0;
@@ -125,11 +151,20 @@ void Sandbox::run()
 		{
 			m_debug.show();
 
+			static bool wireframe = false;
+
 			ImGui::Begin("Stats");
+			ImGui::Checkbox("Wireframe", &wireframe);
 			ImGui::Text("FPS: %i frame/s", fpsCurrent);
 			ImGui::Text("Delta: %.2f ms/frame", static_cast<double>(dt));
 			ImGui::Text("Vertices: %i", renderer.countTotalNumVertices());
+
 			ImGui::End();
+
+			if(wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -142,6 +177,7 @@ void Sandbox::run()
 		showHintUi();
 
 		renderer.render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		window->endFrame();
 	}

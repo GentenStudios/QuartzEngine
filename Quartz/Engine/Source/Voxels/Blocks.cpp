@@ -23,11 +23,121 @@
 
 
 #include <Quartz/Voxels/Blocks.hpp>
+#include <Quartz/Utilities/Logger.hpp>
 
 #include <algorithm>
 #include <cstring>
+#include <cassert>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 using namespace qz::voxels;
+
+BlockTextureAtlas::BlockTextureAtlas(std::size_t spriteWidth, std::size_t spriteHeight)
+	: m_spriteWidth(spriteWidth), m_spriteHeight(spriteHeight)
+{}
+
+BlockTextureAtlas::BlockTextureAtlas()
+	: m_spriteWidth(0), m_spriteHeight(0)
+{}
+
+void BlockTextureAtlas::setSpriteWidth(std::size_t w)
+{
+	m_spriteWidth = w;
+}
+
+void BlockTextureAtlas::setSpriteHeight(std::size_t h)
+{
+	m_spriteHeight = h;
+}
+
+void BlockTextureAtlas::addTextureFile(const char *texturefilepath)
+{
+	m_textureIDMap.insert(std::make_pair(std::string(texturefilepath), INVALID_SPRITE));
+}
+
+BlockTextureAtlas::SpriteID BlockTextureAtlas::getSpriteIDFromFilepath(const char* filepath)
+{
+	const auto equalsTest = [filepath](auto a) -> bool {
+		return a.first == filepath;
+	};
+
+	if (std::find_if(m_textureIDMap.begin(), m_textureIDMap.end(), equalsTest) == m_textureIDMap.end())
+		return INVALID_SPRITE;
+
+	return m_textureIDMap.at(filepath);
+}
+
+qz::RectAABB BlockTextureAtlas::getSpriteFromID(BlockTextureAtlas::SpriteID spriteID) const
+{
+	qz::RectAABB uv;
+
+	const float yPx = static_cast<float>(spriteID) * static_cast<float>(m_spriteHeight);
+	const float xPx = 0.f;
+
+	const float yUv = static_cast<float>(yPx) / m_patchedTextureHeight;
+	const float xUv = static_cast<float>(xPx) / m_patchedTextureWidth;
+
+	const float widthUv = static_cast<float>(m_spriteWidth) / m_patchedTextureWidth;
+	const float heightUv = static_cast<float>(m_spriteHeight) / m_patchedTextureHeight;
+
+	uv.topLeft     = { xUv, yUv };
+	uv.topRight    = { xUv + widthUv, yUv };
+	uv.bottomLeft  = { xUv, yUv + heightUv };
+	uv.bottomRight = { xUv + widthUv, yUv + heightUv };
+
+	return uv;
+}
+
+void BlockTextureAtlas::patch()
+{
+	assert(m_spriteWidth != 0);
+	assert(m_spriteHeight != 0);
+
+	const std::size_t numTextures = m_textureIDMap.size();
+
+	if(numTextures == 0)
+		return;
+
+	const std::size_t textureHeight = numTextures * m_spriteHeight;
+	const std::size_t textureWidth = m_spriteWidth;
+
+	m_patchedTextureData = new unsigned char[textureWidth * 4 *  textureHeight];
+	assert(m_patchedTextureData);
+
+	std::size_t spriteIndex = 0;
+
+	for(const auto& sprite : m_textureIDMap)
+	{
+		const std::string& textureFilepath = sprite.first;
+		m_textureIDMap[textureFilepath] = SpriteID(spriteIndex);
+
+		int width = -1, height = -1, nbChannels = -1;
+		unsigned char* image = stbi_load(textureFilepath.c_str(), &width, &height, &nbChannels, 0);
+
+		// Basic sanity checks on the loaded image
+		assert(image);
+		assert(width != 0 && height != 0);
+
+		// #todo (bwilks): should have a way of supporting images that don't have 4 channels (maybe support 3 and just pad the alpha with 1?)
+		assert(nbChannels == 4);
+
+		std::memcpy(m_patchedTextureData + ((width * height * nbChannels) * spriteIndex), image, width * height * nbChannels);
+
+		stbi_image_free(image);
+
+		spriteIndex++;
+	}
+
+	m_patchedTextureWidth = textureWidth;
+	m_patchedTextureHeight = textureHeight;
+}
+
+BlockTextureAtlas::~BlockTextureAtlas()
+{
+	delete [] m_patchedTextureData;
+}
 
 BlockType* BlockRegistery::registerBlock(BlockType blockInfo)
 {

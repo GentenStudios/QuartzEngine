@@ -49,6 +49,10 @@ void ForwardMeshRenderer::create()
 
 	m_viewMatrixUniform = m_renderDevice->createUniform(m_shader, "u_view", rhi::UniformType::MAT4);
 	m_projectionMatrixUniform = m_renderDevice->createUniform(m_shader, "u_projection", rhi::UniformType::MAT4);
+
+	rhi::UniformHandle textureSamplerUniform = m_renderDevice->createUniform(m_shader, "u_texture", rhi::UniformType::SAMPLER);
+	int textureSampler0 = 0;
+	m_renderDevice->setUniformValue(textureSamplerUniform, &textureSampler0, 1);
 }
 
 void ForwardMeshRenderer::destroy()

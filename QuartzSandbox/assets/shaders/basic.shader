@@ -30,5 +30,5 @@ uniform sampler2D u_sampler;
 
 void main()
 {
-    out_fragcolor = vec4(pass_position, 1.0f);/*texture2D(u_sampler, pass_uv) * vec4(u_color, 1.0f);*/
+    out_fragcolor = texture2D(u_sampler, pass_uv);
 }

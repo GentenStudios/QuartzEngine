@@ -24,13 +24,51 @@
 #pragma once
 
 #include <list>
+#include <unordered_map>
 
 #include <Quartz/Utilities/Singleton.hpp>
+#include <Quartz/Math/Math.hpp>
 
 namespace qz
 {
     namespace voxels
     {
+		class BlockTextureAtlas
+		{
+		public:
+			typedef int SpriteID;
+			static const SpriteID INVALID_SPRITE = -1;
+
+			BlockTextureAtlas(std::size_t spriteWidth, std::size_t spriteHeight);
+			BlockTextureAtlas();
+			~BlockTextureAtlas();
+
+			void           addTextureFile(const char* texturefilepath);
+			void           patch();
+
+			void           setSpriteWidth(std::size_t w);
+			void           setSpriteHeight(std::size_t h);
+
+			std::size_t    getSpriteWidth() const { return m_spriteWidth; }
+			std::size_t    getSpriteHeight() const { return m_spriteHeight; }
+
+			SpriteID       getSpriteIDFromFilepath(const char* filepath);
+
+			std::size_t    getPatchedTextureWidth() const { return m_patchedTextureWidth; }
+			std::size_t    getPatchedTextureHeight() const { return m_patchedTextureHeight; }
+
+			unsigned char* getPatchedTetureData() const { return m_patchedTextureData; }
+
+			RectAABB       getSpriteFromID(SpriteID spriteId) const;
+
+		private:
+			std::unordered_map<std::string, SpriteID> m_textureIDMap;
+			std::size_t                               m_spriteWidth, m_spriteHeight;
+			unsigned char*                            m_patchedTextureData;
+
+			std::size_t                               m_patchedTextureWidth, m_patchedTextureHeight;
+		};
+
 		enum class BlockTypeCategory
 		{
 			AIR, SOLID, LIQUID
@@ -42,13 +80,16 @@ namespace qz
 			const char* id;
 
 			BlockTypeCategory category;
+
+			struct {
+				BlockTextureAtlas::SpriteID top, bottom, left, right, front, back;
+			} textures;
 		};
 
 		class BlockRegistery : public utils::Singleton<BlockRegistery>
 		{
 		public:
 			BlockType* registerBlock(BlockType blockInfo);
-
 			BlockType* getBlockFromID(const char* id);
 
 		private:

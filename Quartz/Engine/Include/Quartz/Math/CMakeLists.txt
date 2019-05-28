@@ -6,6 +6,7 @@ set(mathHeaders
 	${currentDir}/Vector3.hpp
 	${currentDir}/Vector2.hpp
 	${currentDir}/Ray.hpp
+	${currentDir}/Rect.hpp
 
 	${currentDir}/Math.hpp
 

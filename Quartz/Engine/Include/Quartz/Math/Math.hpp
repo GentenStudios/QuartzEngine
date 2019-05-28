@@ -28,6 +28,7 @@
 #include <Quartz/Math/Vector3.hpp>
 #include <Quartz/Math/Vector2.hpp>
 #include <Quartz/Math/Ray.hpp>
+#include <Quartz/Math/Rect.hpp>
 
 namespace qz
 {
@@ -37,6 +38,8 @@ namespace qz
 	typedef math::Vector3				Vector3;
 	typedef math::TemplateVector2<int>	Vector2i;
 	typedef math::TemplateVector3<int>	Vector3i;
+
+	typedef math::RectAABB				RectAABB;
 
 	template <typename T> using TVector2 = math::TemplateVector2<T>;
 	template <typename T> using TVector3 = math::TemplateVector3<T>;
