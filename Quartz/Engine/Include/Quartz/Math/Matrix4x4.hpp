@@ -38,12 +38,12 @@ namespace qz
 		{
 			/// @brief The 16 float array that stores the matrix's elements sequentially.
 			float elements[16];
-			
+
 			/**
 			 * @brief Default constructs the as an identity matrix (the top left to bottom right diagonal is 1.0f)
 			 */
 			Matrix4x4();
-			
+
 			Matrix4x4(
 				float m00, float m10, float m20, float m30,
 				float m01, float m11, float m21, float m31,

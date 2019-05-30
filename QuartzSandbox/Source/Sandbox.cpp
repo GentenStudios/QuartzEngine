@@ -31,6 +31,7 @@
 #include <Quartz/Graphics/ForwardMeshRenderer.hpp>
 #include <Quartz/Voxels/Blocks.hpp>
 #include <Quartz/Graphics/Camera.hpp>
+#include <Quartz/Graphics/ImGuiExtensions.hpp>
 
 using namespace sandbox;
 using namespace qz;
@@ -62,7 +63,7 @@ static void showHintUi()
 
 	if (ImGui::Begin("Debug Overlay Hint", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 	{
-		ImGui::Text("Press K to toggle developer mode!");
+		ImGui::Text("Press K to toggle developer tools!");
 	}
 
 	ImGui::End();
@@ -74,6 +75,7 @@ void Sandbox::run()
 	using namespace gfx::rhi::gl;
 
 	gfx::IWindow* window = m_appData->window;
+	window->setVSync(false);
 	window->registerEventListener([&](qz::events::Event& e) { onEvent(e); });
 
 	voxels::BlockRegistery* blocksRegistery = voxels::BlockRegistery::get();
@@ -131,6 +133,11 @@ void Sandbox::run()
 	int fpsFrames = 0;
 
 	float last = static_cast<float>(SDL_GetTicks());
+	int t = 0;
+	int dtSampleRate = 60;
+	bool pauseDt = false;
+	bool vsync = false;
+	bool fullscreen = false;
 	while (window->isRunning())
 	{
 		fpsFrames++;
@@ -156,10 +163,32 @@ void Sandbox::run()
 			ImGui::Begin("Stats");
 			ImGui::Checkbox("Wireframe", &wireframe);
 			ImGui::Text("FPS: %i frame/s", fpsCurrent);
-			ImGui::Text("Delta: %.2f ms/frame", static_cast<double>(dt));
+			ImGui::Text("Frame Time: %.2f ms/frame", static_cast<double>(dt));
 			ImGui::Text("Vertices: %i", renderer.countTotalNumVertices());
+			ImGui::SliderInt("Frame Time Sample Rate", &dtSampleRate, 1, 60);
+			ImGui::Checkbox("Pause Frame Time", &pauseDt);
+
+			if(t % dtSampleRate == 0 && !pauseDt)
+			{
+				ImGui::PlotVariable("Frame Time: ", dt);
+			} else
+			{
+				ImGui::PlotVariable("Frame Time: ", FLT_MAX);
+			}
+
+			if(ImGui::Checkbox("VSync", &vsync))
+			{
+				window->setVSync(vsync);
+			}
+
+			if(ImGui::Checkbox("Fullscreen", &fullscreen))
+			{
+				window->setFullscreen(fullscreen);
+			}
 
 			ImGui::End();
+
+			m_renderDevice->showShaderDebugUI();
 
 			if(wireframe)
 			{
@@ -180,6 +209,7 @@ void Sandbox::run()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		window->endFrame();
+		t++;
 	}
 
 	renderer.destroy();

@@ -1,5 +1,6 @@
 #include <Quartz/Graphics/RHI/OpenGL/GLRenderDevice.hpp>
 #include <Quartz/Graphics/RHI/InputLayout.hpp>
+#include <Quartz/Graphics/ImGuiExtensions.hpp>
 
 #include <imgui/imgui.h>
 
@@ -37,7 +38,6 @@ void GLRenderDevice::freeShaderPipeline(ShaderPipelineHandle shader)
 Uniform::Uniform()
 	: type(UniformType::INVALID), location(-1), name(nullptr)
 {
-	std::memset(userdata.vec2, 0, sizeof(userdata));
 }
 
 void GLRenderDevice::create()
@@ -61,6 +61,11 @@ void GLRenderDevice::showShaderDebugUI()
 			GLShaderPipeline& shader = m_shaders[uniform.shader.get()];
 			shader.use();
 
+			// Maybe should use setUniformValue here? (instead of manually updating GL)
+			// allthough a) this is not permenant (and really should move when the meta
+			// query API is implemented.
+			// b) ImGui will modify the uniform.userdata values in place so this does the
+			// same job as setUniformValue anyway.
 			switch (uniform.type)
 			{
 			case UniformType::COLOR3:
@@ -70,8 +75,23 @@ void GLRenderDevice::showShaderDebugUI()
 				}
 				break;
 			case UniformType::MAT4:
+				if(ImGui::InputMatrix4x4(uniform.name, &uniform.userdata.mat4))
+				{
+					glUniformMatrix4fv(uniform.location, 1, GL_FALSE, uniform.userdata.mat4.elements);
+				}
+				break;
 			case UniformType::VEC2:
+				if(ImGui::InputFloat2(uniform.name, uniform.userdata.vec2))
+				{
+					glUniform2f(uniform.location, uniform.userdata.vec3[0], uniform.userdata.vec3[1]);
+				}
+				break;
 			case UniformType::VEC3:
+				if(ImGui::InputFloat3(uniform.name, uniform.userdata.vec3))
+				{
+					glUniform3f(uniform.location, uniform.userdata.vec3[0], uniform.userdata.vec3[1], uniform.userdata.vec3[2]);
+				}
+				break;
 			case UniformType::SAMPLER:
 			case UniformType::INVALID:
 				break;
@@ -175,8 +195,14 @@ void GLRenderDevice::setUniformValue(UniformHandle uniform, const void* value, i
 	switch (uniformData.type)
 	{
 	case UniformType::MAT4:
+	{
 		glUniformMatrix4fv(uniformData.location, num, GL_FALSE, fdata);
+
+		Matrix4x4 m4;
+		std::memcpy(m4.elements, fdata, 16*sizeof(float));
+		uniformData.userdata.mat4 = m4;
 		break;
+	}
 	case UniformType::VEC2:
 		glUniform2f(uniformData.location, fdata[0], fdata[1]);
 		std::memcpy(uniformData.userdata.vec2, value, sizeof(float) * 2);

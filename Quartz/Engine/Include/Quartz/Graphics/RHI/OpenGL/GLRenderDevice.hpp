@@ -29,6 +29,7 @@
 #include <Quartz/Graphics/RHI/OpenGL/GLVertexBuffer.hpp>
 #include <Quartz/Graphics/RHI/OpenGL/GLShaderPipeline.hpp>
 #include <Quartz/Graphics/RHI/OpenGL/GLTexture.hpp>
+#include <Quartz/Math/Math.hpp>
 
 namespace qz
 {
@@ -53,11 +54,19 @@ namespace qz
 					ShaderPipelineHandle shader;
 					const char*          name;
 
-					union
+					union Userdata
 					{
 						float vec2[2];
 						float vec3[3];
 						float vec4[4];
+						Matrix4x4 mat4;
+
+						Userdata()
+						{
+							std::memset(mat4.elements, 0, 16 * sizeof(float));
+						}
+
+						~Userdata() {}
 					} userdata;
 
 					Uniform();

@@ -7,6 +7,7 @@ set(graphicsHeaders
 	${currentDir}/Camera.hpp
 	${currentDir}/Mesh.hpp
 	${currentDir}/ForwardMeshRenderer.hpp
+	${currentDir}/ImGuiExtensions.hpp
 
 	PARENT_SCOPE
 )
