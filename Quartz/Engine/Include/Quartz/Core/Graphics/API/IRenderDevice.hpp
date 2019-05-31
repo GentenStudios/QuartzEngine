@@ -55,7 +55,16 @@ namespace qz
 				virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) = 0;
 				virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) = 0;
 				
-				virtual ShaderPipelineHandle createShaderPipeline(const std::string& filepath, const InputLayout& inputLayout) = 0;
+				/**
+				 * @brief			Create shader from source code.
+				 * @param  dirpath	    path to directory used as working directory when parsing the source code. 
+									    ( #include directives will be intepreted relative to this dir )
+				 * @param  sourcecode    The shader source code. Should contain all necessary shader stages.
+				 * @param  inputlayout   Specificy the layout of that data passed into the shader.
+				 * @return Handle to the newly created shader
+				 */
+				virtual ShaderPipelineHandle createShaderPipelineFromSource(const std::string& dirpath, const std::string& sourcecode, const InputLayout& inputLayout) = 0;
+				virtual ShaderPipelineHandle createShaderPipelineFromFile(const std::string& filepath, const InputLayout& inputLayout) = 0;
 				virtual void setShaderPipeline(ShaderPipelineHandle shader) = 0;
 
 				virtual UniformHandle createUniform(ShaderPipelineHandle shader, const char* name, UniformType type) = 0;

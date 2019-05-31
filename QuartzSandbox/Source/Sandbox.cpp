@@ -129,8 +129,14 @@ void Sandbox::run()
 
 	VertexBufferHandle topTriangleBuffer = m_renderDevice->createVertexBuffer();
 	m_renderDevice->setBufferData(topTriangleBuffer, topTriangleVertices, sizeof(topTriangleVertices));
-
-	ShaderPipelineHandle shader = m_renderDevice->createShaderPipeline("assets/shaders/basic.shader", layout);
+	const std::string testShaderSource = 
+	R"(#shader frag
+#include "test.frag"
+#shader vertex
+#include "test.vert"
+	)";
+	//ShaderPipelineHandle shader = m_renderDevice->createShaderPipelineFromSource("assets/shaders/tests/", testShaderSource, layout);
+	ShaderPipelineHandle shader = m_renderDevice->createShaderPipelineFromFile("assets/shaders/tests/test.shader", layout);
 	UniformHandle colorHandle = m_renderDevice->createUniform(shader, "u_color", UniformType::COLOR3);
 	UniformHandle samplerUniform = m_renderDevice->createUniform(shader, "u_sampler", UniformType::SAMPLER);
 	int id = 0;

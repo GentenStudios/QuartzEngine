@@ -42,3 +42,8 @@ std::string FileIO::readAllFile(const std::string& filepath)
 	return fileString;
 }
 
+std::string FileIO::getDirname(const std::string& filename)
+{
+	std::size_t p = filename.find_last_of("\\/");
+	return p == std::string::npos ? "" : filename.substr(0, p + 1);
+};

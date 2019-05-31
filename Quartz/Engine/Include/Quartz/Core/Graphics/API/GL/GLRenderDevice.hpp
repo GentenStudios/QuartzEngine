@@ -77,7 +77,13 @@ namespace qz
 					virtual void setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset);
 
 					virtual void setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
-					virtual ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout);
+					
+
+					/**
+					 * @brief			See Core/Graphics/API/IRenderDevice.hpp
+					 */
+					virtual ShaderPipelineHandle createShaderPipelineFromSource(const std::string& dirpath, const std::string& sourcecode, const InputLayout& inputLayout) ;
+					virtual ShaderPipelineHandle createShaderPipelineFromFile(const std::string& filepath, const InputLayout& inputLayout);
 					virtual void setShaderPipeline(ShaderPipelineHandle shader);
 
 					virtual UniformHandle createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type);
