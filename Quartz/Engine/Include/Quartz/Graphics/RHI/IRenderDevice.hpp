@@ -27,7 +27,8 @@
 #include <Quartz/Graphics/RHI/InputLayout.hpp>
 
 #define DEFINE_HANDLE(Name) \
-		struct Name : public utils::HandleBase { }
+		struct Name : public utils::HandleBase { }; \
+		inline bool operator==(const Name& left, const Name& right){ return left.get() == right.get(); }
 
 namespace qz
 {
@@ -81,7 +82,7 @@ namespace qz
 				virtual void setUniformValue(UniformHandle uniform, const void* value, int num) = 0;
 				virtual void freeUniform(UniformHandle uniform) = 0;
 
-				virtual TextureHandle createTexture(unsigned char* pixelData, int width, int height) = 0;
+				virtual TextureHandle createTexture(unsigned char* pixelData, std::size_t width, std::size_t height) = 0;
 				virtual void setTexture(TextureHandle texture, int slot) = 0;
 				virtual void freeTexture(TextureHandle texture) = 0;
 

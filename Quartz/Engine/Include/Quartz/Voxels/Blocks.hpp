@@ -83,6 +83,11 @@ namespace qz
 
 			struct {
 				BlockTextureAtlas::SpriteID top, bottom, left, right, front, back;
+
+				void setAll(BlockTextureAtlas::SpriteID sprite)
+				{
+					top = bottom = left = right = front = back = sprite;
+				}
 			} textures;
 		};
 

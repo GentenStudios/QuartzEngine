@@ -32,7 +32,7 @@ void GLTexture::free()
 	GLCheck(glDeleteTextures(1, &m_id));
 }
 
-void GLTexture::create(unsigned char* pixelData, int width, int height)
+void GLTexture::create(unsigned char* pixelData, std::size_t width, std::size_t height)
 {
 	GLCheck(glGenTextures(1, &m_id));
 	GLCheck(glBindTexture(GL_TEXTURE_2D, m_id));
@@ -42,7 +42,7 @@ void GLTexture::create(unsigned char* pixelData, int width, int height)
 	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
 	GLCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
 
-	GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData));
+	GLCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, static_cast<GLsizei>(width), static_cast<GLsizei>(height), 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData));
 	GLCheck(glGenerateMipmap(GL_TEXTURE_2D));
 
 	GLCheck(glBindTexture(GL_TEXTURE_2D, 0));

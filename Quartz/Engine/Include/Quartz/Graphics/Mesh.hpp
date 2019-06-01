@@ -28,6 +28,8 @@
 #include <cstddef>
 #include <vector>
 
+#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
+
 namespace qz
 {
     namespace gfx
@@ -38,6 +40,7 @@ namespace qz
 			Vector3 diffuse;
 			Vector3 specular;
 			float   shininess;
+			rhi::TextureHandle texture;
 		};
 
 		struct Vertex3D

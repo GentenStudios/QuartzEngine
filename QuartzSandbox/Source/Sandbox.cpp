@@ -32,6 +32,7 @@
 #include <Quartz/Voxels/Blocks.hpp>
 #include <Quartz/Graphics/Camera.hpp>
 #include <Quartz/Graphics/ImGuiExtensions.hpp>
+#include <Quartz/Voxels/Terrain.hpp>
 
 using namespace sandbox;
 using namespace qz;
@@ -79,9 +80,9 @@ void Sandbox::run()
 	window->registerEventListener([&](qz::events::Event& e) { onEvent(e); });
 
 	voxels::BlockRegistery* blocksRegistery = voxels::BlockRegistery::get();
-	blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR});
+	blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR, {}});
 
-	voxels::BlockType* dirtBlockType = blocksRegistery->registerBlock({"Dirt", "core:dirt", voxels::BlockTypeCategory::SOLID});
+	voxels::BlockType* dirtBlockType = blocksRegistery->registerBlock({"Dirt", "core:dirt", voxels::BlockTypeCategory::SOLID, {}});
 
 	m_renderDevice = new GLRenderDevice();
 	m_renderDevice->create();
@@ -93,40 +94,43 @@ void Sandbox::run()
 	atlas.addTextureFile("assets/textures/grass_side.png");
 	atlas.patch();
 
-	// #todo (fix) temporary == remove.
-	dirtBlockType->textures.top =
-			dirtBlockType->textures.bottom =
-			dirtBlockType->textures.left =
-			dirtBlockType->textures.right =
-			dirtBlockType->textures.front =
-			dirtBlockType->textures.back =
-			atlas.getSpriteIDFromFilepath("assets/textures/dirt.png");
-
-	auto grassTextureCoordinates = atlas.getSpriteIDFromFilepath("assets/textures/grass_top.png");
+	dirtBlockType->textures.setAll(atlas.getSpriteIDFromFilepath("assets/textures/grass_side.png"));
 
 	RectAABB uvs = atlas.getSpriteFromID(dirtBlockType->textures.front);
 
 	gfx::Mesh mesh(6);
-	mesh.addVertex({{0.f, 0.f, 1.0f}, uvs.topLeft });
-	mesh.addVertex({{0.f, 1.f, 1.0f}, uvs.bottomLeft });
-	mesh.addVertex({{1.0f, 1.0f, 1.0f}, uvs.bottomRight });
+	mesh.addVertex({{0.f, 0.f, 1.0f}, uvs.bottomLeft });
+	mesh.addVertex({{0.f, 1.f, 1.0f}, uvs.topLeft });
+	mesh.addVertex({{1.0f, 1.0f, 1.0f}, uvs.topRight });
 
-	mesh.addVertex({{1.f, 1.f, 1.0f}, uvs.bottomRight });
-	mesh.addVertex({{1.f, 0.f, 1.0f}, uvs.topRight });
-	mesh.addVertex({{0.0f, 0.0f, 1.0f}, uvs.topLeft });
+	mesh.addVertex({{1.f, 1.f, 1.0f}, uvs.topRight });
+	mesh.addVertex({{1.f, 0.f, 1.0f}, uvs.bottomRight });
+	mesh.addVertex({{0.0f, 0.0f, 1.0f}, uvs.bottomLeft });
 
 	gfx::ForwardMeshRenderer renderer(m_renderDevice);
 	renderer.create();
 
-	renderer.submitMesh(&mesh);
-
 	m_camera = new gfx::FPSCamera(window);
-	m_camera->setProjection(Matrix4x4::perspective(1280.f / 720.f, 90.f, 100.f, 0.1f));
+	m_camera->setProjection(Matrix4x4::perspective(static_cast<float>(m_appRequirements->windowWidth) / m_appRequirements->windowHeight, 90.f, 100.f, 0.1f));
 	renderer.setProjectionMatrix(m_camera->getProjection());
 
+	TextureHandle texture = m_renderDevice->createTexture(
+		atlas.getPatchedTetureData(),
+		atlas.getPatchedTextureWidth(),
+		atlas.getPatchedTextureHeight()
+	);
 
-	TextureHandle texture = m_renderDevice->createTexture(atlas.getPatchedTetureData(), atlas.getPatchedTextureWidth(), atlas.getPatchedTextureHeight());
-	m_renderDevice->setTexture(texture, 0);
+	gfx::PhongMaterial material;
+	material.texture = texture;
+
+	mesh.setMaterial(material);
+
+	voxels::Terrain terrain(16, [&](std::size_t x, std::size_t y, std::size_t z){
+		(void) x; (void) y; (void) z;
+		return dirtBlockType;
+	});
+
+	renderer.submitMesh(&mesh);
 
 	std::size_t fpsLastTime = SDL_GetTicks();
 	int fpsCurrent = 0;
@@ -186,6 +190,10 @@ void Sandbox::run()
 				window->setFullscreen(fullscreen);
 			}
 
+
+			Vector3 v3 = m_camera->getPosition();
+			ImGui::InputVector3("Position", &v3);
+
 			ImGui::End();
 
 			m_renderDevice->showShaderDebugUI();
@@ -195,6 +203,8 @@ void Sandbox::run()
 				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			}
 		}
+
+		terrain.tick(m_camera->getPosition());
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
@@ -209,6 +219,12 @@ void Sandbox::run()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		window->endFrame();
+
+		if(t > 3600)
+		{
+			t = 0;
+		}
+
 		t++;
 	}
 

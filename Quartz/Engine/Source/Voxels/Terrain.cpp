@@ -21,44 +21,33 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-#pragma once
+#include <Quartz/Voxels/Terrain.hpp>
 
-#include <vector>
-#include <cstddef>
-#include <functional>
+using namespace qz::voxels;
 
-#include <Quartz/Voxels/Blocks.hpp>
-#include <Quartz/Math/Math.hpp>
-
-namespace qz
+void Chunk::fill(const std::size_t chunkSize, const std::function<BlockType* (std::size_t, std::size_t, std::size_t)> &generator)
 {
-    namespace voxels
-    {
-		class Chunk
+	m_voxelData.resize(chunkSize * chunkSize * chunkSize);
+
+	for(std::size_t x = 0; x < chunkSize; ++x)
+	{
+		for(std::size_t y = 0; y < chunkSize; ++y)
 		{
-		public:
-			typedef std::function<BlockType*(std::size_t, std::size_t, std::size_t)> GeneratorFunction;
-		private:
-			std::vector<BlockType*> m_voxelData;
-
-		public:
-			void fill(const std::size_t chunkSize, const Chunk::GeneratorFunction& generator);
-		};
-
-		class Terrain
-		{
-		private:
-			std::size_t              m_chunkSize;
-			Chunk::GeneratorFunction m_generatorFunction;
-			std::vector<Chunk>       m_loadedChunks;
-
-		public:
-			Terrain(std::size_t chunkSize, const Chunk::GeneratorFunction& generator);
-
-			void tick(Vector3 streamCenter);
-		};
-		
-		
-    }
+			for(std::size_t z = 0; z < chunkSize; ++z)
+			{
+				const std::size_t idx = x + chunkSize * (y + chunkSize * z);
+				m_voxelData[idx] = generator(x, y , z);
+			}
+		}
+	}
 }
 
+Terrain::Terrain(std::size_t chunkSize, const Chunk::GeneratorFunction& generator)
+	: m_chunkSize(chunkSize), m_generatorFunction(generator)
+{
+}
+
+void Terrain::tick(qz::Vector3 streamCenter)
+{
+
+}

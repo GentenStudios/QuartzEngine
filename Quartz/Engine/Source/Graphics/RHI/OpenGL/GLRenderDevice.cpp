@@ -58,6 +58,7 @@ void GLRenderDevice::showShaderDebugUI()
 		for (std::size_t i = 0; i < m_uniformHandleAllocator.size(); i++)
 		{
 			Uniform& uniform = m_uniforms[i];
+
 			GLShaderPipeline& shader = m_shaders[uniform.shader.get()];
 			shader.use();
 
@@ -221,7 +222,7 @@ void GLRenderDevice::setUniformValue(UniformHandle uniform, const void* value, i
 	}
 }
 
-TextureHandle GLRenderDevice::createTexture(unsigned char* pixelData, int width, int height)
+TextureHandle GLRenderDevice::createTexture(unsigned char* pixelData, std::size_t width, std::size_t height)
 {
 	TextureHandle handle = m_textureHandleAllocator.allocate();
 	m_textures[handle.get()].create(pixelData, width, height);
@@ -232,8 +233,14 @@ void GLRenderDevice::setTexture(TextureHandle texture, int slot)
 {
 	assert(m_textureHandleAllocator.isValid(texture));
 
+	// No need to bind the currently bound texture again.
+	if(texture == m_boundTexture)
+		return;
+
 	GLTexture& texData = m_textures[texture.get()];
 
 	GLCheck(glActiveTexture(static_cast<GLenum>(GL_TEXTURE0 + slot)));
 	GLCheck(glBindTexture(GL_TEXTURE_2D, texData.getID()))
+
+	m_boundTexture = texture;
 }

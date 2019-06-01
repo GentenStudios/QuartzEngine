@@ -103,6 +103,8 @@ void ForwardMeshRenderer::render()
 {
 	for(MeshRenderData& mesh : m_meshes)
 	{
+		const PhongMaterial& material = mesh.mesh->getMaterial();
+		m_renderDevice->setTexture(material.texture, 0); // #todo (bwilks): CAN'T BIND ALL TO SLOT 0
 		m_renderDevice->setVertexBufferStream(mesh.vertexBuffer, 0, sizeof(Vertex3D), 0);
 		m_renderDevice->draw(0, mesh.mesh->getVertices().size());
 	}

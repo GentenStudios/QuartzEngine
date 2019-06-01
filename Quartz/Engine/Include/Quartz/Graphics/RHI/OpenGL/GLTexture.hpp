@@ -26,6 +26,8 @@
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Graphics/RHI/OpenGL/GLCommon.hpp>
 
+#include <cstddef>
+
 namespace qz
 {
 	namespace gfx
@@ -37,7 +39,7 @@ namespace qz
 				class GLTexture
 				{
 				public:
-					void create(unsigned char* pixelData, int width, int height);
+					void create(unsigned char* pixelData, std::size_t width, std::size_t height);
 					void free();
 
 					GLuint getID() const { return m_id; }

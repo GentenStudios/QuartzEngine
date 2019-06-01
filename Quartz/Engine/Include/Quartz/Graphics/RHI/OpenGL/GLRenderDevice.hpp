@@ -91,7 +91,7 @@ namespace qz
 					virtual UniformHandle        createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type) override;
 					virtual void                 setUniformValue(UniformHandle uniform, const void* value, int num) override;
 
-					virtual TextureHandle        createTexture(unsigned char* pixelData, int width, int height) override;
+					virtual TextureHandle        createTexture(unsigned char* pixelData, std::size_t width, std::size_t height) override;
 					virtual void                 setTexture(TextureHandle texture, int slot) override;
 
 					void                         showShaderDebugUI() override;
@@ -117,6 +117,7 @@ namespace qz
 					GLTexture                                        m_textures[32];
 
 					ShaderPipelineHandle                             m_boundShader;
+					TextureHandle                                    m_boundTexture;
 
 					static constexpr int                             NUM_STREAMS = 32;
 					VertexStream                                     m_vertexStreams[NUM_STREAMS];
