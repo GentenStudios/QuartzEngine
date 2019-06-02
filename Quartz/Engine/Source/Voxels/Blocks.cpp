@@ -59,7 +59,7 @@ void BlockTextureAtlas::addTextureFile(const char *texturefilepath)
 
 BlockTextureAtlas::SpriteID BlockTextureAtlas::getSpriteIDFromFilepath(const char* filepath)
 {
-	const auto equalsTest = [filepath](auto a) -> bool {
+	const auto equalsTest = [filepath](const std::unordered_map<std::string, SpriteID>::value_type a) -> bool {
 		return a.first == filepath;
 	};
 
