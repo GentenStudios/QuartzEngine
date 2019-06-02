@@ -167,7 +167,7 @@ void Sandbox::run()
 	renderer.setProjectionMatrix(m_camera->getProjection());
 
 	TextureHandle blocksTexture = m_renderDevice->createTexture(
-		atlas.getPatchedTetureData(),
+		atlas.getPatchedTextureData(),
 		atlas.getPatchedTextureWidth(),
 		atlas.getPatchedTextureHeight()
 	);

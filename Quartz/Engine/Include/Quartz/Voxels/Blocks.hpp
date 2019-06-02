@@ -37,7 +37,7 @@ namespace qz
 		{
 		public:
 			typedef int SpriteID;
-			static const SpriteID INVALID_SPRITE = -1;
+			constexpr static SpriteID INVALID_SPRITE = -1;
 
 			BlockTextureAtlas(std::size_t spriteWidth, std::size_t spriteHeight);
 			BlockTextureAtlas();
@@ -57,7 +57,7 @@ namespace qz
 			std::size_t    getPatchedTextureWidth() const { return m_patchedTextureWidth; }
 			std::size_t    getPatchedTextureHeight() const { return m_patchedTextureHeight; }
 
-			unsigned char* getPatchedTetureData() const { return m_patchedTextureData; }
+			unsigned char* getPatchedTextureData() const { return m_patchedTextureData; }
 
 			RectAABB       getSpriteFromID(SpriteID spriteId) const;
 
