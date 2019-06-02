@@ -41,7 +41,8 @@ void ForwardMeshRenderer::create()
 
 	rhi::InputLayout layout = {
 		{ rhi::VertexElementType::Vec3f, 0, 0, 0,                 false },
-		{ rhi::VertexElementType::Vec2f, 0, 1, 3 * sizeof(float), false }
+		{ rhi::VertexElementType::Vec2f, 0, 1, 3 * sizeof(float), false },
+		{ rhi::VertexElementType::Vec3f, 0, 2, 5 * sizeof(float), false }
 	};
 
 	m_shader = m_renderDevice->createShaderPipeline(SHADER_FILEPATH, layout);
@@ -53,6 +54,12 @@ void ForwardMeshRenderer::create()
 	rhi::UniformHandle textureSamplerUniform = m_renderDevice->createUniform(m_shader, "u_texture", rhi::UniformType::SAMPLER);
 	int textureSampler0 = 0;
 	m_renderDevice->setUniformValue(textureSamplerUniform, &textureSampler0, 1);
+
+	unsigned char* defaultTextureData = new unsigned char[4];
+	memset(defaultTextureData, 255, 4);
+
+	m_defaultTexture = m_renderDevice->createTexture(defaultTextureData, 1, 1);
+	m_defaultTextureSlot = m_textureSlotsAllocator.allocate();
 }
 
 void ForwardMeshRenderer::destroy()
@@ -99,22 +106,25 @@ void ForwardMeshRenderer::submitMesh(Mesh* meshToSubmit)
 
 	renderData.vertexBuffer = buffer;
 
-	bool allocateNewTextureSlot = true;
-	for(MeshRenderData& m : m_meshes)
+	if(m_renderDevice->isHandleValid(meshToSubmitMaterial.texture))
 	{
-		const PhongMaterial& material = m.mesh->getMaterial();
-
-		if(material.texture == meshToSubmitMaterial.texture)
+		bool allocateNewTextureSlot = true;
+		for (MeshRenderData& m : m_meshes)
 		{
-			allocateNewTextureSlot = false;
-			renderData.textureSlot = m.textureSlot;
-			break;
-		}
-	}
+			const PhongMaterial& material = m.mesh->getMaterial();
 
-	if(allocateNewTextureSlot)
-	{
-		renderData.textureSlot = m_textureSlotsAllocator.allocate();
+			if (material.texture == meshToSubmitMaterial.texture)
+			{
+				allocateNewTextureSlot = false;
+				renderData.textureSlot = m.textureSlot;
+				break;
+			}
+		}
+
+		if (allocateNewTextureSlot)
+		{
+			renderData.textureSlot = m_textureSlotsAllocator.allocate();
+		}
 	}
 
 	m_meshes.push_back(renderData);
@@ -125,7 +135,16 @@ void ForwardMeshRenderer::render()
 	for(MeshRenderData& mesh : m_meshes)
 	{
 		const PhongMaterial& material = mesh.mesh->getMaterial();
-		m_renderDevice->setTexture(material.texture, mesh.textureSlot.get());
+
+		if(m_renderDevice->isHandleValid(material.texture))
+		{
+			m_renderDevice->setTexture(material.texture, 0);
+		}
+		else
+		{
+			m_renderDevice->setTexture(m_defaultTexture, 0);
+		}
+
 		m_renderDevice->setVertexBufferStream(mesh.vertexBuffer, 0, sizeof(Vertex3D), 0);
 		m_renderDevice->draw(0, mesh.mesh->getVertices().size());
 	}

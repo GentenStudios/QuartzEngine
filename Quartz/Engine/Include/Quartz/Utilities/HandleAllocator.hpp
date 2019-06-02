@@ -69,6 +69,9 @@ namespace qz
 
 			bool isValid(THandleType handle)
 			{
+				if (handle.get() == HandleBase::INVALID_HANDLE_VALUE)
+					return false;
+
 				return m_handles[handle.get()].get() != HandleBase::INVALID_HANDLE_VALUE;
 			}
 

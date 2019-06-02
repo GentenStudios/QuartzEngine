@@ -58,6 +58,9 @@ namespace qz
 			Matrix4x4                                     m_viewMatrix,
 			                                              m_projectionMatrix;
 
+			rhi::TextureHandle                            m_defaultTexture;
+			TextureSlotHandle                             m_defaultTextureSlot;
+
 		public:
 			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
 
