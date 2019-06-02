@@ -54,7 +54,7 @@ void BlockTextureAtlas::setSpriteHeight(std::size_t h)
 
 void BlockTextureAtlas::addTextureFile(const char *texturefilepath)
 {
-	m_textureIDMap.insert(std::make_pair(std::string(texturefilepath), INVALID_SPRITE));
+	m_textureIDMap.insert(std::make_pair(std::string(texturefilepath), BlockTextureAtlas::INVALID_SPRITE));
 }
 
 BlockTextureAtlas::SpriteID BlockTextureAtlas::getSpriteIDFromFilepath(const char* filepath)
@@ -64,7 +64,7 @@ BlockTextureAtlas::SpriteID BlockTextureAtlas::getSpriteIDFromFilepath(const cha
 	};
 
 	if (std::find_if(m_textureIDMap.begin(), m_textureIDMap.end(), equalsTest) == m_textureIDMap.end())
-		return INVALID_SPRITE;
+		return BlockTextureAtlas::INVALID_SPRITE;
 
 	return m_textureIDMap.at(filepath);
 }

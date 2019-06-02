@@ -23,11 +23,11 @@
 
 #pragma once
 
-#include <list>
-#include <unordered_map>
-
 #include <Quartz/Utilities/Singleton.hpp>
 #include <Quartz/Math/Math.hpp>
+
+#include <list>
+#include <unordered_map>
 
 namespace qz
 {
