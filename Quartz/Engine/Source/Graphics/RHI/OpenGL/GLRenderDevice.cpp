@@ -10,6 +10,26 @@
 using namespace qz::gfx::rhi::gl;
 using namespace qz::gfx::rhi;
 
+bool GLRenderDevice::isHandleValid(VertexBufferHandle handle)
+{
+	return m_vertexBufferHandles.isValid(handle);
+}
+
+bool GLRenderDevice::isHandleValid(ShaderPipelineHandle handle)
+{
+	return m_shaderHandles.isValid(handle);
+}
+
+bool GLRenderDevice::isHandleValid(UniformHandle handle)
+{
+	return m_uniformHandleAllocator.isValid(handle);
+}
+
+bool GLRenderDevice::isHandleValid(TextureHandle handle)
+{
+	return m_textureHandleAllocator.isValid(handle);
+}
+
 void GLRenderDevice::freeTexture(TextureHandle texture)
 {
 	m_textures[texture.get()].free();

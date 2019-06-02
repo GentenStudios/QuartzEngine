@@ -145,7 +145,7 @@ void Sandbox::run()
 	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomLeft });
 
 
-	const float GROUND_SIZE = 4.f;
+	const float GROUND_SIZE = 10.f;
 
 	gfx::Mesh groundMesh(6);
 	groundMesh.addVertex({{-GROUND_SIZE, -2.f, -GROUND_SIZE}, grassUVs.topLeft});

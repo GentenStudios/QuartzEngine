@@ -51,6 +51,11 @@ namespace qz
 			public:
 				virtual ~IRenderDevice() {}
 
+				virtual bool isHandleValid(VertexBufferHandle handle) = 0;
+				virtual bool isHandleValid(ShaderPipelineHandle handle) = 0;
+				virtual bool isHandleValid(UniformHandle handle) = 0;
+				virtual bool isHandleValid(TextureHandle handle) = 0;
+
 				/**
 				 * @brief Initialise the RenderDevice. Must be called before
 				 *        any other methods on the RenderDevice.

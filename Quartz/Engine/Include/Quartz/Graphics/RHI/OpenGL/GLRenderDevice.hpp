@@ -77,6 +77,11 @@ namespace qz
 				public:
 					GLRenderDevice()  = default;
 
+					virtual bool isHandleValid(VertexBufferHandle handle) override;
+					virtual bool isHandleValid(ShaderPipelineHandle handle) override;
+					virtual bool isHandleValid(UniformHandle handle) override;
+					virtual bool isHandleValid(TextureHandle handle) override;
+
 					GLRenderDevice(const GLRenderDevice& other) = delete;
 
 					virtual void                 create() override;
