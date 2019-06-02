@@ -11,6 +11,8 @@ if(NOT EXISTS ${CMAKE_CURRENT_LIST_DIR}/luamod/include)
 	)
 endif()
 
+set(SDL_SHARED_ENABLED_BY_DEFAULT OFF)
+
 add_subdirectory(glad)
 add_subdirectory(SDL2)
 add_subdirectory(luamod)
@@ -23,5 +25,5 @@ if(WIN32)
 endif()
 
 set_target_properties(luamod luamod_tests PROPERTIES FOLDER quartz-dependencies/lua)
-set_target_properties(SDL2main SDL2 SDL2-static uninstall PROPERTIES FOLDER quartz-dependencies/sdl2)
+set_target_properties(SDL2main SDL2-static uninstall PROPERTIES FOLDER quartz-dependencies/sdl2)
 set_target_properties(glad imgui PROPERTIES FOLDER quartz-dependencies)
