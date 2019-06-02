@@ -72,12 +72,12 @@ static void showHintUi()
 
 void Sandbox::run()
 {
-	using namespace gfx::rhi;
 	using namespace gfx::rhi::gl;
+	using namespace gfx::rhi;
 
 	gfx::IWindow* window = m_appData->window;
 	window->setVSync(false);
-	window->registerEventListener([&](qz::events::Event& e) { onEvent(e); });
+	window->registerEventListener(this);
 
 	voxels::BlockRegistery* blocksRegistery = voxels::BlockRegistery::get();
 	blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR, {}});
@@ -292,24 +292,17 @@ void Sandbox::run()
 	renderer.destroy();
 }
 
-void Sandbox::onEvent(events::Event& event)
+void Sandbox::onEvent(const events::Event& e)
 {
-	auto test = events::EventDispatcher(event);
-	test.dispatch<events::KeyPressedEvent>(std::bind(&Sandbox::onKeyPress, this, std::placeholders::_1));
-	test.dispatch<events::WindowResizeEvent>(std::bind(&gfx::FPSCamera::onWindowResize, m_camera, std::placeholders::_1));
-}
-
-bool Sandbox::onKeyPress(events::KeyPressedEvent& event)
-{
-	if (event.getKeyCode() == events::Key::KEY_ESCAPE)
+	if (e.type == events::EventType::KEY_PRESSED)
 	{
-		m_camera->enable(!m_camera->isEnabled());
+		if (e.keyboard.key == events::Keys::KEY_ESCAPE)
+			m_camera->enable(!m_camera->isEnabled());
+		else if (e.keyboard.key == events::Keys::KEY_K)
+			m_debugMode = !m_debugMode;
 	}
-	else if (event.getKeyCode() == events::Key::KEY_K)
+	else if (e.type == events::EventType::WINDOW_RESIZED)
 	{
-		m_debugMode = !m_debugMode;
+		m_camera->resizeProjection(e);
 	}
-
-	return true;
 }
-

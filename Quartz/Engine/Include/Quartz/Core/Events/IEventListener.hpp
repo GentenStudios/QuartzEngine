@@ -23,19 +23,19 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Utilities/Logger.hpp>
-#include <Quartz/Utilities/FileIO.hpp>
-#include <Quartz/Utilities/Config.hpp>
-
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
-
 #include <Quartz/Core/Events/Event.hpp>
 
-#include <Quartz/Graphics/RHI/Context.hpp>
-#include <Quartz/Graphics/RHI/InputLayout.hpp>
-#include <Quartz/Graphics/RHI/DataTypes.hpp>
+namespace qz
+{
+	namespace events
+	{
+		class IEventListener
+		{
+		public:
+			IEventListener() = default;
+			virtual ~IEventListener() = default;
 
-#include <Quartz/Platform/IWindow.hpp>
-#include <Quartz/Graphics/Camera.hpp>
+			virtual void onEvent(const Event& e) = 0;
+		};
+	}
+}

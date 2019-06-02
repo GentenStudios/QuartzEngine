@@ -59,7 +59,7 @@ namespace qz
 					void pollEvents() override;
 					void swapBuffers() const override;
 
-					void registerEventListener(std::function<void(events::Event&)> listener) override;
+					void registerEventListener(events::IEventListener* listener) override;
 
 					void show() const override;
 					void hide() const override;
@@ -84,7 +84,7 @@ namespace qz
 					void setCursorState(gfx::CursorState state) override;
 					void setCursorPosition(Vector2 pos) override;
 					Vector2 getCursorPosition() const override;
-					bool isKeyDown(events::Key key) const override;
+					bool isKeyDown(events::Keys key) const override;
 					
 					void startFrame() override;
 					void endFrame() override;
@@ -102,7 +102,7 @@ namespace qz
 					Vector2 m_cachedScreenSize;
 
 				private:
-					void dispatchToListeners(events::Event&& event);
+					void dispatchToListeners(events::Event& event);
 				};
 			}
 		}
