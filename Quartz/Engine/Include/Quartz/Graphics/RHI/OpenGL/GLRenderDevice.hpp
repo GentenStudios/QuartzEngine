@@ -31,8 +31,6 @@
 #include <Quartz/Graphics/RHI/OpenGL/GLTexture.hpp>
 #include <Quartz/Math/Math.hpp>
 
-#include <cstring>
-
 namespace qz
 {
 	namespace gfx
@@ -78,22 +76,28 @@ namespace qz
 				{
 				public:
 					GLRenderDevice()  = default;
+
+					virtual bool isHandleValid(VertexBufferHandle handle) override;
+					virtual bool isHandleValid(ShaderPipelineHandle handle) override;
+					virtual bool isHandleValid(UniformHandle handle) override;
+					virtual bool isHandleValid(TextureHandle handle) override;
+
 					GLRenderDevice(const GLRenderDevice& other) = delete;
 
-					void                 create() override;
-					VertexBufferHandle   createVertexBuffer() override;
-					void                 draw(std::size_t first, std::size_t count) override;
-					void                 setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) override;
+					virtual void                 create() override;
+					virtual VertexBufferHandle   createVertexBuffer() override;
+					virtual void                 draw(std::size_t first, std::size_t count) override;
+					virtual void                 setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) override;
 
-					void                 setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) override;
-					ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout) override;
-					void                 setShaderPipeline(ShaderPipelineHandle shader) override;
+					virtual void                 setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) override;
+					virtual ShaderPipelineHandle createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout) override;
+					virtual void                 setShaderPipeline(ShaderPipelineHandle shader) override;
 
-					UniformHandle        createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type) override;
-					void                 setUniformValue(UniformHandle uniform, const void* value, int num) override;
+					virtual UniformHandle        createUniform(ShaderPipelineHandle shaderHandle, const char* name, UniformType type) override;
+					virtual void                 setUniformValue(UniformHandle uniform, const void* value, int num) override;
 
-					TextureHandle        createTexture(unsigned char* pixelData, std::size_t width, std::size_t height) override;
-					void                 setTexture(TextureHandle texture, int slot) override;
+					virtual TextureHandle        createTexture(unsigned char* pixelData, std::size_t width, std::size_t height) override;
+					virtual void                 setTexture(TextureHandle texture, int slot) override;
 
 					void                         showShaderDebugUI() override;
 

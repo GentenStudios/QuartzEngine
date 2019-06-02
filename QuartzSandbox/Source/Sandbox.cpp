@@ -102,59 +102,60 @@ void Sandbox::run()
 	RectAABB grassUVs = atlas.getSpriteFromID(grassBlockType->textures.front);
 
 	gfx::Mesh cubeMesh(6 * 6);
-	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft });
-	cubeMesh.addVertex({{1.f, -1.f, -1.0f}, dirtUVs.topLeft });
-	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topRight });
-	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topRight });
-	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomRight });
-	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
-	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomLeft });
-	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topLeft });
-	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight });
-	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight });
-	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomRight });
-	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f}});
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
-	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomLeft });
-	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.topLeft });
-	cubeMesh.addVertex({{-1.f, -1.f, -1.0f},dirtUVs.topRight });
-	cubeMesh.addVertex({{-1.f, -1.f, -1.0f},dirtUVs.topRight });
-	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomRight });
-	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f},dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f},dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
-	cubeMesh.addVertex({{1.f, 1.f, 1.0f},  dirtUVs.bottomLeft });
-	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topLeft });
-	cubeMesh.addVertex({{1.f, -1.f, -1.0f},dirtUVs.topRight });    ;
-	cubeMesh.addVertex({{1.f, -1.f, -1.0f},dirtUVs.topRight });    ;
-	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.bottomRight });
-	cubeMesh.addVertex({{1.f, 1.f, 1.0f},  dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f},  dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f},dirtUVs.topRight, {1.f,1.f,1.f} });    ;
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f},dirtUVs.topRight, {1.f,1.f,1.f} });    ;
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f},  dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
-	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft });
-	cubeMesh.addVertex({{1.f, -1.f, -1.0f}, dirtUVs.topLeft });
-	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topRight });
-	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topRight });
-	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomRight });
-	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
-	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomLeft });
-	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topLeft });
-	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight });
-	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight });
-	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomRight });
-	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
 
-	const float GROUND_SIZE = 4.f;
+	const float GROUND_SIZE = 10.f;
+	const float COLOR = 150.f / 255.f;
 
 	gfx::Mesh groundMesh(6);
-	groundMesh.addVertex({{-GROUND_SIZE, -2.f, -GROUND_SIZE}, grassUVs.topLeft});
-	groundMesh.addVertex({{-GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomLeft});
-	groundMesh.addVertex({{GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomRight});
+	groundMesh.addVertex({{-GROUND_SIZE, -2.f, -GROUND_SIZE}, grassUVs.topLeft, {COLOR,COLOR,COLOR}});
+	groundMesh.addVertex({{-GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomLeft, {COLOR,COLOR,COLOR}});
+	groundMesh.addVertex({{GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomRight, {COLOR,COLOR,COLOR}});
 
-	groundMesh.addVertex({{GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomRight});
-	groundMesh.addVertex({{GROUND_SIZE, -2.f, -GROUND_SIZE}, grassUVs.topRight});
-	groundMesh.addVertex({{-GROUND_SIZE,-2.f,-GROUND_SIZE}, grassUVs.topLeft});
+	groundMesh.addVertex({{GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomRight, {COLOR,COLOR,COLOR}});
+	groundMesh.addVertex({{GROUND_SIZE, -2.f, -GROUND_SIZE}, grassUVs.topRight, {COLOR,COLOR,COLOR}});
+	groundMesh.addVertex({{-GROUND_SIZE,-2.f,-GROUND_SIZE}, grassUVs.topLeft, {COLOR,COLOR,COLOR}});
 
 	gfx::ForwardMeshRenderer renderer(m_renderDevice);
 	renderer.create();
@@ -176,9 +177,10 @@ void Sandbox::run()
 	dirtMaterial.texture = blocksTexture;
 	cubeMesh.setMaterial(dirtMaterial);
 
-	gfx::PhongMaterial grassMaterial;
+/*	gfx::PhongMaterial grassMaterial;
 	grassMaterial.texture = blocksTexture;
-	groundMesh.setMaterial(grassMaterial);
+	groundMesh.setMaterial(grassMaterial);*/
+
 
 	voxels::Terrain terrain(16, [&](std::size_t x, std::size_t y, std::size_t z){
 		(void) x; (void) y; (void) z;
