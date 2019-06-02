@@ -26,6 +26,7 @@
 #include <Quartz/Graphics/RHI/IRenderDevice.hpp>
 #include <Quartz/Graphics/Mesh.hpp>
 #include <Quartz/Math/Matrix4x4.hpp>
+#include <Quartz/Utilities/HandleAllocator.hpp>
 
 #include <vector>
 
@@ -33,24 +34,29 @@ namespace qz
 {
 	namespace gfx
 	{
+		struct TextureSlotHandle : utils::HandleBase { };
+
 		class ForwardMeshRenderer
 		{
 		private:
-			rhi::IRenderDevice*         m_renderDevice;
-			rhi::ShaderPipelineHandle   m_shader;
-			rhi::UniformHandle          m_viewMatrixUniform,
-			                            m_projectionMatrixUniform;
+			rhi::IRenderDevice*                           m_renderDevice;
+			rhi::ShaderPipelineHandle                     m_shader;
+			rhi::UniformHandle                            m_viewMatrixUniform,
+			                                              m_projectionMatrixUniform;
+
+			utils::HandleAllocator<32, TextureSlotHandle> m_textureSlotsAllocator;
 
 			struct MeshRenderData
 			{
-				rhi::VertexBufferHandle vertexBuffer;
-				Mesh*                   mesh;
+				rhi::VertexBufferHandle                   vertexBuffer;
+				Mesh*                                     mesh;
+				TextureSlotHandle                         textureSlot;
 			};
 
-			std::vector<MeshRenderData> m_meshes;
+			std::vector<MeshRenderData>                   m_meshes;
 
-			Matrix4x4                   m_viewMatrix,
-			                            m_projectionMatrix;
+			Matrix4x4                                     m_viewMatrix,
+			                                              m_projectionMatrix;
 
 		public:
 			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);

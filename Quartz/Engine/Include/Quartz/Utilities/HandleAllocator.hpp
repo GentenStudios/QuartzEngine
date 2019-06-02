@@ -79,6 +79,11 @@ namespace qz
 
 			std::size_t size() { return m_size; }
 
+			void reset()
+			{
+				m_size = 0;
+			}
+
 		private:
 			THandleType   m_handles[TMaxNumHandles];
 			std::uint16_t m_size;

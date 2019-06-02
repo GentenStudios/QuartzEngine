@@ -83,6 +83,7 @@ void Sandbox::run()
 	blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR, {}});
 
 	voxels::BlockType* dirtBlockType = blocksRegistery->registerBlock({"Dirt", "core:dirt", voxels::BlockTypeCategory::SOLID, {}});
+	voxels::BlockType* grassBlockType = blocksRegistery->registerBlock({"Grass", "core:grass", voxels::BlockTypeCategory::SOLID, {}});
 
 	m_renderDevice = new GLRenderDevice();
 	m_renderDevice->create();
@@ -94,43 +95,98 @@ void Sandbox::run()
 	atlas.addTextureFile("assets/textures/grass_side.png");
 	atlas.patch();
 
-	dirtBlockType->textures.setAll(atlas.getSpriteIDFromFilepath("assets/textures/grass_side.png"));
+	dirtBlockType->textures.setAll(atlas.getSpriteIDFromFilepath("assets/textures/dirt.png"));
+	grassBlockType->textures.setAll(atlas.getSpriteIDFromFilepath("assets/textures/grass_top.png"));
 
-	RectAABB uvs = atlas.getSpriteFromID(dirtBlockType->textures.front);
+	RectAABB dirtUVs = atlas.getSpriteFromID(dirtBlockType->textures.front);
+	RectAABB grassUVs = atlas.getSpriteFromID(grassBlockType->textures.front);
 
-	gfx::Mesh mesh(6);
-	mesh.addVertex({{0.f, 0.f, 1.0f}, uvs.bottomLeft });
-	mesh.addVertex({{0.f, 1.f, 1.0f}, uvs.topLeft });
-	mesh.addVertex({{1.0f, 1.0f, 1.0f}, uvs.topRight });
+	gfx::Mesh cubeMesh(6 * 6);
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f}, dirtUVs.topLeft });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topRight });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topRight });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomRight });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft });
 
-	mesh.addVertex({{1.f, 1.f, 1.0f}, uvs.topRight });
-	mesh.addVertex({{1.f, 0.f, 1.0f}, uvs.bottomRight });
-	mesh.addVertex({{0.0f, 0.0f, 1.0f}, uvs.bottomLeft });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topLeft });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomRight });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomLeft });
+
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.topLeft });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f},dirtUVs.topRight });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f},dirtUVs.topRight });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomRight });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomLeft });
+
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f},  dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topLeft });
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f},dirtUVs.topRight });    ;
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f},dirtUVs.topRight });    ;
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.bottomRight });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f},  dirtUVs.bottomLeft });
+
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f}, dirtUVs.topLeft });
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topRight });
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topRight });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomRight });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft });
+
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomLeft });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topLeft });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomRight });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomLeft });
+
+
+	const float GROUND_SIZE = 4.f;
+
+	gfx::Mesh groundMesh(6);
+	groundMesh.addVertex({{-GROUND_SIZE, -2.f, -GROUND_SIZE}, grassUVs.topLeft});
+	groundMesh.addVertex({{-GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomLeft});
+	groundMesh.addVertex({{GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomRight});
+
+	groundMesh.addVertex({{GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomRight});
+	groundMesh.addVertex({{GROUND_SIZE, -2.f, -GROUND_SIZE}, grassUVs.topRight});
+	groundMesh.addVertex({{-GROUND_SIZE,-2.f,-GROUND_SIZE}, grassUVs.topLeft});
 
 	gfx::ForwardMeshRenderer renderer(m_renderDevice);
 	renderer.create();
 
 	m_camera = new gfx::FPSCamera(window);
-	m_camera->setProjection(Matrix4x4::perspective(static_cast<float>(m_appRequirements->windowWidth) / m_appRequirements->windowHeight, 90.f, 100.f, 0.1f));
+
+	float fov = 90.f;
+	Matrix4x4 perspectiveMatrix = Matrix4x4::perspective(static_cast<float>(m_appRequirements->windowWidth) / m_appRequirements->windowHeight, fov, 100.f, 0.1f);
+	m_camera->setProjection(perspectiveMatrix);
 	renderer.setProjectionMatrix(m_camera->getProjection());
 
-	TextureHandle texture = m_renderDevice->createTexture(
+	TextureHandle blocksTexture = m_renderDevice->createTexture(
 		atlas.getPatchedTetureData(),
 		atlas.getPatchedTextureWidth(),
 		atlas.getPatchedTextureHeight()
 	);
 
-	gfx::PhongMaterial material;
-	material.texture = texture;
+	gfx::PhongMaterial dirtMaterial;
+	dirtMaterial.texture = blocksTexture;
+	cubeMesh.setMaterial(dirtMaterial);
 
-	mesh.setMaterial(material);
+	gfx::PhongMaterial grassMaterial;
+	grassMaterial.texture = blocksTexture;
+	groundMesh.setMaterial(grassMaterial);
 
 	voxels::Terrain terrain(16, [&](std::size_t x, std::size_t y, std::size_t z){
 		(void) x; (void) y; (void) z;
 		return dirtBlockType;
 	});
 
-	renderer.submitMesh(&mesh);
+	renderer.submitMesh(&cubeMesh);
+	renderer.submitMesh(&groundMesh);
 
 	std::size_t fpsLastTime = SDL_GetTicks();
 	int fpsCurrent = 0;
@@ -190,9 +246,14 @@ void Sandbox::run()
 				window->setFullscreen(fullscreen);
 			}
 
+			if(ImGui::SliderFloat("FoV", &fov, 0.f, 180.f))
+			{
+				perspectiveMatrix = Matrix4x4::perspective(static_cast<float>(m_appRequirements->windowWidth) / m_appRequirements->windowHeight, fov, 100.f, 0.1f);
+				renderer.setProjectionMatrix(perspectiveMatrix);
+			}
 
-			Vector3 v3 = m_camera->getPosition();
-			ImGui::InputVector3("Position", &v3);
+			Vector3 cameraPosition = m_camera->getPosition();
+			ImGui::Text("Camera Position %.2f, %.2f, %.2f", cameraPosition.x, cameraPosition.y, cameraPosition.z);
 
 			ImGui::End();
 

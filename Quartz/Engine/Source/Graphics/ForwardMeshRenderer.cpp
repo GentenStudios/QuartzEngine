@@ -83,12 +83,14 @@ void ForwardMeshRenderer::setProjectionMatrix(const Matrix4x4& projection)
 	m_renderDevice->setUniformValue(m_projectionMatrixUniform, &m_projectionMatrix, 1);
 }
 
-void ForwardMeshRenderer::submitMesh(Mesh* mesh)
+void ForwardMeshRenderer::submitMesh(Mesh* meshToSubmit)
 {
-	MeshRenderData renderData;
-	renderData.mesh = mesh;
+	const PhongMaterial& meshToSubmitMaterial = meshToSubmit->getMaterial();
 
-	const std::vector<Vertex3D>& vertices = mesh->getVertices();
+	MeshRenderData renderData;
+	renderData.mesh = meshToSubmit;
+
+	const std::vector<Vertex3D>& vertices = meshToSubmit->getVertices();
 	float* verticesPtr = reinterpret_cast<float*>(const_cast<Vertex3D*>(vertices.data()));
 	const std::size_t sizebytes = vertices.size() * sizeof(Vertex3D);
 
@@ -96,6 +98,25 @@ void ForwardMeshRenderer::submitMesh(Mesh* mesh)
 	m_renderDevice->setBufferData(buffer, verticesPtr, sizebytes);
 
 	renderData.vertexBuffer = buffer;
+
+	bool allocateNewTextureSlot = true;
+	for(MeshRenderData& m : m_meshes)
+	{
+		const PhongMaterial& material = m.mesh->getMaterial();
+
+		if(material.texture == meshToSubmitMaterial.texture)
+		{
+			allocateNewTextureSlot = false;
+			renderData.textureSlot = m.textureSlot;
+			break;
+		}
+	}
+
+	if(allocateNewTextureSlot)
+	{
+		renderData.textureSlot = m_textureSlotsAllocator.allocate();
+	}
+
 	m_meshes.push_back(renderData);
 }
 
@@ -104,7 +125,7 @@ void ForwardMeshRenderer::render()
 	for(MeshRenderData& mesh : m_meshes)
 	{
 		const PhongMaterial& material = mesh.mesh->getMaterial();
-		m_renderDevice->setTexture(material.texture, 0); // #todo (bwilks): CAN'T BIND ALL TO SLOT 0
+		m_renderDevice->setTexture(material.texture, mesh.textureSlot.get());
 		m_renderDevice->setVertexBufferStream(mesh.vertexBuffer, 0, sizeof(Vertex3D), 0);
 		m_renderDevice->draw(0, mesh.mesh->getVertices().size());
 	}
