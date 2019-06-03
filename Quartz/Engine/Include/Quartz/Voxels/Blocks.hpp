@@ -37,7 +37,7 @@ namespace qz
 		{
 		public:
 			typedef int SpriteID;
-			constexpr static SpriteID INVALID_SPRITE = -1;
+			const static SpriteID INVALID_SPRITE = -1;
 
 			BlockTextureAtlas(std::size_t spriteWidth, std::size_t spriteHeight);
 			BlockTextureAtlas();

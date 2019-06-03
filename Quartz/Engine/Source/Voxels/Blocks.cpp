@@ -33,7 +33,7 @@
 
 using namespace qz::voxels;
 
-constexpr BlockTextureAtlas::SpriteID BlockTextureAtlas::INVALID_SPRITE;
+const BlockTextureAtlas::SpriteID BlockTextureAtlas::INVALID_SPRITE;
 
 BlockTextureAtlas::BlockTextureAtlas(std::size_t spriteWidth, std::size_t spriteHeight)
 	: m_spriteWidth(spriteWidth), m_spriteHeight(spriteHeight)
