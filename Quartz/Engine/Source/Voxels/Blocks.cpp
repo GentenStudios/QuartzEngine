@@ -21,7 +21,6 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-
 #include <Quartz/Voxels/Blocks.hpp>
 #include <Quartz/Utilities/Logger.hpp>
 
@@ -33,6 +32,8 @@
 #include <stb_image.h>
 
 using namespace qz::voxels;
+
+constexpr BlockTextureAtlas::SpriteID BlockTextureAtlas::INVALID_SPRITE;
 
 BlockTextureAtlas::BlockTextureAtlas(std::size_t spriteWidth, std::size_t spriteHeight)
 	: m_spriteWidth(spriteWidth), m_spriteHeight(spriteHeight)
