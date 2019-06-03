@@ -24,13 +24,14 @@
 #pragma once
 
 #include <Quartz.hpp>
+#include <Quartz/Core/Events/IEventListener.hpp>
 #include <Quartz/Graphics/RHI/IRenderDevice.hpp>
 
 #include <Sandbox/DebugOverlay.hpp>
 
 namespace sandbox
 {
-	class Sandbox : public qz::Application
+	class Sandbox : public qz::Application, public qz::events::IEventListener
 	{
 	public:
 		Sandbox();
@@ -40,8 +41,7 @@ namespace sandbox
 
 		void run() override;
 
-		void onEvent(events::Event& event);
-		bool onKeyPress(events::KeyPressedEvent& event);
+		void onEvent(const qz::events::Event& e) override;
 
 	private:
 		qz::ApplicationRequirements* m_appRequirements = nullptr;

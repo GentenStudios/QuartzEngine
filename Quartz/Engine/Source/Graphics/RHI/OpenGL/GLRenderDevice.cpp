@@ -4,7 +4,6 @@
 
 #include <imgui/imgui.h>
 
-#include <cstring>
 #include <cassert>
 
 using namespace qz::gfx::rhi::gl;

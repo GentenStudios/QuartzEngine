@@ -23,11 +23,12 @@
 
 #pragma once
 
-#include <list>
-#include <unordered_map>
-
 #include <Quartz/Utilities/Singleton.hpp>
 #include <Quartz/Math/Math.hpp>
+
+#include <list>
+#include <unordered_map>
+#include <string>
 
 namespace qz
 {
@@ -37,7 +38,7 @@ namespace qz
 		{
 		public:
 			typedef int SpriteID;
-			static const SpriteID INVALID_SPRITE = -1;
+			const static SpriteID INVALID_SPRITE = -1;
 
 			BlockTextureAtlas(std::size_t spriteWidth, std::size_t spriteHeight);
 			BlockTextureAtlas();
@@ -57,7 +58,7 @@ namespace qz
 			std::size_t    getPatchedTextureWidth() const { return m_patchedTextureWidth; }
 			std::size_t    getPatchedTextureHeight() const { return m_patchedTextureHeight; }
 
-			unsigned char* getPatchedTetureData() const { return m_patchedTextureData; }
+			unsigned char* getPatchedTextureData() const { return m_patchedTextureData; }
 
 			RectAABB       getSpriteFromID(SpriteID spriteId) const;
 
@@ -91,7 +92,7 @@ namespace qz
 			} textures;
 		};
 
-		class BlockRegistery : public utils::Singleton<BlockRegistery>
+		class BlockRegistry : public utils::Singleton<BlockRegistry>
 		{
 		public:
 			BlockType* registerBlock(BlockType blockInfo);

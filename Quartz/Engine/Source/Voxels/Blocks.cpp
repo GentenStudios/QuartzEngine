@@ -21,7 +21,6 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 // DAMAGE.
 
-
 #include <Quartz/Voxels/Blocks.hpp>
 #include <Quartz/Utilities/Logger.hpp>
 
@@ -33,6 +32,8 @@
 #include <stb_image.h>
 
 using namespace qz::voxels;
+
+const BlockTextureAtlas::SpriteID BlockTextureAtlas::INVALID_SPRITE;
 
 BlockTextureAtlas::BlockTextureAtlas(std::size_t spriteWidth, std::size_t spriteHeight)
 	: m_spriteWidth(spriteWidth), m_spriteHeight(spriteHeight)
@@ -54,17 +55,17 @@ void BlockTextureAtlas::setSpriteHeight(std::size_t h)
 
 void BlockTextureAtlas::addTextureFile(const char *texturefilepath)
 {
-	m_textureIDMap.insert(std::make_pair(std::string(texturefilepath), INVALID_SPRITE));
+	m_textureIDMap.insert(std::make_pair(std::string(texturefilepath), BlockTextureAtlas::INVALID_SPRITE));
 }
 
 BlockTextureAtlas::SpriteID BlockTextureAtlas::getSpriteIDFromFilepath(const char* filepath)
 {
-	const auto equalsTest = [filepath](auto a) -> bool {
+	const auto equalsTest = [filepath](const std::unordered_map<std::string, SpriteID>::value_type a) -> bool {
 		return a.first == filepath;
 	};
 
 	if (std::find_if(m_textureIDMap.begin(), m_textureIDMap.end(), equalsTest) == m_textureIDMap.end())
-		return INVALID_SPRITE;
+		return BlockTextureAtlas::INVALID_SPRITE;
 
 	return m_textureIDMap.at(filepath);
 }
@@ -139,13 +140,13 @@ BlockTextureAtlas::~BlockTextureAtlas()
 	delete [] m_patchedTextureData;
 }
 
-BlockType* BlockRegistery::registerBlock(BlockType blockInfo)
+BlockType* BlockRegistry::registerBlock(BlockType blockInfo)
 {
 	m_blocks.push_back(blockInfo);
 	return &m_blocks.back();
 }
 
-BlockType* BlockRegistery::getBlockFromID(const char *id)
+BlockType* BlockRegistry::getBlockFromID(const char *id)
 {
 	auto it = std::find_if(m_blocks.begin(), m_blocks.end(), [id](const BlockType& block){
 		return std::strcmp(block.id, id) == 0;

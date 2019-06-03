@@ -26,8 +26,8 @@
 #include <Quartz/Core/Core.hpp>
 #include <Quartz/Math/Math.hpp>
 #include <Quartz/Core/Events/Event.hpp>
+#include <Quartz/Core/Events/IEventListener.hpp>
 #include <Quartz/Graphics/RHI/Context.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
 
 #include <vector>
 #include <functional>
@@ -121,7 +121,7 @@ namespace qz
  			 * window->registerEventListener(&functionName);
  			 * @endcode
  			 */
- 			virtual void registerEventListener(std::function<void(events::Event&)> listener) = 0;
+ 			virtual void registerEventListener(events::IEventListener* listener) = 0;
 
 			/**
 			 * @brief Shows the window to the user.
@@ -237,7 +237,7 @@ namespace qz
 			 * @param key The key that needs to be checked.
 			 * @return True if the key is being pressed, false if not.
 			 */
-			virtual bool isKeyDown(events::Key key)	        const = 0;
+			virtual bool isKeyDown(events::Keys key)	    const = 0;
 			
 			/**
 			 * @brief Calls specific functions which should be ready for the start of a frame.
@@ -256,7 +256,7 @@ namespace qz
 
 		protected:
 			 /// @brief Stores event listeners for the event dispatching system.
-			std::vector<std::function<void(events::Event&)>> m_eventListeners;
+			std::vector<events::IEventListener*> m_eventListeners;
 		};
 	}
 }
