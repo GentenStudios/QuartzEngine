@@ -92,7 +92,7 @@ namespace qz
 			} textures;
 		};
 
-		class BlockRegistery : public utils::Singleton<BlockRegistery>
+		class BlockRegistry : public utils::Singleton<BlockRegistry>
 		{
 		public:
 			BlockType* registerBlock(BlockType blockInfo);

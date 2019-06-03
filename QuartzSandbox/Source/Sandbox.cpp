@@ -79,7 +79,7 @@ void Sandbox::run()
 	window->setVSync(false);
 	window->registerEventListener(this);
 
-	voxels::BlockRegistery* blocksRegistery = voxels::BlockRegistery::get();
+	voxels::BlockRegistry* blocksRegistery = voxels::BlockRegistry::get();
 	blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR, {}});
 
 	voxels::BlockType* dirtBlockType = blocksRegistery->registerBlock({"Dirt", "core:dirt", voxels::BlockTypeCategory::SOLID, {}});

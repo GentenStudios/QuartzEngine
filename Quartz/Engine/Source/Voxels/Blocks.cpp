@@ -140,13 +140,13 @@ BlockTextureAtlas::~BlockTextureAtlas()
 	delete [] m_patchedTextureData;
 }
 
-BlockType* BlockRegistery::registerBlock(BlockType blockInfo)
+BlockType* BlockRegistry::registerBlock(BlockType blockInfo)
 {
 	m_blocks.push_back(blockInfo);
 	return &m_blocks.back();
 }
 
-BlockType* BlockRegistery::getBlockFromID(const char *id)
+BlockType* BlockRegistry::getBlockFromID(const char *id)
 {
 	auto it = std::find_if(m_blocks.begin(), m_blocks.end(), [id](const BlockType& block){
 		return std::strcmp(block.id, id) == 0;
