@@ -3,12 +3,7 @@
 
 ## Community
 Here is a link to our public discord where we generally collaborate and discuss the development of the engine.
-[Discord](https://discord.gg/XRttqAm)
-
-#### C++ Features
-
-- Prefer C++ casts over C style casts (e.g. `static_cast` or `const_cast` rather than `(<type>) ... `)
-- Try not to use features more modern than C++11, although this isn't a fast rule and is open for discussion.
+[Here is a link to our public discord server](https://discord.gg/XRttqAm)
 
 ## Dependencies
 
@@ -21,7 +16,7 @@ Here is a link to our public discord where we generally collaborate and discuss 
 ## Build Instructions
 ### Visual Studio
 
-Once cloned, enter the directory, by doing `cd quartz-engine``, and complete the following commands:
+Once cloned, enter the directory, by doing `cd quartz-engine`, and complete the following commands:
 
 <dl>
 cmake -H. -BBuild
@@ -41,6 +36,11 @@ cmake --build Build
   3. `make`¹
 
 ## Coding Standards
+
+#### C++ Features
+
+- Prefer C++ casts over C style casts (e.g. `static_cast` or `const_cast` rather than `(<type>) ... `)
+- Try not to use features more modern than C++11, although this isn't a fast rule and is open for discussion.
 
 #### Comments
 
