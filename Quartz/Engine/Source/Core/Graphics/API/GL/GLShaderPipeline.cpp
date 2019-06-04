@@ -58,21 +58,29 @@ namespace
 			ShaderStage PixelShader;
 		};
 
-		Result parse(const std::string& filepath)
+		Result parse(const std::string & dirpath, const std::string& sourcecode)
 		{
+			std::string workingDir = dirpath;
 			Result result;
-
 			Result::ShaderStage* currentStage = nullptr;
-			std::string sourcefile = qz::utils::FileIO::readAllFile(filepath);
+			// add trailing / or \ if absent
+			if (workingDir.size() != 0)
+			{
+				char end= workingDir[workingDir.size() - 1];
+				if (end != '/' && end != '\\')
+				{
+					workingDir += '/';
+				}
+			}
 
 			std::size_t index = 0;
-			while (index < sourcefile.size())
+			while (index < sourcecode.size())
 			{
-				char currentchar = sourcefile[index];
+				char currentchar = sourcecode[index];
 
 				if (currentchar == '#')
 				{
-					parseDirectiveLine(filepath, sourcefile, index, result, &currentStage);
+					parseDirectiveLine(workingDir, sourcecode, index, result, &currentStage);
 				}
 				else
 				{
@@ -87,8 +95,10 @@ namespace
 		}
 
 	private:
-		void parseDirectiveLine(const std::string& shaderfilepath, std::string& sourcefile, std::size_t& index, Result& result, Result::ShaderStage** currentStage)
+		//< Brief. Dirpath is the context in which the sourcefile is parsed. Directives will use this directory as their search path
+		void parseDirectiveLine(const std::string& dirpath, const std::string& sourcefile, std::size_t& index, Result& result, Result::ShaderStage** currentStage)
 		{
+			int linenum = 0, colnum; //character line and column number in source code
 			auto isWhitespace = [](char c) -> bool 
 			{
 				return c == ' ' || c == '\t' || c == '\0' || c == '\n';
@@ -122,6 +132,12 @@ namespace
 						inString = !inString;
 					}
 
+					colnum ++;
+					if (currentchar == '\n')
+					{
+						colnum = 0;
+						linenum++;
+					}
 					index++;
 
 					if (index >= sourcefile.length()) 
@@ -137,11 +153,7 @@ namespace
 				return std::string(start, end);
 			};
 
-			auto getDirname = [](const std::string& filename)
-			{
-				std::size_t p = filename.find_last_of("\\/");
-				return p == std::string::npos ? "" : filename.substr(0, p+1);
-			};
+
 
 			int originalIndex = index;
 
@@ -151,15 +163,36 @@ namespace
 			if (directive == "include") 
 			{
 				std::string filename = getNextToken();
+				if (filename.size() > 2)
+				{
 
-				filename.pop_back(); // remove last "
-				filename.erase(filename.begin());
-
-				std::string path = getDirname(shaderfilepath);
-				std::string filepathtolookfor = path + filename;
-
+					filename = filename.substr(1, filename.size() - 2);// remove last " and leading "
+				}
+				else
+				{
+					LFATAL("Shader source code error at %d : %d Expected filename after include!", linenum, colnum);
+					assert(false);
+				}
+				std::string filepathtolookfor = dirpath + filename;
 				std::string contentsToPaste = qz::utils::FileIO::readAllFile(filepathtolookfor);
-				(*currentStage)->source().append(contentsToPaste);
+				if (contentsToPaste.size() > 0)
+				{
+					//handles even if source if null
+					if ((*currentStage))
+					{
+						(*currentStage)->source() += contentsToPaste;
+					}
+					else
+					{
+						LFATAL("Shader source code error at %d : %d ! Expected shader directive before include!");
+						assert(false);
+					}
+				}
+				else
+				{
+					LFATAL("Shader source code error at %d : %d !filename %s Not found!", linenum, colnum, &filename[0]);
+					assert(false);
+				}
 			}
 			else if (directive == "shader")
 			{
@@ -217,14 +250,14 @@ namespace
 	};
 }
 
-void GLShaderPipeline::create(const std::string& sourcefile, const InputLayout& inputLayout)
+void GLShaderPipeline::create(const std::string & dirpath, const std::string& sourcecode, const InputLayout& inputLayout)
 {
 	m_inputLayout = inputLayout;
 
 	m_id = GLCheck(glCreateProgram());	
 	
 	ShaderParser shaderParser;
-	ShaderParser::Result result = shaderParser.parse(sourcefile);
+	ShaderParser::Result result = shaderParser.parse(dirpath, sourcecode);
 	
 	assert(result.VertexShader.exists() && result.PixelShader.exists());
 

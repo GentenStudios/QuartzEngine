@@ -41,6 +41,12 @@ namespace qz
 			 * @return A string containing the contents of the file.
 			 */
 			static std::string readAllFile(const std::string& filepath);
+			/**
+			 * @brief Returns the path to the directory containing the file
+			 * @param filepath The path to the file needing to be read.
+			 * @return directory path
+			 */
+			static std::string getDirname(const std::string& filepath);
 		};
 	}
 }

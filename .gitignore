@@ -37,7 +37,8 @@ BUILD/*
 Build/*
 **/Quartz/Documentation/html
 **/cmake-build-debug
-
+CMakeFiles/
+CMakeCache.txt
 # CLion
 **/.idea/
 

@@ -1,5 +1,6 @@
 #include <Quartz/Core/Graphics/API/GL/GLRenderDevice.hpp>
 #include <Quartz/Core/Graphics/API/InputLayout.hpp>
+#include <Quartz/Core/Utilities/FileIO.hpp>
 
 #include <imgui/imgui.h>
 #include <cstring>
@@ -57,12 +58,24 @@ VertexBufferHandle GLRenderDevice::createVertexBuffer()
 	return handle;
 }
 
-ShaderPipelineHandle GLRenderDevice::createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout)
+
+ShaderPipelineHandle GLRenderDevice::createShaderPipelineFromSource(const std::string& dirpath, const std::string& sourcecode, const InputLayout& inputLayout)
 {
 	ShaderPipelineHandle handle = m_shaderHandles.allocate();
-	m_shaders[handle.get()].create(shadersource, inputLayout);
-
+	m_shaders[handle.get()].create(dirpath, sourcecode, inputLayout);
 	return handle;
+}
+ShaderPipelineHandle GLRenderDevice::createShaderPipelineFromFile(const std::string& filepath, const InputLayout& inputLayout)
+{
+	std::string sourcecode = qz::utils::FileIO::readAllFile(filepath);
+	std::string dirname = qz::utils::FileIO::getDirname(filepath);
+	if (sourcecode.size() == 0)
+	{
+		LFATAL("Shader source code error at %d : %d filename %s Not found!", filepath[0]);
+		assert(false);
+		return ShaderPipelineHandle();
+	}
+	return this->createShaderPipelineFromSource(dirname, sourcecode, inputLayout);
 }
 
 void GLRenderDevice::setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes)
