@@ -2,8 +2,7 @@
 # QUARTZ ENGINE
 
 ## Community
-Here is a link to our public discord where we generally collaborate and discuss the development of the engine.
-[Here is a link to our public discord server](https://discord.gg/XRttqAm)
+[Here is a link to our public discord server](https://discord.gg/XRttqAm), where we collaborate and discuss the development of the engine.
 
 ## Dependencies
 
