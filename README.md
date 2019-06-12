@@ -17,22 +17,16 @@
 
 Once cloned, enter the directory, by doing `cd quartz-engine`, and complete the following commands:
 
-<dl>
+```
 cmake -H. -BBuild
 cmake --build Build
-</dl>
+```
 
 ### Linux, Mac OS X, MSYS
 
   1. `mkdir build && cd build`
   2. `cmake ..`
-  3. `make`¹
-
-### Linux cross-compile to Windows
-
-  1. `mkdir build && cd build`
-  2. `cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/cross-toolchain-mingw32.cmake ..`²
-  3. `make`¹
+  3. `make`
 
 ## Coding Standards
 
