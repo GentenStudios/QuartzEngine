@@ -30,5 +30,5 @@ cmake --build Build
 
 ## Coding Standards
 
-[Here's a link to our Coding Standards.](https://github.com/GentenStudios/Genten/wiki/Development-Home)
+[Here's a link to our Coding Standards.](https://github.com/GentenStudios/Genten/wiki/Dev:-Coding-Standards)
 You can also have a look at our [wiki](https://github.com/GentenStudios/quartz-engine/wiki) for more information..
