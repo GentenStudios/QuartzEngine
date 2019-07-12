@@ -49,7 +49,7 @@ namespace qz
 		/**
 		 * @brief The Namespace for Graphical API Abstraction code.
 		 */
-		namespace api
+		namespace rhi
 		{
 			/**
 			 * @brief The Namespace for	specifically OpenGL related code.

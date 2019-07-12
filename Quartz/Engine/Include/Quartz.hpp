@@ -24,28 +24,18 @@
 #pragma once
 
 #include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Utilities/Logger.hpp>
-#include <Quartz/Core/Utilities/FileIO.hpp>
-#include <Quartz/Core/Utilities/Config.hpp>
+#include <Quartz/Utilities/Logger.hpp>
+#include <Quartz/Utilities/FileIO.hpp>
+#include <Quartz/Utilities/Config.hpp>
 
 #include <Quartz/Core/Application.hpp>
 #include <Quartz/Core/EntryPoint.hpp>
 
 #include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/ApplicationEvent.hpp>
-#include <Quartz/Core/Events/KeyEvent.hpp>
-#include <Quartz/Core/Events/MouseEvent.hpp>
-#include <Quartz/Core/Events/EventEnums.hpp>
 
-#include <Quartz/Core/Graphics/API/Context.hpp>
-#include <Quartz/Core/Graphics/API/InputLayout.hpp>
-#include <Quartz/Core/Graphics/API/GFXTypes.hpp>
-#include <Quartz/Core/Graphics/API/IBuffer.hpp>
-#include <Quartz/Core/Graphics/API/IFramebuffer.hpp>
-#include <Quartz/Core/Graphics/API/ITexture.hpp>
-#include <Quartz/Core/Graphics/API/ITextureArray.hpp>
-#include <Quartz/Core/Graphics/API/IShaderPipeline.hpp>
-#include <Quartz/Core/Graphics/API/IStateManager.hpp>
+#include <Quartz/Graphics/RHI/Context.hpp>
+#include <Quartz/Graphics/RHI/InputLayout.hpp>
+#include <Quartz/Graphics/RHI/DataTypes.hpp>
 
-#include <Quartz/Core/Graphics/IWindow.hpp>
-#include <Quartz/Core/Graphics/Camera.hpp>
+#include <Quartz/Platform/IWindow.hpp>
+#include <Quartz/Graphics/Camera.hpp>

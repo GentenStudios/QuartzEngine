@@ -24,12 +24,15 @@
 #include <Sandbox/Sandbox.hpp>
 #include <Quartz.hpp>
 
-#include <Quartz/Core/Graphics/API/IRenderDevice.hpp>
-#include <Quartz/Core/Graphics/API/GL/GLRenderDevice.hpp>
+#include <Quartz/Graphics/RHI/IRenderDevice.hpp>
+#include <Quartz/Graphics/RHI/OpenGL/GLRenderDevice.hpp>
 #include <imgui/imgui.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include <Quartz/Graphics/ForwardMeshRenderer.hpp>
+#include <Quartz/Voxels/Blocks.hpp>
+#include <Quartz/Graphics/Camera.hpp>
+#include <Quartz/Graphics/ImGuiExtensions.hpp>
+#include <Quartz/Voxels/Terrain.hpp>
 
 using namespace sandbox;
 using namespace qz;
@@ -48,148 +51,259 @@ Sandbox::Sandbox()
 static void showHintUi()
 {
 	const float DISTANCE = 10.0f;
-	static int corner = 1;
+	const int corner = 1;
 	static bool p_open = true;
 
 	ImGuiIO& io = ImGui::GetIO();
-	if (corner != -1)
+
+	ImVec2 window_pos = ImVec2((corner & 1) ? io.DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? io.DisplaySize.y - DISTANCE : DISTANCE);
+	ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
+	ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+
+	ImGui::SetNextWindowBgAlpha(0.3f);
+
+	if (ImGui::Begin("Debug Overlay Hint", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
 	{
-		ImVec2 window_pos = ImVec2((corner & 1) ? io.DisplaySize.x - DISTANCE : DISTANCE, (corner & 2) ? io.DisplaySize.y - DISTANCE : DISTANCE);
-		ImVec2 window_pos_pivot = ImVec2((corner & 1) ? 1.0f : 0.0f, (corner & 2) ? 1.0f : 0.0f);
-		ImGui::SetNextWindowPos(window_pos, ImGuiCond_Always, window_pos_pivot);
+		ImGui::Text("Press K to toggle developer tools!");
 	}
-	ImGui::SetNextWindowBgAlpha(0.3f); // Transparent background
-	if (ImGui::Begin("Example: Simple overlay", &p_open, (corner != -1 ? ImGuiWindowFlags_NoMove : 0) | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
-	{
-		ImGui::Text("Press K to toggle developer mode!");
-	}
+
 	ImGui::End();
-}
-
-void Sandbox::showDebugUi()
-{
-		static bool shaderDebugUi = true, imguiDemo = false;
-	if (m_debugMode)
-	{
-
-		ImGui::BeginMainMenuBar();
-		if (ImGui::MenuItem("Shader Debug UI"))
-		{
-			shaderDebugUi = !shaderDebugUi;
-		}
-		if (ImGui::MenuItem("ImGui Demo"))
-		{
-			imguiDemo = !imguiDemo;
-		}
-
-		ImGui::EndMainMenuBar();
-
-		if (imguiDemo)
-		{
-			ImGui::ShowDemoWindow();
-		}
-
-		if (shaderDebugUi)
-		{
-			m_renderDevice->showShaderDebugUI();
-		}
-	}
 }
 
 void Sandbox::run()
 {
-	using namespace gfx::api;
-	using namespace gfx::api::gl;
+	using namespace gfx::rhi::gl;
+	using namespace gfx::rhi;
 
 	gfx::IWindow* window = m_appData->window;
-	window->registerEventListener([&](qz::events::Event& e) { onEvent(e); });
+	window->setVSync(false);
+	window->registerEventListener(this);
+
+	voxels::BlockRegistry* blocksRegistery = voxels::BlockRegistry::get();
+	blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR, {}});
+
+	voxels::BlockType* dirtBlockType = blocksRegistery->registerBlock({"Dirt", "core:dirt", voxels::BlockTypeCategory::SOLID, {}});
+	voxels::BlockType* grassBlockType = blocksRegistery->registerBlock({"Grass", "core:grass", voxels::BlockTypeCategory::SOLID, {}});
 
 	m_renderDevice = new GLRenderDevice();
 	m_renderDevice->create();
-	
-	float bottomTriangleVertices[] = {
-		 0.5f, -0.5f, 0.0f, 1.f, 0.f,
-		-0.5f, -0.5f, 0.0f, 0.f, 0.0f,
-		 0.0f,  0.0f, 0.0f, 0.5f, 0.5f
-	};
+	// #todo find some way of returning the sprite ID on creation (instead of having to do a lookup with the filepath again)
+	voxels::BlockTextureAtlas atlas(16, 16);
+	atlas.addTextureFile("assets/textures/grass_top.png");
+	atlas.addTextureFile("assets/textures/dirt.png");
+	atlas.addTextureFile("assets/textures/grass_side.png");
+	atlas.patch();
 
-	float topTriangleVertices[] = {
-		 0.5f, 0.5f, 0.0f, 0.f, 1.f,
-		-0.5f, 0.5f, 0.0f, 1.f, 1.f,
-		 0.0f, 0.0f, 0.0f, 0.5f, 0.5f
-	};
+	dirtBlockType->textures.setAll(atlas.getSpriteIDFromFilepath("assets/textures/dirt.png"));
+	grassBlockType->textures.setAll(atlas.getSpriteIDFromFilepath("assets/textures/grass_top.png"));
 
-	InputLayout layout = {
-		{ VertexElementType::Vec3f, 0, 0, 0,                 false },
-		{ VertexElementType::Vec2f, 0, 1, 3 * sizeof(float), false }
-	};
+	RectAABB dirtUVs = atlas.getSpriteFromID(dirtBlockType->textures.front);
+	RectAABB grassUVs = atlas.getSpriteFromID(grassBlockType->textures.front);
 
-	VertexBufferHandle bufferTriangleBuffer = m_renderDevice->createVertexBuffer();
-	m_renderDevice->setBufferData(bufferTriangleBuffer, bottomTriangleVertices, sizeof(bottomTriangleVertices));
+	gfx::Mesh cubeMesh(6 * 6);
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
-	VertexBufferHandle topTriangleBuffer = m_renderDevice->createVertexBuffer();
-	m_renderDevice->setBufferData(topTriangleBuffer, topTriangleVertices, sizeof(topTriangleVertices));
-	const std::string testShaderSource = 
-	R"(#shader frag
-#include "test.frag"
-#shader vertex
-#include "test.vert"
-	)";
-	//ShaderPipelineHandle shader = m_renderDevice->createShaderPipelineFromSource("assets/shaders/tests/", testShaderSource, layout);
-	ShaderPipelineHandle shader = m_renderDevice->createShaderPipelineFromFile("assets/shaders/tests/test.shader", layout);
-	UniformHandle colorHandle = m_renderDevice->createUniform(shader, "u_color", UniformType::COLOR3);
-	UniformHandle samplerUniform = m_renderDevice->createUniform(shader, "u_sampler", UniformType::SAMPLER);
-	int id = 0;
-	m_renderDevice->setUniformValue(samplerUniform, &id, 1);
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f}});
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
-	int width = -1, height = -1, nbChannels = -1;
-	unsigned char* image = stbi_load("assets/textures/dirt.png", &width, &height, &nbChannels, 0);
-	TextureHandle texture = m_renderDevice->createTexture(image, width, height);
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f},dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f},dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
-	float color[3] = { 1.0f, 1.0f, 1.0f };
-	m_renderDevice->setUniformValue(colorHandle, color, 1);
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f},  dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f},dirtUVs.topRight, {1.f,1.f,1.f} });    ;
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f},dirtUVs.topRight, {1.f,1.f,1.f} });    ;
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f},  dirtUVs.bottomLeft, {1.f,1.f,1.f} });
 
-	m_renderDevice->setShaderPipeline(shader);
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, -1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, -1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, -1.0f}, dirtUVs.topLeft, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{1.f, 1.f, 1.0f}, dirtUVs.topRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, 1.0f}, dirtUVs.bottomRight, {1.f,1.f,1.f} });
+	cubeMesh.addVertex({{-1.f, 1.f, -1.0f}, dirtUVs.bottomLeft, {1.f,1.f,1.f} });
+
+
+	const float GROUND_SIZE = 10.f;
+	const float COLOR = 150.f / 255.f;
+
+	gfx::Mesh groundMesh(6);
+	groundMesh.addVertex({{-GROUND_SIZE, -2.f, -GROUND_SIZE}, grassUVs.topLeft, {COLOR,COLOR,COLOR}});
+	groundMesh.addVertex({{-GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomLeft, {COLOR,COLOR,COLOR}});
+	groundMesh.addVertex({{GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomRight, {COLOR,COLOR,COLOR}});
+
+	groundMesh.addVertex({{GROUND_SIZE, -2.f, GROUND_SIZE}, grassUVs.bottomRight, {COLOR,COLOR,COLOR}});
+	groundMesh.addVertex({{GROUND_SIZE, -2.f, -GROUND_SIZE}, grassUVs.topRight, {COLOR,COLOR,COLOR}});
+	groundMesh.addVertex({{-GROUND_SIZE,-2.f,-GROUND_SIZE}, grassUVs.topLeft, {COLOR,COLOR,COLOR}});
+
+	gfx::ForwardMeshRenderer renderer(m_renderDevice);
+	renderer.create();
+
+	m_camera = new gfx::FPSCamera(window);
+
+	float fov = 90.f;
+	Matrix4x4 perspectiveMatrix = Matrix4x4::perspective(static_cast<float>(m_appRequirements->windowWidth) / m_appRequirements->windowHeight, fov, 100.f, 0.1f);
+	m_camera->setProjection(perspectiveMatrix);
+	renderer.setProjectionMatrix(m_camera->getProjection());
+
+	TextureHandle blocksTexture = m_renderDevice->createTexture(
+		atlas.getPatchedTextureData(),
+		atlas.getPatchedTextureWidth(),
+		atlas.getPatchedTextureHeight()
+	);
+
+	gfx::PhongMaterial dirtMaterial;
+	dirtMaterial.texture = blocksTexture;
+	cubeMesh.setMaterial(dirtMaterial);
+
+/*	gfx::PhongMaterial grassMaterial;
+	grassMaterial.texture = blocksTexture;
+	groundMesh.setMaterial(grassMaterial);*/
+
+
+	voxels::Terrain terrain(16, [&](std::size_t x, std::size_t y, std::size_t z){
+		(void) x; (void) y; (void) z;
+		return dirtBlockType;
+	});
+
+	renderer.submitMesh(&cubeMesh);
+	renderer.submitMesh(&groundMesh);
+
+	std::size_t fpsLastTime = SDL_GetTicks();
+	int fpsCurrent = 0;
+	int fpsFrames = 0;
+
+	float last = static_cast<float>(SDL_GetTicks());
+	int t = 0;
+	int dtSampleRate = 60;
+	bool pauseDt = false;
+	bool vsync = false;
+	bool fullscreen = false;
 	while (window->isRunning())
 	{
+		fpsFrames++;
+		if (fpsLastTime < SDL_GetTicks() - 1000)
+		{
+			fpsLastTime = SDL_GetTicks();
+			fpsCurrent = fpsFrames;
+			fpsFrames = 0;
+		}
+
+		const float now = static_cast<float>(SDL_GetTicks());
+		const float dt = now - last;
+		last = now;
+
 		window->startFrame();
 		
+		if(m_debugMode)
+		{
+			m_debug.show();
+
+			static bool wireframe = false;
+
+			ImGui::Begin("Stats");
+			ImGui::Checkbox("Wireframe", &wireframe);
+			ImGui::Text("FPS: %i frame/s", fpsCurrent);
+			ImGui::Text("Frame Time: %.2f ms/frame", static_cast<double>(dt));
+			ImGui::Text("Vertices: %i", renderer.countTotalNumVertices());
+			ImGui::SliderInt("Frame Time Sample Rate", &dtSampleRate, 1, 60);
+			ImGui::Checkbox("Pause Frame Time", &pauseDt);
+
+			if(t % dtSampleRate == 0 && !pauseDt)
+			{
+				ImGui::PlotVariable("Frame Time: ", dt);
+			} else
+			{
+				ImGui::PlotVariable("Frame Time: ", FLT_MAX);
+			}
+
+			if(ImGui::Checkbox("VSync", &vsync))
+			{
+				window->setVSync(vsync);
+			}
+
+			if(ImGui::Checkbox("Fullscreen", &fullscreen))
+			{
+				window->setFullscreen(fullscreen);
+			}
+
+			if(ImGui::SliderFloat("FoV", &fov, 0.f, 180.f))
+			{
+				perspectiveMatrix = Matrix4x4::perspective(static_cast<float>(m_appRequirements->windowWidth) / m_appRequirements->windowHeight, fov, 100.f, 0.1f);
+				renderer.setProjectionMatrix(perspectiveMatrix);
+			}
+
+			Vector3 cameraPosition = m_camera->getPosition();
+			ImGui::Text("Camera Position %.2f, %.2f, %.2f", cameraPosition.x, cameraPosition.y, cameraPosition.z);
+
+			ImGui::End();
+
+			m_renderDevice->showShaderDebugUI();
+
+			if(wireframe)
+			{
+				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			}
+		}
+
+		terrain.tick(m_camera->getPosition());
+
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
+		m_camera->tick(dt);
+
+		renderer.setViewMatrix(m_camera->calculateViewMatrix());
+
 		showHintUi();
-		showDebugUi();
 
-		m_renderDevice->setTexture(texture, 0);
-
-		m_renderDevice->setVertexBufferStream(bufferTriangleBuffer, 0, 5 * sizeof(float), 0);
-		m_renderDevice->draw(0, 3);
-
-		m_renderDevice->setVertexBufferStream(topTriangleBuffer, 0, 5 * sizeof(float), 0);
-		m_renderDevice->draw(0, 3);
+		renderer.render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		window->endFrame();
+
+		if(t > 3600)
+		{
+			t = 0;
+		}
+
+		t++;
 	}
+
+	renderer.destroy();
 }
 
-void Sandbox::onEvent(events::Event& event)
+void Sandbox::onEvent(const events::Event& e)
 {
-	auto test = events::EventDispatcher(event);
-	test.dispatch<events::KeyPressedEvent>(std::bind(&Sandbox::onKeyPress, this, std::placeholders::_1));
-	test.dispatch<events::WindowResizeEvent>(std::bind(&gfx::FPSCamera::onWindowResize, m_camera, std::placeholders::_1));
-}
-
-bool Sandbox::onKeyPress(events::KeyPressedEvent& event)
-{
-	if (event.getKeyCode() == events::Key::KEY_ESCAPE)
+	if (e.type == events::EventType::KEY_PRESSED)
 	{
-		m_camera->enable(!m_camera->isEnabled());
+		if (e.keyboard.key == events::Keys::KEY_ESCAPE)
+			m_camera->enable(!m_camera->isEnabled());
+		else if (e.keyboard.key == events::Keys::KEY_K)
+			m_debugMode = !m_debugMode;
 	}
-	else if (event.getKeyCode() == events::Key::KEY_K)
+	else if (e.type == events::EventType::WINDOW_RESIZED)
 	{
-		m_debugMode = !m_debugMode;
+		m_camera->resizeProjection(e);
 	}
-
-	return true;
 }
-

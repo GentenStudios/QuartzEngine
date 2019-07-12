@@ -34,6 +34,10 @@
 #include <queue>
 #include <deque>
 
+#include <cstring>
+#include <cassert>
+#include <cmath>
+
 #include <glad/glad.h>
 
 #define SDL_MAIN_HANDLED
