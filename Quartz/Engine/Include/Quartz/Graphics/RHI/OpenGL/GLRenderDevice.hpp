@@ -92,10 +92,7 @@ namespace qz
 					void                         setVertexBufferStream(VertexBufferHandle buffer, int streamId, int stride, int offset) override;
 
 					void                         setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes) override;
-					ShaderPipelineHandle         createShaderPipeline(const std::string& shadersource, const InputLayout& inputLayout) override;
 					void                         setShaderPipeline(ShaderPipelineHandle shader) override;
-
-					virtual void                 setBufferData(VertexBufferHandle buffer, float *data, std::size_t sizebytes);
 
 					virtual ShaderPipelineHandle createShaderPipelineFromSource(const std::string& dirpath, const std::string& sourcecode, const InputLayout& inputLayout);
 					virtual ShaderPipelineHandle createShaderPipelineFromFile(const std::string& filepath, const InputLayout& inputLayout);

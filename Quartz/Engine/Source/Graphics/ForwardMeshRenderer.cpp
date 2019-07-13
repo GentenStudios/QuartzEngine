@@ -47,7 +47,7 @@ void ForwardMeshRenderer::create()
 		{ rhi::VertexElementType::Vec3f, 0, 2, 5 * sizeof(float), false }
 	};
 
-	m_shader = m_renderDevice->createShaderPipeline(SHADER_FILEPATH, layout);
+	m_shader = m_renderDevice->createShaderPipelineFromFile(SHADER_FILEPATH, layout);
 	m_renderDevice->setShaderPipeline(m_shader);
 
 	m_viewMatrixUniform = m_renderDevice->createUniform(m_shader, "u_view", rhi::UniformType::MAT4);
