@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <Quartz/Core/Events/Keys.hpp>
+#include <Quartz/Events/Keys.hpp>
 
 #include <SDL.h>
 

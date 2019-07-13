@@ -23,7 +23,7 @@
 
 #include <cassert>
 
-#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/QuartzPCH.hpp>
 #include <Quartz/Graphics/RHI/OpenGL/GLShaderPipeline.hpp>
 #include <Quartz/Utilities/Logger.hpp>
 #include <Quartz/Utilities/FileIO.hpp>

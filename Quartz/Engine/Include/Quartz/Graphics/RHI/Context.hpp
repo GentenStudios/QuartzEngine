@@ -23,8 +23,6 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-
 namespace qz
 {
 	namespace gfx

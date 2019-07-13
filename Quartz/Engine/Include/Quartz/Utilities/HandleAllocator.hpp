@@ -34,14 +34,13 @@ namespace qz
 		class HandleBase
 		{
 		public:
-			static const std::uint16_t INVALID_HANDLE_VALUE = 0xFFFF;
+			static constexpr std::uint16_t QZ_INVALID_HANDLE = 0xFFFF;
 
-		public:
 			void          set(std::uint16_t value) { m_handle = value; }
 			std::uint16_t get() const { return m_handle; }
 
 			HandleBase()
-				: m_handle(INVALID_HANDLE_VALUE)
+				: m_handle(QZ_INVALID_HANDLE)
 			{ }
 
 		private:
@@ -69,15 +68,15 @@ namespace qz
 
 			bool isValid(THandleType handle)
 			{
-				if (handle.get() == HandleBase::INVALID_HANDLE_VALUE)
+				if (handle.get() == HandleBase::QZ_INVALID_HANDLE)
 					return false;
 
-				return m_handles[handle.get()].get() != HandleBase::INVALID_HANDLE_VALUE;
+				return m_handles[handle.get()].get() != HandleBase::QZ_INVALID_HANDLE;
 			}
 
 			void free(THandleType handle)
 			{
-				m_handles[handle.get()].set(HandleBase::INVALID_HANDLE_VALUE);
+				m_handles[handle.get()].set(HandleBase::QZ_INVALID_HANDLE);
 			}
 
 			std::size_t size() { return m_size; }

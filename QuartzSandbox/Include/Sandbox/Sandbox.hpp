@@ -24,40 +24,29 @@
 #pragma once
 
 #include <Quartz.hpp>
-#include <Quartz/Core/Events/IEventListener.hpp>
+#include <Quartz/Events/IEventListener.hpp>
 #include <Quartz/Graphics/RHI/IRenderDevice.hpp>
 
 #include <Sandbox/DebugOverlay.hpp>
 
 namespace sandbox
 {
-	class Sandbox : public qz::Application, public qz::events::IEventListener
+	class Sandbox : public qz::events::IEventListener
 	{
 	public:
 		Sandbox();
 
-		const ApplicationRequirements* getAppRequirements() override { return m_appRequirements; }
-		void setAppData(qz::ApplicationData* appData) override { m_appData = appData; }
-
-		void run() override;
+		void run();
 
 		void onEvent(const qz::events::Event& e) override;
 
 	private:
-		qz::ApplicationRequirements* m_appRequirements = nullptr;
-		qz::ApplicationData*         m_appData         = nullptr;
-
 		qz::gfx::FPSCamera*          m_camera          = nullptr;
 		qz::gfx::rhi::IRenderDevice* m_renderDevice    = nullptr;
+		qz::gfx::IWindow*            m_window          = nullptr;
 
 		bool                         m_debugMode       = false;
 
 		sandbox::DebugOverlay        m_debug;
 	};
 }
-
-inline qz::Application* qz::createApplication()
-{
-	return new sandbox::Sandbox();
-}
-

@@ -23,15 +23,12 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core.hpp>
 #include <Quartz/Utilities/Logger.hpp>
 #include <Quartz/Utilities/FileIO.hpp>
 #include <Quartz/Utilities/Config.hpp>
 
-#include <Quartz/Core/Application.hpp>
-#include <Quartz/Core/EntryPoint.hpp>
-
-#include <Quartz/Core/Events/Event.hpp>
+#include <Quartz/Events/Event.hpp>
 
 #include <Quartz/Graphics/RHI/Context.hpp>
 #include <Quartz/Graphics/RHI/InputLayout.hpp>

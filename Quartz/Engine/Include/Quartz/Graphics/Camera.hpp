@@ -23,7 +23,6 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
 #include <Quartz/Math/Math.hpp>
 #include <Quartz/Platform/IWindow.hpp>
 

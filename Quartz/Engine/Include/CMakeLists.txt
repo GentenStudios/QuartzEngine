@@ -1,7 +1,7 @@
 add_subdirectory(Quartz)
 
-set(quartzHeaders
-	${coreHeaderSystem}
+set(engineHeaders
+	${engineHeaders}
 
 	${CMAKE_CURRENT_LIST_DIR}/Quartz.hpp
 

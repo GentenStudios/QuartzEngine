@@ -23,8 +23,6 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-
 #include <thread>
 #include <mutex>
 #include <condition_variable>

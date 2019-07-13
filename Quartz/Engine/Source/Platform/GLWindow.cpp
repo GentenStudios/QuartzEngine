@@ -21,7 +21,7 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH 
 // DAMAGE.
 
-#include <Quartz/Core/QuartzPCH.hpp>
+#include <Quartz/QuartzPCH.hpp>
 #include <Quartz/Platform/GLWindow.hpp>
 #include <Quartz/Graphics/RHI/OpenGL/GLCommon.hpp>
 #include <Quartz/Utilities/Logger.hpp>
@@ -55,6 +55,7 @@ void GLWindow::dispatchToListeners(events::Event& event)
 GLWindow::GLWindow(const std::string& title, int width, int height) : m_vsync(false), m_fullscreen(false)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_SetMainReady();
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);

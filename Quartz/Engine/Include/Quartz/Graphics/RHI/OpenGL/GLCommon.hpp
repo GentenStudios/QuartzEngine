@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
+#include <Quartz/Core.hpp>
 #include <Quartz/Utilities/Logger.hpp>
 #include <Quartz/Graphics/RHI/DataTypes.hpp>
 

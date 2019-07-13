@@ -23,8 +23,7 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Core/Events/Keys.hpp>
+#include <Quartz/Events/Keys.hpp>
 
 #include <string>
 #include <unordered_map>

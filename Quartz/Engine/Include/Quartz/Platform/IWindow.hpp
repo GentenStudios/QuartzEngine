@@ -23,10 +23,9 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
 #include <Quartz/Math/Math.hpp>
-#include <Quartz/Core/Events/Event.hpp>
-#include <Quartz/Core/Events/IEventListener.hpp>
+#include <Quartz/Events/Event.hpp>
+#include <Quartz/Events/IEventListener.hpp>
 #include <Quartz/Graphics/RHI/Context.hpp>
 
 #include <vector>

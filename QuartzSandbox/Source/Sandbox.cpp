@@ -39,13 +39,9 @@ using namespace qz;
 
 Sandbox::Sandbox()
 {
-	m_appRequirements = new ApplicationRequirements();
-	m_appRequirements->windowTitle = "Quartz Sandbox";
-	m_appRequirements->windowWidth = 1280;
-	m_appRequirements->windowHeight = 720;
+	m_window = gfx::IWindow::create("Quartz Sandbox", 1280, 720, 0, gfx::RenderingAPI::OPENGL);
 
-	m_appRequirements->logFilePath = "Sandbox.log";
-	m_appRequirements->logVerbosity = utils::LogVerbosity::DEBUG;
+	utils::Logger::instance()->initialise("Sandbox.log", utils::LogVerbosity::DEBUG);
 }
 
 static void showHintUi()
@@ -75,9 +71,8 @@ void Sandbox::run()
 	using namespace gfx::rhi::gl;
 	using namespace gfx::rhi;
 
-	gfx::IWindow* window = m_appData->window;
-	window->setVSync(false);
-	window->registerEventListener(this);
+	m_window->setVSync(false);
+	m_window->registerEventListener(this);
 
 	voxels::BlockRegistry* blocksRegistery = voxels::BlockRegistry::get();
 	blocksRegistery->registerBlock({"Air", "core:air", voxels::BlockTypeCategory::AIR, {}});
@@ -159,10 +154,10 @@ void Sandbox::run()
 	gfx::ForwardMeshRenderer renderer(m_renderDevice);
 	renderer.create();
 
-	m_camera = new gfx::FPSCamera(window);
+	m_camera = new gfx::FPSCamera(m_window);
 
 	float fov = 90.f;
-	Matrix4x4 perspectiveMatrix = Matrix4x4::perspective(static_cast<float>(m_appRequirements->windowWidth) / m_appRequirements->windowHeight, fov, 100.f, 0.1f);
+	Matrix4x4 perspectiveMatrix = Matrix4x4::perspective(static_cast<float>(1280) / 720, fov, 100.f, 0.1f);
 	m_camera->setProjection(perspectiveMatrix);
 	renderer.setProjectionMatrix(m_camera->getProjection());
 
@@ -199,7 +194,7 @@ void Sandbox::run()
 	bool pauseDt = false;
 	bool vsync = false;
 	bool fullscreen = false;
-	while (window->isRunning())
+	while (m_window->isRunning())
 	{
 		fpsFrames++;
 		if (fpsLastTime < SDL_GetTicks() - 1000)
@@ -213,7 +208,7 @@ void Sandbox::run()
 		const float dt = now - last;
 		last = now;
 
-		window->startFrame();
+		m_window->startFrame();
 		
 		if(m_debugMode)
 		{
@@ -239,17 +234,17 @@ void Sandbox::run()
 
 			if(ImGui::Checkbox("VSync", &vsync))
 			{
-				window->setVSync(vsync);
+				m_window->setVSync(vsync);
 			}
 
 			if(ImGui::Checkbox("Fullscreen", &fullscreen))
 			{
-				window->setFullscreen(fullscreen);
+				m_window->setFullscreen(fullscreen);
 			}
 
 			if(ImGui::SliderFloat("FoV", &fov, 0.f, 180.f))
 			{
-				perspectiveMatrix = Matrix4x4::perspective(static_cast<float>(m_appRequirements->windowWidth) / m_appRequirements->windowHeight, fov, 100.f, 0.1f);
+				perspectiveMatrix = Matrix4x4::perspective(static_cast<float>(1280) / 720, fov, 100.f, 0.1f);
 				renderer.setProjectionMatrix(perspectiveMatrix);
 			}
 
@@ -280,7 +275,7 @@ void Sandbox::run()
 		renderer.render();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-		window->endFrame();
+		m_window->endFrame();
 
 		if(t > 3600)
 		{
@@ -306,4 +301,13 @@ void Sandbox::onEvent(const events::Event& e)
 	{
 		m_camera->resizeProjection(e);
 	}
+}
+
+#undef main
+int main(int argc, char** argv)
+{
+	Sandbox sandbox;
+	sandbox.run();
+
+	return 0;
 }

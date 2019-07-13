@@ -23,42 +23,19 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-#include <Quartz/Platform/IWindow.hpp>
-#include <Quartz/Utilities/Logger.hpp>
+#include <Quartz/Events/Event.hpp>
 
 namespace qz
 {
-	struct ApplicationRequirements
+	namespace events
 	{
-		std::string windowTitle;
-		int windowWidth = 1280;
-		int windowHeight = 720;
+		class IEventListener
+		{
+		public:
+			IEventListener() = default;
+			virtual ~IEventListener() = default;
 
-		std::string logFilePath = "Quartz.log";
-		utils::LogVerbosity logVerbosity = utils::LogVerbosity::INFO;
-	};
-
-	struct ApplicationData
-	{
-		gfx::IWindow* window = nullptr;
-
-		ApplicationData() = default;
-		~ApplicationData() = default;
-	};
-
-	class Application
-	{
-	public:
-		Application() = default;
-		virtual ~Application() = default;
-
-		virtual const ApplicationRequirements* getAppRequirements() = 0;
-		virtual void setAppData(ApplicationData* appData) = 0;
-
-		virtual void run() = 0;
-	};
-
-	Application* createApplication();
+			virtual void onEvent(const Event& e) = 0;
+		};
+	}
 }
-

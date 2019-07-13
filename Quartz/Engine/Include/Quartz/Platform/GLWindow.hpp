@@ -23,9 +23,8 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
 #include <Quartz/Math/Math.hpp>
-#include <Quartz/Core/Events/Event.hpp>
+#include <Quartz/Events/Event.hpp>
 #include <Quartz/Platform/IWindow.hpp>
 
 #include <functional>

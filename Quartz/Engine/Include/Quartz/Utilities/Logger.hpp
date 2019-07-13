@@ -23,8 +23,6 @@
 
 #pragma once
 
-#include <Quartz/Core/Core.hpp>
-
 #include <string>
 #include <sstream>
 #include <fstream>

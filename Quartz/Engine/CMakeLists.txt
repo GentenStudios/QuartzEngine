@@ -7,8 +7,8 @@ include(CMakePCH)
 add_subdirectory(Include)
 add_subdirectory(Source)
 
-add_library(${PROJECT_NAME} STATIC ${quartzSources} ${quartzHeaders})
-#add_precompiled_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/Include/Quartz/Core/QuartzPCH.hpp ${CMAKE_CURRENT_LIST_DIR}/Source/Core/QuartzPCH.cpp)
+add_library(${PROJECT_NAME} STATIC ${engineSources} ${engineHeaders})
+add_precompiled_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/Include/Quartz/QuartzPCH.hpp ${CMAKE_CURRENT_LIST_DIR}/Source/QuartzPCH.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL2-static SDL2main glad luamod imgui)
 
@@ -34,7 +34,7 @@ if(UNIX AND NOT APPLE)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES} ${X11_Xxf86vm_LIB} GL)
 endif()
 
-foreach(FILE ${quartzSources}) 
+foreach(FILE ${engineSources}) 
     get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
 
@@ -45,7 +45,7 @@ foreach(FILE ${quartzSources})
     source_group("${GROUP}" FILES "${FILE}")
 endforeach()
 
-foreach(FILE ${quartzHeaders})
+foreach(FILE ${engineHeaders})
     get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
 
