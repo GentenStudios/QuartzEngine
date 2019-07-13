@@ -19,7 +19,7 @@ add_subdirectory(luamod)
 add_subdirectory(imgui)
 
 # stop SDL trying to control our main function.
-add_compile_definitions(-DSDL_MAIN_HANDLED)
+add_definitions(-DSDL_MAIN_HANDLED)
 
 set_target_properties(buildvm liblua luajit minilua PROPERTIES FOLDER quartz-dependencies/lua/luajit)
 
