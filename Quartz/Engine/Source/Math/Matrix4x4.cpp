@@ -143,7 +143,7 @@ void Matrix4x4::operator*= (const Matrix4x4& other)
 	{
 		for (int y = 0; y < 4; ++y)
 		{
-			float j = 0.f;
+			float xy = 0.f;
 
 			for (int k = 0; k < 4; ++k)
 			{
