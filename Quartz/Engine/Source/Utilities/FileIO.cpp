@@ -31,22 +31,22 @@
 
 using namespace qz::utils;
 
-std::string FileIO::readAllFile (const std::string& filepath)
+std::string FileIO::readAllFile(const std::string& filepath)
 {
 	std::fstream fileHandle;
-	fileHandle.open (filepath.c_str ());
+	fileHandle.open(filepath.c_str());
 
 	std::string fileString;
-	fileString.assign ((std::istreambuf_iterator<char> (fileHandle)),
-	                   (std::istreambuf_iterator<char> ()));
+	fileString.assign((std::istreambuf_iterator<char>(fileHandle)),
+	                  (std::istreambuf_iterator<char>()));
 
-	fileHandle.close ();
+	fileHandle.close();
 
 	return fileString;
 }
 
-std::string FileIO::getDirname (const std::string& filename)
+std::string FileIO::getDirname(const std::string& filename)
 {
-	std::size_t p = filename.find_last_of ("\\/");
-	return p == std::string::npos ? "" : filename.substr (0, p + 1);
+	std::size_t p = filename.find_last_of("\\/");
+	return p == std::string::npos ? "" : filename.substr(0, p + 1);
 };

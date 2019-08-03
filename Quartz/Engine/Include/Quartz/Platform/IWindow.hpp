@@ -93,12 +93,11 @@ namespace qz
 			 * @return IWindow* The respective object for the class depicted by
 			 * the WindowingAPI parameter.
 			 */
-			static IWindow* create (const std::string& title,
-			                        unsigned int width, unsigned int height,
-			                        std::size_t  flags,
-			                        RenderingAPI renderingAPI);
+			static IWindow* create(const std::string& title, unsigned int width,
+			                       unsigned int height, std::size_t flags,
+			                       RenderingAPI renderingAPI);
 
-			virtual ~IWindow () = default;
+			virtual ~IWindow() = default;
 
 			/**
 			 * @brief Polls events that occur during the game loop.
@@ -110,7 +109,7 @@ namespace qz
 			 * the end user sees.
 			 *
 			 */
-			virtual void pollEvents () = 0;
+			virtual void pollEvents() = 0;
 
 			/**
 			 * @brief Swaps the back and front buffer.
@@ -120,7 +119,7 @@ namespace qz
 			 * which is then cleared, and turned into a back buffer, that isn't
 			 * exactly what it does, just a simple way to explain it, for now.
 			 */
-			virtual void swapBuffers () const = 0;
+			virtual void swapBuffers() const = 0;
 
 			/**
 			 * @brief Registers/Adds an event listener to the event system of
@@ -154,7 +153,7 @@ namespace qz
 			 * window->registerEventListener(&functionName);
 			 * @endcode
 			 */
-			virtual void registerEventListener (
+			virtual void registerEventListener(
 			    events::IEventListener* listener) = 0;
 
 			/**
@@ -163,7 +162,7 @@ namespace qz
 			 * This function will usually just bring the window to the front of
 			 * the Window Manager's window stack to show itself to the user.
 			 */
-			virtual void show () const = 0;
+			virtual void show() const = 0;
 
 			/**
 			 * @brief Hides the window from the user.
@@ -171,17 +170,17 @@ namespace qz
 			 * This function will usually just hide the window through using a
 			 * function in an OS' Window Manager.
 			 */
-			virtual void hide () const = 0;
+			virtual void hide() const = 0;
 
 			/**
 			 * @brief Maximizes the window.
 			 */
-			virtual void maximize () const = 0;
+			virtual void maximize() const = 0;
 
 			/**
 			 * @brief Minimizes the window.
 			 */
-			virtual void minimize () const = 0;
+			virtual void minimize() const = 0;
 
 			/**
 			 * @brief Focuses the window.
@@ -190,57 +189,57 @@ namespace qz
 			 * will also take control of the input mechanisms of a computer
 			 * (such as a keyboard/mouse).
 			 */
-			virtual void focus () const = 0;
+			virtual void focus() const = 0;
 
 			/**
 			 * @brief Closes the window
 			 */
-			virtual void close () = 0;
+			virtual void close() = 0;
 
 			/**
 			 * @brief Gets the status of the window, and whether it is still
 			 * running or not.
 			 * @return True if the window is still running, false if not.
 			 */
-			virtual bool isRunning () const = 0;
+			virtual bool isRunning() const = 0;
 
 			/**
 			 * @brief Resizes the window to the size requested.
 			 * @param size The new size of window wanted.
 			 */
-			virtual void resize (Vector2 size) = 0;
+			virtual void resize(Vector2 size) = 0;
 
 			/**
 			 * @brief Sets whether the window should be resizable or not.
 			 * @param enabled True if the window should be resizable, false if
 			 * not.
 			 */
-			virtual void setResizable (bool enabled) = 0;
+			virtual void setResizable(bool enabled) = 0;
 
 			/**
 			 * @brief Gets the size of the window.
 			 * @return The size of the window, as a Vector2
 			 */
-			virtual Vector2 getSize () const = 0;
+			virtual Vector2 getSize() const = 0;
 
 			/**
 			 * @brief Sets whether the window should VSync for frame timing or
 			 * not.
 			 * @param enabled True if the window should use VSync, false if not.
 			 */
-			virtual void setVSync (bool enabled) = 0;
+			virtual void setVSync(bool enabled) = 0;
 
 			/**
 			 * @brief Checks whether the window is using VSync or not.
 			 * @return
 			 */
-			virtual bool isVSync () const = 0;
+			virtual bool isVSync() const = 0;
 
 			/**
 			 * @brief Sets the title of the window.
 			 * @param title The new title of the window.
 			 */
-			virtual void setTitle (const std::string& title) const = 0;
+			virtual void setTitle(const std::string& title) const = 0;
 
 			/**
 			 * @brief Sets the window to fullscreen, or gets the window out of
@@ -248,39 +247,39 @@ namespace qz
 			 * @param enabled True if the window should be made fullscreen,
 			 * false if it should be taken to the previous window size.
 			 */
-			virtual void setFullscreen (bool enabled) = 0;
+			virtual void setFullscreen(bool enabled) = 0;
 
 			/**
 			 * @brief Checks if the window is fullscreen or not.
 			 * @return True if the window is fullscreen, false if not.
 			 */
-			virtual bool isFullscreen () const = 0;
+			virtual bool isFullscreen() const = 0;
 
 			/**
 			 * @brief Sets the state of the cursor.
 			 * @param state The new desired state of the cursor
 			 */
-			virtual void setCursorState (CursorState state) = 0;
+			virtual void setCursorState(CursorState state) = 0;
 
 			/**
 			 * @brief Sets the position of the cursor.
 			 * @param pos The new position of the cursor, in the form of a
 			 * Vector2
 			 */
-			virtual void setCursorPosition (Vector2 pos) = 0;
+			virtual void setCursorPosition(Vector2 pos) = 0;
 
 			/**
 			 * @brief Gets the position of the cursor.
 			 * @return The cursor of the cursor, in the form of a Vector2
 			 */
-			virtual Vector2 getCursorPosition () const = 0;
+			virtual Vector2 getCursorPosition() const = 0;
 
 			/**
 			 * @brief Checks if whether a certain key is down or not.
 			 * @param key The key that needs to be checked.
 			 * @return True if the key is being pressed, false if not.
 			 */
-			virtual bool isKeyDown (events::Keys key) const = 0;
+			virtual bool isKeyDown(events::Keys key) const = 0;
 
 			/**
 			 * @brief Calls specific functions which should be ready for the
@@ -289,7 +288,7 @@ namespace qz
 			 * This currently only initializes a new frame for the GUI, however
 			 * will do much more at a later date.
 			 */
-			virtual void startFrame () = 0;
+			virtual void startFrame() = 0;
 
 			/**
 			 * @brief Calls specific functions which should be done at the end
@@ -300,7 +299,7 @@ namespace qz
 			 * future date, but it is VERY important that this function is
 			 * called at the end of EACH iteration of the main game loop.
 			 */
-			virtual void endFrame () = 0;
+			virtual void endFrame() = 0;
 
 		  protected:
 			/// @brief Stores event listeners for the event dispatching system.

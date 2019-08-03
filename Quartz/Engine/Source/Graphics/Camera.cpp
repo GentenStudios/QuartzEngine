@@ -38,105 +38,104 @@ const float SENSITIVITY = 0.00005f;
 using namespace qz::gfx;
 using namespace qz;
 
-FPSCamera::FPSCamera (IWindow* window) : m_window (window)
+FPSCamera::FPSCamera(IWindow* window) : m_window(window)
 {
-	window->setCursorState (CursorState::DISABLED);
+	window->setCursorState(CursorState::DISABLED);
 
-	const Vector2 windowSize = window->getSize ();
-	m_projection = Matrix4x4::perspective (windowSize.x / windowSize.y, 45.f,
-	                                       1000.f, 0.1f);
+	const Vector2 windowSize = window->getSize();
+	m_projection =
+	    Matrix4x4::perspective(windowSize.x / windowSize.y, 45.f, 1000.f, 0.1f);
 
-	m_windowCentre = {std::floor (windowSize.x / 2.f),
-	                  std::floor (windowSize.y / 2.f)};
+	m_windowCentre = {std::floor(windowSize.x / 2.f),
+	                  std::floor(windowSize.y / 2.f)};
 }
 
-qz::Vector3 FPSCamera::getPosition () const { return m_position; }
+qz::Vector3 FPSCamera::getPosition() const { return m_position; }
 
-qz::Vector3 FPSCamera::getDirection () const { return m_direction; }
+qz::Vector3 FPSCamera::getDirection() const { return m_direction; }
 
-void FPSCamera::resizeProjection (events::Event e)
+void FPSCamera::resizeProjection(events::Event e)
 {
-	m_projection = Matrix4x4::perspective (
-	    static_cast<float> (e.size.width) / static_cast<float> (e.size.height),
-	    45.f, 1000.f, 0.1f);
-	m_windowCentre = {
-	    static_cast<float> (static_cast<int> (e.size.width / 2)),
-	    static_cast<float> (static_cast<int> (e.size.height / 2))};
+	m_projection   = Matrix4x4::perspective(static_cast<float>(e.size.width) /
+                                              static_cast<float>(e.size.height),
+                                          45.f, 1000.f, 0.1f);
+	m_windowCentre = {static_cast<float>(static_cast<int>(e.size.width / 2)),
+	                  static_cast<float>(static_cast<int>(e.size.height / 2))};
 }
 
-void FPSCamera::setProjection (const Matrix4x4& projection)
+void FPSCamera::setProjection(const Matrix4x4& projection)
 {
 	m_projection = projection;
 }
 
-qz::Matrix4x4 FPSCamera::getProjection () const { return m_projection; }
+qz::Matrix4x4 FPSCamera::getProjection() const { return m_projection; }
 
-qz::Matrix4x4 FPSCamera::calculateViewMatrix () const
+qz::Matrix4x4 FPSCamera::calculateViewMatrix() const
 {
 	const Vector3 centre = m_position + m_direction;
-	return Matrix4x4::lookAt (m_position, centre, m_up);
+	return Matrix4x4::lookAt(m_position, centre, m_up);
 }
 
-void FPSCamera::enable (bool enabled)
+void FPSCamera::enable(bool enabled)
 {
 	if (enabled)
-		m_window->setCursorState (gfx::CursorState::DISABLED);
+		m_window->setCursorState(gfx::CursorState::DISABLED);
 	else
-		m_window->setCursorState (gfx::CursorState::NORMAL);
+		m_window->setCursorState(gfx::CursorState::NORMAL);
 
 	m_enabled = enabled;
 }
 
-void FPSCamera::tick (float dt)
+void FPSCamera::tick(float dt)
 {
 	if (!m_enabled)
 		return;
 
-	const Vector2 mousePos = m_window->getCursorPosition ();
+	const Vector2 mousePos = m_window->getCursorPosition();
 
-	m_window->setCursorPosition (m_windowCentre);
+	m_window->setCursorPosition(m_windowCentre);
 
 	const float sensitivity = SENSITIVITY;
 
 	m_rotation.x += sensitivity * dt * (m_windowCentre.x - mousePos.x);
 	m_rotation.y += sensitivity * dt * (m_windowCentre.y - mousePos.y);
 
-	m_rotation.y = math::clamp (m_rotation.y, -HALF_PI, HALF_PI);
+	m_rotation.y = math::clamp(m_rotation.y, -HALF_PI, HALF_PI);
 
-	m_direction.x = std::cos (m_rotation.y) * std::sin (m_rotation.x);
-	m_direction.y = std::sin (m_rotation.y);
-	m_direction.z = std::cos (m_rotation.y) * std::cos (m_rotation.x);
+	m_direction.x = std::cos(m_rotation.y) * std::sin(m_rotation.x);
+	m_direction.y = std::sin(m_rotation.y);
+	m_direction.z = std::cos(m_rotation.y) * std::cos(m_rotation.x);
 
-	const Vector3 right = {std::sin (m_rotation.x - HALF_PI), 0.f,
-	                       std::cos (m_rotation.x - HALF_PI)};
+	const Vector3 right = {std::sin(m_rotation.x - HALF_PI), 0.f,
+	                       std::cos(m_rotation.x - HALF_PI)};
 
-	m_up = Vector3::cross (right, m_direction);
+	m_up = Vector3::cross(right, m_direction);
 
 	const float moveSpeed = MOVE_SPEED;
 
-	if (m_window->isKeyDown (events::Keys::KEY_W))
+	if (m_window->isKeyDown(events::Keys::KEY_W))
 	{
 		m_position += m_direction * dt * moveSpeed;
 	}
-	else if (m_window->isKeyDown (events::Keys::KEY_S))
+	else if (m_window->isKeyDown(events::Keys::KEY_S))
 	{
 		m_position -= m_direction * dt * moveSpeed;
 	}
 
-	if (m_window->isKeyDown (events::Keys::KEY_A))
+	if (m_window->isKeyDown(events::Keys::KEY_A))
 	{
 		m_position -= right * dt * moveSpeed;
 	}
-	else if (m_window->isKeyDown (events::Keys::KEY_D))
+	else if (m_window->isKeyDown(events::Keys::KEY_D))
 	{
 		m_position += right * dt * moveSpeed;
 	}
 
-	if (m_window->isKeyDown (events::Keys::KEY_SPACE))
+	if (m_window->isKeyDown(events::Keys::KEY_SPACE))
 	{
 		m_position.y += dt * moveSpeed;
 	}
-	else if (m_window->isKeyDown (events::Keys::KEY_LEFT_SHIFT))
+	else if (m_window->isKeyDown(events::Keys::KEY_LEFT_SHIFT))
 	{
 		m_position.y -= dt * moveSpeed;
 	}

@@ -32,13 +32,13 @@
 
 namespace ImGui
 {
-	bool InputMatrix4x4 (const char* label, qz::Matrix4x4* mat4);
-	bool InputVector3 (const char* label, qz::Vector3* vec3);
-	bool InputVector2 (const char* label, qz::Vector2* vec2);
+	bool InputMatrix4x4(const char* label, qz::Matrix4x4* mat4);
+	bool InputVector3(const char* label, qz::Vector3* vec3);
+	bool InputVector2(const char* label, qz::Vector2* vec2);
 
-	bool SliderMatrix4x4 (const char* label, qz::Matrix4x4* mat4);
-	bool SliderVector3 (const char* label, qz::Vector3* vec3);
-	bool SliderVector2 (const char* label, qz::Vector2* vec2);
+	bool SliderMatrix4x4(const char* label, qz::Matrix4x4* mat4);
+	bool SliderVector3(const char* label, qz::Vector3* vec3);
+	bool SliderVector2(const char* label, qz::Vector2* vec2);
 
-	void PlotVariable (const char* label, float value);
+	void PlotVariable(const char* label, float value);
 } // namespace ImGui

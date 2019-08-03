@@ -30,11 +30,11 @@
 
 using namespace qz::voxels;
 
-void Chunk::fill (const std::size_t                             chunkSize,
-                  const std::function<BlockType*(std::size_t, std::size_t,
-                                                 std::size_t)>& generator)
+void Chunk::fill(const std::size_t                             chunkSize,
+                 const std::function<BlockType*(std::size_t, std::size_t,
+                                                std::size_t)>& generator)
 {
-	m_voxelData.resize (chunkSize * chunkSize * chunkSize);
+	m_voxelData.resize(chunkSize * chunkSize * chunkSize);
 
 	for (std::size_t x = 0; x < chunkSize; ++x)
 	{
@@ -43,16 +43,16 @@ void Chunk::fill (const std::size_t                             chunkSize,
 			for (std::size_t z = 0; z < chunkSize; ++z)
 			{
 				const std::size_t idx = x + chunkSize * (y + chunkSize * z);
-				m_voxelData[idx]      = generator (x, y, z);
+				m_voxelData[idx]      = generator(x, y, z);
 			}
 		}
 	}
 }
 
-Terrain::Terrain (std::size_t                     chunkSize,
-                  const Chunk::GeneratorFunction& generator)
-    : m_chunkSize (chunkSize), m_generatorFunction (generator)
+Terrain::Terrain(std::size_t                     chunkSize,
+                 const Chunk::GeneratorFunction& generator)
+    : m_chunkSize(chunkSize), m_generatorFunction(generator)
 {
 }
 
-void Terrain::tick (qz::Vector3 streamCenter) {}
+void Terrain::tick(qz::Vector3 streamCenter) {}

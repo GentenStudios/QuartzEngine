@@ -46,6 +46,8 @@ namespace qz
 
 	typedef math::RectAABB RectAABB;
 
-	template <typename T> using TVector2 = math::TemplateVector2<T>;
-	template <typename T> using TVector3 = math::TemplateVector3<T>;
+	template <typename T>
+	using TVector2 = math::TemplateVector2<T>;
+	template <typename T>
+	using TVector3 = math::TemplateVector3<T>;
 } // namespace qz

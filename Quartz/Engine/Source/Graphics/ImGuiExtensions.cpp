@@ -31,43 +31,43 @@
 #include <map>
 #include <vector>
 
-bool ImGui::InputMatrix4x4 (const char* label, qz::Matrix4x4* mat4)
+bool ImGui::InputMatrix4x4(const char* label, qz::Matrix4x4* mat4)
 {
-	ImGui::Text ("%s", label);
+	ImGui::Text("%s", label);
 
-	ImGui::PushID (label);
+	ImGui::PushID(label);
 
-	ImGui::PushID (0);
-	bool row0 = ImGui::InputFloat4 ("", mat4->elements);
-	ImGui::PopID ();
+	ImGui::PushID(0);
+	bool row0 = ImGui::InputFloat4("", mat4->elements);
+	ImGui::PopID();
 
-	ImGui::PushID (1);
-	bool row1 = ImGui::InputFloat4 ("", mat4->elements + 4);
-	ImGui::PopID ();
+	ImGui::PushID(1);
+	bool row1 = ImGui::InputFloat4("", mat4->elements + 4);
+	ImGui::PopID();
 
-	ImGui::PushID (2);
-	bool row2 = ImGui::InputFloat4 ("", mat4->elements + 8);
-	ImGui::PopID ();
+	ImGui::PushID(2);
+	bool row2 = ImGui::InputFloat4("", mat4->elements + 8);
+	ImGui::PopID();
 
-	ImGui::PushID (3);
-	bool row3 = ImGui::InputFloat4 ("", mat4->elements + 12);
-	ImGui::PopID ();
+	ImGui::PushID(3);
+	bool row3 = ImGui::InputFloat4("", mat4->elements + 12);
+	ImGui::PopID();
 
-	ImGui::PopID ();
+	ImGui::PopID();
 
 	return row0 || row1 || row2 || row3;
 }
 
-bool ImGui::InputVector3 (const char* label, qz::Vector3* vec3)
+bool ImGui::InputVector3(const char* label, qz::Vector3* vec3)
 {
 	float* dat = &(vec3->x);
-	return ImGui::InputFloat3 (label, dat);
+	return ImGui::InputFloat3(label, dat);
 }
 
-bool ImGui::InputVector2 (const char* label, qz::Vector2* vec2)
+bool ImGui::InputVector2(const char* label, qz::Vector2* vec2)
 {
 	float* dat = &(vec2->x);
-	return ImGui::InputFloat2 (label, dat);
+	return ImGui::InputFloat2(label, dat);
 }
 
 struct PlotVarData
@@ -77,24 +77,24 @@ struct PlotVarData
 	int                dataInsertIdx;
 	int                lastFrame;
 
-	PlotVarData () : id (0), dataInsertIdx (0), lastFrame (-1) {}
+	PlotVarData() : id(0), dataInsertIdx(0), lastFrame(-1) {}
 };
 
 static std::map<ImGuiID, PlotVarData> g_PlotVarsMap;
 
-void ImGui::PlotVariable (const char* label, float value)
+void ImGui::PlotVariable(const char* label, float value)
 {
 	const int bufferSize = 120;
 
-	ImGui::PushID (label);
-	const ImGuiID id = ImGui::GetID ("");
+	ImGui::PushID(label);
+	const ImGuiID id = ImGui::GetID("");
 
 	PlotVarData& pvd = g_PlotVarsMap[id];
 
-	if (pvd.data.capacity () != bufferSize)
+	if (pvd.data.capacity() != bufferSize)
 	{
-		pvd.data.resize (bufferSize);
-		memset (&pvd.data[0], 0, sizeof (float) * bufferSize);
+		pvd.data.resize(bufferSize);
+		memset(&pvd.data[0], 0, sizeof(float) * bufferSize);
 		pvd.dataInsertIdx = 0;
 		pvd.lastFrame     = -1;
 	}
@@ -107,15 +107,15 @@ void ImGui::PlotVariable (const char* label, float value)
 	if (value != FLT_MAX)
 		pvd.data[pvd.dataInsertIdx++] = value;
 
-	const int currentFrame = ImGui::GetFrameCount ();
+	const int currentFrame = ImGui::GetFrameCount();
 	if (pvd.lastFrame != currentFrame)
 	{
-		ImGui::PlotLines ("##plot", &pvd.data[0], bufferSize, pvd.dataInsertIdx,
-		                  nullptr, FLT_MIN, FLT_MAX, ImVec2 (0, 40));
-		ImGui::SameLine ();
-		ImGui::Text ("%s\n%-3.4f", label, pvd.data[displayIndex]);
+		ImGui::PlotLines("##plot", &pvd.data[0], bufferSize, pvd.dataInsertIdx,
+		                 nullptr, FLT_MIN, FLT_MAX, ImVec2(0, 40));
+		ImGui::SameLine();
+		ImGui::Text("%s\n%-3.4f", label, pvd.data[displayIndex]);
 		pvd.lastFrame = currentFrame;
 	}
 
-	ImGui::PopID ();
+	ImGui::PopID();
 }

@@ -41,10 +41,10 @@ namespace qz
 		  public:
 			static constexpr std::uint16_t QZ_INVALID_HANDLE = 0xFFFF;
 
-			void          set (std::uint16_t value) { m_handle = value; }
-			std::uint16_t get () const { return m_handle; }
+			void          set(std::uint16_t value) { m_handle = value; }
+			std::uint16_t get() const { return m_handle; }
 
-			HandleBase () : m_handle (QZ_INVALID_HANDLE) {}
+			HandleBase() : m_handle(QZ_INVALID_HANDLE) {}
 
 		  private:
 			std::uint16_t m_handle;
@@ -54,37 +54,37 @@ namespace qz
 		class HandleAllocator
 		{
 		  public:
-			HandleAllocator () : m_size (0) {}
+			HandleAllocator() : m_size(0) {}
 
-			THandleType allocate ()
+			THandleType allocate()
 			{
-				assert (m_size < TMaxNumHandles);
+				assert(m_size < TMaxNumHandles);
 
 				THandleType& handle = m_handles[m_size];
-				handle.set (m_size);
+				handle.set(m_size);
 
 				m_size++;
 
 				return handle;
 			}
 
-			bool isValid (THandleType handle)
+			bool isValid(THandleType handle)
 			{
-				if (handle.get () == HandleBase::QZ_INVALID_HANDLE)
+				if (handle.get() == HandleBase::QZ_INVALID_HANDLE)
 					return false;
 
-				return m_handles[handle.get ()].get () !=
+				return m_handles[handle.get()].get() !=
 				       HandleBase::QZ_INVALID_HANDLE;
 			}
 
-			void free (THandleType handle)
+			void free(THandleType handle)
 			{
-				m_handles[handle.get ()].set (HandleBase::QZ_INVALID_HANDLE);
+				m_handles[handle.get()].set(HandleBase::QZ_INVALID_HANDLE);
 			}
 
-			std::size_t size () { return m_size; }
+			std::size_t size() { return m_size; }
 
-			void reset () { m_size = 0; }
+			void reset() { m_size = 0; }
 
 		  private:
 			THandleType   m_handles[TMaxNumHandles];

@@ -35,10 +35,10 @@
 #include <unordered_map>
 
 #define QZ_REGISTER_CONFIG(filenameStr) \
-	qz::utils::ConfigManager::get ()->registerConfig (filenameStr)
+	qz::utils::ConfigManager::get()->registerConfig(filenameStr)
 
 #define QZ_GET_CONFIG(filenameStr) \
-	qz::utils::ConfigManager::get ()->getConfigFile (filenameStr)
+	qz::utils::ConfigManager::get()->getConfigFile(filenameStr)
 
 namespace qz
 {
@@ -57,12 +57,12 @@ namespace qz
 			 * @param filepath The filepath of the .ini file (should include
 			 * .ini extension).
 			 */
-			ConfigFile (const std::string& filepath) : m_filepath (filepath) {}
+			ConfigFile(const std::string& filepath) : m_filepath(filepath) {}
 
 			/*
 			 * @brief Default stub constructor. Does nothing.
 			 */
-			ConfigFile () {}
+			ConfigFile() {}
 
 			/**
 			 * @brief Load's a integer value from the config .ini file, using
@@ -75,8 +75,8 @@ namespace qz
 			 * @return If the key/value/section all exist then return the loaded
 			 * value from the ini file, otherwise return the default.
 			 */
-			int getInteger (const std::string& section, const std::string& key,
-			                int defaultReturn) const;
+			int getInteger(const std::string& section, const std::string& key,
+			               int defaultReturn) const;
 
 			/**
 			 * @brief Load's a single character value from the config .ini file,
@@ -89,8 +89,8 @@ namespace qz
 			 * @return If the key/value/section all exist then return the loaded
 			 * value from the ini file, otherwise return the default.
 			 */
-			char getChar (const std::string& section, const std::string& key,
-			              char defaultReturn) const;
+			char getChar(const std::string& section, const std::string& key,
+			             char defaultReturn) const;
 
 			/**
 			 * @brief Load's a boolean value from the config .ini file, using
@@ -103,8 +103,8 @@ namespace qz
 			 * @return If the key/value/section all exist then return the loaded
 			 * value from the ini file, otherwise return the default.
 			 */
-			bool getBool (const std::string& section, const std::string& key,
-			              bool defaultReturn) const;
+			bool getBool(const std::string& section, const std::string& key,
+			             bool defaultReturn) const;
 
 			/**
 			 * @brief Load's a 32 bit real value (float) from the config .ini
@@ -117,8 +117,8 @@ namespace qz
 			 * @return If the key/value/section all exist then return the loaded
 			 * value from the ini file, otherwise return the default.
 			 */
-			float getFloat (const std::string& section, const std::string& key,
-			                float defaultReturn) const;
+			float getFloat(const std::string& section, const std::string& key,
+			               float defaultReturn) const;
 
 			/**
 			 * @brief Load's a event::Key enumumator value from the config .ini
@@ -134,9 +134,9 @@ namespace qz
 			 * @return If the key/value/section all exist then return the loaded
 			 * value from the ini file, otherwise return the default.
 			 */
-			events::Keys getScancode (const std::string& section,
-			                          const std::string& key,
-			                          events::Keys       defaultReturn) const;
+			events::Keys getScancode(const std::string& section,
+			                         const std::string& key,
+			                         events::Keys       defaultReturn) const;
 
 			/**
 			 * @brief Return's if the .ini file for this config file exists on
@@ -145,14 +145,14 @@ namespace qz
 			 * just use defaults.
 			 * @return Return's true if the file exists on disk, false if not.
 			 */
-			bool existsOnDisk () const;
+			bool existsOnDisk() const;
 
 			/**
 			 * @brief Load's the .ini file using the filename that has been set
 			 * in the constructor. Can be used multiple times (to hot reload
 			 * config files, for example).
 			 */
-			void reload ();
+			void reload();
 
 		  private:
 			INIReader   m_inifile;
@@ -166,7 +166,7 @@ namespace qz
 			 * @brief Pointer to the static instance of ConfigManager
 			 * @return The ConfigManager singleton.
 			 */
-			static ConfigManager* get ();
+			static ConfigManager* get();
 
 			/**
 			 * @brief Registers a config file with the manager. Should be called
@@ -177,7 +177,7 @@ namespace qz
 			 * @return A pointer to the newly registered config file of the
 			 * specified name.
 			 */
-			ConfigFile* registerConfig (const std::string& name);
+			ConfigFile* registerConfig(const std::string& name);
 
 			/**
 			 * @brief Fetches a pointer to the registered config file. Default
@@ -190,7 +190,7 @@ namespace qz
 			 * Default config object if the file has not been registered yet
 			 * (aka always returns default).
 			 */
-			ConfigFile* getConfigFile (const std::string& name);
+			ConfigFile* getConfigFile(const std::string& name);
 
 		  private:
 			std::unordered_map<std::string, ConfigFile> m_configfiles;

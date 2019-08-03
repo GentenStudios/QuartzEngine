@@ -39,10 +39,10 @@ namespace sandbox
 	class Sandbox : public qz::events::IEventListener
 	{
 	  public:
-		Sandbox ();
+		Sandbox();
 
-		void run ();
-		void onEvent (const qz::events::Event& e) override;
+		void run();
+		void onEvent(const qz::events::Event& e) override;
 
 	  private:
 		qz::gfx::FPSCamera*          m_camera       = nullptr;

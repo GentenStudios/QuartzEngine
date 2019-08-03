@@ -36,6 +36,6 @@ namespace sandbox
 	{
 	  private:
 	  public:
-		void show ();
+		void show();
 	};
 } // namespace sandbox

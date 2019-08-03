@@ -37,10 +37,10 @@ namespace qz
 		class IEventListener
 		{
 		  public:
-			IEventListener ()          = default;
-			virtual ~IEventListener () = default;
+			IEventListener()          = default;
+			virtual ~IEventListener() = default;
 
-			virtual void onEvent (const Event& e) = 0;
+			virtual void onEvent(const Event& e) = 0;
 		};
 	} // namespace events
 } // namespace qz

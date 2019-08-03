@@ -45,36 +45,36 @@ namespace qz
 			typedef int           SpriteID;
 			const static SpriteID INVALID_SPRITE = -1;
 
-			BlockTextureAtlas (std::size_t spriteWidth,
-			                   std::size_t spriteHeight);
-			BlockTextureAtlas ();
-			~BlockTextureAtlas ();
+			BlockTextureAtlas(std::size_t spriteWidth,
+			                  std::size_t spriteHeight);
+			BlockTextureAtlas();
+			~BlockTextureAtlas();
 
-			void addTextureFile (const char* texturefilepath);
-			void patch ();
-			void setSpriteWidth (std::size_t w);
-			void setSpriteHeight (std::size_t h);
+			void addTextureFile(const char* texturefilepath);
+			void patch();
+			void setSpriteWidth(std::size_t w);
+			void setSpriteHeight(std::size_t h);
 
-			std::size_t getSpriteWidth () const { return m_spriteWidth; }
-			std::size_t getSpriteHeight () const { return m_spriteHeight; }
-			SpriteID    getSpriteIDFromFilepath (const char* filepath);
+			std::size_t getSpriteWidth() const { return m_spriteWidth; }
+			std::size_t getSpriteHeight() const { return m_spriteHeight; }
+			SpriteID    getSpriteIDFromFilepath(const char* filepath);
 
-			std::size_t getPatchedTextureWidth () const
+			std::size_t getPatchedTextureWidth() const
 			{
 				return m_patchedTextureWidth;
 			}
 
-			std::size_t getPatchedTextureHeight () const
+			std::size_t getPatchedTextureHeight() const
 			{
 				return m_patchedTextureHeight;
 			}
 
-			unsigned char* getPatchedTextureData () const
+			unsigned char* getPatchedTextureData() const
 			{
 				return m_patchedTextureData;
 			}
 
-			RectAABB getSpriteFromID (SpriteID spriteId) const;
+			RectAABB getSpriteFromID(SpriteID spriteId) const;
 
 		  private:
 			std::unordered_map<std::string, SpriteID> m_textureIDMap;
@@ -103,7 +103,7 @@ namespace qz
 				BlockTextureAtlas::SpriteID top, bottom, left, right, front,
 				    back;
 
-				void setAll (BlockTextureAtlas::SpriteID sprite)
+				void setAll(BlockTextureAtlas::SpriteID sprite)
 				{
 					top = bottom = left = right = front = back = sprite;
 				}
@@ -113,8 +113,8 @@ namespace qz
 		class BlockRegistry : public utils::Singleton<BlockRegistry>
 		{
 		  public:
-			BlockType* registerBlock (BlockType blockInfo);
-			BlockType* getBlockFromID (const char* id);
+			BlockType* registerBlock(BlockType blockInfo);
+			BlockType* getBlockFromID(const char* id);
 
 		  private:
 			// This is a std::list as we don't want to invalidate any pointers

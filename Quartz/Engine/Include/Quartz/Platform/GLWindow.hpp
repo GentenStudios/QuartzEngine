@@ -59,42 +59,42 @@ namespace qz
 				class GLWindow : public gfx::IWindow
 				{
 				  public:
-					GLWindow (const std::string& title, int width, int height);
-					~GLWindow ();
+					GLWindow(const std::string& title, int width, int height);
+					~GLWindow();
 
-					void pollEvents () override;
-					void swapBuffers () const override;
+					void pollEvents() override;
+					void swapBuffers() const override;
 
-					void registerEventListener (
+					void registerEventListener(
 					    events::IEventListener* listener) override;
 
-					void show () const override;
-					void hide () const override;
-					void maximize () const override;
-					void minimize () const override;
-					void focus () const override;
-					void close () override;
-					bool isRunning () const override;
+					void show() const override;
+					void hide() const override;
+					void maximize() const override;
+					void minimize() const override;
+					void focus() const override;
+					void close() override;
+					bool isRunning() const override;
 
-					void    resize (Vector2 size) override;
-					Vector2 getSize () const override;
-					void    setResizable (bool enabled) override;
+					void    resize(Vector2 size) override;
+					Vector2 getSize() const override;
+					void    setResizable(bool enabled) override;
 
-					void setVSync (bool enabled) override;
-					bool isVSync () const override;
+					void setVSync(bool enabled) override;
+					bool isVSync() const override;
 
-					void setTitle (const std::string& title) const override;
+					void setTitle(const std::string& title) const override;
 
-					void setFullscreen (bool enabled) override;
-					bool isFullscreen () const override;
+					void setFullscreen(bool enabled) override;
+					bool isFullscreen() const override;
 
-					void    setCursorState (gfx::CursorState state) override;
-					void    setCursorPosition (Vector2 pos) override;
-					Vector2 getCursorPosition () const override;
-					bool    isKeyDown (events::Keys key) const override;
+					void    setCursorState(gfx::CursorState state) override;
+					void    setCursorPosition(Vector2 pos) override;
+					Vector2 getCursorPosition() const override;
+					bool    isKeyDown(events::Keys key) const override;
 
-					void startFrame () override;
-					void endFrame () override;
+					void startFrame() override;
+					void endFrame() override;
 
 				  private:
 					SDL_Window*   m_window;
@@ -109,7 +109,7 @@ namespace qz
 					Vector2 m_cachedScreenSize;
 
 				  private:
-					void dispatchToListeners (events::Event& event);
+					void dispatchToListeners(events::Event& event);
 				};
 			} // namespace gl
 		}     // namespace rhi

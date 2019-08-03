@@ -32,49 +32,49 @@
 #include <sstream>
 #include <string>
 
-#define LOGGER_INIT(x, y) qz::utils::Logger::instance ()->initialise (x, y);
-#define LOGGER_DESTROY() qz::utils::Logger::instance ()->destroy ();
+#define LOGGER_INIT(x, y) qz::utils::Logger::instance()->initialise(x, y);
+#define LOGGER_DESTROY() qz::utils::Logger::instance()->destroy();
 
 #ifdef QZ_PLATFORM_WINDOWS
-#define LFATAL(message, ...)                                              \
-	qz::utils::Logger::instance ()->log (qz::utils::LogVerbosity::FATAL,  \
-	                                     __FILE__, __LINE__, "", message, \
-	                                     __VA_ARGS__)
-#define LINFO(message, ...)                                               \
-	qz::utils::Logger::instance ()->log (qz::utils::LogVerbosity::INFO,   \
-	                                     __FILE__, __LINE__, "", message, \
-	                                     __VA_ARGS__)
+#define LFATAL(message, ...)                                            \
+	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL,  \
+	                                   __FILE__, __LINE__, "", message, \
+	                                   __VA_ARGS__)
+#define LINFO(message, ...)                                             \
+	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO,   \
+	                                   __FILE__, __LINE__, "", message, \
+	                                   __VA_ARGS__)
 #ifdef QZ_DEBUG
-#define LDEBUG(message, ...)                                              \
-	qz::utils::Logger::instance ()->log (qz::utils::LogVerbosity::DEBUG,  \
-	                                     __FILE__, __LINE__, "", message, \
-	                                     __VA_ARGS__)
-#define LWARNING(message, ...)                                             \
-	qz::utils::Logger::instance ()->log (qz::utils::LogVerbosity::WARNING, \
-	                                     __FILE__, __LINE__, "", message,  \
-	                                     __VA_ARGS__)
+#define LDEBUG(message, ...)                                            \
+	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::DEBUG,  \
+	                                   __FILE__, __LINE__, "", message, \
+	                                   __VA_ARGS__)
+#define LWARNING(message, ...)                                           \
+	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::WARNING, \
+	                                   __FILE__, __LINE__, "", message,  \
+	                                   __VA_ARGS__)
 #else
 #define LDEBUG(message, ...)
 #define LWARNING(message, ...)
 #endif
 #else
-#define LFATAL(message, ...)                                              \
-	qz::utils::Logger::instance ()->log (qz::utils::LogVerbosity::FATAL,  \
-	                                     __FILE__, __LINE__, "", message, \
-	                                     ##__VA_ARGS__)
-#define LINFO(message, ...)                                               \
-	qz::utils::Logger::instance ()->log (qz::utils::LogVerbosity::INFO,   \
-	                                     __FILE__, __LINE__, "", message, \
-	                                     ##__VA_ARGS__)
+#define LFATAL(message, ...)                                            \
+	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL,  \
+	                                   __FILE__, __LINE__, "", message, \
+	                                   ##__VA_ARGS__)
+#define LINFO(message, ...)                                             \
+	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO,   \
+	                                   __FILE__, __LINE__, "", message, \
+	                                   ##__VA_ARGS__)
 #ifdef QZ_DEBUG
-#define LDEBUG(message, ...)                                              \
-	qz::utils::Logger::instance ()->log (qz::utils::LogVerbosity::DEBUG,  \
-	                                     __FILE__, __LINE__, "", message, \
-	                                     ##__VA_ARGS__)
-#define LWARNING(message, ...)                                             \
-	qz::utils::Logger::instance ()->log (qz::utils::LogVerbosity::WARNING, \
-	                                     __FILE__, __LINE__, "", message,  \
-	                                     ##__VA_ARGS__)
+#define LDEBUG(message, ...)                                            \
+	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::DEBUG,  \
+	                                   __FILE__, __LINE__, "", message, \
+	                                   ##__VA_ARGS__)
+#define LWARNING(message, ...)                                           \
+	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::WARNING, \
+	                                   __FILE__, __LINE__, "", message,  \
+	                                   ##__VA_ARGS__)
 #else
 #define LDEBUG(message, ...)
 #define LWARNING(message, ...)
@@ -119,15 +119,14 @@ namespace qz
 			 * @brief Returns the singleton instance of the logger.
 			 * @return A pointer to the logger object.
 			 */
-			static Logger* instance ();
+			static Logger* instance();
 
 			/**
 			 * @brief Initializes the logger.
 			 * @param logFile The file that should be logged to
 			 * @param verbLevel The level of verbosity that should be logged.
 			 */
-			void initialise (const std::string& logFile,
-			                 LogVerbosity       verbLevel);
+			void initialise(const std::string& logFile, LogVerbosity verbLevel);
 
 			/**
 			 * @brief Destroys the logger.
@@ -135,7 +134,7 @@ namespace qz
 			 * Closes the file handle, and puts an extra newline character so
 			 * the next terminal prompt doesn't extend on the last logged line.
 			 */
-			void destroy ();
+			void destroy();
 
 			/**
 			 * @brief Logs the actual message.
@@ -150,19 +149,19 @@ namespace qz
 			 * @param args The rest of the arguments to be parsed and logged.
 			 */
 			template <typename... Args>
-			void log (LogVerbosity verbosity, const std::string& errorFile,
-			          int lineNumber, const std::string& subSectors,
-			          const std::string& message, const Args&... args)
+			void log(LogVerbosity verbosity, const std::string& errorFile,
+			         int lineNumber, const std::string& subSectors,
+			         const std::string& message, const Args&... args)
 			{
 				std::stringstream ss;
 				ss << message;
-				log (ss, args...);
-				logMessage (errorFile, lineNumber, verbosity, subSectors,
-				            ss.str ());
+				log(ss, args...);
+				logMessage(errorFile, lineNumber, verbosity, subSectors,
+				           ss.str());
 			}
 
 		  private:
-			Logger () = default;
+			Logger() = default;
 
 			/// @brief The log file.
 			std::string m_logFile = "quartz.log";
@@ -178,19 +177,19 @@ namespace qz
 
 		  private:
 			template <typename T, typename... Args>
-			void log (std::stringstream& sstream, const T& msg,
-			          const Args&... args)
+			void log(std::stringstream& sstream, const T& msg,
+			         const Args&... args)
 			{
 				sstream << msg;
-				log (sstream, args...);
+				log(sstream, args...);
 			}
 
-			void log (std::stringstream& sstream) {}
+			void log(std::stringstream& sstream) {}
 
-			void logMessage (const std::string& errorFile, int lineNumber,
-			                 LogVerbosity       verbosity,
-			                 const std::string& subSectors,
-			                 const std::string& message);
+			void logMessage(const std::string& errorFile, int lineNumber,
+			                LogVerbosity       verbosity,
+			                const std::string& subSectors,
+			                const std::string& message);
 		};
 	} // namespace utils
 } // namespace qz

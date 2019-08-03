@@ -68,23 +68,20 @@ namespace qz
 			TextureSlotHandle           m_defaultTextureSlot;
 
 		  public:
-			ForwardMeshRenderer (rhi::IRenderDevice* renderDevice);
+			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
 
-			void create ();
-			void destroy ();
-			void submitMesh (Mesh* mesh);
-			void render ();
+			void create();
+			void destroy();
+			void submitMesh(Mesh* mesh);
+			void render();
 
-			void setProjectionMatrix (const Matrix4x4& projection);
-			void setViewMatrix (const Matrix4x4& view);
+			void setProjectionMatrix(const Matrix4x4& projection);
+			void setViewMatrix(const Matrix4x4& view);
 
-			Matrix4x4 getProjectionMatrix () const
-			{
-				return m_projectionMatrix;
-			}
+			Matrix4x4 getProjectionMatrix() const { return m_projectionMatrix; }
 
-			Matrix4x4   getViewMatrix () const { return m_viewMatrix; }
-			std::size_t countTotalNumVertices ();
+			Matrix4x4   getViewMatrix() const { return m_viewMatrix; }
+			std::size_t countTotalNumVertices();
 		};
 	} // namespace gfx
 } // namespace qz

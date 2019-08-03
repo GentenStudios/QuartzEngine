@@ -52,21 +52,21 @@ namespace qz
 			 * @param window A window object, mainly used to check for key
 			 * presses.
 			 */
-			FPSCamera (IWindow* window);
+			FPSCamera(IWindow* window);
 
 			/**
 			 * @brief Gets the position of the camera, in world space
 			 * @return A 3 component vector containing the position of the
 			 * camera.
 			 */
-			Vector3 getPosition () const;
+			Vector3 getPosition() const;
 
 			/**
 			 * @brief Gets the direction of the camera, in world space
 			 * @return A 3 component vector containing the direction of the
 			 * camera.
 			 */
-			Vector3 getDirection () const;
+			Vector3 getDirection() const;
 
 			/**
 			 * @brief Sets the projection of the camera.
@@ -78,7 +78,7 @@ namespace qz
 			 * shaders. It makes sense to store the projection in the camera, as
 			 * it is the only component that requires it.
 			 */
-			void setProjection (const Matrix4x4& projection);
+			void setProjection(const Matrix4x4& projection);
 
 			/**
 			 * @brief Gets the projection of the camera.
@@ -89,7 +89,7 @@ namespace qz
 			 * shaders. It makes sense to store the projection in the camera, as
 			 * it is the only component that requires it.
 			 */
-			Matrix4x4 getProjection () const;
+			Matrix4x4 getProjection() const;
 
 			/**
 			 * @brief Calculates the view matrix for use in the graphics
@@ -97,7 +97,7 @@ namespace qz
 			 * @return A 4x4 Matrix containing the required information to send
 			 * into shaders.
 			 */
-			Matrix4x4 calculateViewMatrix () const;
+			Matrix4x4 calculateViewMatrix() const;
 
 			/**
 			 * @brief Updates things like position and direction dependent on
@@ -107,7 +107,7 @@ namespace qz
 			 * player moves at the same speed regardless of if they're playing
 			 * at 100fps or 10fps.
 			 */
-			void tick (float dt);
+			void tick(float dt);
 
 			/**
 			 * @brief Sets the camera's state of being enabled or not being
@@ -115,13 +115,13 @@ namespace qz
 			 * @param enabled A boolean stating whether the camera should be set
 			 * to enabled or not.
 			 */
-			void enable (bool enabled);
+			void enable(bool enabled);
 
 			/**
 			 * @brief Checks whether the camera is enabled or not.
 			 * @return True if the camera is enabled, false if not.
 			 */
-			bool isEnabled () const { return m_enabled; }
+			bool isEnabled() const { return m_enabled; }
 
 			/**
 			 * @brief Runs a specific set of instructions when the window is
@@ -131,7 +131,7 @@ namespace qz
 			 * @return True if the event was handled correctly, false if not.
 			 * Also no manual handling of this required.
 			 */
-			void resizeProjection (events::Event e);
+			void resizeProjection(events::Event e);
 
 		  private:
 			IWindow* m_window;

@@ -62,19 +62,19 @@ namespace qz
 			PhongMaterial         m_material;
 
 		  public:
-			Mesh (const std::vector<Vertex3D>& vertices);
-			Mesh ();
-			Mesh (std::size_t vertexCapacity);
+			Mesh(const std::vector<Vertex3D>& vertices);
+			Mesh();
+			Mesh(std::size_t vertexCapacity);
 
-			const std::vector<Vertex3D>& getVertices () const
+			const std::vector<Vertex3D>& getVertices() const
 			{
 				return m_vertices;
 			}
 
-			const PhongMaterial& getMaterial () const { return m_material; }
+			const PhongMaterial& getMaterial() const { return m_material; }
 
-			void addVertex (const Vertex3D& vertex);
-			void setMaterial (const PhongMaterial& material);
+			void addVertex(const Vertex3D& vertex);
+			void setMaterial(const PhongMaterial& material);
 		};
 	} // namespace gfx
 } // namespace qz

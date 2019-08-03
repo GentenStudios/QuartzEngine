@@ -53,13 +53,13 @@ namespace qz
 			 * @brief Constructs a 2 Component Vector, each component is default
 			 * initialized to 0.
 			 */
-			Vector2 () : x (0), y (0) {}
+			Vector2() : x(0), y(0) {}
 
 			/**
 			 * @brief Constructs a 2 Component Vector.
 			 * @param x The value the components should both be initialized to.
 			 */
-			Vector2 (const float x) : x (x), y (x) {}
+			Vector2(const float x) : x(x), y(x) {}
 
 			/**
 			 * @brief Constructs a 2 Component Vector, each component is default
@@ -67,13 +67,13 @@ namespace qz
 			 * @param x The value the X component should be initialized to.
 			 * @param y The value the Y component should be initialized to.
 			 */
-			Vector2 (const float x, const float y) : x (x), y (y) {}
+			Vector2(const float x, const float y) : x(x), y(y) {}
 
 			/**
 			 * @brief Sets the components to a specific value.
 			 * @param a The value to set the components to.
 			 */
-			void set (const float a)
+			void set(const float a)
 			{
 				x = a;
 				y = a;
@@ -85,7 +85,7 @@ namespace qz
 			 * Flooring is (simply put) the process of rounding numbers down to
 			 * the closest integer.
 			 */
-			void floor ();
+			void floor();
 
 			/**
 			 * @brief Ceils the components.
@@ -93,95 +93,95 @@ namespace qz
 			 * Ceiling is (simply put) the process of rounding numbers up to the
 			 * closest integer.
 			 */
-			void ceil ();
+			void ceil();
 
 			///////////////////// OPERATOR OVERLOADS /////////////////////
 
-			void operator+= (const Vector2& other)
+			void operator+=(const Vector2& other)
 			{
 				x += other.x;
 				y += other.y;
 			}
-			void operator-= (const Vector2& other)
+			void operator-=(const Vector2& other)
 			{
 				x += other.x;
 				y += other.y;
 			}
 
-			void operator+= (const float& i)
+			void operator+=(const float& i)
 			{
 				x += i;
 				y += i;
 			}
 
-			void operator-= (const float& i)
+			void operator-=(const float& i)
 			{
 				x -= i;
 				y -= i;
 			}
 
-			Vector2 operator+ (const Vector2& other) const
+			Vector2 operator+(const Vector2& other) const
 			{
-				return Vector2 (x + other.x, y + other.y);
+				return Vector2(x + other.x, y + other.y);
 			}
 
-			Vector2 operator- (const Vector2& other) const
+			Vector2 operator-(const Vector2& other) const
 			{
-				return Vector2 (x - other.x, y - other.y);
+				return Vector2(x - other.x, y - other.y);
 			}
 
-			Vector2 operator+ (const float& i) const
+			Vector2 operator+(const float& i) const
 			{
-				return Vector2 (x + i, y + i);
+				return Vector2(x + i, y + i);
 			}
 
-			Vector2 operator- (const float& i) const
+			Vector2 operator-(const float& i) const
 			{
-				return Vector2 (x - i, y - i);
+				return Vector2(x - i, y - i);
 			}
 
-			void operator*= (const Vector2& other)
+			void operator*=(const Vector2& other)
 			{
 				x *= other.x;
 				y *= other.y;
 			}
 
-			void operator/= (const Vector2& other)
+			void operator/=(const Vector2& other)
 			{
 				x /= other.x;
 				y /= other.y;
 			}
 
-			void operator*= (const float& scalar)
+			void operator*=(const float& scalar)
 			{
 				x *= scalar;
 				y *= scalar;
 			}
 
-			void operator/= (const float& scalar)
+			void operator/=(const float& scalar)
 			{
 				x /= scalar;
 				y /= scalar;
 			}
 
-			Vector2 operator* (const Vector2& other) const
+			Vector2 operator*(const Vector2& other) const
 			{
-				return Vector2 (x * other.x, y * other.y);
+				return Vector2(x * other.x, y * other.y);
 			}
 
-			Vector2 operator/ (const Vector2& other) const
+			Vector2 operator/(const Vector2& other) const
 			{
-				return Vector2 (x / other.x, y / other.y);
+				return Vector2(x / other.x, y / other.y);
 			}
 
-			Vector2 operator* (const float& scalar) const
+			Vector2 operator*(const float& scalar) const
 			{
-				return Vector2 (x * scalar, y * scalar);
+				return Vector2(x * scalar, y * scalar);
 			}
 
-			Vector2 operator/ (const float& scalar) const
+			Vector2 operator/(const float& scalar) const
 			{
-				return Vector2 (x / scalar, y / scalar);
+				return Vector2(x / scalar, y / scalar);
 			}
 
 			///////////////////// END OPERATOR OVERLOADS /////////////////////
@@ -206,9 +206,9 @@ namespace qz
 				T v;
 			};
 
-			TemplateVector2 () : x (T ()), y (T ()) {}
-			TemplateVector2 (T x) : x (x), y (x) {}
-			TemplateVector2 (T x, T y) : x (x), y (y) {}
+			TemplateVector2() : x(T()), y(T()) {}
+			TemplateVector2(T x) : x(x), y(x) {}
+			TemplateVector2(T x, T y) : x(x), y(y) {}
 		};
 	} // namespace math
 } // namespace qz
@@ -219,8 +219,8 @@ namespace qz
  * @param right The right hand side of the comparison
  * @return True when both vectors are equivalent, otherwise false.
  */
-inline bool operator== (const qz::math::Vector2& left,
-                        const qz::math::Vector2& right)
+inline bool operator==(const qz::math::Vector2& left,
+                       const qz::math::Vector2& right)
 {
 	return left.x == right.x && left.y == right.y;
 }
@@ -231,8 +231,8 @@ inline bool operator== (const qz::math::Vector2& left,
  * @param right The right hand side of the comparison
  * @return False when both vectors are equivalent, otherwise true.
  */
-inline bool operator!= (const qz::math::Vector2& left,
-                        const qz::math::Vector2& right)
+inline bool operator!=(const qz::math::Vector2& left,
+                       const qz::math::Vector2& right)
 {
 	return left.x != right.x && left.y != right.y;
 }

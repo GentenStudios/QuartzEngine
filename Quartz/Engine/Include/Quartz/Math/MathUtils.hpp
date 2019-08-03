@@ -44,7 +44,7 @@ namespace qz
 		 * @param degrees The number of degrees waiting to be converted.
 		 * @return The converted value, in radians.
 		 */
-		static float degreeToRadians (const float& degrees)
+		static float degreeToRadians(const float& degrees)
 		{
 			return degrees * PI / 180.f;
 		}
@@ -54,7 +54,7 @@ namespace qz
 		 * @param radians The number of radians waiting to be converted.
 		 * @return The converted value, in degrees.
 		 */
-		static float radianToDegrees (const float& radians)
+		static float radianToDegrees(const float& radians)
 		{
 			return radians * 180.f / PI;
 		}
@@ -70,9 +70,9 @@ namespace qz
 		 *         on the value.
 		 */
 		template <typename T>
-		T clamp (const T& n, const T& lower, const T& upper)
+		T clamp(const T& n, const T& lower, const T& upper)
 		{
-			return std::max (lower, std::min (n, upper));
+			return std::max(lower, std::min(n, upper));
 		}
 	}; // namespace math
 } // namespace qz

@@ -187,4 +187,4 @@ namespace qz
 	} // namespace events
 } // namespace qz
 
-ENABLE_BITMASK_OPERATORS (qz::events::Mods);
+ENABLE_BITMASK_OPERATORS(qz::events::Mods);

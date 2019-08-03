@@ -31,44 +31,44 @@
 
 using namespace qz::math;
 
-void Vector3::floor ()
+void Vector3::floor()
 {
-	x = std::floor (x);
-	y = std::floor (y);
-	z = std::floor (z);
+	x = std::floor(x);
+	y = std::floor(y);
+	z = std::floor(z);
 }
 
-void Vector3::ceil ()
+void Vector3::ceil()
 {
-	x = std::ceil (x);
-	y = std::ceil (y);
-	z = std::ceil (z);
+	x = std::ceil(x);
+	y = std::ceil(y);
+	z = std::ceil(z);
 }
 
-void Vector3::normalize ()
+void Vector3::normalize()
 {
-	const float len = std::sqrt (dotProduct ({x, y, z}, {x, y, z}));
+	const float len = std::sqrt(dotProduct({x, y, z}, {x, y, z}));
 
 	x /= len;
 	y /= len;
 	z /= len;
 }
 
-Vector3 Vector3::cross (const Vector3& vec1, const Vector3& vec2)
+Vector3 Vector3::cross(const Vector3& vec1, const Vector3& vec2)
 {
 	return {vec1.y * vec2.z - vec1.z * vec2.y,
 	        vec1.z * vec2.x - vec1.x * vec2.z,
 	        vec1.x * vec2.y - vec1.y * vec2.x};
 }
 
-Vector3 Vector3::normalize (const Vector3& vec1)
+Vector3 Vector3::normalize(const Vector3& vec1)
 {
-	const float len = std::sqrt (dotProduct (vec1, vec1));
+	const float len = std::sqrt(dotProduct(vec1, vec1));
 
 	return {vec1.x / len, vec1.y / len, vec1.z / len};
 }
 
-float Vector3::dotProduct (const Vector3& vec1, const Vector3& vec2)
+float Vector3::dotProduct(const Vector3& vec1, const Vector3& vec2)
 {
 	return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
 }

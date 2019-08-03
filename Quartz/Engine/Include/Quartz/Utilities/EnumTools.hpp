@@ -47,78 +47,78 @@ namespace qz
 {
 	template <typename Enum, typename = typename std::enable_if<
 	                             EnableBitWiseOperators<Enum>::value>::type>
-	bool hasFlag (Enum flags, Enum lookFor)
+	bool hasFlag(Enum flags, Enum lookFor)
 	{
 		using Underlying = typename std::underlying_type<Enum>::type;
-		return static_cast<Underlying> (flags) &
-		       static_cast<Underlying> (lookFor);
+		return static_cast<Underlying>(flags) &
+		       static_cast<Underlying>(lookFor);
 	}
 } // namespace qz
 
 template <typename Enum, typename = typename std::enable_if<
                              EnableBitWiseOperators<Enum>::value>::type>
-Enum operator| (Enum lhs, Enum rhs)
+Enum operator|(Enum lhs, Enum rhs)
 {
-	return static_cast<Enum> (
-	    static_cast<typename std::underlying_type<Enum>::type> (lhs) |
-	    static_cast<typename std::underlying_type<Enum>::type> (rhs));
+	return static_cast<Enum>(
+	    static_cast<typename std::underlying_type<Enum>::type>(lhs) |
+	    static_cast<typename std::underlying_type<Enum>::type>(rhs));
 }
 
 template <typename Enum, typename = typename std::enable_if<
                              EnableBitWiseOperators<Enum>::value>::type>
-Enum operator& (Enum lhs, Enum rhs)
+Enum operator&(Enum lhs, Enum rhs)
 {
-	return static_cast<Enum> (
-	    static_cast<typename std::underlying_type<Enum>::type> (lhs) &
-	    static_cast<typename std::underlying_type<Enum>::type> (rhs));
+	return static_cast<Enum>(
+	    static_cast<typename std::underlying_type<Enum>::type>(lhs) &
+	    static_cast<typename std::underlying_type<Enum>::type>(rhs));
 }
 
 template <typename Enum, typename = typename std::enable_if<
                              EnableBitWiseOperators<Enum>::value>::type>
-Enum operator^ (Enum lhs, Enum rhs)
+Enum operator^(Enum lhs, Enum rhs)
 {
-	return static_cast<Enum> (
-	    static_cast<typename std::underlying_type<Enum>::type> (lhs) ^
-	    static_cast<typename std::underlying_type<Enum>::type> (rhs));
+	return static_cast<Enum>(
+	    static_cast<typename std::underlying_type<Enum>::type>(lhs) ^
+	    static_cast<typename std::underlying_type<Enum>::type>(rhs));
 }
 
 template <typename Enum, typename = typename std::enable_if<
                              EnableBitWiseOperators<Enum>::value>::type>
-Enum operator~ (Enum rhs)
+Enum operator~(Enum rhs)
 {
-	return static_cast<Enum> (
-	    ~static_cast<typename std::underlying_type<Enum>::type> (rhs));
+	return static_cast<Enum>(
+	    ~static_cast<typename std::underlying_type<Enum>::type>(rhs));
 }
 
 template <typename Enum, typename = typename std::enable_if<
                              EnableBitWiseOperators<Enum>::value>::type>
-Enum& operator|= (Enum& lhs, Enum rhs)
+Enum& operator|=(Enum& lhs, Enum rhs)
 {
-	lhs = static_cast<Enum> (
-	    static_cast<typename std::underlying_type<Enum>::type> (lhs) |
-	    static_cast<typename std::underlying_type<Enum>::type> (rhs));
+	lhs = static_cast<Enum>(
+	    static_cast<typename std::underlying_type<Enum>::type>(lhs) |
+	    static_cast<typename std::underlying_type<Enum>::type>(rhs));
 
 	return lhs;
 }
 
 template <typename Enum, typename = typename std::enable_if<
                              EnableBitWiseOperators<Enum>::value>::type>
-Enum& operator&= (Enum& lhs, Enum rhs)
+Enum& operator&=(Enum& lhs, Enum rhs)
 {
-	lhs = static_cast<Enum> (
-	    static_cast<typename std::underlying_type<Enum>::type> (lhs) &
-	    static_cast<typename std::underlying_type<Enum>::type> (rhs));
+	lhs = static_cast<Enum>(
+	    static_cast<typename std::underlying_type<Enum>::type>(lhs) &
+	    static_cast<typename std::underlying_type<Enum>::type>(rhs));
 
 	return lhs;
 }
 
 template <typename Enum, typename = typename std::enable_if<
                              EnableBitWiseOperators<Enum>::value>::type>
-Enum& operator^= (Enum& lhs, Enum rhs)
+Enum& operator^=(Enum& lhs, Enum rhs)
 {
-	lhs = static_cast<Enum> (
-	    static_cast<typename std::underlying_type<Enum>::type> (lhs) ^
-	    static_cast<typename std::underlying_type<Enum>::type> (rhs));
+	lhs = static_cast<Enum>(
+	    static_cast<typename std::underlying_type<Enum>::type>(lhs) ^
+	    static_cast<typename std::underlying_type<Enum>::type>(rhs));
 
 	return lhs;
 }

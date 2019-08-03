@@ -50,8 +50,8 @@ namespace qz
 			std::vector<BlockType*> m_voxelData;
 
 		  public:
-			void fill (const std::size_t               chunkSize,
-			           const Chunk::GeneratorFunction& generator);
+			void fill(const std::size_t               chunkSize,
+			          const Chunk::GeneratorFunction& generator);
 		};
 
 		class Terrain
@@ -62,10 +62,10 @@ namespace qz
 			std::vector<Chunk>       m_loadedChunks;
 
 		  public:
-			Terrain (std::size_t                     chunkSize,
-			         const Chunk::GeneratorFunction& generator);
+			Terrain(std::size_t                     chunkSize,
+			        const Chunk::GeneratorFunction& generator);
 
-			void tick (Vector3 streamCenter);
+			void tick(Vector3 streamCenter);
 		};
 
 	} // namespace voxels

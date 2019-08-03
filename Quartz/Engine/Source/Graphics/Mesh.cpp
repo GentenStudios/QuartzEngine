@@ -30,15 +30,12 @@
 
 using namespace qz::gfx;
 
-Mesh::Mesh () {}
+Mesh::Mesh() {}
 
-Mesh::Mesh (const std::vector<Vertex3D>& vertices) { m_vertices = vertices; }
+Mesh::Mesh(const std::vector<Vertex3D>& vertices) { m_vertices = vertices; }
 
-Mesh::Mesh (std::size_t vertexCapacity) { m_vertices.reserve (vertexCapacity); }
+Mesh::Mesh(std::size_t vertexCapacity) { m_vertices.reserve(vertexCapacity); }
 
-void Mesh::addVertex (const Vertex3D& vertex) { m_vertices.push_back (vertex); }
+void Mesh::addVertex(const Vertex3D& vertex) { m_vertices.push_back(vertex); }
 
-void Mesh::setMaterial (const PhongMaterial& material)
-{
-	m_material = material;
-}
+void Mesh::setMaterial(const PhongMaterial& material) { m_material = material; }

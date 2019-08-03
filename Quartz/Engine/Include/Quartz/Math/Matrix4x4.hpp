@@ -48,16 +48,16 @@ namespace qz
 			 * @brief Default constructs the as an identity matrix (the top left
 			 * to bottom right diagonal is 1.0f)
 			 */
-			Matrix4x4 ();
+			Matrix4x4();
 
-			Matrix4x4 (float m00, float m10, float m20, float m30, float m01,
-			           float m11, float m21, float m31, float m02, float m12,
-			           float m22, float m32, float m03, float m13, float m23,
-			           float m33);
+			Matrix4x4(float m00, float m10, float m20, float m30, float m01,
+			          float m11, float m21, float m31, float m02, float m12,
+			          float m22, float m32, float m03, float m13, float m23,
+			          float m33);
 
-			void setIdentity ();
+			void setIdentity();
 
-			~Matrix4x4 () = default;
+			~Matrix4x4() = default;
 
 			/**
 			 * @brief Constructs a perspective projection matrix.
@@ -70,10 +70,10 @@ namespace qz
 			 * plane.
 			 * @return The calculated perspective projection matrix.
 			 */
-			static Matrix4x4 perspective (const float& aspectRatio,
-			                              const float& fieldOfView,
-			                              const float& farPlane,
-			                              const float& nearPlane);
+			static Matrix4x4 perspective(const float& aspectRatio,
+			                             const float& fieldOfView,
+			                             const float& farPlane,
+			                             const float& nearPlane);
 
 			/**
 			 * @brief
@@ -85,9 +85,9 @@ namespace qz
 			 * @param nearPlane
 			 * @return
 			 */
-			static Matrix4x4 ortho (float left, float right, float top,
-			                        float bottom, float farPlane,
-			                        float nearPlane);
+			static Matrix4x4 ortho(float left, float right, float top,
+			                       float bottom, float farPlane,
+			                       float nearPlane);
 
 			/**
 			 * @brief Calculates a "view" matrix, so where a user is looking,
@@ -99,24 +99,24 @@ namespace qz
 			 * up".
 			 * @return The calculated view matrix.
 			 */
-			static Matrix4x4 lookAt (const Vector3& eyePos,
-			                         const Vector3& centre, const Vector3& up);
+			static Matrix4x4 lookAt(const Vector3& eyePos,
+			                        const Vector3& centre, const Vector3& up);
 
 			/// @brief Operator Overload for multiplying an established lvalue
 			/// matrix object with another matrix.
-			void operator*= (const Matrix4x4& other);
+			void operator*=(const Matrix4x4& other);
 
 			/// @brief Operator Overload for multiplying a matrix object
 			/// (lvalue, or rvalue) with another matrix.
-			Matrix4x4 operator* (const Matrix4x4& other);
+			Matrix4x4 operator*(const Matrix4x4& other);
 
 			/// @brief Operator Overload for multiplying an established lvalue
 			/// matrix object with scalar value, a float.
-			void operator*= (const float& other);
+			void operator*=(const float& other);
 
 			/// @brief Operator Overload for multiplying a matrix object
 			/// (lvalue, or rvalue) with scalar value, a float.
-			Matrix4x4 operator* (const float& other);
+			Matrix4x4 operator*(const float& other);
 
 			/**
 			 * @brief Operator Overload for multiplying a matrix object (lvalue
@@ -124,7 +124,7 @@ namespace qz
 			 * @return The calculated product, as a Vector3, a 3 component
 			 * vector.
 			 */
-			Vector3 operator* (const Vector3& other);
+			Vector3 operator*(const Vector3& other);
 		};
 	}; // namespace math
 } // namespace qz

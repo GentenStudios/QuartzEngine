@@ -31,14 +31,14 @@
 
 using namespace qz::math;
 
-void Vector2::floor ()
+void Vector2::floor()
 {
-	x = std::floor (x);
-	y = std::floor (y);
+	x = std::floor(x);
+	y = std::floor(y);
 }
 
-void Vector2::ceil ()
+void Vector2::ceil()
 {
-	x = std::ceil (x);
-	y = std::ceil (y);
+	x = std::ceil(x);
+	y = std::ceil(y);
 }

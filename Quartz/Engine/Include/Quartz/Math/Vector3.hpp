@@ -59,13 +59,13 @@ namespace qz
 			 * @brief Default constructs a 3 component Vector, initializes all
 			 * components to 0.
 			 */
-			Vector3 () : x (0), y (0), z (0) {}
+			Vector3() : x(0), y(0), z(0) {}
 
 			/**
 			 * @brief Constructs a 3 component Vector.
 			 * @param x The value that all components should be set to.
 			 */
-			Vector3 (const float x) : x (x), y (x), z (x) {}
+			Vector3(const float x) : x(x), y(x), z(x) {}
 
 			/**
 			 * @brief Constructs a 3 component Vector.
@@ -73,8 +73,8 @@ namespace qz
 			 * @param y The value that the Y component should be set to.
 			 * @param z The value that the Z component should be set to.
 			 */
-			Vector3 (const float x, const float y, const float z)
-			    : x (x), y (y), z (z)
+			Vector3(const float x, const float y, const float z)
+			    : x(x), y(y), z(z)
 			{
 			}
 
@@ -82,7 +82,7 @@ namespace qz
 			 * @brief Sets all components in the vector to a scalar value.
 			 * @param scalar The value to set all components to.
 			 */
-			void set (const float scalar)
+			void set(const float scalar)
 			{
 				x = scalar;
 				y = scalar;
@@ -95,7 +95,7 @@ namespace qz
 			 * Flooring (simply put) is the process of rounding down each
 			 * component to the nearest integer.
 			 */
-			void floor ();
+			void floor();
 
 			/**
 			 * @brief Ceils all components in the Vector.
@@ -103,7 +103,7 @@ namespace qz
 			 * Ceiling (simply put) is the process of rounding up each component
 			 * to the nearest integer.
 			 */
-			void ceil ();
+			void ceil();
 
 			/**
 			 * @brief Normalizes the vector.
@@ -111,7 +111,7 @@ namespace qz
 			 * Normalization is a mathematical process, to find out more about
 			 * it, read it up on the internet.
 			 */
-			void normalize ();
+			void normalize();
 
 			/**
 			 * @brief Crosses two vectors.
@@ -119,7 +119,7 @@ namespace qz
 			 * @param vec2 The second vector to cross.
 			 * @return The crossed product.
 			 */
-			static Vector3 cross (const Vector3& vec1, const Vector3& vec2);
+			static Vector3 cross(const Vector3& vec1, const Vector3& vec2);
 
 			/**
 			 * @brief Normalizes a vector.
@@ -129,7 +129,7 @@ namespace qz
 			 * Normalization is a mathematical process, to find out more about
 			 * it, read it up on the internet.
 			 */
-			static Vector3 normalize (const Vector3& vec1);
+			static Vector3 normalize(const Vector3& vec1);
 
 			/**
 			 * @brief Calculates the Dot Product of two vectors.
@@ -137,104 +137,104 @@ namespace qz
 			 * @param vec2 The second vector in the calculation.
 			 * @return The calculated product.
 			 */
-			static float dotProduct (const Vector3& vec1, const Vector3& vec2);
+			static float dotProduct(const Vector3& vec1, const Vector3& vec2);
 
 			///////////////////// OPERATOR OVERLOADS /////////////////////
 
-			void operator+= (const Vector3& other)
+			void operator+=(const Vector3& other)
 			{
 				x += other.x;
 				y += other.y;
 				z += other.z;
 			}
 
-			void operator-= (const Vector3& other)
+			void operator-=(const Vector3& other)
 			{
 				x -= other.x;
 				y -= other.y;
 				z -= other.z;
 			}
 
-			void operator+= (const float& i)
+			void operator+=(const float& i)
 			{
 				x += i;
 				y += i;
 				z += i;
 			}
 
-			void operator-= (const float& i)
+			void operator-=(const float& i)
 			{
 				x -= i;
 				y -= i;
 				z -= i;
 			}
 
-			Vector3 operator+ (const Vector3& other) const
+			Vector3 operator+(const Vector3& other) const
 			{
-				return Vector3 (x + other.x, y + other.y, z + other.z);
+				return Vector3(x + other.x, y + other.y, z + other.z);
 			}
 
-			Vector3 operator- (const Vector3& other) const
+			Vector3 operator-(const Vector3& other) const
 			{
-				return Vector3 (x - other.x, y - other.y, z - other.z);
+				return Vector3(x - other.x, y - other.y, z - other.z);
 			}
 
-			Vector3 operator+ (const float& i) const
+			Vector3 operator+(const float& i) const
 			{
-				return Vector3 (x + i, y + i, z + i);
+				return Vector3(x + i, y + i, z + i);
 			}
 
-			Vector3 operator- (const float& i) const
+			Vector3 operator-(const float& i) const
 			{
-				return Vector3 (x - i, y - i, z - i);
+				return Vector3(x - i, y - i, z - i);
 			}
 
-			void operator*= (const Vector3& other)
+			void operator*=(const Vector3& other)
 			{
 				x *= other.x;
 				y *= other.y;
 				z *= other.z;
 			}
 
-			void operator/= (const Vector3& other)
+			void operator/=(const Vector3& other)
 			{
 				x /= other.x;
 				y /= other.y;
 				z /= other.z;
 			}
 
-			void operator*= (const float& scalar)
+			void operator*=(const float& scalar)
 			{
 				x *= scalar;
 				y *= scalar;
 				z *= scalar;
 			}
 
-			void operator/= (const float& scalar)
+			void operator/=(const float& scalar)
 			{
 				x /= scalar;
 				y /= scalar;
 				z /= scalar;
 			}
 
-			Vector3 operator* (const Vector3& other) const
+			Vector3 operator*(const Vector3& other) const
 			{
-				return Vector3 (x * other.x, y * other.y, z * other.z);
+				return Vector3(x * other.x, y * other.y, z * other.z);
 			}
 
-			Vector3 operator/ (const Vector3& other) const
+			Vector3 operator/(const Vector3& other) const
 			{
-				return Vector3 (x / other.x, y / other.y, z / other.z);
+				return Vector3(x / other.x, y / other.y, z / other.z);
 			}
 
-			Vector3 operator* (const float& scalar) const
+			Vector3 operator*(const float& scalar) const
 			{
-				return Vector3 (x * scalar, y * scalar, z * scalar);
+				return Vector3(x * scalar, y * scalar, z * scalar);
 			}
 
-			Vector3 operator/ (const float& scalar) const
+			Vector3 operator/(const float& scalar) const
 			{
-				return Vector3 (x / scalar, y / scalar, z / scalar);
+				return Vector3(x / scalar, y / scalar, z / scalar);
 			}
 
 			///////////////////// END OPERATOR OVERLOADS /////////////////////
@@ -247,7 +247,8 @@ namespace qz
 		 * This is for allowing more data to be passed more easily, or to store
 		 * them tidily and simplify code usage.
 		 */
-		template <typename T> struct TemplateVector3
+		template <typename T>
+		struct TemplateVector3
 		{
 			union {
 				T x;
@@ -264,9 +265,9 @@ namespace qz
 				T b;
 			};
 
-			TemplateVector3 () : x (T ()), y (T ()), z (T ()) {}
-			TemplateVector3 (T x) : x (x), y (x), z (x) {}
-			TemplateVector3 (T x, T y, T z) : x (x), y (y), z (z) {}
+			TemplateVector3() : x(T()), y(T()), z(T()) {}
+			TemplateVector3(T x) : x(x), y(x), z(x) {}
+			TemplateVector3(T x, T y, T z) : x(x), y(y), z(z) {}
 		};
 	} // namespace math
 } // namespace qz
@@ -277,8 +278,8 @@ namespace qz
  * @param right The right hand side of the comparison
  * @return True when both vectors are equivalent, otherwise false.
  */
-inline bool operator== (const qz::math::Vector3& left,
-                        const qz::math::Vector3& right)
+inline bool operator==(const qz::math::Vector3& left,
+                       const qz::math::Vector3& right)
 {
 	return left.x == right.x && left.y == right.y && left.z == right.z;
 }
@@ -289,8 +290,8 @@ inline bool operator== (const qz::math::Vector3& left,
  * @param right The right hand side of the comparison
  * @return False when both vectors are equivalent, otherwise true.
  */
-inline bool operator!= (const qz::math::Vector3& left,
-                        const qz::math::Vector3& right)
+inline bool operator!=(const qz::math::Vector3& left,
+                       const qz::math::Vector3& right)
 {
 	return left.x != right.x && left.y != right.y && left.z != right.z;
 }

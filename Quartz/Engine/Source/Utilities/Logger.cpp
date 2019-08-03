@@ -64,16 +64,16 @@ static const char* s_linuxTermCol[] = {
 };
 #endif
 
-static void setTerminalTextColor (TextColor color)
+static void setTerminalTextColor(TextColor color)
 {
 #ifdef QZ_PLATFORM_WINDOWS
-	HANDLE console = GetStdHandle (STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute (
-	    console, s_windowsTermCol[static_cast<std::size_t> (color)]);
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(console,
+	                        s_windowsTermCol[static_cast<std::size_t>(color)]);
 #endif
 
 #ifdef QZ_PLATFORM_LINUX
-	std::cout << s_linuxTermCol[static_cast<std::size_t> (color)];
+	std::cout << s_linuxTermCol[static_cast<std::size_t>(color)];
 #endif
 }
 
@@ -81,7 +81,7 @@ static void setTerminalTextColor (TextColor color)
  * @brief Sets the color of the terminal using the verbosity provided
  * @param vb The verbosity corresponding the color wanted.
  */
-static void setTerminalTextColor (LogVerbosity vb)
+static void setTerminalTextColor(LogVerbosity vb)
 {
 	TextColor color;
 
@@ -104,40 +104,40 @@ static void setTerminalTextColor (LogVerbosity vb)
 		break;
 	}
 
-	setTerminalTextColor (color);
+	setTerminalTextColor(color);
 }
 
-Logger* Logger::instance ()
+Logger* Logger::instance()
 {
 	static Logger logger;
 	return &logger;
 }
 
-void Logger::initialise (const std::string& logFile, LogVerbosity verbLevel)
+void Logger::initialise(const std::string& logFile, LogVerbosity verbLevel)
 {
 	m_logFile = logFile;
 	m_vbLevel = verbLevel;
 
-	m_logFileHandle.open (Logger::m_logFile, std::ios::out | std::ios::app);
+	m_logFileHandle.open(Logger::m_logFile, std::ios::out | std::ios::app);
 }
 
-void Logger::destroy ()
+void Logger::destroy()
 {
 	std::cout << '\n';
-	m_logFileHandle.close ();
+	m_logFileHandle.close();
 }
 
-void Logger::logMessage (const std::string& errorFile, int lineNumber,
-                         LogVerbosity verbosity, const std::string& subSectors,
-                         const std::string& message)
+void Logger::logMessage(const std::string& errorFile, int lineNumber,
+                        LogVerbosity verbosity, const std::string& subSectors,
+                        const std::string& message)
 {
 	if (verbosity > m_vbLevel)
 		return;
 
-	setTerminalTextColor (verbosity);
+	setTerminalTextColor(verbosity);
 
 	const char* verbosityString =
-	    g_logVerbToText[static_cast<size_t> (verbosity)];
+	    g_logVerbToText[static_cast<size_t>(verbosity)];
 
 	/*
 	    Log messages are in the format:
@@ -159,7 +159,7 @@ void Logger::logMessage (const std::string& errorFile, int lineNumber,
 
 	logMessageStream << message;
 
-	std::string logMessageString = logMessageStream.str ();
+	std::string logMessageString = logMessageStream.str();
 
 	if (message == m_prevMessage)
 	{
@@ -183,5 +183,5 @@ void Logger::logMessage (const std::string& errorFile, int lineNumber,
 		std::cout << '\n' << logMessageString;
 	}
 
-	setTerminalTextColor (TextColor::WHITE);
+	setTerminalTextColor(TextColor::WHITE);
 }

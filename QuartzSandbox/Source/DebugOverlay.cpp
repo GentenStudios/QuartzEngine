@@ -30,4 +30,4 @@
 
 using namespace sandbox;
 
-void DebugOverlay::show () {}
+void DebugOverlay::show() {}

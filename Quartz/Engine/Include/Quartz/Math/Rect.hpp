@@ -39,12 +39,12 @@ namespace qz
 			Vector2 topLeft, topRight;
 			Vector2 bottomLeft, bottomRight;
 
-			RectAABB (Vector2 tl, Vector2 tr, Vector2 bl, Vector2 br)
-			    : topLeft (tl), topRight (tr), bottomLeft (bl), bottomRight (br)
+			RectAABB(Vector2 tl, Vector2 tr, Vector2 bl, Vector2 br)
+			    : topLeft(tl), topRight(tr), bottomLeft(bl), bottomRight(br)
 			{
 			}
 
-			RectAABB () {}
+			RectAABB() {}
 		};
 	} // namespace math
 } // namespace qz
