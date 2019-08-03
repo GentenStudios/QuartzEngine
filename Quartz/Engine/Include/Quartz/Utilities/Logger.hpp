@@ -36,49 +36,49 @@
 #define LOGGER_DESTROY() qz::utils::Logger::instance()->destroy();
 
 #ifdef QZ_PLATFORM_WINDOWS
-#define LFATAL(message, ...)                                            \
-	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL,  \
-	                                   __FILE__, __LINE__, "", message, \
-	                                   __VA_ARGS__)
-#define LINFO(message, ...)                                             \
-	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO,   \
-	                                   __FILE__, __LINE__, "", message, \
-	                                   __VA_ARGS__)
-#ifdef QZ_DEBUG
-#define LDEBUG(message, ...)                                            \
-	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::DEBUG,  \
-	                                   __FILE__, __LINE__, "", message, \
-	                                   __VA_ARGS__)
-#define LWARNING(message, ...)                                           \
-	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::WARNING, \
-	                                   __FILE__, __LINE__, "", message,  \
-	                                   __VA_ARGS__)
+#	define LFATAL(message, ...)                                            \
+		qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL,  \
+		                                   __FILE__, __LINE__, "", message, \
+		                                   __VA_ARGS__)
+#	define LINFO(message, ...)                                             \
+		qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO,   \
+		                                   __FILE__, __LINE__, "", message, \
+		                                   __VA_ARGS__)
+#	ifdef QZ_DEBUG
+#		define LDEBUG(message, ...)                                           \
+			qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::DEBUG, \
+			                                   __FILE__, __LINE__, "",         \
+			                                   message, __VA_ARGS__)
+#		define LWARNING(message, ...)                                    \
+			qz::utils::Logger::instance()->log(                           \
+			    qz::utils::LogVerbosity::WARNING, __FILE__, __LINE__, "", \
+			    message, __VA_ARGS__)
+#	else
+#		define LDEBUG(message, ...)
+#		define LWARNING(message, ...)
+#	endif
 #else
-#define LDEBUG(message, ...)
-#define LWARNING(message, ...)
-#endif
-#else
-#define LFATAL(message, ...)                                            \
-	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL,  \
-	                                   __FILE__, __LINE__, "", message, \
-	                                   ##__VA_ARGS__)
-#define LINFO(message, ...)                                             \
-	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO,   \
-	                                   __FILE__, __LINE__, "", message, \
-	                                   ##__VA_ARGS__)
-#ifdef QZ_DEBUG
-#define LDEBUG(message, ...)                                            \
-	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::DEBUG,  \
-	                                   __FILE__, __LINE__, "", message, \
-	                                   ##__VA_ARGS__)
-#define LWARNING(message, ...)                                           \
-	qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::WARNING, \
-	                                   __FILE__, __LINE__, "", message,  \
-	                                   ##__VA_ARGS__)
-#else
-#define LDEBUG(message, ...)
-#define LWARNING(message, ...)
-#endif
+#	define LFATAL(message, ...)                                            \
+		qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::FATAL,  \
+		                                   __FILE__, __LINE__, "", message, \
+		                                   ##__VA_ARGS__)
+#	define LINFO(message, ...)                                             \
+		qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::INFO,   \
+		                                   __FILE__, __LINE__, "", message, \
+		                                   ##__VA_ARGS__)
+#	ifdef QZ_DEBUG
+#		define LDEBUG(message, ...)                                           \
+			qz::utils::Logger::instance()->log(qz::utils::LogVerbosity::DEBUG, \
+			                                   __FILE__, __LINE__, "",         \
+			                                   message, ##__VA_ARGS__)
+#		define LWARNING(message, ...)                                    \
+			qz::utils::Logger::instance()->log(                           \
+			    qz::utils::LogVerbosity::WARNING, __FILE__, __LINE__, "", \
+			    message, ##__VA_ARGS__)
+#	else
+#		define LDEBUG(message, ...)
+#		define LWARNING(message, ...)
+#	endif
 #endif
 
 namespace qz
