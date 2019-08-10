@@ -31,13 +31,13 @@
 #include <Quartz/Graphics/RHI/InputLayout.hpp>
 #include <Quartz/Utilities/HandleAllocator.hpp>
 
-#define DEFINE_HANDLE(Name)                                                    \
-	struct Name : public utils::HandleBase                                     \
-	{                                                                          \
-	};                                                                         \
-	inline bool operator== (const Name& left, const Name& right)               \
-	{                                                                          \
-		return left.get () == right.get ();                                    \
+#define DEFINE_HANDLE(Name)                                     \
+	struct Name : public utils::HandleBase                      \
+	{                                                           \
+	};                                                          \
+	inline bool operator==(const Name& left, const Name& right) \
+	{                                                           \
+		return left.get() == right.get();                       \
 	}
 
 namespace qz
@@ -46,10 +46,10 @@ namespace qz
 	{
 		namespace rhi
 		{
-			DEFINE_HANDLE (VertexBufferHandle);
-			DEFINE_HANDLE (ShaderPipelineHandle);
-			DEFINE_HANDLE (UniformHandle);
-			DEFINE_HANDLE (TextureHandle);
+			DEFINE_HANDLE(VertexBufferHandle);
+			DEFINE_HANDLE(ShaderPipelineHandle);
+			DEFINE_HANDLE(UniformHandle);
+			DEFINE_HANDLE(TextureHandle);
 
 			enum class UniformType
 			{
@@ -63,41 +63,41 @@ namespace qz
 
 			class IRenderDevice
 			{
-			  public:
-				virtual ~IRenderDevice () {}
+			public:
+				virtual ~IRenderDevice() {}
 
-				virtual bool isHandleValid (VertexBufferHandle handle)   = 0;
-				virtual bool isHandleValid (ShaderPipelineHandle handle) = 0;
-				virtual bool isHandleValid (UniformHandle handle)        = 0;
-				virtual bool isHandleValid (TextureHandle handle)        = 0;
+				virtual bool isHandleValid(VertexBufferHandle handle)   = 0;
+				virtual bool isHandleValid(ShaderPipelineHandle handle) = 0;
+				virtual bool isHandleValid(UniformHandle handle)        = 0;
+				virtual bool isHandleValid(TextureHandle handle)        = 0;
 
 				/**
 				 * @brief Initialise the RenderDevice. Must be called before
 				 *        any other methods on the RenderDevice.
 				 */
-				virtual void create () = 0;
+				virtual void create() = 0;
 
 				/**
 				 * @brief Draw a non-indexed set of vertices (as triangles).
 				 * @param first The index of the first vertex to draw.
 				 * @param count The number of vertices to draw.
 				 */
-				virtual void draw (std::size_t first, std::size_t count) = 0;
+				virtual void draw(std::size_t first, std::size_t count) = 0;
 
 				/**
 				 * @brief Create a vertex buffer.
 				 * @return A handle pointing to a vertex buffer ready for use.
 				 */
-				virtual VertexBufferHandle createVertexBuffer ()          = 0;
-				virtual void freeVertexBuffer (VertexBufferHandle buffer) = 0;
+				virtual VertexBufferHandle createVertexBuffer()          = 0;
+				virtual void freeVertexBuffer(VertexBufferHandle buffer) = 0;
 
-				virtual void setVertexBufferStream (VertexBufferHandle buffer,
-				                                    int streamId, int stride,
-				                                    int offset) = 0;
+				virtual void setVertexBufferStream(VertexBufferHandle buffer,
+				                                   int streamId, int stride,
+				                                   int offset) = 0;
 
-				virtual void setBufferData (VertexBufferHandle buffer,
-				                            float*             data,
-				                            std::size_t        sizebytes) = 0;
+				virtual void setBufferData(VertexBufferHandle buffer,
+				                           float*             data,
+				                           std::size_t        sizebytes) = 0;
 
 				/**
 				 * @brief Create shader from source code.
@@ -111,36 +111,35 @@ namespace qz
 				 * into the shader.
 				 * @return Handle to the newly created shader
 				 */
-				virtual ShaderPipelineHandle createShaderPipelineFromSource (
+				virtual ShaderPipelineHandle createShaderPipelineFromSource(
 				    const std::string& dirpath, const std::string& sourcecode,
 				    const InputLayout& inputLayout) = 0;
 
-				virtual ShaderPipelineHandle createShaderPipelineFromFile (
+				virtual ShaderPipelineHandle createShaderPipelineFromFile(
 				    const std::string& filepath,
 				    const InputLayout& inputLayout) = 0;
 
-				virtual void
-				setShaderPipeline (ShaderPipelineHandle shader) = 0;
+				virtual void setShaderPipeline(ShaderPipelineHandle shader) = 0;
 
-				virtual void
-				freeShaderPipeline (ShaderPipelineHandle shader) = 0;
+				virtual void freeShaderPipeline(
+				    ShaderPipelineHandle shader) = 0;
 
-				virtual UniformHandle
-				createUniform (ShaderPipelineHandle shader, const char* name,
-				               UniformType type) = 0;
+				virtual UniformHandle createUniform(ShaderPipelineHandle shader,
+				                                    const char*          name,
+				                                    UniformType type) = 0;
 
-				virtual void setUniformValue (UniformHandle uniform,
-				                              const void* value, int num) = 0;
+				virtual void setUniformValue(UniformHandle uniform,
+				                             const void* value, int num) = 0;
 
-				virtual void freeUniform (UniformHandle uniform) = 0;
+				virtual void freeUniform(UniformHandle uniform) = 0;
 
-				virtual TextureHandle createTexture (unsigned char* pixelData,
-				                                     std::size_t    width,
-				                                     std::size_t    height) = 0;
+				virtual TextureHandle createTexture(unsigned char* pixelData,
+				                                    std::size_t    width,
+				                                    std::size_t    height) = 0;
 
-				virtual void setTexture (TextureHandle texture, int slot) = 0;
-				virtual void freeTexture (TextureHandle texture)          = 0;
-				virtual void showShaderDebugUI ()                         = 0;
+				virtual void setTexture(TextureHandle texture, int slot) = 0;
+				virtual void freeTexture(TextureHandle texture)          = 0;
+				virtual void showShaderDebugUI()                         = 0;
 			};
 		} // namespace rhi
 	}     // namespace gfx

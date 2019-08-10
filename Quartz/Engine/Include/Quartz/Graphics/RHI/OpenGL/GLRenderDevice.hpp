@@ -67,72 +67,72 @@ namespace qz
 						float     vec4[4];
 						Matrix4x4 mat4;
 
-						Userdata ()
+						Userdata()
 						{
-							std::memset (mat4.elements, 0, 16 * sizeof (float));
+							std::memset(mat4.elements, 0, 16 * sizeof(float));
 						}
 
-						~Userdata () {}
+						~Userdata() {}
 					} userdata;
 
-					Uniform ();
+					Uniform();
 				};
 
 				class GLRenderDevice : public IRenderDevice
 				{
-				  public:
-					GLRenderDevice ()                            = default;
-					GLRenderDevice (const GLRenderDevice& other) = delete;
+				public:
+					GLRenderDevice()                            = default;
+					GLRenderDevice(const GLRenderDevice& other) = delete;
 
-					bool isHandleValid (VertexBufferHandle handle) override;
-					bool isHandleValid (ShaderPipelineHandle handle) override;
-					bool isHandleValid (UniformHandle handle) override;
-					bool isHandleValid (TextureHandle handle) override;
+					bool isHandleValid(VertexBufferHandle handle) override;
+					bool isHandleValid(ShaderPipelineHandle handle) override;
+					bool isHandleValid(UniformHandle handle) override;
+					bool isHandleValid(TextureHandle handle) override;
 
-					void               create () override;
-					VertexBufferHandle createVertexBuffer () override;
-					void draw (std::size_t first, std::size_t count) override;
-					void setVertexBufferStream (VertexBufferHandle buffer,
-					                            int streamId, int stride,
-					                            int offset) override;
+					void               create() override;
+					VertexBufferHandle createVertexBuffer() override;
+					void draw(std::size_t first, std::size_t count) override;
+					void setVertexBufferStream(VertexBufferHandle buffer,
+					                           int streamId, int stride,
+					                           int offset) override;
 
-					void setBufferData (VertexBufferHandle buffer, float* data,
-					                    std::size_t sizebytes) override;
-					void setShaderPipeline (
+					void setBufferData(VertexBufferHandle buffer, float* data,
+					                   std::size_t sizebytes) override;
+					void setShaderPipeline(
 					    ShaderPipelineHandle shader) override;
 
-					virtual ShaderPipelineHandle createShaderPipelineFromSource (
+					virtual ShaderPipelineHandle createShaderPipelineFromSource(
 					    const std::string& dirpath,
 					    const std::string& sourcecode,
 					    const InputLayout& inputLayout);
 
-					virtual ShaderPipelineHandle createShaderPipelineFromFile (
+					virtual ShaderPipelineHandle createShaderPipelineFromFile(
 					    const std::string& filepath,
 					    const InputLayout& inputLayout);
 
-					UniformHandle createUniform (
+					UniformHandle createUniform(
 					    ShaderPipelineHandle shaderHandle, const char* name,
 					    UniformType type) override;
-					
-					void setUniformValue (UniformHandle uniform,
-					                      const void* value, int num) override;
 
-					TextureHandle createTexture (unsigned char* pixelData,
-					                             std::size_t    width,
-					                             std::size_t height) override;
-					void setTexture (TextureHandle texture, int slot) override;
+					void setUniformValue(UniformHandle uniform,
+					                     const void* value, int num) override;
 
-					void showShaderDebugUI () override;
+					TextureHandle createTexture(unsigned char* pixelData,
+					                            std::size_t    width,
+					                            std::size_t    height) override;
+					void setTexture(TextureHandle texture, int slot) override;
 
-					void freeVertexBuffer (VertexBufferHandle buffer) override;
-					
-					void freeShaderPipeline (
+					void showShaderDebugUI() override;
+
+					void freeVertexBuffer(VertexBufferHandle buffer) override;
+
+					void freeShaderPipeline(
 					    ShaderPipelineHandle shader) override;
-					
-					void freeUniform (UniformHandle uniform) override;
-					void freeTexture (TextureHandle texture) override;
 
-				  private:
+					void freeUniform(UniformHandle uniform) override;
+					void freeTexture(TextureHandle texture) override;
+
+				private:
 					GLuint m_vao;
 
 					utils::HandleAllocator<32, VertexBufferHandle>

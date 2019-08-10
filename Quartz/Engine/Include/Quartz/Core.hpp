@@ -29,13 +29,13 @@
 #pragma once
 
 #if defined(_DEBUG)
-#define QZ_DEBUG
+#	define QZ_DEBUG
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)
-#define QZ_PLATFORM_WINDOWS
+#	define QZ_PLATFORM_WINDOWS
 #endif
 
 #if defined(__linux__)
-#define QZ_PLATFORM_LINUX
+#	define QZ_PLATFORM_LINUX
 #endif

@@ -80,7 +80,7 @@ namespace qz
 		 */
 		class IWindow
 		{
-		  public:
+		public:
 			/**
 			 * @brief Creates an object to create a window dependent on the
 			 * Windowing library specified.
@@ -301,7 +301,7 @@ namespace qz
 			 */
 			virtual void endFrame() = 0;
 
-		  protected:
+		protected:
 			/// @brief Stores event listeners for the event dispatching system.
 			std::vector<events::IEventListener*> m_eventListeners;
 		};

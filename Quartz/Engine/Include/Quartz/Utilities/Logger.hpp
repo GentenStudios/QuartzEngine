@@ -114,7 +114,7 @@ namespace qz
 		 */
 		class Logger
 		{
-		  public:
+		public:
 			/**
 			 * @brief Returns the singleton instance of the logger.
 			 * @return A pointer to the logger object.
@@ -160,7 +160,7 @@ namespace qz
 				           ss.str());
 			}
 
-		  private:
+		private:
 			Logger() = default;
 
 			/// @brief The log file.
@@ -175,7 +175,7 @@ namespace qz
 			std::string m_prevMessage;
 			std::size_t m_currentDuplicates;
 
-		  private:
+		private:
 			template <typename T, typename... Args>
 			void log(std::stringstream& sstream, const T& msg,
 			         const Args&... args)

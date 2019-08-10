@@ -35,15 +35,15 @@
 #include <glad/glad.h>
 
 #ifdef QZ_DEBUG
-#define GLCheck(x) \
-	x;             \
-	qz::gfx::rhi::gl::checkError (__FILE__, __LINE__);
+#	define GLCheck(x) \
+		x;             \
+		qz::gfx::rhi::gl::checkError(__FILE__, __LINE__);
 #else
-#define GLCheck(x) x;
+#	define GLCheck(x) x;
 #endif
 
 #ifndef QZ_PLATFORM_WINDOWS
-#define __stdcall
+#	define __stdcall
 #endif
 
 // Uncomment this in order to enable detailed OpenGL logging
@@ -57,7 +57,7 @@ namespace qz
 		{
 			namespace gl
 			{
-				inline GLenum ralTypeToGLType (DataType type)
+				inline GLenum ralTypeToGLType(DataType type)
 				{
 					switch (type)
 					{
@@ -76,12 +76,12 @@ namespace qz
 					return GL_INVALID_VALUE;
 				}
 
-				inline void checkError (const char* file, const int line)
+				inline void checkError(const char* file, const int line)
 				{
 					using namespace qz::utils;
 
 					GLenum errorCode;
-					while ((errorCode = glGetError ()) != GL_NO_ERROR)
+					while ((errorCode = glGetError()) != GL_NO_ERROR)
 					{
 						std::string error;
 						switch (errorCode)
@@ -113,7 +113,7 @@ namespace qz
 							       // fixed.
 						}
 
-						Logger::instance ()->log (
+						Logger::instance()->log(
 						    LogVerbosity::WARNING, file, line,
 						    "[RENDERING][OPENGL ERROR] ", error);
 					}
@@ -150,11 +150,11 @@ namespace qz
 				 * CALLS ARE DONE BY OPENGL, DO NOT INTERFERE WITH THIS, OR YOU
 				 * MAY BREAK DEBUGGING OF OPENGL.
 				 */
-				inline void __stdcall glDebugOutput (GLenum source, GLenum type,
-				                                     GLuint id, GLenum severity,
-				                                     GLsizei       length,
-				                                     const GLchar* message,
-				                                     const void*   userParam)
+				inline void __stdcall glDebugOutput(GLenum source, GLenum type,
+				                                    GLuint id, GLenum severity,
+				                                    GLsizei       length,
+				                                    const GLchar* message,
+				                                    const void*   userParam)
 				{
 
 #ifdef OPENGL_DIAGNOSTICS_ENABLED
@@ -252,8 +252,8 @@ namespace qz
 
 					subCategories << " ";
 
-					Logger::instance ()->log (verb, "OpenGL Debugger", 0,
-					                          subCategories.str (), message);
+					Logger::instance()->log(verb, "OpenGL Debugger", 0,
+					                        subCategories.str(), message);
 #endif
 				}
 			} // namespace gl

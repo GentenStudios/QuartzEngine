@@ -45,13 +45,13 @@ namespace qz
 		{
 			class ThreadPool
 			{
-			  public:
-				ThreadPool (const std::size_t threadCount);
-				~ThreadPool ();
+			public:
+				ThreadPool(const std::size_t threadCount);
+				~ThreadPool();
 
-				void addWork (std::function<void()> fun);
+				void addWork(std::function<void()> fun);
 
-			  private:
+			private:
 				bool m_running;
 
 				std::mutex              m_mutex;
@@ -60,8 +60,8 @@ namespace qz
 				std::vector<std::thread>          m_threads;
 				std::deque<std::function<void()>> m_scheduledTasks;
 
-			  private:
-				void threadHandle ();
+			private:
+				void threadHandle();
 			};
 		} // namespace threading
 	}     // namespace utils

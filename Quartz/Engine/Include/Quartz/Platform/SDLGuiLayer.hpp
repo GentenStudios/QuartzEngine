@@ -36,7 +36,7 @@ namespace qz
 	{
 		class SDLGuiLayer
 		{
-		  public:
+		public:
 			void init(SDL_Window* window, SDL_GLContext* context);
 
 			void startFrame();
@@ -44,7 +44,7 @@ namespace qz
 
 			void pollEvents(SDL_Event* event);
 
-		  private:
+		private:
 			SDL_Window*    m_window  = nullptr;
 			SDL_GLContext* m_context = nullptr;
 		};

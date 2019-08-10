@@ -35,7 +35,7 @@ namespace qz
 		template <typename T>
 		class Singleton
 		{
-		  public:
+		public:
 			static T* get()
 			{
 				static T instance;

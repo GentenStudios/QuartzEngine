@@ -40,12 +40,12 @@ namespace qz
 
 		class Context
 		{
-		  public:
-			static RenderingAPI getRenderingAPI ();
+		public:
+			static RenderingAPI getRenderingAPI();
 
-		  private:
+		private:
 			static RenderingAPI m_renderingAPI;
-			static void         setRenderingAPI (RenderingAPI api);
+			static void         setRenderingAPI(RenderingAPI api);
 
 			friend class IWindow;
 		};

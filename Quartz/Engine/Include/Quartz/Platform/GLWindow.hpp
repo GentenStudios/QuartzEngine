@@ -58,7 +58,7 @@ namespace qz
 				 */
 				class GLWindow : public gfx::IWindow
 				{
-				  public:
+				public:
 					GLWindow(const std::string& title, int width, int height);
 					~GLWindow();
 
@@ -96,7 +96,7 @@ namespace qz
 					void startFrame() override;
 					void endFrame() override;
 
-				  private:
+				private:
 					SDL_Window*   m_window;
 					SDL_GLContext m_context;
 					SDLGuiLayer   m_gui;
@@ -108,7 +108,7 @@ namespace qz
 
 					Vector2 m_cachedScreenSize;
 
-				  private:
+				private:
 					void dispatchToListeners(events::Event& event);
 				};
 			} // namespace gl

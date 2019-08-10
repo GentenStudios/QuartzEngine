@@ -41,27 +41,27 @@ namespace qz
 	{
 		class Chunk
 		{
-		  public:
+		public:
 			typedef std::function<BlockType*(std::size_t, std::size_t,
 			                                 std::size_t)>
 			    GeneratorFunction;
 
-		  private:
+		private:
 			std::vector<BlockType*> m_voxelData;
 
-		  public:
+		public:
 			void fill(const std::size_t               chunkSize,
 			          const Chunk::GeneratorFunction& generator);
 		};
 
 		class Terrain
 		{
-		  private:
+		private:
 			std::size_t              m_chunkSize;
 			Chunk::GeneratorFunction m_generatorFunction;
 			std::vector<Chunk>       m_loadedChunks;
 
-		  public:
+		public:
 			Terrain(std::size_t                     chunkSize,
 			        const Chunk::GeneratorFunction& generator);
 

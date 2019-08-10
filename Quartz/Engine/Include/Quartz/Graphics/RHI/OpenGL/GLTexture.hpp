@@ -42,13 +42,13 @@ namespace qz
 			{
 				class GLTexture
 				{
-				  public:
-					void   create (unsigned char* pixelData, std::size_t width,
-					               std::size_t height);
-					void   free ();
-					GLuint getID () const { return m_id; }
+				public:
+					void   create(unsigned char* pixelData, std::size_t width,
+					              std::size_t height);
+					void   free();
+					GLuint getID() const { return m_id; }
 
-				  private:
+				private:
 					GLuint m_id;
 				};
 			} // namespace gl

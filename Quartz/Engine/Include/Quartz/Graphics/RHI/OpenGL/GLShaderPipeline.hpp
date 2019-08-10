@@ -43,18 +43,18 @@ namespace qz
 			{
 				class GLShaderPipeline
 				{
-				  private:
+				private:
 					GLuint      m_id;
 					InputLayout m_inputLayout;
 
-				  public:
-					void         create (const std::string& dirpath,
-					                     const std::string& sourcecode,
-					                     const InputLayout& inputLayout);
-					void         use ();
-					void         free ();
-					GLuint       getID () const { return m_id; }
-					InputLayout& getInputLayout () { return m_inputLayout; }
+				public:
+					void         create(const std::string& dirpath,
+					                    const std::string& sourcecode,
+					                    const InputLayout& inputLayout);
+					void         use();
+					void         free();
+					GLuint       getID() const { return m_id; }
+					InputLayout& getInputLayout() { return m_inputLayout; }
 				};
 			} // namespace gl
 		}     // namespace rhi

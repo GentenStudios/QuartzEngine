@@ -46,7 +46,7 @@ namespace qz
 		 */
 		class FPSCamera
 		{
-		  public:
+		public:
 			/**
 			 * @brief Constructs a new FPSCamera object.
 			 * @param window A window object, mainly used to check for key
@@ -133,7 +133,7 @@ namespace qz
 			 */
 			void resizeProjection(events::Event e);
 
-		  private:
+		private:
 			IWindow* m_window;
 
 			/**

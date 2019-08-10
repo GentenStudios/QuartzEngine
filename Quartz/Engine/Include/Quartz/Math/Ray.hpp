@@ -40,7 +40,7 @@ namespace qz
 		 */
 		class Ray
 		{
-		  public:
+		public:
 			/**
 			 * @brief Constructs a Ray object.
 			 * @param start The position of the start of the ray.
@@ -77,7 +77,7 @@ namespace qz
 			 */
 			Vector3 getCurrentPosition() const;
 
-		  private:
+		private:
 			float   m_length;
 			Vector3 m_start;
 			Vector3 m_direction;

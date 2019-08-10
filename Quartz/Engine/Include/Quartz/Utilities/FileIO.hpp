@@ -39,7 +39,7 @@ namespace qz
 		 */
 		class FileIO
 		{
-		  public:
+		public:
 			/**
 			 * @brief Reads a whole file into a string.
 			 * @param filepath The path to the file needing to be read.

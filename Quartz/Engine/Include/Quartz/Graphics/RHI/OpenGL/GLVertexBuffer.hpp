@@ -40,13 +40,13 @@ namespace qz
 			{
 				class GLVertexBuffer
 				{
-				  public:
-					void create ();
-					void free ();
-					void bind ();
-					void bufferData (float* data, std::size_t sizeBytes);
+				public:
+					void create();
+					void free();
+					void bind();
+					void bufferData(float* data, std::size_t sizeBytes);
 
-				  private:
+				private:
 					GLuint m_id;
 				};
 			} // namespace gl

@@ -57,11 +57,11 @@ namespace qz
 
 		class Mesh
 		{
-		  private:
+		private:
 			std::vector<Vertex3D> m_vertices;
 			PhongMaterial         m_material;
 
-		  public:
+		public:
 			Mesh(const std::vector<Vertex3D>& vertices);
 			Mesh();
 			Mesh(std::size_t vertexCapacity);

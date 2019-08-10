@@ -42,13 +42,13 @@ namespace qz
 		{
 			class SingleWorker
 			{
-			  public:
-				SingleWorker ();
-				~SingleWorker ();
+			public:
+				SingleWorker();
+				~SingleWorker();
 
-				void addWork (std::function<void()>&& function);
+				void addWork(std::function<void()>&& function);
 
-			  private:
+			private:
 				bool                    m_running;
 				std::thread             m_thread;
 				std::mutex              m_mutex;
@@ -56,8 +56,8 @@ namespace qz
 
 				std::deque<std::function<void()>> m_queue;
 
-			  private:
-				void threadHandle ();
+			private:
+				void threadHandle();
 			};
 		} // namespace threading
 	}     // namespace utils

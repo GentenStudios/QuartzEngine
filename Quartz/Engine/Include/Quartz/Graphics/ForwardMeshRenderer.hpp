@@ -45,7 +45,7 @@ namespace qz
 
 		class ForwardMeshRenderer
 		{
-		  private:
+		private:
 			rhi::IRenderDevice*       m_renderDevice;
 			rhi::ShaderPipelineHandle m_shader;
 			rhi::UniformHandle        m_viewMatrixUniform;
@@ -67,7 +67,7 @@ namespace qz
 			rhi::TextureHandle          m_defaultTexture;
 			TextureSlotHandle           m_defaultTextureSlot;
 
-		  public:
+		public:
 			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
 
 			void create();

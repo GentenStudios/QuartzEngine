@@ -34,8 +34,8 @@ namespace sandbox
 {
 	class DebugOverlay
 	{
-	  private:
-	  public:
+	private:
+	public:
 		void show();
 	};
 } // namespace sandbox

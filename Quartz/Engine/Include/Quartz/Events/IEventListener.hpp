@@ -36,7 +36,7 @@ namespace qz
 	{
 		class IEventListener
 		{
-		  public:
+		public:
 			IEventListener()          = default;
 			virtual ~IEventListener() = default;
 

@@ -61,9 +61,9 @@ namespace qz
 
 			class InputLayout
 			{
-			  public:
-				InputLayout (std::initializer_list<VertexElement> init);
-				InputLayout () {}
+			public:
+				InputLayout(std::initializer_list<VertexElement> init);
+				InputLayout() {}
 
 				std::vector<VertexElement> elements;
 			};

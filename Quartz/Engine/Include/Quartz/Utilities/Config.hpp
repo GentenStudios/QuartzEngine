@@ -50,7 +50,7 @@ namespace qz
 		 */
 		class ConfigFile
 		{
-		  public:
+		public:
 			/*
 			 * @brief Set's the associated .ini file for this ConfigFile. This
 			 * filepath should be full (e.g. include the .ini extension)
@@ -154,14 +154,14 @@ namespace qz
 			 */
 			void reload();
 
-		  private:
+		private:
 			INIReader   m_inifile;
 			std::string m_filepath;
 		};
 
 		class ConfigManager
 		{
-		  public:
+		public:
 			/**
 			 * @brief Pointer to the static instance of ConfigManager
 			 * @return The ConfigManager singleton.
@@ -192,7 +192,7 @@ namespace qz
 			 */
 			ConfigFile* getConfigFile(const std::string& name);
 
-		  private:
+		private:
 			std::unordered_map<std::string, ConfigFile> m_configfiles;
 		};
 	} // namespace utils

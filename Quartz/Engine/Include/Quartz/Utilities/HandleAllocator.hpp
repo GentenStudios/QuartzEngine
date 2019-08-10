@@ -38,7 +38,7 @@ namespace qz
 	{
 		class HandleBase
 		{
-		  public:
+		public:
 			static constexpr std::uint16_t QZ_INVALID_HANDLE = 0xFFFF;
 
 			void          set(std::uint16_t value) { m_handle = value; }
@@ -46,14 +46,14 @@ namespace qz
 
 			HandleBase() : m_handle(QZ_INVALID_HANDLE) {}
 
-		  private:
+		private:
 			std::uint16_t m_handle;
 		};
 
 		template <std::uint16_t TMaxNumHandles, typename THandleType>
 		class HandleAllocator
 		{
-		  public:
+		public:
 			HandleAllocator() : m_size(0) {}
 
 			THandleType allocate()
@@ -86,7 +86,7 @@ namespace qz
 
 			void reset() { m_size = 0; }
 
-		  private:
+		private:
 			THandleType   m_handles[TMaxNumHandles];
 			std::uint16_t m_size;
 		};

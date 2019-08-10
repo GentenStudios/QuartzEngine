@@ -41,7 +41,7 @@ namespace qz
 	{
 		class BlockTextureAtlas
 		{
-		  public:
+		public:
 			typedef int           SpriteID;
 			const static SpriteID INVALID_SPRITE = -1;
 
@@ -76,7 +76,7 @@ namespace qz
 
 			RectAABB getSpriteFromID(SpriteID spriteId) const;
 
-		  private:
+		private:
 			std::unordered_map<std::string, SpriteID> m_textureIDMap;
 			std::size_t    m_spriteWidth, m_spriteHeight;
 			unsigned char* m_patchedTextureData;
@@ -112,11 +112,11 @@ namespace qz
 
 		class BlockRegistry : public utils::Singleton<BlockRegistry>
 		{
-		  public:
+		public:
 			BlockType* registerBlock(BlockType blockInfo);
 			BlockType* getBlockFromID(const char* id);
 
-		  private:
+		private:
 			// This is a std::list as we don't want to invalidate any pointers
 			// when resizing... #todo (bwilks): Maybe use HandleAllocator for
 			// this as well??
