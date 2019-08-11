@@ -76,14 +76,16 @@ namespace qz
 			                             const float& nearPlane);
 
 			/**
-			 * @brief
-			 * @param left
-			 * @param right
-			 * @param top
-			 * @param bottom
-			 * @param farPlane
-			 * @param nearPlane
-			 * @return
+			 * @brief Calculates an orthographic matrix,
+			 * @param left The coordinates of the left vertical clipping plane
+			 * @param right The coordinates of the right vertical clipping plane
+			 * @param top The coordinates of the top horizontal clipping plane.
+			 * @param bottom The coordinates of the bottom horizontal clipping
+			 * plane.
+			 * @param farPlane Anything behind this sheet plane is clipped.
+			 * @param nearPlane Anything in front of this sheet plane is
+			 * clipped.
+			 * @return Othographic matrix
 			 */
 			static Matrix4x4 ortho(float left, float right, float top,
 			                       float bottom, float farPlane,
