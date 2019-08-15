@@ -1,32 +1,37 @@
 // Copyright 2019 Genten Studios
 //
-// Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
-// following conditions are met:
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
 //
-// 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the
-// following disclaimer.
+// 1. Redistributions of source code must retain the above copyright notice,
+// this list of conditions and the following disclaimer.
 //
-// 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the
-// following disclaimer in the documentation and/or other materials provided with the distribution.
+// 2. Redistributions in binary form must reproduce the above copyright notice,
+// this list of conditions and the following disclaimer in the documentation
+// and/or other materials provided with the distribution.
 //
-// 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote
-// products derived from this software without specific prior written permission.
+// 3. Neither the name of the copyright holder nor the names of its contributors
+// may be used to endorse or promote products derived from this software without
+// specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-// PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-// CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-// DAMAGE.
+// THIS SOFTWARE IS PROVidED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCidENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
 
 #include <Quartz/Graphics/ImGuiExtensions.hpp>
 #include <imgui/imgui.h>
 
+#include <cstring>
 #include <map>
 #include <vector>
-#include <cstring>
 
 bool ImGui::InputMatrix4x4(const char* label, qz::Matrix4x4* mat4)
 {
@@ -67,54 +72,50 @@ bool ImGui::InputVector2(const char* label, qz::Vector2* vec2)
 	return ImGui::InputFloat2(label, dat);
 }
 
-struct VariablePlotData
+struct PlotVarData
 {
-	ImGuiID             id;
-	std::vector<float>  data;
-	int                 dataInsertIndex;
-	int                 lastFrame;
+	ImGuiID            id;
+	std::vector<float> data;
+	int                dataInsertIdx;
+	int                lastFrame;
 
-	VariablePlotData() : id(0), dataInsertIndex(0), lastFrame(-1) {}
+	PlotVarData() : id(0), dataInsertIdx(0), lastFrame(-1) {}
 };
 
-static std::map<ImGuiID, VariablePlotData>	g_variablesPlotMap;
+static std::map<ImGuiID, PlotVarData> g_PlotVarsMap;
 
 void ImGui::PlotVariable(const char* label, float value)
 {
-	const int BUFFER_SIZE = 120;
+	const int bufferSize = 120;
 
 	ImGui::PushID(label);
-
 	const ImGuiID id = ImGui::GetID("");
-	VariablePlotData& pvd = g_variablesPlotMap[id];
 
-	if (pvd.data.capacity() != BUFFER_SIZE)
+	PlotVarData& pvd = g_PlotVarsMap[id];
+
+	if (pvd.data.capacity() != bufferSize)
 	{
-		pvd.data.resize(BUFFER_SIZE);
-		std::memset(&pvd.data[0], 0, sizeof(float) * BUFFER_SIZE);
-
-		pvd.dataInsertIndex = 0;
-		pvd.lastFrame = -1;
+		pvd.data.resize(bufferSize);
+		memset(&pvd.data[0], 0, sizeof(float) * bufferSize);
+		pvd.dataInsertIdx = 0;
+		pvd.lastFrame     = -1;
 	}
 
-	if (pvd.dataInsertIndex == BUFFER_SIZE)
-	{
-		pvd.dataInsertIndex = 0;
-	}
+	if (pvd.dataInsertIdx == bufferSize)
+		pvd.dataInsertIdx = 0;
 
-	const int display_idx = pvd.dataInsertIndex;
+	const int displayIndex = pvd.dataInsertIdx;
 
 	if (value != FLT_MAX)
-		pvd.data[pvd.dataInsertIndex++] = value;
+		pvd.data[pvd.dataInsertIdx++] = value;
 
 	const int currentFrame = ImGui::GetFrameCount();
-	
 	if (pvd.lastFrame != currentFrame)
 	{
-		ImGui::PlotLines("##plot", &pvd.data[0], BUFFER_SIZE, pvd.dataInsertIndex, NULL, FLT_MIN, FLT_MAX, ImVec2(0, 40));
+		ImGui::PlotLines("##plot", &pvd.data[0], bufferSize, pvd.dataInsertIdx,
+		                 nullptr, FLT_MIN, FLT_MAX, ImVec2(0, 40));
 		ImGui::SameLine();
-		ImGui::Text("%s\n%-3.4f", label, pvd.data[display_idx]);
-
+		ImGui::Text("%s\n%-3.4f", label, pvd.data[displayIndex]);
 		pvd.lastFrame = currentFrame;
 	}
 

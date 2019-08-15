@@ -31,7 +31,7 @@ endif()
 if(UNIX AND NOT APPLE)
 	find_package(X11 REQUIRED)
 	find_package(Threads REQUIRED)
-	target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES} ${X11_Xxf86vm_LIB} GL)
+	target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES} GL)
 endif()
 
 foreach(FILE ${engineSources}) 
