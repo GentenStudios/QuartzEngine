@@ -111,6 +111,7 @@ namespace qz
 			void resizeProjection(events::Event e);
 
 		private:
+			/// @brief Used in order to control the mouse - getting deltas, clipping the mouse back to the middle, etc...
 			IWindow* m_window;
 
 			/**

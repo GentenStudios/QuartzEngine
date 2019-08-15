@@ -34,47 +34,118 @@ namespace qz
 {
 	namespace gfx
 	{
+		/// @brief Handle for representing GPU texture slots.
 		struct TextureSlotHandle : utils::HandleBase { };
-
+		
+		/// @brief Renderer based of a forward rendering design.
 		class ForwardMeshRenderer
 		{
 		private:
+			/// @brief Pointer to the API specific RenderDevice, used for interacting with the
+			///        platform graphics API
 			rhi::IRenderDevice*                           m_renderDevice;
+
+			/// @brief The shader to use for renderering.
 			rhi::ShaderPipelineHandle                     m_shader;
+
+			/// @brief Shader uniforms for the projection and view matrices.
 			rhi::UniformHandle                            m_viewMatrixUniform,
-			                                              m_projectionMatrixUniform;
-
+														  m_projectionMatrixUniform;
+			
+			/// @brief Handles to all the textures that can be held in texture slots at one time.
 			utils::HandleAllocator<32, TextureSlotHandle> m_textureSlotsAllocator;
-
+			
+			/// @brief Reprents all the data needed to render a mest - both internal and userfacing data.
 			struct MeshRenderData
 			{
+				/// @brief Vertex buffer handle for this texture - handle to the GPU vertex data.
 				rhi::VertexBufferHandle                   vertexBuffer;
+
+				/// @brief Pointer to the userfacing mesh data.
 				Mesh*                                     mesh;
+
+				/// @brief Texture slot that the texture used by this mesh is stored in.
 				TextureSlotHandle                         textureSlot;
 			};
-
+			
+			/// @brief List of all meshes to be rendered.
 			std::vector<MeshRenderData>                   m_meshes;
 
+			/// @brief The values of the view and projection matrices.
 			Matrix4x4                                     m_viewMatrix,
-			                                              m_projectionMatrix;
-
+														  m_projectionMatrix;
+			
+			/// @brief Default texture handle (used if no texture specified)
 			rhi::TextureHandle                            m_defaultTexture;
+			
+			/// @brief Slot for the default texture (used if no texture is specified)
 			TextureSlotHandle                             m_defaultTextureSlot;
 
 		public:
+			/**
+			 * @brief Inital constructor for the renderer. Does not initialize all state -
+			 *        create() also needs called.
+			 */
 			ForwardMeshRenderer(rhi::IRenderDevice* renderDevice);
-
+			
+			/**
+			 * @brief Initializes the state of the renderer. Must be called before any other method is called.
+			 */
 			void        create();
-			void        destroy();
-			void        submitMesh(Mesh* mesh);
-			void        render();
 
+			/**
+			 * @brief Destroy's any resources used by the renderer - no other 
+			 *        method of this instance should be called after this, as the renderer
+			 *        cannot be assumed to be in a usable or even recoverable state. Any data
+			 *        assosiated with this object should also be assumed to be invalid.
+			 */
+			void        destroy();
+
+			/**
+			 * @brief Submit a mesh to be rendered.
+			 * @param mesh A pointer to the mesh to be rendered. Cannot be null.
+			 */
+			void        submitMesh(Mesh* mesh);
+
+			/*
+			 * @brief Render the scene - i.e. any meshes that have been submitted with
+			 *        submitMesh ()
+			 */
+			void        render();
+			
+			/*
+			 * @brief Set the projection matrix to be used when rendering.
+			 *        Should be set at least once before the first render() call.
+			 * @param projection The new projection matrix.
+			 */
 			void        setProjectionMatrix(const Matrix4x4& projection);
+
+			/*
+			 * @brief Set the view matrix to be used when rendering.
+			 *        Should be set at least once before the first render() call.
+			 * @param view The new view matrix.
+			 */
 			void        setViewMatrix(const Matrix4x4& view);
 
+			/*
+			 * @brief Return the current projection matrix. If setProjectionMatrix has
+			 *        not been called then this return value is undefined.
+			 * @return The current projection matrix. Undefined if not explicitly set.
+			 */
 			Matrix4x4   getProjectionMatrix() const { return m_projectionMatrix; }
-			Matrix4x4   getViewMatrix()        const { return m_viewMatrix; }
 
+			/*
+			 * @brief Get the current view matrix. If setViewMatrix has not been called
+			 *        then this return value is undefined.
+			 * @return The current view matrix. Undefined if not explicitly set.
+			 */
+			Matrix4x4   getViewMatrix()        const { return m_viewMatrix; }
+			
+			/*
+			 * @brief Count up the total number of vertices the renderer currently has to
+			 *        render.
+			 * @return The number of vertices the renderer has to render at this point in time.
+			 */
 			std::size_t countTotalNumVertices();
 		};
 	}

@@ -27,19 +27,30 @@ namespace qz
 {
 	namespace gfx
 	{
+		/// @brief The various rendering API's we support.
 		enum class RenderingAPI
 		{
 			NONE, OPENGL
 		};
 
+		/// @brief Context representing data specific about the chosen rendering API.
 		class Context
 		{
 		public:
+			/**
+			 * @brief Get the currently in use rendering API.
+			 * @return The current render API.
+			 */
 			static RenderingAPI getRenderingAPI();
 
 		private:
+			/// @brief The current rendering API that will be used for rendering.
 			static RenderingAPI m_renderingAPI;
 
+			/**
+			 * @brief Set the current rendering API.
+			 * @param api The new rendering API to use.
+			 */
 			static void setRenderingAPI(RenderingAPI api);
 
 			friend class IWindow;

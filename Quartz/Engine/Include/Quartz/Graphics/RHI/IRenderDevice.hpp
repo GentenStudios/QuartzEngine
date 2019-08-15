@@ -82,7 +82,7 @@ namespace qz
 				/**
 				 * @brief			Create shader from source code.
 				 * @param  dirpath	    path to directory used as working directory when parsing the source code. 
-									    ( #include directives will be intepreted relative to this dir )
+										( #include directives will be intepreted relative to this dir )
 				 * @param  sourcecode    The shader source code. Should contain all necessary shader stages.
 				 * @param  inputlayout   Specificy the layout of that data passed into the shader.
 				 * @return Handle to the newly created shader

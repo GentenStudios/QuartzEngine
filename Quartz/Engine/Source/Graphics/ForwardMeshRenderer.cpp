@@ -32,6 +32,7 @@ using namespace qz;
 
 //#todo (bwilks): this shouldn't always be hardcoded.
 //#lets be a dick (vfadia): this isn't acceptable bruh
+//#fuk off (bwilks)
 static const char* SHADER_FILEPATH = "assets/shaders/basic.shader";
 
 void ForwardMeshRenderer::create()

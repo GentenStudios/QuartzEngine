@@ -23,8 +23,10 @@
 
 #include <Quartz/Graphics/ImGuiExtensions.hpp>
 #include <imgui/imgui.h>
+
 #include <map>
 #include <vector>
+#include <cstring>
 
 bool ImGui::InputMatrix4x4(const char* label, qz::Matrix4x4* mat4)
 {
@@ -65,55 +67,55 @@ bool ImGui::InputVector2(const char* label, qz::Vector2* vec2)
 	return ImGui::InputFloat2(label, dat);
 }
 
-#include <map>
-struct PlotVarData
+struct VariablePlotData
 {
-	ImGuiID        ID;
-	std::vector<float>  Data;
-	int            DataInsertIdx;
-	int            LastFrame;
+	ImGuiID             id;
+	std::vector<float>  data;
+	int                 dataInsertIndex;
+	int                 lastFrame;
 
-	PlotVarData() : ID(0), DataInsertIdx(0), LastFrame(-1) {}
+	VariablePlotData() : id(0), dataInsertIndex(0), lastFrame(-1) {}
 };
 
-typedef std::map<ImGuiID, PlotVarData> PlotVarsMap;
-static PlotVarsMap	g_PlotVarsMap;
+static std::map<ImGuiID, VariablePlotData>	g_variablesPlotMap;
 
 void ImGui::PlotVariable(const char* label, float value)
 {
-	const int buffer_size = 120;
+	const int BUFFER_SIZE = 120;
 
 	ImGui::PushID(label);
-	ImGuiID id = ImGui::GetID("");
 
-	// Lookup O(log N)
-	PlotVarData& pvd = g_PlotVarsMap[id];
+	const ImGuiID id = ImGui::GetID("");
+	VariablePlotData& pvd = g_variablesPlotMap[id];
 
-	// Setup
-	if (pvd.Data.capacity() != buffer_size)
+	if (pvd.data.capacity() != BUFFER_SIZE)
 	{
-		pvd.Data.resize(buffer_size);
-		memset(&pvd.Data[0], 0, sizeof(float) * buffer_size);
-		pvd.DataInsertIdx = 0;
-		pvd.LastFrame = -1;
+		pvd.data.resize(BUFFER_SIZE);
+		std::memset(&pvd.data[0], 0, sizeof(float) * BUFFER_SIZE);
+
+		pvd.dataInsertIndex = 0;
+		pvd.lastFrame = -1;
 	}
 
-	// Insert (avoid unnecessary modulo operator)
-	if (pvd.DataInsertIdx == buffer_size)
-		pvd.DataInsertIdx = 0;
-	int display_idx = pvd.DataInsertIdx;
+	if (pvd.dataInsertIndex == BUFFER_SIZE)
+	{
+		pvd.dataInsertIndex = 0;
+	}
+
+	const int display_idx = pvd.dataInsertIndex;
 
 	if (value != FLT_MAX)
-		pvd.Data[pvd.DataInsertIdx++] = value;
+		pvd.data[pvd.dataInsertIndex++] = value;
 
-	// Draw
-	int current_frame = ImGui::GetFrameCount();
-	if (pvd.LastFrame != current_frame)
+	const int currentFrame = ImGui::GetFrameCount();
+	
+	if (pvd.lastFrame != currentFrame)
 	{
-		ImGui::PlotLines("##plot", &pvd.Data[0], buffer_size, pvd.DataInsertIdx, NULL, FLT_MIN, FLT_MAX, ImVec2(0, 40));
+		ImGui::PlotLines("##plot", &pvd.data[0], BUFFER_SIZE, pvd.dataInsertIndex, NULL, FLT_MIN, FLT_MAX, ImVec2(0, 40));
 		ImGui::SameLine();
-		ImGui::Text("%s\n%-3.4f", label, pvd.Data[display_idx]);	// Display last value in buffer
-		pvd.LastFrame = current_frame;
+		ImGui::Text("%s\n%-3.4f", label, pvd.data[display_idx]);
+
+		pvd.lastFrame = currentFrame;
 	}
 
 	ImGui::PopID();

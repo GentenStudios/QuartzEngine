@@ -27,6 +27,7 @@ namespace qz
 {
 	namespace gfx
 	{
+		/// @brief Various data types used for graphics API interop.
 		enum class DataType : int
 		{
 			INT,

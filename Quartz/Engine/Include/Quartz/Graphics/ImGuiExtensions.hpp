@@ -27,13 +27,59 @@
 
 namespace ImGui
 {
+	/**
+	 * @brief ImGui extension for a GUI representation of a Matrix4x4.
+	 * @param label The label of the GUI element. Follows same rules as normal ImGui labels.
+	 * @param mat4 Pointer to the Matrix4x4 that will be written to/read from.
+	 *             Should not be null.
+	 * @return Return if the GUI element has just been updated.
+	 */
 	bool InputMatrix4x4(const char* label, qz::Matrix4x4* mat4);
-	bool InputVector3(const char* label, qz::Vector3* vec3);
-	bool InputVector2(const char* label, qz::Vector2* vec2);
 
+	/**
+	 * @brief ImGui extension for a GUI representation of a Vector3
+	 * @param label The label of the GUI element. Follows same rules as normal ImGui labels.
+	 * @param vec3 Pointer to the Vector3 that will be written to/read from. Should not be null.
+	 * @return Return if the GUI element has just been updated.
+	 */
+	bool InputVector3(const char* label, qz::Vector3* vec3);
+	
+	/**
+	 * @brief ImGui extension for a GUI representaton of a Vector2
+	 * @param label The label of the GUI element. Follows same rules as normal ImGui labels.
+	 * @param vec2 Pointer to the Vector2 that will be written to/read from. Should not be null.
+	 * @return Return if the GUI element has just been updated.
+	 */
+	bool InputVector2(const char* label, qz::Vector2* vec2);
+	
+	/**
+	 * @brief ImGui extension for a slider GUI representation of a Matrix4x4.
+	 * @param label The label of the GUI element. Follows same rules as normal ImGui labels.
+	 * @param mat4 Pointer to the Matrix4x4 that will be written to/read from. Should not be null.
+	 * @return Return if the GUI element has just been updated.
+	 */
 	bool SliderMatrix4x4(const char* label, qz::Matrix4x4* mat4);
+	
+	/**
+	 * @brief ImGui extension for a slider GUI representation of a Vector3.
+	 * @param label The label of the GUI element. Follows same rules as normal ImGui labels.
+	 * @param vec3 Pointer to the Vector3 that will be written to/read from. Should not be null.
+	 * @return Return if the GUI element has just been updated.
+	 */
 	bool SliderVector3(const char* label, qz::Vector3* vec3);
+
+	/**
+	 * @brief ImGui extension for a slider GUI representation of a Vector2
+	 * @param label The label of the GUI element. Follows same rules as normal ImGui labels.
+	 * @param vec2 Pointer to the Vector2 that will be written to/read from. Should not be null.
+	 * @return Return if the GUI element has just been updated.
+	 */
 	bool SliderVector2(const char* label, qz::Vector2* vec2);
 
+	/**
+	 * @brief ImGui extension for a plotting a scalar float value on a graph.
+	 * @param label The label of the GUI element. Follows same rules as normal ImGui labels.
+	 * @param value Scalar float value to plot on the graph as it updates.
+	 */
 	void PlotVariable(const char* label, float value);
 }
