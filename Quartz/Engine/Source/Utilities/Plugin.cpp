@@ -64,7 +64,7 @@ void Plugin::load(const std::string& path)
             , "Couldn't load the library"
         );
     }
-#elif defined(QZ_PLATFORM_LINUX)
+#elif defined(QZ_PLATFORM_LINUX) || defined(QZ_PLATFORM_APPLE)
     if (NULL == (m_hInstance = dlopen(m_path.c_str(), RTLD_NOW | RTLD_GLOBAL)))
     {
         throw std::system_error(
@@ -82,7 +82,7 @@ void Plugin::unload()
     {
 #if defined(QZ_PLATFORM_WINDOWS)
         FreeLibrary(m_hInstance);
-#elif defined(QZ_PLATFORM_LINUX)
+#elif defined(QZ_PLATFORM_LINUX) || defined(QZ_PLATFORM_APPLE)
         dlclose(m_hInstance);
 #endif
     }

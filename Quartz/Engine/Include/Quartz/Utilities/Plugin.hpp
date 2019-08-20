@@ -67,7 +67,7 @@ namespace qz
                         , std::string("Couldn't find ") + procname
                     );
                 }
-#elif defined(QZ_PLATFORM_LINUX)
+#elif defined(QZ_PLATFORM_LINUX) || defined(QZ_PLATFORM_APPLE)
                 if (NULL == (funcptr = reinterpret_cast<T>(dlsym(m_hInstance, procname.c_str()))))
                 {
                     throw std::system_error(
@@ -82,7 +82,7 @@ namespace qz
         private:
 #if defined(QZ_PLATFORM_WINDOWS)
             HINSTANCE m_hInstance;
-#elif defined(QZ_PLATFORM_LINUX)
+#elif defined(QZ_PLATFORM_LINUX) || defined(QZ_PLATFORM_APPLE)
             void* m_hInstance;
 #endif
             std::string m_path;
