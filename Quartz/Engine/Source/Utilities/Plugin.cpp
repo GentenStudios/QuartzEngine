@@ -26,19 +26,64 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
-
-#include <Quartz/Core.hpp>
-#include <Quartz/Utilities/Config.hpp>
-#include <Quartz/Utilities/FileIO.hpp>
-#include <Quartz/Utilities/Logger.hpp>
+#include <Quartz/QuartzPCH.hpp>
 #include <Quartz/Utilities/Plugin.hpp>
 
-#include <Quartz/Events/Event.hpp>
+using namespace qz::utils;
 
-#include <Quartz/Graphics/RHI/Context.hpp>
-#include <Quartz/Graphics/RHI/DataTypes.hpp>
-#include <Quartz/Graphics/RHI/InputLayout.hpp>
+Plugin::Plugin() :
+    m_hInstance(NULL)
+    , m_path("")
+    , m_loaded(false)
+{}
 
-#include <Quartz/Graphics/Camera.hpp>
-#include <Quartz/Platform/IWindow.hpp>
+Plugin::Plugin(const std::string& path) :
+    m_hInstance(NULL)
+    , m_path(path)
+    , m_loaded(false)
+{
+    load(m_path);
+}
+
+Plugin::~Plugin()
+{
+    unload();
+}
+
+void Plugin::load(const std::string& path)
+{
+    if (m_loaded)
+        unload();
+    m_path = path;
+    
+#if defined(QZ_PLATFORM_WINDOWS)
+    if (NULL == (m_hInstance = LoadLibrary(m_path.c_str())))
+    {
+        throw std::system_error(
+            std::error_code(::GetLastError(), std::system_category())
+            , "Couldn't load the library"
+        );
+    }
+#elif defined(QZ_PLATFORM_LINUX)
+    if (NULL == (m_hInstance = dlopen(m_path.c_str(), RTLD_NOW | RTLD_GLOBAL)))
+    {
+        throw std::system_error(
+            std::error_code(errno, std::system_category())
+            , "Couldn't load the library, " + std::string(dlerror())
+        );
+    }
+#endif
+    m_loaded = true;
+}
+
+void Plugin::unload()
+{
+    if (m_loaded)
+    {
+#if defined(QZ_PLATFORM_WINDOWS)
+        FreeLibrary(m_hInstance);
+#elif defined(QZ_PLATFORM_LINUX)
+        dlclose(m_hInstance);
+#endif
+    }
+}
