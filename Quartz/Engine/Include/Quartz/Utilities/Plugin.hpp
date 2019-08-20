@@ -32,7 +32,7 @@
 
 #if defined(QZ_PLATFORM_WINDOWS)
     #include <Windows.h>
-#elif defined(QZ_PLATFORM_LINUX)
+#elif defined(QZ_PLATFORM_LINUX) || defined(QZ_PLATFORM_APPLE)
     #include <dlfcn.h>
 #endif
 
