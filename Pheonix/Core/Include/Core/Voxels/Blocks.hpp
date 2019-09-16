@@ -31,12 +31,13 @@
 #include <string>
 #include <vector>
 
-namespace qz
+namespace pheonix
 {
 	namespace voxels
 	{
         /// @brief Stores universal definition of a block
         class RegisteredBlock{
+            private:
             /// @brief Stores Unique name for use duing saving, should be in format mod:name eg "core:dirt"
             std::string UniqueName;
             /// @brief Stores unique ID to identify block for use in memory, should match location in registry
@@ -47,11 +48,19 @@ namespace qz
 
         /// @brief Stores universal block definitions
         class BlockRegistry{
-            std::vector<RegisteredBlock> Blocks; //This needs to be a dynamic array as we wont know size until load
+            RegisteredBlock Blocks[100]; //This needs to be a dynamic array as we wont know size until load
+            int i = 0;
+
+            int registerBlock(std::string UniqueName, std::string DisplayName){};
+            RegisteredBlock getBlockByID(int blockId){};
+            RegisteredBlock getBlockByName(std::string name){};
         };
 
         /// @breif Metadata for a block, this is only created if a block needs to store more data than what is universal (eg: we wont create this for each dirt block)
         class Block{
+            public:
+            Block(std::string UniqueName, int BlockId, std::string DisplayName);
+            ~Block();
 
         };
 

@@ -27,3 +27,10 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include <Core/Voxels/Blocks.hpp>
+
+using namespace pheonix::voxels;
+
+int registerBlock(std::string UniqueName, std::string DisplayName){
+    Blocks[i] = Block(UniqueName, i, DisplayName);
+
+}
