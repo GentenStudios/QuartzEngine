@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Pheonix
+project(Pheonix)
 
 add_subdirectory(Include)
 add_subdirectory(Source)
@@ -16,5 +16,4 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different
 		$<TARGET_FILE:liblua>
 		$<TARGET_FILE_DIR:${PROJECT_NAME}>/$<TARGET_FILE_NAME:liblua>
-)
 )
