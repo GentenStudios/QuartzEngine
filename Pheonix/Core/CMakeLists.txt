@@ -5,7 +5,7 @@ project(Pheonix)
 add_subdirectory(Include)
 add_subdirectory(Source)
 
-add_executable(${PROJECT_NAME} ${voxelSources} $voxelHeaders})
+add_executable(${PROJECT_NAME} ${voxelSources} ${voxelHeaders})
 target_link_libraries(${PROJECT_NAME} PRIVATE QuartzEngine)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../Quartz/ThirdParty)
