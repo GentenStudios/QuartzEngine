@@ -35,12 +35,6 @@ namespace qz
 {
 	namespace voxels
 	{
-
-        /// @brief Stores universal block definitions
-        class BlockRegistry{
-            std::vector<RegisteredBlock> Blocks; //This needs to be a dynamic array as we wont know size until load
-        };
-
         /// @brief Stores universal definition of a block
         class RegisteredBlock{
             /// @brief Stores Unique name for use duing saving, should be in format mod:name eg "core:dirt"
@@ -49,6 +43,11 @@ namespace qz
             int BlockId;
             /// @brief Stores human readable name for output to player ex "dirt"
             std::string DisplayName;
+        };
+
+        /// @brief Stores universal block definitions
+        class BlockRegistry{
+            std::vector<RegisteredBlock> Blocks; //This needs to be a dynamic array as we wont know size until load
         };
 
         /// @breif Metadata for a block, this is only created if a block needs to store more data than what is universal (eg: we wont create this for each dirt block)
