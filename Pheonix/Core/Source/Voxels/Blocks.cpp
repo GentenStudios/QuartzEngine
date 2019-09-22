@@ -30,7 +30,16 @@
 
 using namespace pheonix::voxels;
 
-int registerBlock(std::string UniqueName, std::string DisplayName){
-    Blocks[i] = Block(UniqueName, i, DisplayName);
+RegisteredBlock::RegisteredBlock(std::string Unique, int ID, std::string Display){
+    m_blockId = ID;
+    m_uniqueName = Unique;
+    m_displayName = Display;
+};
 
+int RegisteredBlock::getBlockId(){return m_blockId;};
+
+int BlockRegistry::registerBlock(std::string UniqueName, std::string DisplayName){
+    i++;
+    Blocks[i] = RegisteredBlock(UniqueName, i, DisplayName);
+    return i;
 }

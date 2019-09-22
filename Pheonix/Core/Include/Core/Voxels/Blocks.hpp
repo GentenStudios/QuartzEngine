@@ -38,12 +38,20 @@ namespace pheonix
         /// @brief Stores universal definition of a block
         class RegisteredBlock{
             private:
-            /// @brief Stores Unique name for use duing saving, should be in format mod:name eg "core:dirt"
-            std::string UniqueName;
             /// @brief Stores unique ID to identify block for use in memory, should match location in registry
-            int BlockId;
+            int m_blockId;
+            /// @brief Stores Unique name for use duing saving, should be in format mod:name eg "core:dirt"
+            std::string m_uniqueName;
             /// @brief Stores human readable name for output to player ex "dirt"
-            std::string DisplayName;
+            std::string m_displayName;
+
+            public:
+            RegisteredBlock(std::string UniqueName, int ID, std::string DisplayName);
+            ~RegisteredBlock();
+
+            int getBlockId();
+            std::string getUniqueName();
+            std::string getDisplayName();
         };
 
         /// @brief Stores universal block definitions
