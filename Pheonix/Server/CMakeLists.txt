@@ -11,6 +11,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Pheonix)
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../Quartz/ThirdParty)
 target_include_directories(${PROJECT_NAME} PRIVATE ${dependencies}/SDL2/include ${dependencies}/../Quartz/Engine/Include ${dependencies}/luamod/include ${dependencies}/imgui/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/../Core/Include)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different

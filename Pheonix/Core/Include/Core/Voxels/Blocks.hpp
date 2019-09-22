@@ -36,26 +36,17 @@ namespace pheonix
 	namespace voxels
 	{
         /// @brief Stores universal definition of a block
-        class RegisteredBlock{
-            private:
+        struct RegisteredBlock{
             /// @brief Stores unique ID to identify block for use in memory, should match location in registry
-            int m_blockId;
+            int blockId;
             /// @brief Stores Unique name for use duing saving, should be in format mod:name eg "core:dirt"
-            std::string m_uniqueName;
+            std::string uniqueName;
             /// @brief Stores human readable name for output to player ex "dirt"
-            std::string m_displayName;
-
-            public:
+            std::string displayName;
+            
             RegisteredBlock();
             RegisteredBlock(std::string Unique, int ID, std::string Display);
             ~RegisteredBlock();
-
-            /// @brief Gets block ID
-            int getBlockId();
-            /// @brief Gets the block's unique name
-            std::string getUniqueName();
-            /// @brief Gets the block's display name
-            std::string getDisplayName();
         };
 
         /// @brief Stores universal block definitions
@@ -70,8 +61,7 @@ namespace pheonix
 
             /// @brief Registers a block in the registry
             int registerBlock(std::string UniqueName, std::string DisplayName);
-            RegisteredBlock getBlockByID(int blockId);
-            RegisteredBlock getBlockByName(std::string name);
+            std::string getDisplayName(int blockId);
         };
 
         /// @breif Metadata for a block, this is only created if a block needs to store more data than what is universal (eg: we wont create this for each dirt block)

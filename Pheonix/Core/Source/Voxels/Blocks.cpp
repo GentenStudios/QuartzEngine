@@ -31,14 +31,10 @@
 using namespace pheonix::voxels;
 
 RegisteredBlock::RegisteredBlock(std::string Unique, int ID, std::string Display){
-    m_blockId = ID;
-    m_uniqueName = Unique;
-    m_displayName = Display;
+    blockId = ID;
+    uniqueName = Unique;
+    displayName = Display;
 };
-
-int RegisteredBlock::getBlockId(){return m_blockId;};
-std::string RegisteredBlock::getUniqueName(){return m_uniqueName;};
-std::string RegisteredBlock::getDisplayName(){return m_displayName;};
 
 BlockRegistry::BlockRegistry(){
     i = 0;
@@ -48,4 +44,8 @@ int BlockRegistry::registerBlock(std::string UniqueName, std::string DisplayName
     i++;
     Blocks[i] = RegisteredBlock(UniqueName, i, DisplayName);
     return i;
+}
+
+std::string BlockRegistry::getDisplayName(int blockId){
+    return Blocks[blockId].displayName;
 }

@@ -12,6 +12,8 @@ int main()
   registry.registerBlock("core:cobble", "CobbleStone");
   registry.registerBlock("core:stone", "Stone");
 
-  printf(registry.getBlockByID(1).getDisplayName);
+  //std::string output = "test"; // registry.getDisplayName(1);
+
+  //printf("%s", output);
   return 0;
 };
