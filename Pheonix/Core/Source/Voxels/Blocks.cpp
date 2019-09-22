@@ -37,6 +37,12 @@ RegisteredBlock::RegisteredBlock(std::string Unique, int ID, std::string Display
 };
 
 int RegisteredBlock::getBlockId(){return m_blockId;};
+std::string RegisteredBlock::getUniqueName(){return m_uniqueName;};
+std::string RegisteredBlock::getDisplayName(){return m_displayName;};
+
+BlockRegistry::BlockRegistry(){
+    i = 0;
+}
 
 int BlockRegistry::registerBlock(std::string UniqueName, std::string DisplayName){
     i++;

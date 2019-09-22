@@ -46,22 +46,32 @@ namespace pheonix
             std::string m_displayName;
 
             public:
-            RegisteredBlock(std::string UniqueName, int ID, std::string DisplayName);
+            RegisteredBlock();
+            RegisteredBlock(std::string Unique, int ID, std::string Display);
             ~RegisteredBlock();
 
+            /// @brief Gets block ID
             int getBlockId();
+            /// @brief Gets the block's unique name
             std::string getUniqueName();
+            /// @brief Gets the block's display name
             std::string getDisplayName();
         };
 
         /// @brief Stores universal block definitions
         class BlockRegistry{
+            private:
             RegisteredBlock Blocks[100]; //This needs to be a dynamic array as we wont know size until load
-            int i = 0;
+            int i;
 
-            int registerBlock(std::string UniqueName, std::string DisplayName){};
-            RegisteredBlock getBlockByID(int blockId){};
-            RegisteredBlock getBlockByName(std::string name){};
+            public:
+            BlockRegistry();
+            ~BlockRegistry();
+
+            /// @brief Registers a block in the registry
+            int registerBlock(std::string UniqueName, std::string DisplayName);
+            RegisteredBlock getBlockByID(int blockId);
+            RegisteredBlock getBlockByName(std::string name);
         };
 
         /// @breif Metadata for a block, this is only created if a block needs to store more data than what is universal (eg: we wont create this for each dirt block)
