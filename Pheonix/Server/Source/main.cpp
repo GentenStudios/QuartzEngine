@@ -17,5 +17,10 @@ int main()
   std::cout << registry.getDisplayName(1) << "\n";
   std::cout << registry.getDisplayName(2) << "\n";
   std::cout << registry.getDisplayName(3) << "\n";
+
+  std::cout << registry.getBlockId("core:stone") << "\n";
+  std::cout << registry.getBlockId("asdfadsf") << "\n";
+  std::cout << registry.getBlockId("core:dirt") << "\n";
+
   return 0;
 };

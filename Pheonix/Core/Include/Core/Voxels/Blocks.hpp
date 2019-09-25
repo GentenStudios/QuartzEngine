@@ -61,6 +61,7 @@ namespace pheonix
             /// @brief Registers a block in the registry
             int registerBlock(std::string UniqueName, std::string DisplayName);
             std::string getDisplayName(int blockId);
+            int getBlockId(std::string UniqueName);
         };
 
         /// @breif Metadata for a block, this is only created if a block needs to store more data than what is universal (eg: we wont create this for each dirt block)
