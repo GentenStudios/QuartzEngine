@@ -30,14 +30,25 @@
 
 using namespace pheonix::voxels;
 
+RegisteredBlock::RegisteredBlock(){
+	// @todo Does nothing for now, don't forget every overload alias needs
+	//   a subsequent definition.
+}
 RegisteredBlock::RegisteredBlock(std::string Unique, int ID, std::string Display){
     blockId = ID;
     uniqueName = Unique;
     displayName = Display;
 };
+RegisteredBlock::~RegisteredBlock(){
+	// See BlockRegistry destructor
+}
 
 BlockRegistry::BlockRegistry(){
     i = 0;
+}
+
+BlockRegistry::~BlockRegistry(){
+	// @todo Do whatever it is you need to here. This is placeholder for now.
 }
 
 int BlockRegistry::registerBlock(std::string UniqueName, std::string DisplayName){
