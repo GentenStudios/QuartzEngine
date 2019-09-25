@@ -1,5 +1,7 @@
 #include <Server/Main.hpp>
 #include <Core/Voxels/Blocks.hpp>
+#include <stdio.h>
+#include <iostream>
 
 #undef main
 
@@ -10,10 +12,10 @@ int main()
   voxels::BlockRegistry registry = voxels::BlockRegistry();
   registry.registerBlock("core:dirt", "Dirt");
   registry.registerBlock("core:cobble", "CobbleStone");
-  registry.registerBlock("core:stone", "Stone");
+  registry.registerBlock("core:stone", "Stone"); 
 
-  //std::string output = "test"; // registry.getDisplayName(1);
-
-  //printf("%s", output);
+  std::cout << registry.getDisplayName(1) << "\n";
+  std::cout << registry.getDisplayName(2) << "\n";
+  std::cout << registry.getDisplayName(3) << "\n";
   return 0;
 };

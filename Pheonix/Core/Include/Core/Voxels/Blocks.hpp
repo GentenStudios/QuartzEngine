@@ -29,7 +29,6 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
 namespace pheonix
 {
@@ -43,7 +42,7 @@ namespace pheonix
             std::string uniqueName;
             /// @brief Stores human readable name for output to player ex "dirt"
             std::string displayName;
-            
+
             RegisteredBlock();
             RegisteredBlock(std::string Unique, int ID, std::string Display);
             ~RegisteredBlock();
