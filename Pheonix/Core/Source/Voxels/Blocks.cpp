@@ -30,33 +30,41 @@
 
 using namespace pheonix::voxels;
 
-RegisteredBlock::RegisteredBlock(){};
-RegisteredBlock::RegisteredBlock(std::string Unique, int ID, std::string Display){
-    blockId = ID;
-    uniqueName = Unique;
-    displayName = Display;
+RegisteredBlock::RegisteredBlock() {};
+RegisteredBlock::RegisteredBlock(std::string Unique, int ID,
+                                 std::string Display)
+{
+	blockId     = ID;
+	uniqueName  = Unique;
+	displayName = Display;
 };
-RegisteredBlock::~RegisteredBlock(){};
+RegisteredBlock::~RegisteredBlock() {};
 
-BlockRegistry::BlockRegistry(){
-    i = 0;
-};
+BlockRegistry::BlockRegistry() { i = 0; };
 
-BlockRegistry::~BlockRegistry(){};
+BlockRegistry::~BlockRegistry() {};
 
-int BlockRegistry::registerBlock(std::string UniqueName, std::string DisplayName){
-    i++;
-    Blocks[i] = RegisteredBlock(UniqueName, i, DisplayName);
-    return i;
-};
-
-std::string BlockRegistry::getDisplayName(int blockId){
-    return Blocks[blockId].displayName;
+int BlockRegistry::registerBlock(std::string UniqueName,
+                                 std::string DisplayName)
+{
+	i++;
+	Blocks[i] = RegisteredBlock(UniqueName, i, DisplayName);
+	return i;
 };
 
-int BlockRegistry::getBlockId(std::string UniqueName){
-    for(i = 0; i < 100; i++){
-        if(Blocks[i].uniqueName == UniqueName){return i;};
-    }
-    return -1;
+std::string BlockRegistry::getDisplayName(int blockId)
+{
+	return Blocks[blockId].displayName;
+};
+
+int BlockRegistry::getBlockId(std::string UniqueName)
+{
+	for (i = 0; i < 100; i++)
+	{
+		if (Blocks[i].uniqueName == UniqueName)
+		{
+			return i;
+		};
+	}
+	return -1;
 }

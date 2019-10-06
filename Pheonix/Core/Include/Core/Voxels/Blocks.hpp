@@ -34,44 +34,51 @@ namespace pheonix
 {
 	namespace voxels
 	{
-        /// @brief Stores universal definition of a block
-        struct RegisteredBlock{
-            /// @brief Stores unique ID to identify block for use in memory, should match location in registry
-            int blockId;
-            /// @brief Stores Unique name for use duing saving, should be in format mod:name eg "core:dirt"
-            std::string uniqueName;
-            /// @brief Stores human readable name for output to player ex "dirt"
-            std::string displayName;
+		/// @brief Stores universal definition of a block
+		struct RegisteredBlock
+		{
+			/// @brief Stores unique ID to identify block for use in memory,
+			/// should match location in registry
+			int blockId;
+			/// @brief Stores Unique name for use duing saving, should be in
+			/// format mod:name eg "core:dirt"
+			std::string uniqueName;
+			/// @brief Stores human readable name for output to player ex "dirt"
+			std::string displayName;
 
-            RegisteredBlock();
-            RegisteredBlock(std::string Unique, int ID, std::string Display);
-            ~RegisteredBlock();
-        };
+			RegisteredBlock();
+			RegisteredBlock(std::string Unique, int ID, std::string Display);
+			~RegisteredBlock();
+		};
 
-        /// @brief Stores universal block definitions
-        class BlockRegistry{
-            private:
-            RegisteredBlock Blocks[100]; //This needs to be a dynamic array as we wont know size until load
-            int i;
+		/// @brief Stores universal block definitions
+		class BlockRegistry
+		{
+		private:
+			RegisteredBlock Blocks[100]; // This needs to be a dynamic array as
+			                             // we wont know size until load
+			int i;
 
-            public:
-            BlockRegistry();
-            ~BlockRegistry();
+		public:
+			BlockRegistry();
+			~BlockRegistry();
 
-            /// @brief Registers a block in the registry
-            int registerBlock(std::string UniqueName, std::string DisplayName);
-            std::string getDisplayName(int blockId);
-            int getBlockId(std::string UniqueName);
-        };
+			/// @brief Registers a block in the registry
+			int registerBlock(std::string UniqueName, std::string DisplayName);
+			std::string getDisplayName(int blockId);
+			int         getBlockId(std::string UniqueName);
+		};
 
-        /// @breif Metadata for a block, this is only created if a block needs to store more data than what is universal (eg: we wont create this for each dirt block)
-        class Block{
-            public:
-            Block(std::string UniqueName, int BlockId, std::string DisplayName);
-            ~Block();
+		/// @breif Metadata for a block, this is only created if a block needs
+		/// to store more data than what is universal (eg: we wont create this
+		/// for each dirt block)
+		class Block
+		{
+		public:
+			Block(std::string UniqueName, int BlockId, std::string DisplayName);
+			~Block();
+		};
 
-        };
+	} // namespace voxels
 
-    }
-
-}
+} // namespace pheonix
