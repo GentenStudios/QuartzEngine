@@ -39,3 +39,7 @@
 #if defined(__linux__)
 #	define QZ_PLATFORM_LINUX
 #endif
+
+#if defined(__APPLE__)
+#	define QZ_PLATFORM_APPLE
+#endif
