@@ -34,6 +34,10 @@ namespace qz
 {
 	namespace utils
 	{
+        /**
+         * @brief The Commander handles comand line functions while the server is running. A loop will watch for commands from the terminal while the server runs but the clients can also send commands.
+         * 
+         */
         class Commander{
             private:
             std::string m_command[100];
