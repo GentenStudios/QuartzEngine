@@ -7,6 +7,7 @@ set(utilitySources
 	${currentDir}/Logger.cpp
 	${currentDir}/FileIO.cpp
 	${currentDir}/Config.cpp
+	${currentDir}/Commander.cpp
 
 	PARENT_SCOPE
 )

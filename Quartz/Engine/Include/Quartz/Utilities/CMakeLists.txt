@@ -10,6 +10,7 @@ set(utilityHeaders
 	${currentDir}/HandleAllocator.hpp
 	${currentDir}/EnumTools.hpp
 	${currentDir}/Singleton.hpp
+	${currentDir}/Commander.hpp
 	
 	PARENT_SCOPE
 )
