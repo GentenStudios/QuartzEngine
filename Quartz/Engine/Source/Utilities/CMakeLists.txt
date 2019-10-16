@@ -8,6 +8,7 @@ set(utilitySources
 	${currentDir}/FileIO.cpp
 	${currentDir}/Config.cpp
 	${currentDir}/Commander.cpp
+	${currentDir}/Plugin.cpp
 
 	PARENT_SCOPE
 )

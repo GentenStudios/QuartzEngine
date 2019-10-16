@@ -274,7 +274,7 @@ void Sandbox::run()
 			ImGui::Checkbox("Wireframe", &wireframe);
 			ImGui::Text("FPS: %i frame/s", fpsCurrent);
 			ImGui::Text("Frame Time: %.2f ms/frame", static_cast<double>(dt));
-			ImGui::Text("Vertices: %i", renderer.countTotalNumVertices());
+			ImGui::Text("Vertices: %lu", renderer.countTotalNumVertices());
 			ImGui::SliderInt("Frame Time Sample Rate", &dtSampleRate, 1, 60);
 			ImGui::Checkbox("Pause Frame Time", &pauseDt);
 

@@ -29,9 +29,9 @@
 #pragma once
 
 #include <Quartz/Core.hpp>
-#include <Quartz/Utilities/Config.hpp>
 #include <Quartz/Utilities/FileIO.hpp>
 #include <Quartz/Utilities/Logger.hpp>
+#include <Quartz/Utilities/Plugin.hpp>
 
 #include <Quartz/Events/Event.hpp>
 
