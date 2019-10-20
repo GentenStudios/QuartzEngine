@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project(Quartz)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 set(CMAKE_CXX_STANDARD 11)
 
 if(UNIX)
