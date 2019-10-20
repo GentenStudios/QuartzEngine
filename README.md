@@ -14,20 +14,27 @@
 - OpenGL (Version >= 3.3)
 
 ## Build Instructions
+
+Once cloned, navigate to the projects root directory and execute the following commands in a terminal.
+
+  1. `mkdir Build`
+  2. `cd Build`
+  3. `cmake ..`
+  4. `cmake --build . --target QuartzSandbox`
+
+Now follow the platform specific instructions detailed below.
+
 ### Visual Studio
 
-Once cloned, enter the directory, by doing `cd quartz-engine`, and complete the following commands:
-
-```
-cmake -H. -BBuild
-cmake --build Build
-```
+  - Open the generated solution file in the `Build/` folder in Visual Studio
+  - Set the Startup Project to `QuartzSandbox`.
+  - At this point you should be able to run, since the project should have already been
+    built in step 2. above. You can always build the traditional way with Visual Studio.
+  - And voila, all done. Now you should be able to run the project!
 
 ### Linux, Mac OS X, MSYS
-
-  1. `mkdir build && cd build`
-  2. `cmake ..`
-  3. `make`
+ 
+  - Navigate to the `Build/QuartzSandbox` folder and run `./QuartzSandbox` to run the executable.
 
 ## Coding Standards
 
