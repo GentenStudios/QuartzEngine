@@ -17,8 +17,10 @@
 
 Once cloned, navigate to the projects root directory and execute the following commands in a terminal.
 
-  1. `cmake -S. -BBuild`
-  2. `cmake --build Build --target QuartzSandbox`
+  1. `mkdir Build`
+  2. `cd Build`
+  3. `cmake ..`
+  4. `cmake --build . --target QuartzSandbox`
 
 Now follow the platform specific instructions detailed below.
 
@@ -32,7 +34,7 @@ Now follow the platform specific instructions detailed below.
 
 ### Linux, Mac OS X, MSYS
  
-  - Navigate to the `Build/` folder and run `./QuartzSandbox` to run the executable.
+  - Navigate to the `Build/QuartzSandbox` folder and run `./QuartzSandbox` to run the executable.
 
 ## Coding Standards
 
