@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/ryoqb5xj56jq0e04?svg=true)](https://ci.appveyor.com/project/GentenStudios/QuartzEngine) [![Build Status](https://travis-ci.org/GentenStudios/quartz-engine.svg?branch=develop)](https://travis-ci.org/GentenStudios/QuartzEngine)
+[![Build status](https://ci.appveyor.com/api/projects/status/ryoqb5xj56jq0e04?svg=true)](https://ci.appveyor.com/project/GentenStudios/QuartzEngine) [![Build Status](https://api.travis-ci.org/GentenStudios/QuartzEngine.svg?branch=develop)](https://travis-ci.org/GentenStudios/QuartzEngine)
 # QUARTZ ENGINE
 
 ## Community
