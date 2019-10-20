@@ -7,9 +7,10 @@
 ## Dependencies
 
 - CMake (Version >= 3.0)
-- A C++11 compatible compiler. The following have been tested
-  - Visual Studio 2017 (MSVC 14.10)
-  - Clang/Clang++ (Clang 7.0.0-3)
+- A C++17 compatible compiler. The following have been tested
+  - Visual Studio 2017 & 2019 (MSVC >= 19.14)
+  - Clang (>= 5.0.0)
+  - GCC (>= 4.8.4)
 - OpenGL (Version >= 3.3)
 
 ## Build Instructions
