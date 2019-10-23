@@ -72,7 +72,11 @@ namespace qz
              * 
              */
             std::string list();
-        };
 
+            /**
+             * @brief Listens for commands.
+             */
+            int post();
+        };
     };
 }

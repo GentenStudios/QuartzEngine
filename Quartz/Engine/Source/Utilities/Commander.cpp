@@ -51,7 +51,7 @@ int Commander::run(std::string command){
             return temp;
         };
     };
-    std::cout << "Command not found \n";
+    std::cout << "Command \"" + command + "\" not found \n";
 }
 
 std::string Commander::list(){
@@ -61,3 +61,13 @@ std::string Commander::list(){
     };
     return temp;
 }
+
+int Commander::post(){
+    std::string input;
+    while(true){
+        std::cout << "\n->";
+        std::cin >> input;
+        if ( input == "exit"){break;};
+        run(input);
+    }
+};
