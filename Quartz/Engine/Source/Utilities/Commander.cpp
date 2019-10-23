@@ -27,6 +27,7 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include <Quartz/Utilities/Commander.hpp>
+#include <iostream>
 
 using namespace qz::utils;
 
@@ -39,13 +40,24 @@ void Commander::reg(std::string command, std::string permission, int (*f)()){
     m_command[i] = command;
     m_permission[i] = permission;
     m_function[i] = f;
+    std::cout << "Registered \"" + command + "\" in i = " + std::to_string(i) + "\n";
+    i++;
 }
 
-void Commander::run(std::string command){
+int Commander::run(std::string command){
     for(int j = 0; j < i; j++){
+        std::cout << "check j = " + std::to_string(j) + "\n";
         if(m_command[j] == command){
             int temp = (*m_function[j])();
-            return;
+            return temp;
         };
+    };
+    std::cout << "Command not found \n";
+}
+
+std::string Commander::list(){
+    std::string temp = "Available commands\n";
+    for(int j = 0; j < i; j++){
+        temp = "->" + temp + m_command[j] + "\n";
     };
 }

@@ -27,5 +27,18 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include <Quartz/Utilities/Commander.hpp>
+#include <iostream>
 
-qz::utils::Commander Commander = Commander();
+int doSomething(){std::cout << "Did a thing \n";}
+
+int main(){
+	std::cout << "Program Started \n";
+	qz::utils::Commander Commander = qz::utils::Commander();
+
+	Commander.reg("doSomething", "none", &doSomething);
+
+	Commander.list();
+
+	Commander.run("doSomething");
+	
+}

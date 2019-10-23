@@ -54,17 +54,24 @@ namespace qz
             /**
              * @brief Registers a command in the command registry
              * 
-             * @param command the key word for calling the command
+             * @param command The keyword for calling the command
              * @param permission What permission is required to run this command
              */
             void reg(std::string command, std::string permission, int (*f)());
 
             /**
-             * @brief calls a command 
+             * @brief Calls a command 
              * 
-             * @param command 
+             * @param command The keyword for calling the command.
              */
-            void run(std::string command);
+            int run(std::string command);
+
+            /**
+             * @brief Lists available commands 
+             * 
+             * 
+             */
+            std::string list();
         };
 
     };
