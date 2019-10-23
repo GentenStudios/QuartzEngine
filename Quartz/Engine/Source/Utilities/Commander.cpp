@@ -28,38 +28,40 @@
 
 #include <Quartz/Utilities/Commander.hpp>
 #include <iostream>
+#include <utility>
 
 using namespace qz::utils;
 
-Commander::Commander(){
-    i = 0;
-};
-Commander::~Commander(){};
+Commander::Commander() :
+    m_i(0)
+{}
 
-void Commander::reg(std::string command, std::string permission, int (*f)()){
-    m_command[i] = command;
-    m_permission[i] = permission;
-    m_function[i] = f;
-    std::cout << "Registered \"" + command + "\" in i = " + std::to_string(i) + "\n";
-    i++;
+Commander::~Commander() {}
+
+void Commander::reg(const std::string& command, const std::string& permission, std::function<int()> f){
+    m_command[m_i] = command;
+    m_permission[m_i] = permission;
+    m_function[m_i] = std::move(f);
+    std::cout << "Registered \"" + command + "\" in i = " + std::to_string(m_i) + "\n";
+    m_i++;
 }
 
-int Commander::run(std::string command){
-    for(int j = 0; j < i; j++){
+int Commander::run(const std::string& command){
+    for(int j = 0; j < m_i; j++){
         if(m_command[j] == command){
-            int temp = (*m_function[j])();
+            int temp = m_function[j]();
             return temp;
-        };
-    };
+        }
+    }
     std::cout << "Command \"" + command + "\" not found \n";
 }
 
-std::string Commander::list(){
+std::string&& Commander::list(){
     std::string temp = "Available commands\n";
-    for(int j = 0; j < i; j++){
-        temp = temp + "->" + m_command[j] + "\n";
-    };
-    return temp;
+    for(int j = 0; j < m_i; j++){
+        temp += "->" + m_command[j] + "\n";
+    }
+    return std::move(temp);
 }
 
 int Commander::post(){
@@ -67,7 +69,8 @@ int Commander::post(){
     while(true){
         std::cout << "\n->";
         std::cin >> input;
-        if ( input == "exit"){break;};
+        if (input == "exit")
+            break;
         run(input);
     }
-};
+}

@@ -29,25 +29,28 @@
 #pragma once
 
 #include <string>
+#include <array>
+#include <functional>
 
 namespace qz
 {
 	namespace utils
 	{
+        constexpr int MaxCommandsNumber = 100;
+
         /**
          * @brief The Commander handles comand line functions while the server is running. A loop will watch for commands from the terminal while the server runs but the clients can also send commands.
          * 
          */
         class Commander{
-            private:
-            std::string m_command[100];
-            std::string m_permission[100];
-            int (*m_function[100])();
-            int i;
+        private:
+            std::array<std::string, MaxCommandsNumber> m_command;
+            std::array<std::string, MaxCommandsNumber> m_permission;
+            std::array<std::function<int()>, MaxCommandsNumber> m_functions;
+            int m_i;
             //TODO: These need to be dynamicaly sized
 
-            public:
-
+        public:
             Commander();
             ~Commander();
 
@@ -57,21 +60,21 @@ namespace qz
              * @param command The keyword for calling the command
              * @param permission What permission is required to run this command
              */
-            void reg(std::string command, std::string permission, int (*f)());
+            void reg(const std::string& command, const std::string& permission, std::function<int()> f);
 
             /**
              * @brief Calls a command 
              * 
              * @param command The keyword for calling the command.
              */
-            int run(std::string command);
+            int run(const std::string& command);
 
             /**
              * @brief Lists available commands 
              * 
              * 
              */
-            std::string list();
+            std::string&& list();
 
             /**
              * @brief Listens for commands.
