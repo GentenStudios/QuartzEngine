@@ -41,7 +41,7 @@ Commander::~Commander() {}
 void Commander::reg(const std::string& command, const std::string& permission, std::function<int()> f){
     m_command[m_i] = command;
     m_permission[m_i] = permission;
-    m_function[m_i] = std::move(f);
+    m_functions[m_i] = std::move(f);
     std::cout << "Registered \"" + command + "\" in i = " + std::to_string(m_i) + "\n";
     m_i++;
 }
@@ -49,7 +49,7 @@ void Commander::reg(const std::string& command, const std::string& permission, s
 int Commander::run(const std::string& command){
     for(int j = 0; j < m_i; j++){
         if(m_command[j] == command){
-            int temp = m_function[j]();
+            int temp = m_functions[j]();
             return temp;
         }
     }
@@ -73,4 +73,6 @@ int Commander::post(){
             break;
         run(input);
     }
+
+    return 0;
 }

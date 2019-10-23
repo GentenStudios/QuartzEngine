@@ -29,7 +29,7 @@
 #include <Quartz/Utilities/Commander.hpp>
 #include <iostream>
 
-int doSomething(){std::cout << "Did a thing \n";}
+int doSomething(){std::cout << "Did a thing \n"; return 0;}
 
 int main(){
 	std::cout << "Program Started \n";
