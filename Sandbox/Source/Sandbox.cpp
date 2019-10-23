@@ -37,7 +37,7 @@ int main(){
 
 	Commander.reg("doSomething", "none", &doSomething);
 
-	Commander.list();
+	std::cout << Commander.list();
 
 	Commander.run("doSomething");
 	

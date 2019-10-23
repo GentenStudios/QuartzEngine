@@ -46,7 +46,6 @@ void Commander::reg(std::string command, std::string permission, int (*f)()){
 
 int Commander::run(std::string command){
     for(int j = 0; j < i; j++){
-        std::cout << "check j = " + std::to_string(j) + "\n";
         if(m_command[j] == command){
             int temp = (*m_function[j])();
             return temp;
@@ -58,6 +57,7 @@ int Commander::run(std::string command){
 std::string Commander::list(){
     std::string temp = "Available commands\n";
     for(int j = 0; j < i; j++){
-        temp = "->" + temp + m_command[j] + "\n";
+        temp = temp + "->" + m_command[j] + "\n";
     };
+    return temp;
 }
