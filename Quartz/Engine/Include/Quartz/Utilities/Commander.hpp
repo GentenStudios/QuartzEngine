@@ -55,12 +55,17 @@ namespace qz
             ~Commander();
 
             /**
+             * @brief Searches for a command and returns the index its stored at
+             */
+            int find(const std::string& command);
+
+            /**
              * @brief Registers a command in the command registry
              * 
              * @param command The keyword for calling the command
              * @param permission What permission is required to run this command
              */
-            void reg(const std::string& command, const std::string& permission, std::function<int()> f);
+            int reg(const std::string& command, const std::string& permission, std::function<int()> f);
 
             /**
              * @brief Calls a command 
@@ -70,9 +75,7 @@ namespace qz
             int run(const std::string& command);
 
             /**
-             * @brief Lists available commands 
-             * 
-             * 
+             * @brief Returns string listing available commands 
              */
             std::string&& list();
 

@@ -29,13 +29,20 @@
 #include <Quartz/Utilities/Commander.hpp>
 #include <iostream>
 
-int doSomething(){std::cout << "Did a thing \n"; return 0;}
+int doSomethingA(){std::cout << "Did thing A \n"; return 0;}
+int doSomethingB(){std::cout << "Did thing B \n"; return 0;}
+int doSomethingC(){std::cout << "Did thing C \n"; return 0;}
 
 int main(){
 	std::cout << "Program Started \n";
 	qz::utils::Commander Commander = qz::utils::Commander();
 
-	Commander.reg("doSomething", "none", &doSomething);
+	Commander.reg("doSomething", "none", &doSomethingA);
+	Commander.reg("doSomethingB", "none", &doSomethingB);
+	Commander.reg("doSomething", "none", &doSomethingC);
+
+	std::cout << "Searching for \"doSomething\"\n";
+	std::cout << "found in index: " + std::to_string(Commander.find("doSomething")) + "\n";
 
 	Commander.post();
 	
