@@ -34,7 +34,10 @@ using namespace qz::utils;
 
 Commander::Commander() :
     m_i(0)
-{}
+{
+    //reg("help", "gets help with a command", "none", &help); Why doesnt this work?
+    find("jerry");
+}
 
 Commander::~Commander() {}
 
@@ -58,6 +61,12 @@ int Commander::reg(const std::string& command, const std::string& help, const st
     m_permission[j] = permission;
     m_functions[j] = std::move(f); 
     return j;
+}
+
+int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args){
+    int j = find(args[0]);
+    std::cout << m_help[j];
+    return 1;
 }
 
 int Commander::run(const std::string& command, const std::array<std::string, MaxArgumentNumber> args){
@@ -102,4 +111,8 @@ int Commander::post(){
     }
 
     return 0;
+}
+
+int Commander::initialize(){
+    reg("help", "gets help with a command", "none", [=](std::array<std::string, qz::utils::MaxArgumentNumber> args){this->help(args);});
 }

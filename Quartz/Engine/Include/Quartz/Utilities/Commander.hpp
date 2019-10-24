@@ -74,6 +74,8 @@ namespace qz
              */
             int reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int(std::array<std::string, MaxArgumentNumber> args)> f);
 
+            int help(std::array<std::string, qz::utils::MaxArgumentNumber> args);
+
             /**
              * @brief Calls a command 
              * 
@@ -90,6 +92,8 @@ namespace qz
              * @brief Listens for commands.
              */
             int post();
+
+            int initialize();
         };
     };
 }
