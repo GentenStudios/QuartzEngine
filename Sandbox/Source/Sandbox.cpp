@@ -29,9 +29,11 @@
 #include <Quartz/Utilities/Commander.hpp>
 #include <iostream>
 
-int doSomethingA(){std::cout << "Did thing A \n"; return 0;}
-int doSomethingB(){std::cout << "Did thing B \n"; return 0;}
-int doSomethingC(){std::cout << "Did thing C \n"; return 0;}
+int doSomethingA(std::array<std::string, qz::utils::MaxArgumentNumber> argv){std::cout << "Did thing A \n"; return 0;}
+int doSomethingB(std::array<std::string, qz::utils::MaxArgumentNumber> argv){std::cout << "Did thing B \n"; return 0;}
+int doSomethingC(std::array<std::string, qz::utils::MaxArgumentNumber> argv){std::cout << "Did thing C \n"; return 0;}
+int printSomething(std::array<std::string, qz::utils::MaxArgumentNumber> args){
+	std::cout << args[0]; return 0;}
 
 int main(){
 	std::cout << "Program Started \n";
@@ -40,6 +42,7 @@ int main(){
 	Commander.reg("doSomething", "Does thing A", "none", &doSomethingA);
 	Commander.reg("doSomethingB", "Does thing B","none", &doSomethingB);
 	Commander.reg("doSomething", "Does thing C", "none", &doSomethingC);
+	Commander.reg("print", "Prints first argument", "none", &printSomething);
 
 	std::cout << "Searching for \"doSomething\"\n";
 	std::cout << "found in index: " + std::to_string(Commander.find("doSomething")) + "\n";

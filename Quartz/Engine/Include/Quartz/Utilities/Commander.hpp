@@ -37,6 +37,7 @@ namespace qz
 	namespace utils
 	{
         constexpr int MaxCommandsNumber = 100;
+        constexpr int MaxArgumentNumber = 10;
 
         /**
          * @brief The Commander handles comand line functions while the server is running. A loop will watch for commands from the terminal while the server runs but the clients can also send commands.
@@ -47,7 +48,7 @@ namespace qz
             std::array<std::string, MaxCommandsNumber> m_command;
             std::array<std::string, MaxCommandsNumber> m_help;
             std::array<std::string, MaxCommandsNumber> m_permission;
-            std::array<std::function<int()>, MaxCommandsNumber> m_functions;
+            std::array<std::function<int(std::array<std::string, MaxArgumentNumber> args)>, MaxCommandsNumber> m_functions;
             int m_i;
             //TODO: These need to be dynamicaly sized
 
@@ -71,14 +72,14 @@ namespace qz
              * @param command The keyword for calling the command
              * @param permission What permission is required to run this command
              */
-            int reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int()> f);
+            int reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int(std::array<std::string, MaxArgumentNumber> args)> f);
 
             /**
              * @brief Calls a command 
              * 
              * @param command The keyword for calling the command.
              */
-            int run(const std::string& command);
+            int run(const std::string& command, const std::array<std::string, MaxArgumentNumber> args);
 
             /**
              * @brief Returns string listing available commands 

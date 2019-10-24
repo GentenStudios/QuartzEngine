@@ -47,7 +47,7 @@ int Commander::find(const std::string& command){
     return -1;
 }
 
-int Commander::reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int()> f){
+int Commander::reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int(std::array<std::string, MaxArgumentNumber> args)> f){
     int j = find(command);
     if(j == -1){ // if command does not already exist, enter new command
         j = m_i;
@@ -56,18 +56,20 @@ int Commander::reg(const std::string& command, const std::string& help, const st
     m_command[j] = command;
     m_help[j] = help;
     m_permission[j] = permission;
-    m_functions[j] = std::move(f);
+    m_functions[j] = std::move(f); 
     return j;
 }
 
-int Commander::run(const std::string& command){
-    for(int j = 0; j < m_i; j++){
-        if(m_command[j] == command){
-            int temp = m_functions[j]();
-            return temp;
-        }
+int Commander::run(const std::string& command, const std::array<std::string, MaxArgumentNumber> args){
+    int j = find(command);
+    std::cout << "command at: " + std::to_string(j) + "\n"; 
+    if (j == -1){
+        std::cout << "Command \"" + command + "\" not found \n";
     }
-    std::cout << "Command \"" + command + "\" not found \n";
+    else
+    {
+        return m_functions[j](args);
+    }
 }
 
 std::string&& Commander::list(){
@@ -82,10 +84,21 @@ int Commander::post(){
     std::string input;
     while(true){
         std::cout << "\n->";
-        std::cin >> input;
-        if (input == "exit")
+        int i = 0;
+        std::array<std::string, MaxArgumentNumber> args;
+        std::string command = "";
+        std::string buffer;
+        std::cin >> command;
+        //std::cin >> buffer;
+        while(std::cin.peek() != '\n' && i <= MaxArgumentNumber){
+            std::cin >> buffer;
+            args[i] = buffer;
+            std::cout << "added " + buffer + " to index " + std::to_string(i) + "\n";
+            i++;
+        }
+        if (command == "exit")
             break;
-        run(input);
+        run(command, args);
     }
 
     return 0;
