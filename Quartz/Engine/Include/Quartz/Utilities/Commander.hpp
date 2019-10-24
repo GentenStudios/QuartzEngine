@@ -45,6 +45,7 @@ namespace qz
         class Commander{
         private:
             std::array<std::string, MaxCommandsNumber> m_command;
+            std::array<std::string, MaxCommandsNumber> m_help;
             std::array<std::string, MaxCommandsNumber> m_permission;
             std::array<std::function<int()>, MaxCommandsNumber> m_functions;
             int m_i;
@@ -53,6 +54,11 @@ namespace qz
         public:
             Commander();
             ~Commander();
+
+            /** 
+             * @brief Returns a functions helptext as a string
+             */
+            std::string&& getHelp(std::string& command);
 
             /**
              * @brief Searches for a command and returns the index its stored at
@@ -65,7 +71,7 @@ namespace qz
              * @param command The keyword for calling the command
              * @param permission What permission is required to run this command
              */
-            int reg(const std::string& command, const std::string& permission, std::function<int()> f);
+            int reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int()> f);
 
             /**
              * @brief Calls a command 

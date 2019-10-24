@@ -37,9 +37,9 @@ int main(){
 	std::cout << "Program Started \n";
 	qz::utils::Commander Commander = qz::utils::Commander();
 
-	Commander.reg("doSomething", "none", &doSomethingA);
-	Commander.reg("doSomethingB", "none", &doSomethingB);
-	Commander.reg("doSomething", "none", &doSomethingC);
+	Commander.reg("doSomething", "Does thing A", "none", &doSomethingA);
+	Commander.reg("doSomethingB", "Does thing B","none", &doSomethingB);
+	Commander.reg("doSomething", "Does thing C", "none", &doSomethingC);
 
 	std::cout << "Searching for \"doSomething\"\n";
 	std::cout << "found in index: " + std::to_string(Commander.find("doSomething")) + "\n";

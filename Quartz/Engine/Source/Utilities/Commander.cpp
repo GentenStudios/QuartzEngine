@@ -47,13 +47,14 @@ int Commander::find(const std::string& command){
     return -1;
 }
 
-int Commander::reg(const std::string& command, const std::string& permission, std::function<int()> f){
+int Commander::reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int()> f){
     int j = find(command);
     if(j == -1){ // if command does not already exist, enter new command
         j = m_i;
         m_i++;
     }
     m_command[j] = command;
+    m_help[j] = help;
     m_permission[j] = permission;
     m_functions[j] = std::move(f);
     return j;
