@@ -38,6 +38,9 @@ namespace qz
 	{
 		constexpr int MaxCommandsNumber = 100;
 		constexpr int MaxArgumentNumber = 10;
+		typedef std::function<int(
+		    std::array<std::string, MaxArgumentNumber> args)>
+		    function;
 
 		/**
 		 * @brief The command book stores commands and information on them to be
@@ -49,10 +52,7 @@ namespace qz
 			std::array<std::string, MaxCommandsNumber> m_command;
 			std::array<std::string, MaxCommandsNumber> m_help;
 			std::array<std::string, MaxCommandsNumber> m_permission;
-			std::array<std::function<int(
-			               std::array<std::string, MaxArgumentNumber> args)>,
-			           MaxCommandsNumber>
-			    m_functions;
+			std::array<function, MaxCommandsNumber>    m_functions;
 
 			/**
 			 * @brief Registers a command in the command registry
@@ -61,10 +61,7 @@ namespace qz
 			 * @param permission What permission is required to run this command
 			 */
 			int reg(const std::string& command, const std::string& help,
-			        const std::string& permission,
-			        std::function<
-			            int(std::array<std::string, MaxArgumentNumber> args)>
-			            f);
+			        const std::string& permission, function f);
 
 			/**
 			 * @brief Searches for a command and returns the index its stored at

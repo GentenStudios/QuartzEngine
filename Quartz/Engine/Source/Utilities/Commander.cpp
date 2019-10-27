@@ -51,10 +51,8 @@ int CommandBook::find(const std::string& command)
 	return -1;
 }
 
-int CommandBook::reg(
-    const std::string& command, const std::string& help,
-    const std::string& permission,
-    std::function<int(std::array<std::string, MaxArgumentNumber> args)> f)
+int CommandBook::reg(const std::string& command, const std::string& help,
+                     const std::string& permission, function f)
 {
 	int j = find(command);
 	if (j == -1)
