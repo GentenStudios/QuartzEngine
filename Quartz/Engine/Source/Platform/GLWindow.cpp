@@ -31,17 +31,13 @@
 #include <Quartz/QuartzPCH.hpp>
 #include <Quartz/Utilities/Logger.hpp>
 
-#include <glad/glad.h>
-
 using namespace qz::gfx::rhi::gl;
 using namespace qz;
 
-void GLWindow::startFrame() { m_gui.startFrame(); }
+void GLWindow::startFrame() {}
 
 void GLWindow::endFrame()
 {
-	m_gui.endFrame();
-
 	swapBuffers();
 	pollEvents();
 }
@@ -90,39 +86,9 @@ GLWindow::GLWindow(const std::string& title, int width, int height)
 	m_context = SDL_GL_CreateContext(m_window);
 	SDL_GL_MakeCurrent(m_window, m_context);
 
-	if (!gladLoadGLLoader(static_cast<GLADloadproc>(SDL_GL_GetProcAddress)))
-	{
-		LFATAL("Failed to initialize GLAD");
-		exit(EXIT_FAILURE);
-	}
-
-#ifdef QZ_DEBUG
-	GLint flags;
-	glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
-	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
-	{
-		glEnable(GL_DEBUG_OUTPUT);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-		glDebugMessageCallback(gfx::rhi::gl::glDebugOutput, nullptr);
-		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0,
-		                      nullptr, GL_TRUE);
-	}
-#endif
-
-	LINFO("---------- OpenGL Details ----------");
-	LINFO("Vendor:   ", glGetString(GL_VENDOR));
-	LINFO("Renderer: ", glGetString(GL_RENDERER));
-	LINFO("Version:  ", glGetString(GL_VERSION));
-	LINFO("------------------------------------");
-
 	SDL_ShowWindow(m_window);
 
-	GLCheck(glEnable(GL_DEPTH_TEST));
-	GLCheck(glEnable(GL_MULTISAMPLE));
-
 	m_running = true;
-
-	m_gui.init(m_window, &m_context);
 }
 
 GLWindow::~GLWindow()

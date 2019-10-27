@@ -37,8 +37,6 @@
 #define SDL_MAIN_HANDLED
 #include <SDL.h>
 
-#include <Quartz/Platform/SDLGuiLayer.hpp>
-
 namespace qz
 {
 	namespace gfx
