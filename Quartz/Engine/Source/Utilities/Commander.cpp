@@ -32,44 +32,31 @@
 
 using namespace qz::utils;
 
-Commander::Commander(CommandBook& book, std::ostream& out, std::istream& in)
-    : m_book(book), m_out(out), m_in(in)
+Commands_t::iterator CommandBook::find(const std::string& command)
 {
+	return m_commands.find(command);
 }
 
-Commander::~Commander() {}
-
-int CommandBook::find(const std::string& command)
+int CommandBook::add(const std::string& command, const std::string& help,
+                     const std::string& permission, function_t f)
 {
-	for (int j = 0; j < m_page; j++)
-	{
-		if (m_command[j] == command)
-		{
-			return j;
-		}
-	}
-	return -1;
-}
-
-int CommandBook::reg(const std::string& command, const std::string& help,
-                     const std::string& permission, function f)
-{
-	int j = find(command);
-	if (j == -1)
-	{ // if command does not already exist, enter new command
-		j = m_page;
-		m_page++;
-	}
-	m_command[j]    = command;
-	m_help[j]       = help;
-	m_permission[j] = permission;
-	m_functions[j]  = std::move(f);
+	m_commands[command] = {
+		command,
+		help,
+		permission,
+		std::move(f)
+	};
 	return j;
 }
 
-int CommandBook::getPage() { return m_page; }
+Commander::Commander(CommandBook& book, std::ostream& out, std::istream& in)
+    : m_book(book), m_out(out), m_in(in)
+{}
 
-int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args)
+Commander::~Commander()
+{}
+
+int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber>&& args)
 {
 	if (args[0] == "")
 	{
@@ -87,51 +74,53 @@ int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args)
 		m_out << "Lists available commands\n";
 		return 1;
 	}
-	int j = m_book.find(args[0]);
-	if (j == -1)
+
+	Commands_t::iterator j = m_book.find(args[0]);
+	if (j == Commands_t::end())
 	{
-		m_out << "Command \"" + args[0] + "\" not found \n";
+		m_out << "Command \"" << args[0] << "\" not found \n";
 		return -1;
 	}
 	else
 	{
-		m_out << m_book.m_help[j];
+		m_out << j->second.help;
 		return 1;
 	}
 }
 
-int Commander::run(const std::string&                               command,
-                   const std::array<std::string, MaxArgumentNumber> args)
+int Commander::run(const std::string&                           command,
+                   std::array<std::string, MaxArgumentNumber>&& args)
 {
 	// Check for built in functions
 	if (command == "help")
 	{
-		return this->help(args);
+		return this->help(std::move(args));
 	}
 	else if (command == "list")
 	{
 		return this->list();
 	}
+
 	// If no built in functions match, search library
-	int j = m_book.find(command);
-	m_out << "command at: " + std::to_string(j) + "\n";
-	if (j == -1)
+	Commands_t::iterator j = m_book.find(command);
+	m_out << "command at: " << j << "\n";
+	if (j == Command_t::end())
 	{
-		m_out << "Command \"" + command + "\" not found \n";
+		m_out << "Command \"" << command << "\" not found \n";
 		return -1;
 	}
 	else
 	{
-		return m_book.m_functions[j](args);
+		return j->second.function(std::move(args));
 	}
 }
 
 int Commander::list()
 {
-	std::string temp = "Available commands\n";
-	for (int j = 0; j < m_book.getPage(); j++)
+	m_out << "Available commands\n";
+	for (auto&& command: m_book.m_commands)
 	{
-		m_out << "-" + m_book.m_command[j] + "\n";
+		m_out << "- " << command->first << "\n";
 	}
 	return 1;
 }
@@ -147,20 +136,19 @@ int Commander::post()
 		std::string                                command = "";
 		std::string                                buffer;
 		m_in >> command;
-		// in >> buffer;
+
 		while (m_in.peek() != '\n' && i <= MaxArgumentNumber)
 		{
 			m_in >> buffer;
 			args[i] = buffer;
-			// out << "added " + buffer + " to index " + std::to_string(i) +
-			// "\n";
 			i++;
 		}
+
 		if (command == "exit")
 		{
 			break;
 		}
-		run(command, args);
+		run(command, std::move(args));
 	}
 	return 0;
 }
