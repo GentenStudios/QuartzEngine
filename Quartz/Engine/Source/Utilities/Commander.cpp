@@ -37,16 +37,14 @@ Commands_t::iterator CommandBook::find(const std::string& command)
 	return m_commands.find(command);
 }
 
-int CommandBook::add(const std::string& command, const std::string& help,
+void CommandBook::add(const std::string& command, const std::string& help,
                      const std::string& permission, function_t f)
 {
-	m_commands[command] = {
-		command,
-		help,
-		permission,
-		std::move(f)
-	};
-	return j;
+	m_commands[command] = Command();
+	m_commands[command].command = command;
+	m_commands[command].help = help;
+	m_commands[command].permission = permission;
+	m_commands[command].function = std::move(f)
 }
 
 Commander::Commander(CommandBook& book, std::ostream& out, std::istream& in)
@@ -75,8 +73,8 @@ int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber>&& args
 		return 1;
 	}
 
-	Commands_t::iterator j = m_book.find(args[0]);
-	if (j == Commands_t::end())
+	CommandBook::Commands_t::iterator j = m_book.find(args[0]);
+	if (j == CommandBook::Commands_t::end())
 	{
 		m_out << "Command \"" << args[0] << "\" not found \n";
 		return -1;
@@ -102,9 +100,8 @@ int Commander::run(const std::string&                           command,
 	}
 
 	// If no built in functions match, search library
-	Commands_t::iterator j = m_book.find(command);
-	m_out << "command at: " << j << "\n";
-	if (j == Command_t::end())
+	CommandBook::Commands_t::iterator j = m_book.find(command);
+	if (j == CommandBook::Command_t::end())
 	{
 		m_out << "Command \"" << command << "\" not found \n";
 		return -1;
@@ -120,7 +117,7 @@ int Commander::list()
 	m_out << "Available commands\n";
 	for (auto&& command: m_book.m_commands)
 	{
-		m_out << "- " << command->first << "\n";
+		m_out << "- " << command.first << "\n";
 	}
 	return 1;
 }
