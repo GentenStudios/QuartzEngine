@@ -58,22 +58,27 @@ namespace qz
             int reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int(std::array<std::string, MaxArgumentNumber> args)> f);
     
             /**
-             * @brief Searches for a command and returns the index its stored at
+             * @brief Searches for a command and returns the index its stored at or -1 if it fails
+             * 
+             * @param command The command to search for
              */
             int find(const std::string& command);
 
             /**
              * @brief Gets next open space in book
              */
-            int i();
+            int getPage();
 
         private:
-            int m_i;
+            /** 
+             * @brief Counter that keep track of next space in the arrays (eg next page in the book)
+             */  
+            int m_page;
 
         };
 
         /**
-         * @brief The Commander handles comand line functions while the server is running. A loop will watch for commands from the terminal while the server runs but the clients can also send commands.
+         * @brief The Commander handles comand line functions. It accepts an in and out stream on creation and can interact with the command line or another interface.
          * 
          */
         class Commander{
@@ -83,6 +88,13 @@ namespace qz
             std::istream& m_in;
 
         public:
+            /**
+             * @brief Initializes a commander that can run and execute commands
+             * 
+             * @param book The command book that the commander uses to route commands to functions
+             * @param out An output stream the commander outputs results to
+             * @param in An input stream the commander accepts input to
+             */
             Commander(CommandBook& book, std::ostream& out, std::istream& in);
             ~Commander();
 
@@ -109,8 +121,6 @@ namespace qz
              * @brief Listens for commands.
              */
             int post();
-
-            int initialize();
         };
     };
 }

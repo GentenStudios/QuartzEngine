@@ -41,7 +41,7 @@ Commander::Commander(CommandBook& book, std::ostream& out, std::istream& in) :
 Commander::~Commander() {}
 
 int CommandBook::find(const std::string& command){
-    for(int j = 0; j < m_i; j++){
+    for(int j = 0; j < m_page; j++){
         if(m_command[j] == command){
             return j;
         }
@@ -52,8 +52,8 @@ int CommandBook::find(const std::string& command){
 int CommandBook::reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int(std::array<std::string, MaxArgumentNumber> args)> f){
     int j = find(command);
     if(j == -1){ // if command does not already exist, enter new command
-        j = m_i;
-        m_i++;
+        j = m_page;
+        m_page++;
     }
     m_command[j] = command;
     m_help[j] = help;
@@ -62,8 +62,8 @@ int CommandBook::reg(const std::string& command, const std::string& help, const 
     return j;
 }
 
-int CommandBook::i(){
-    return m_i;
+int CommandBook::getPage(){
+    return m_page;
 }
 
 int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args){
@@ -89,10 +89,11 @@ int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args){
 
 int Commander::run(const std::string& command, const std::array<std::string, MaxArgumentNumber> args){
     //Check for built in functions
-    if (command == "help")        
+    if (command == "help"){        
         return this->help(args);
-    else if (command == "list")
+    }else if (command == "list"){
         return this->list();
+    }
     //If no built in functions match, search library
     int j = m_book.find(command);
     m_out << "command at: " + std::to_string(j) + "\n"; 
@@ -108,7 +109,7 @@ int Commander::run(const std::string& command, const std::array<std::string, Max
 
 int Commander::list(){
     std::string temp = "Available commands\n";
-    for(int j = 0; j < m_book.i(); j++){
+    for(int j = 0; j < m_book.getPage(); j++){
         m_out << "-" + m_book.m_command[j] + "\n";
     }
     return 1;
@@ -130,8 +131,9 @@ int Commander::post(){
             //out << "added " + buffer + " to index " + std::to_string(i) + "\n";
             i++;
         }
-        if (command == "exit")
+        if (command == "exit"){
             break;
+        }
         run(command, args);
     }
     return 0;
