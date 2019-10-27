@@ -13,7 +13,6 @@ endif()
 
 set(SDL_SHARED_ENABLED_BY_DEFAULT OFF)
 
-add_subdirectory(glad)
 add_subdirectory(SDL2)
 add_subdirectory(imgui)
 
