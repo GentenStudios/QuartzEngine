@@ -37,16 +37,15 @@ int printSomething(std::array<std::string, qz::utils::MaxArgumentNumber> args){
 
 int main(){
 	std::cout << "Program Started \n";
-	qz::utils::Commander Commander = qz::utils::Commander();
+	qz::utils::CommandBook Book = qz::utils::CommandBook();
 
-	Commander.reg("doSomething", "Does thing A", "none", &doSomethingA);
-	Commander.reg("doSomethingB", "Does thing B","none", &doSomethingB);
-	Commander.reg("doSomething", "Does thing C", "none", &doSomethingC);
-	Commander.reg("print", "Prints first argument", "none", &printSomething);
+	Book.reg("doSomething", "Does thing A", "none", &doSomethingA);
+	Book.reg("doSomethingB", "Does thing B","none", &doSomethingB);
+	Book.reg("doSomething", "Does thing C", "none", &doSomethingC);
+	Book.reg("print", "Prints first argument", "none", &printSomething);
 
-	std::cout << "Searching for \"doSomething\"\n";
-	std::cout << "found in index: " + std::to_string(Commander.find("doSomething")) + "\n";
-
+	qz::utils::Commander Commander = qz::utils::Commander(Book, std::cout, std::cin);
+	
 	Commander.post();
 	
 }

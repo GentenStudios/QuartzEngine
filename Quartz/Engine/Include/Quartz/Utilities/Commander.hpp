@@ -39,32 +39,11 @@ namespace qz
         constexpr int MaxCommandsNumber = 100;
         constexpr int MaxArgumentNumber = 10;
 
-        /**
-         * @brief The Commander handles comand line functions while the server is running. A loop will watch for commands from the terminal while the server runs but the clients can also send commands.
-         * 
-         */
-        class Commander{
-        private:
+        struct CommandBook{
             std::array<std::string, MaxCommandsNumber> m_command;
             std::array<std::string, MaxCommandsNumber> m_help;
             std::array<std::string, MaxCommandsNumber> m_permission;
             std::array<std::function<int(std::array<std::string, MaxArgumentNumber> args)>, MaxCommandsNumber> m_functions;
-            int m_i;
-            //TODO: These need to be dynamicaly sized
-
-        public:
-            Commander();
-            ~Commander();
-
-            /** 
-             * @brief Returns a functions helptext as a string
-             */
-            std::string&& getHelp(std::string& command);
-
-            /**
-             * @brief Searches for a command and returns the index its stored at
-             */
-            int find(const std::string& command);
 
             /**
              * @brief Registers a command in the command registry
@@ -73,8 +52,32 @@ namespace qz
              * @param permission What permission is required to run this command
              */
             int reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int(std::array<std::string, MaxArgumentNumber> args)> f);
+    
+            /**
+             * @brief Searches for a command and returns the index its stored at
+             */
+            int find(const std::string& command);
 
-            int help(std::array<std::string, qz::utils::MaxArgumentNumber> args);
+            int i();
+
+        private:
+            int m_i;
+
+        };
+
+        /**
+         * @brief The Commander handles comand line functions while the server is running. A loop will watch for commands from the terminal while the server runs but the clients can also send commands.
+         * 
+         */
+        class Commander{
+        private:
+            CommandBook m_book;
+            std::ostream& m_out;
+            std::istream& m_in;
+
+        public:
+            Commander(CommandBook& book, std::ostream& out, std::istream& in);
+            ~Commander();
 
             /**
              * @brief Calls a command 
@@ -84,9 +87,16 @@ namespace qz
             int run(const std::string& command, const std::array<std::string, MaxArgumentNumber> args);
 
             /**
+             * @brief Returns helpstring for command
+             * 
+             * @param args array of input, args[0] is the command helpstring is returned for
+             */
+            int help(std::array<std::string, qz::utils::MaxArgumentNumber> args);
+
+            /**
              * @brief Returns string listing available commands 
              */
-            std::string&& list();
+            int list();
 
             /**
              * @brief Listens for commands.
