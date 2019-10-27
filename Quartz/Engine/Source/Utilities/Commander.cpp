@@ -32,109 +32,137 @@
 
 using namespace qz::utils;
 
-Commander::Commander(CommandBook& book, std::ostream& out, std::istream& in) :
-    m_book(book),
-    m_out(out),
-    m_in(in)
-{}
+Commander::Commander(CommandBook& book, std::ostream& out, std::istream& in)
+    : m_book(book), m_out(out), m_in(in)
+{
+}
 
 Commander::~Commander() {}
 
-int CommandBook::find(const std::string& command){
-    for(int j = 0; j < m_page; j++){
-        if(m_command[j] == command){
-            return j;
-        }
-    }
-    return -1;
+int CommandBook::find(const std::string& command)
+{
+	for (int j = 0; j < m_page; j++)
+	{
+		if (m_command[j] == command)
+		{
+			return j;
+		}
+	}
+	return -1;
 }
 
-int CommandBook::reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int(std::array<std::string, MaxArgumentNumber> args)> f){
-    int j = find(command);
-    if(j == -1){ // if command does not already exist, enter new command
-        j = m_page;
-        m_page++;
-    }
-    m_command[j] = command;
-    m_help[j] = help;
-    m_permission[j] = permission;
-    m_functions[j] = std::move(f); 
-    return j;
+int CommandBook::reg(
+    const std::string& command, const std::string& help,
+    const std::string& permission,
+    std::function<int(std::array<std::string, MaxArgumentNumber> args)> f)
+{
+	int j = find(command);
+	if (j == -1)
+	{ // if command does not already exist, enter new command
+		j = m_page;
+		m_page++;
+	}
+	m_command[j]    = command;
+	m_help[j]       = help;
+	m_permission[j] = permission;
+	m_functions[j]  = std::move(f);
+	return j;
 }
 
-int CommandBook::getPage(){
-    return m_page;
+int CommandBook::getPage() { return m_page; }
+
+int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args)
+{
+	if (args[0] == "")
+	{
+		m_out << "Type /help [command] to learn more about a command \nType "
+		         "/list for a list of available commands\n";
+		return 1;
+	}
+	else if (args[0] == "help")
+	{
+		m_out << "Type /help [command] to learn more about a command \n";
+		return 1;
+	}
+	else if (args[0] == "list")
+	{
+		m_out << "Lists available commands\n";
+		return 1;
+	}
+	int j = m_book.find(args[0]);
+	if (j == -1)
+	{
+		m_out << "Command \"" + args[0] + "\" not found \n";
+		return -1;
+	}
+	else
+	{
+		m_out << m_book.m_help[j];
+		return 1;
+	}
 }
 
-int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args){
-    if (args[0] == ""){
-        m_out << "Type /help [command] to learn more about a command \nType /list for a list of available commands\n";
-        return 1;
-    }else if (args[0] == "help"){
-        m_out << "Type /help [command] to learn more about a command \n";
-        return 1;
-    }else if (args[0] == "list"){
-        m_out << "Lists available commands\n";
-        return 1;
-    }
-    int j = m_book.find(args[0]);
-    if (j == -1){
-        m_out << "Command \"" + args[0] + "\" not found \n";
-        return -1;
-    }else{
-        m_out << m_book.m_help[j];
-        return 1;
-    }
+int Commander::run(const std::string&                               command,
+                   const std::array<std::string, MaxArgumentNumber> args)
+{
+	// Check for built in functions
+	if (command == "help")
+	{
+		return this->help(args);
+	}
+	else if (command == "list")
+	{
+		return this->list();
+	}
+	// If no built in functions match, search library
+	int j = m_book.find(command);
+	m_out << "command at: " + std::to_string(j) + "\n";
+	if (j == -1)
+	{
+		m_out << "Command \"" + command + "\" not found \n";
+		return -1;
+	}
+	else
+	{
+		return m_book.m_functions[j](args);
+	}
 }
 
-int Commander::run(const std::string& command, const std::array<std::string, MaxArgumentNumber> args){
-    //Check for built in functions
-    if (command == "help"){        
-        return this->help(args);
-    }else if (command == "list"){
-        return this->list();
-    }
-    //If no built in functions match, search library
-    int j = m_book.find(command);
-    m_out << "command at: " + std::to_string(j) + "\n"; 
-    if (j == -1){
-        m_out << "Command \"" + command + "\" not found \n";
-        return -1;
-    }
-    else
-    {
-        return m_book.m_functions[j](args);
-    }
+int Commander::list()
+{
+	std::string temp = "Available commands\n";
+	for (int j = 0; j < m_book.getPage(); j++)
+	{
+		m_out << "-" + m_book.m_command[j] + "\n";
+	}
+	return 1;
 }
 
-int Commander::list(){
-    std::string temp = "Available commands\n";
-    for(int j = 0; j < m_book.getPage(); j++){
-        m_out << "-" + m_book.m_command[j] + "\n";
-    }
-    return 1;
-}
-
-int Commander::post(){
-    std::string input;
-    while(true){
-        m_out << "\n->";
-        int i = 0;
-        std::array<std::string, MaxArgumentNumber> args;
-        std::string command = "";
-        std::string buffer;
-        m_in >> command;
-        //in >> buffer;
-        while(m_in.peek() != '\n' && i <= MaxArgumentNumber){
-            m_in >> buffer;
-            args[i] = buffer;
-            //out << "added " + buffer + " to index " + std::to_string(i) + "\n";
-            i++;
-        }
-        if (command == "exit"){
-            break;
-        }
-        run(command, args);
-    }
-    return 0;
+int Commander::post()
+{
+	std::string input;
+	while (true)
+	{
+		m_out << "\n->";
+		int                                        i = 0;
+		std::array<std::string, MaxArgumentNumber> args;
+		std::string                                command = "";
+		std::string                                buffer;
+		m_in >> command;
+		// in >> buffer;
+		while (m_in.peek() != '\n' && i <= MaxArgumentNumber)
+		{
+			m_in >> buffer;
+			args[i] = buffer;
+			// out << "added " + buffer + " to index " + std::to_string(i) +
+			// "\n";
+			i++;
+		}
+		if (command == "exit")
+		{
+			break;
+		}
+		run(command, args);
+	}
+	return 0;
 }

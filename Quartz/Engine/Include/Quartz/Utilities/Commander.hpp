@@ -28,99 +28,116 @@
 
 #pragma once
 
-#include <string>
 #include <array>
 #include <functional>
+#include <string>
 
 namespace qz
 {
 	namespace utils
 	{
-        constexpr int MaxCommandsNumber = 100;
-        constexpr int MaxArgumentNumber = 10;
+		constexpr int MaxCommandsNumber = 100;
+		constexpr int MaxArgumentNumber = 10;
 
-        /**
-         * @brief The command book stores commands and information on them to be used by a commander
-         */
+		/**
+		 * @brief The command book stores commands and information on them to be
+		 * used by a commander
+		 */
 
-        struct CommandBook{
-            std::array<std::string, MaxCommandsNumber> m_command;
-            std::array<std::string, MaxCommandsNumber> m_help;
-            std::array<std::string, MaxCommandsNumber> m_permission;
-            std::array<std::function<int(std::array<std::string, MaxArgumentNumber> args)>, MaxCommandsNumber> m_functions;
+		struct CommandBook
+		{
+			std::array<std::string, MaxCommandsNumber> m_command;
+			std::array<std::string, MaxCommandsNumber> m_help;
+			std::array<std::string, MaxCommandsNumber> m_permission;
+			std::array<std::function<int(
+			               std::array<std::string, MaxArgumentNumber> args)>,
+			           MaxCommandsNumber>
+			    m_functions;
 
-            /**
-             * @brief Registers a command in the command registry
-             * 
-             * @param command The keyword for calling the command
-             * @param permission What permission is required to run this command
-             */
-            int reg(const std::string& command, const std::string& help, const std::string& permission, std::function<int(std::array<std::string, MaxArgumentNumber> args)> f);
-    
-            /**
-             * @brief Searches for a command and returns the index its stored at or -1 if it fails
-             * 
-             * @param command The command to search for
-             */
-            int find(const std::string& command);
+			/**
+			 * @brief Registers a command in the command registry
+			 *
+			 * @param command The keyword for calling the command
+			 * @param permission What permission is required to run this command
+			 */
+			int reg(const std::string& command, const std::string& help,
+			        const std::string& permission,
+			        std::function<
+			            int(std::array<std::string, MaxArgumentNumber> args)>
+			            f);
 
-            /**
-             * @brief Gets next open space in book
-             */
-            int getPage();
+			/**
+			 * @brief Searches for a command and returns the index its stored at
+			 * or -1 if it fails
+			 *
+			 * @param command The command to search for
+			 */
+			int find(const std::string& command);
 
-        private:
-            /** 
-             * @brief Counter that keep track of next space in the arrays (eg next page in the book)
-             */  
-            int m_page;
+			/**
+			 * @brief Gets next open space in book
+			 */
+			int getPage();
 
-        };
+		private:
+			/**
+			 * @brief Counter that keep track of next space in the arrays (eg
+			 * next page in the book)
+			 */
+			int m_page;
+		};
 
-        /**
-         * @brief The Commander handles comand line functions. It accepts an in and out stream on creation and can interact with the command line or another interface.
-         * 
-         */
-        class Commander{
-        private:
-            CommandBook m_book;
-            std::ostream& m_out;
-            std::istream& m_in;
+		/**
+		 * @brief The Commander handles comand line functions. It accepts an in
+		 * and out stream on creation and can interact with the command line or
+		 * another interface.
+		 *
+		 */
+		class Commander
+		{
+		private:
+			CommandBook   m_book;
+			std::ostream& m_out;
+			std::istream& m_in;
 
-        public:
-            /**
-             * @brief Initializes a commander that can run and execute commands
-             * 
-             * @param book The command book that the commander uses to route commands to functions
-             * @param out An output stream the commander outputs results to
-             * @param in An input stream the commander accepts input to
-             */
-            Commander(CommandBook& book, std::ostream& out, std::istream& in);
-            ~Commander();
+		public:
+			/**
+			 * @brief Initializes a commander that can run and execute commands
+			 *
+			 * @param book The command book that the commander uses to route
+			 * commands to functions
+			 * @param out An output stream the commander outputs results to
+			 * @param in An input stream the commander accepts input to
+			 */
+			Commander(CommandBook& book, std::ostream& out, std::istream& in);
+			~Commander();
 
-            /**
-             * @brief Calls a command 
-             * 
-             * @param command The keyword for calling the command.
-             */
-            int run(const std::string& command, const std::array<std::string, MaxArgumentNumber> args);
+			/**
+			 * @brief Calls a command
+			 *
+			 * @param command The keyword for calling the command.
+			 */
+			int run(const std::string&                               command,
+			        const std::array<std::string, MaxArgumentNumber> args);
 
-            /**
-             * @brief Returns helpstring for command
-             * 
-             * @param args array of input, args[0] is the command helpstring is returned for
-             */
-            int help(std::array<std::string, qz::utils::MaxArgumentNumber> args);
+			/**
+			 * @brief Returns helpstring for command
+			 *
+			 * @param args array of input, args[0] is the command helpstring is
+			 * returned for
+			 */
+			int help(
+			    std::array<std::string, qz::utils::MaxArgumentNumber> args);
 
-            /**
-             * @brief Returns string listing available commands 
-             */
-            int list();
+			/**
+			 * @brief Returns string listing available commands
+			 */
+			int list();
 
-            /**
-             * @brief Listens for commands.
-             */
-            int post();
-        };
-    };
-}
+			/**
+			 * @brief Listens for commands.
+			 */
+			int post();
+		};
+	}; // namespace utils
+} // namespace qz
