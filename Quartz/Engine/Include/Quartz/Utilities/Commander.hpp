@@ -39,6 +39,10 @@ namespace qz
         constexpr int MaxCommandsNumber = 100;
         constexpr int MaxArgumentNumber = 10;
 
+        /**
+         * @brief The command book stores commands and information on them to be used by a commander
+         */
+
         struct CommandBook{
             std::array<std::string, MaxCommandsNumber> m_command;
             std::array<std::string, MaxCommandsNumber> m_help;
@@ -58,6 +62,9 @@ namespace qz
              */
             int find(const std::string& command);
 
+            /**
+             * @brief Gets next open space in book
+             */
             int i();
 
         private:

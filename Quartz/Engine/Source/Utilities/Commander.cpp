@@ -67,9 +67,24 @@ int CommandBook::i(){
 }
 
 int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args){
+    if (args[0] == ""){
+        m_out << "Type /help [command] to learn more about a command \nType /list for a list of available commands\n";
+        return 1;
+    }else if (args[0] == "help"){
+        m_out << "Type /help [command] to learn more about a command \n";
+        return 1;
+    }else if (args[0] == "list"){
+        m_out << "Lists available commands\n";
+        return 1;
+    }
     int j = m_book.find(args[0]);
-    m_out << m_book.m_help[j];
-    return 1;
+    if (j == -1){
+        m_out << "Command \"" + args[0] + "\" not found \n";
+        return -1;
+    }else{
+        m_out << m_book.m_help[j];
+        return 1;
+    }
 }
 
 int Commander::run(const std::string& command, const std::array<std::string, MaxArgumentNumber> args){
@@ -94,7 +109,7 @@ int Commander::run(const std::string& command, const std::array<std::string, Max
 int Commander::list(){
     std::string temp = "Available commands\n";
     for(int j = 0; j < m_book.i(); j++){
-        temp += "->" + m_book.m_command[j] + "\n";
+        m_out << "-" + m_book.m_command[j] + "\n";
     }
     return 1;
 }
