@@ -1,6 +1,6 @@
 [submodule "Quartz/ThirdParty/luajit"]
 	path = Quartz/ThirdParty/luajit
-	url = git@github.com:LuaDist/luajit.git
+	url = https://github.com/LuaDist/luajit.git
 [submodule "Quartz/ThirdParty/sol2"]
 	path = Quartz/ThirdParty/sol2
 	url = https://github.com/ThePhD/sol2.git
