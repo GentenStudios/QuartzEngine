@@ -39,10 +39,10 @@ int main(){
 	std::cout << "Program Started \n";
 	qz::utils::CommandBook Book = qz::utils::CommandBook();
 
-	Book.reg("doSomething", "Does thing A", "none", &doSomethingA);
-	Book.reg("doSomethingB", "Does thing B","none", &doSomethingB);
-	Book.reg("doSomething", "Does thing C", "none", &doSomethingC);
-	Book.reg("print", "Prints first argument", "none", &printSomething);
+	Book.add("doSomething", "Does thing A", "none", &doSomethingA);
+	Book.add("doSomethingB", "Does thing B","none", &doSomethingB);
+	Book.add("doSomething", "Does thing C", "none", &doSomethingC);
+	Book.add("print", "Prints first argument", "none", &printSomething);
 
 	qz::utils::Commander Commander = qz::utils::Commander(Book, std::cout, std::cin);
 	

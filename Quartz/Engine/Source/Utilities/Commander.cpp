@@ -51,7 +51,7 @@ int CommandBook::find(const std::string& command)
 	return -1;
 }
 
-int CommandBook::reg(const std::string& command, const std::string& help,
+void CommandBook::add(const std::string& command, const std::string& help,
                      const std::string& permission, function f)
 {
 	int j = find(command);
@@ -64,12 +64,12 @@ int CommandBook::reg(const std::string& command, const std::string& help,
 	m_help[j]       = help;
 	m_permission[j] = permission;
 	m_functions[j]  = std::move(f);
-	return j;
+	return;
 }
 
 int CommandBook::getPage() { return m_page; }
 
-int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args)
+int Commander::help( const std::array<std::string, qz::utils::MaxArgumentNumber>&& args)
 {
 	if (args[0] == "")
 	{
@@ -101,12 +101,12 @@ int Commander::help(std::array<std::string, qz::utils::MaxArgumentNumber> args)
 }
 
 int Commander::run(const std::string&                               command,
-                   const std::array<std::string, MaxArgumentNumber> args)
+                   const std::array<std::string, MaxArgumentNumber>&& args)
 {
 	// Check for built in functions
 	if (command == "help")
 	{
-		return this->help(args);
+		return this->help(std::move(args));
 	}
 	else if (command == "list")
 	{
@@ -160,7 +160,7 @@ int Commander::post()
 		{
 			break;
 		}
-		run(command, args);
+		run(command, std::move(args));
 	}
 	return 0;
 }

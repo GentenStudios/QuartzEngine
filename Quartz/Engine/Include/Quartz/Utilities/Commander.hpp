@@ -60,7 +60,7 @@ namespace qz
 			 * @param command The keyword for calling the command
 			 * @param permission What permission is required to run this command
 			 */
-			int reg(const std::string& command, const std::string& help,
+			void add(const std::string& command, const std::string& help,
 			        const std::string& permission, function f);
 
 			/**
@@ -115,7 +115,7 @@ namespace qz
 			 * @param command The keyword for calling the command.
 			 */
 			int run(const std::string&                               command,
-			        const std::array<std::string, MaxArgumentNumber> args);
+			        const std::array<std::string, MaxArgumentNumber>&& args);
 
 			/**
 			 * @brief Returns helpstring for command
@@ -124,7 +124,7 @@ namespace qz
 			 * returned for
 			 */
 			int help(
-			    std::array<std::string, qz::utils::MaxArgumentNumber> args);
+			    const std::array<std::string, qz::utils::MaxArgumentNumber>&& args);
 
 			/**
 			 * @brief Returns string listing available commands
