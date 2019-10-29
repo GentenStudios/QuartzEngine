@@ -147,13 +147,10 @@ int Commander::post()
 		std::string                                command = "";
 		std::string                                buffer;
 		m_in >> command;
-		// in >> buffer;
 		while (m_in.peek() != '\n' && i <= MaxArgumentNumber)
 		{
 			m_in >> buffer;
 			args[i] = buffer;
-			// out << "added " + buffer + " to index " + std::to_string(i) +
-			// "\n";
 			i++;
 		}
 		if (command == "exit")
