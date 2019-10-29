@@ -29,21 +29,23 @@
 #include <Quartz/Utilities/Commander.hpp>
 #include <iostream>
 
-int doSomethingA(std::array<std::string, qz::utils::MaxArgumentNumber>&& argv){std::cout << "Did thing A \n"; return 0;}
-int doSomethingB(std::array<std::string, qz::utils::MaxArgumentNumber>&& argv){std::cout << "Did thing B \n"; return 0;}
-int doSomethingC(std::array<std::string, qz::utils::MaxArgumentNumber>&& argv){std::cout << "Did thing C \n"; return 0;}
-int printSomething(std::array<std::string, qz::utils::MaxArgumentNumber>&& args){std::cout << args[0]; return 0;}
+int doSomethingA(std::array<std::string, qz::utils::MaxArgumentNumber> argv){std::cout << "Did thing A \n"; return 0;}
+int doSomethingB(std::array<std::string, qz::utils::MaxArgumentNumber> argv){std::cout << "Did thing B \n"; return 0;}
+int doSomethingC(std::array<std::string, qz::utils::MaxArgumentNumber> argv){std::cout << "Did thing C \n"; return 0;}
+int printSomething(std::array<std::string, qz::utils::MaxArgumentNumber> args){
+	std::cout << args[0]; return 0;}
 
 int main(){
 	std::cout << "Program Started \n";
 	qz::utils::CommandBook Book = qz::utils::CommandBook();
 
-	Book.add("doSomething", "Does thing A", "none", doSomethingA);
-	Book.add("doSomethingB", "Does thing B","none", doSomethingB);
-	Book.add("doSomething", "Does thing C", "none", doSomethingC);
-	Book.add("print", "Prints first argument", "none", printSomething);
+	Book.reg("doSomething", "Does thing A", "none", &doSomethingA);
+	Book.reg("doSomethingB", "Does thing B","none", &doSomethingB);
+	Book.reg("doSomething", "Does thing C", "none", &doSomethingC);
+	Book.reg("print", "Prints first argument", "none", &printSomething);
 
 	qz::utils::Commander Commander = qz::utils::Commander(Book, std::cout, std::cin);
 	
 	Commander.post();
+	
 }

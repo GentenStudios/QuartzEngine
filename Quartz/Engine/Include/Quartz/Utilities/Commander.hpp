@@ -31,29 +31,16 @@
 #include <array>
 #include <functional>
 #include <string>
-#include <unordered_map>
 
 namespace qz
 {
 	namespace utils
 	{
-		constexpr std::size_t MaxArgumentNumber = 10;
-		using function_t = std::function<int(
-		    std::array<std::string, MaxArgumentNumber>&& args)>;
-		
-		/**
-		 * @brief The command structure stores information about a command
-		 */
-
-		struct Command
-		{
-			std::string name;
-			std::string help;
-			std::string permission;
-			function_t function;
-
-			Command() {}
-		};
+		constexpr int MaxCommandsNumber = 100;
+		constexpr int MaxArgumentNumber = 10;
+		typedef std::function<int(
+		    std::array<std::string, MaxArgumentNumber> args)>
+		    function;
 
 		/**
 		 * @brief The command book stores commands and information on them to be
@@ -62,8 +49,10 @@ namespace qz
 
 		struct CommandBook
 		{
-			using Commands_t = std::unordered_map<std::string, Command>;
-			Commands_t m_commands;
+			std::array<std::string, MaxCommandsNumber> m_command;
+			std::array<std::string, MaxCommandsNumber> m_help;
+			std::array<std::string, MaxCommandsNumber> m_permission;
+			std::array<function, MaxCommandsNumber>    m_functions;
 
 			/**
 			 * @brief Registers a command in the command registry
@@ -71,17 +60,28 @@ namespace qz
 			 * @param command The keyword for calling the command
 			 * @param permission What permission is required to run this command
 			 */
-			void add(const std::string& command, const std::string& help,
-			         const std::string& permission, function_t f);
+			int reg(const std::string& command, const std::string& help,
+			        const std::string& permission, function f);
 
 			/**
-			 * @brief Searches for a command and returns the iterator
+			 * @brief Searches for a command and returns the index its stored at
+			 * or -1 if it fails
 			 *
 			 * @param command The command to search for
 			 */
-			Commands_t::iterator find(const std::string& command);
+			int find(const std::string& command);
+
+			/**
+			 * @brief Gets next open space in book
+			 */
+			int getPage();
 
 		private:
+			/**
+			 * @brief Counter that keep track of next space in the arrays (eg
+			 * next page in the book)
+			 */
+			int m_page;
 		};
 
 		/**
@@ -114,8 +114,8 @@ namespace qz
 			 *
 			 * @param command The keyword for calling the command.
 			 */
-			int run(const std::string&                           command,
-			        std::array<std::string, MaxArgumentNumber>&& args);
+			int run(const std::string&                               command,
+			        const std::array<std::string, MaxArgumentNumber> args);
 
 			/**
 			 * @brief Returns helpstring for command
@@ -124,7 +124,7 @@ namespace qz
 			 * returned for
 			 */
 			int help(
-			    std::array<std::string, qz::utils::MaxArgumentNumber>&& args);
+			    std::array<std::string, qz::utils::MaxArgumentNumber> args);
 
 			/**
 			 * @brief Returns string listing available commands
