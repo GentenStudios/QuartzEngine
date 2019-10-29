@@ -6,7 +6,6 @@ set(utilityHeaders
 
 	${currentDir}/Logger.hpp
 	${currentDir}/FileIO.hpp
-	${currentDir}/Config.hpp
 	${currentDir}/HandleAllocator.hpp
 	${currentDir}/EnumTools.hpp
 	${currentDir}/Singleton.hpp
