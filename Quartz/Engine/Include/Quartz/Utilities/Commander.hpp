@@ -36,10 +36,10 @@ namespace qz
 {
 	namespace utils
 	{
-		constexpr int MaxCommandsNumber = 100;
-		constexpr int MaxArgumentNumber = 10;
+		constexpr std::size_t MAX_COMMANDS_NUMBER  = 100;
+		constexpr std::size_t MAX_ARGUMENTS_NUMBER = 10;
 		typedef std::function<int(
-		    std::array<std::string, MaxArgumentNumber> args)>
+		    std::array<std::string, MAX_ARGUMENTS_NUMBER> args)>
 		    function;
 
 		/**
@@ -49,10 +49,10 @@ namespace qz
 
 		struct CommandBook
 		{
-			std::array<std::string, MaxCommandsNumber> m_command;
-			std::array<std::string, MaxCommandsNumber> m_help;
-			std::array<std::string, MaxCommandsNumber> m_permission;
-			std::array<function, MaxCommandsNumber>    m_functions;
+			std::array<std::string, MAX_COMMANDS_NUMBER> m_command;
+			std::array<std::string, MAX_COMMANDS_NUMBER> m_help;
+			std::array<std::string, MAX_COMMANDS_NUMBER> m_permission;
+			std::array<function, MAX_COMMANDS_NUMBER>    m_functions;
 
 			/**
 			 * @brief Registers a command in the command registry
@@ -114,8 +114,8 @@ namespace qz
 			 *
 			 * @param command The keyword for calling the command.
 			 */
-			int run(const std::string&                                 command,
-			        const std::array<std::string, MaxArgumentNumber>&& args);
+			int run(const std::string& command,
+			        const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args);
 
 			/**
 			 * @brief Returns helpstring for command
@@ -124,7 +124,7 @@ namespace qz
 			 * returned for
 			 */
 			int help(const std::array<std::string,
-			                          qz::utils::MaxArgumentNumber>&& args);
+			                          qz::utils::MAX_ARGUMENTS_NUMBER>&& args);
 
 			/**
 			 * @brief Returns string listing available commands

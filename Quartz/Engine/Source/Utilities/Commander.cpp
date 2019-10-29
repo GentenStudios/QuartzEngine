@@ -70,7 +70,7 @@ void CommandBook::add(const std::string& command, const std::string& help,
 int CommandBook::getPage() { return m_page; }
 
 int Commander::help(
-    const std::array<std::string, qz::utils::MaxArgumentNumber>&& args)
+    const std::array<std::string, qz::utils::MAX_ARGUMENTS_NUMBER>&& args)
 {
 	if (args[0] == "")
 	{
@@ -101,8 +101,8 @@ int Commander::help(
 	}
 }
 
-int Commander::run(const std::string&                                 command,
-                   const std::array<std::string, MaxArgumentNumber>&& args)
+int Commander::run(const std::string& command,
+                   const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args)
 {
 	// Check for built in functions
 	if (command == "help")
@@ -143,12 +143,12 @@ int Commander::post()
 	while (true)
 	{
 		m_out << "\n->";
-		int                                        i = 0;
-		std::array<std::string, MaxArgumentNumber> args;
-		std::string                                command = "";
-		std::string                                buffer;
+		int                                           i = 0;
+		std::array<std::string, MAX_ARGUMENTS_NUMBER> args;
+		std::string                                   command = "";
+		std::string                                   buffer;
 		m_in >> command;
-		while (m_in.peek() != '\n' && i <= MaxArgumentNumber)
+		while (m_in.peek() != '\n' && i <= MAX_ARGUMENTS_NUMBER)
 		{
 			m_in >> buffer;
 			args[i] = buffer;
