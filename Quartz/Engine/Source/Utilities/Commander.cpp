@@ -52,7 +52,7 @@ int CommandBook::find(const std::string& command)
 }
 
 void CommandBook::add(const std::string& command, const std::string& help,
-                     const std::string& permission, function f)
+                      const std::string& permission, function f)
 {
 	int j = find(command);
 	if (j == -1)
@@ -69,7 +69,8 @@ void CommandBook::add(const std::string& command, const std::string& help,
 
 int CommandBook::getPage() { return m_page; }
 
-int Commander::help( const std::array<std::string, qz::utils::MaxArgumentNumber>&& args)
+int Commander::help(
+    const std::array<std::string, qz::utils::MaxArgumentNumber>&& args)
 {
 	if (args[0] == "")
 	{
@@ -100,7 +101,7 @@ int Commander::help( const std::array<std::string, qz::utils::MaxArgumentNumber>
 	}
 }
 
-int Commander::run(const std::string&                               command,
+int Commander::run(const std::string&                                 command,
                    const std::array<std::string, MaxArgumentNumber>&& args)
 {
 	// Check for built in functions
