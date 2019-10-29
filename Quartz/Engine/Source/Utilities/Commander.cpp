@@ -41,7 +41,7 @@ void CommandBook::add(const std::string& command, const std::string& help,
                      const std::string& permission, function_t f)
 {
 	m_commands[command] = Command();
-	m_commands[command].command = command;
+	m_commands[command].name = command;
 	m_commands[command].help = help;
 	m_commands[command].permission = permission;
 	m_commands[command].function = std::move(f)
