@@ -64,10 +64,10 @@ namespace qz
 			         const std::string& permission, function f);
 
 			/**
-			 * @brief Searches for a command and returns the index its stored at
-			 * or -1 if it fails
+			 * @brief Searches for a command
 			 *
 			 * @param command The command to search for
+			 * @return index command is located at or -1 if its not found
 			 */
 			int find(const std::string& command);
 
@@ -113,6 +113,7 @@ namespace qz
 			 * @brief Calls a command
 			 *
 			 * @param command The keyword for calling the command.
+			 * @return Returns return from function or -1 if function not found
 			 */
 			int run(const std::string& command,
 			        const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args);
@@ -122,6 +123,8 @@ namespace qz
 			 *
 			 * @param args array of input, args[0] is the command helpstring is
 			 * returned for
+			 * @return Returns 1 if successful and -1 if not (most often when
+			 * command is not found)
 			 */
 			int help(const std::array<std::string,
 			                          qz::utils::MAX_ARGUMENTS_NUMBER>&& args);
@@ -129,12 +132,12 @@ namespace qz
 			/**
 			 * @brief Returns string listing available commands
 			 */
-			int list();
+			void list();
 
 			/**
 			 * @brief Listens for commands.
 			 */
-			int post();
+			void post();
 		};
 	}; // namespace utils
 } // namespace qz

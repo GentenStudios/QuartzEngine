@@ -111,7 +111,8 @@ int Commander::run(const std::string& command,
 	}
 	else if (command == "list")
 	{
-		return this->list();
+		this->list();
+		return 1;
 	}
 	// If no built in functions match, search library
 	int j = m_book.find(command);
@@ -127,17 +128,17 @@ int Commander::run(const std::string& command,
 	}
 }
 
-int Commander::list()
+void Commander::list()
 {
 	std::string temp = "Available commands\n";
 	for (int j = 0; j < m_book.getPage(); j++)
 	{
 		m_out << "-" + m_book.m_command[j] + "\n";
 	}
-	return 1;
+	return;
 }
 
-int Commander::post()
+void Commander::post()
 {
 	std::string input;
 	while (true)
@@ -160,5 +161,5 @@ int Commander::post()
 		}
 		run(command, std::move(args));
 	}
-	return 0;
+	return;
 }
