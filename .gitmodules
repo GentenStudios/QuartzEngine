@@ -1,3 +1,9 @@
+[submodule "Quartz/ThirdParty/luajit"]
+	path = Quartz/ThirdParty/luajit
+	url = https://github.com/LuaDist/luajit.git
+[submodule "Quartz/ThirdParty/sol2"]
+	path = Quartz/ThirdParty/sol2
+	url = https://github.com/ThePhD/sol2.git
 [submodule "Quartz/ThirdParty/SDL2"]
 	path = Quartz/ThirdParty/SDL2
 	url = https://github.com/spurious/SDL-mirror.git
