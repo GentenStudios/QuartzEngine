@@ -92,7 +92,7 @@ bool Commander::help(
 		m_out << "Lists available commands\n";
 		return true;
 	}
-	int j = m_book.find(args[0]);
+	const int j = m_book.find(args[0]);
 	if (j == 0)
 	{
 		m_out << "Command \"" + args[0] + "\" not found \n";
@@ -119,8 +119,7 @@ bool Commander::run(const std::string& command,
 		return true;
 	}
 	// If no built in functions match, search library
-	int j = m_book.find(command);
-	m_out << "command at: " + std::to_string(j) + "\n";
+	const int j = m_book.find(command);
 	if (j == 0)
 	{
 		m_out << "Command \"" + command + "\" not found \n";
@@ -135,7 +134,7 @@ bool Commander::run(const std::string& command,
 
 void Commander::list()
 {
-	std::string temp = "Available commands\n";
+	m_out << "Available commands\n";
 	for (int j = 0; j < m_book.getPage(); j++)
 	{
 		m_out << "-" + m_book.m_command[j] + "\n";

@@ -38,7 +38,7 @@ namespace qz
 	{
 		constexpr std::size_t MAX_COMMANDS_NUMBER  = 100;
 		constexpr std::size_t MAX_ARGUMENTS_NUMBER = 10;
-		typedef std::function<int(
+		typedef std::function<void(
 		    std::array<std::string, MAX_ARGUMENTS_NUMBER> args)>
 		    function;
 
