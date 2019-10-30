@@ -60,7 +60,10 @@ void CommandBook::add(const std::string& command, const std::string& help,
 	{
 		// If we hit the max commands, return
 		// TODO: Replace this check with a dynamic array
-		if (m_page == MAX_COMMANDS_NUMBER){return;}
+		if (m_page == MAX_COMMANDS_NUMBER)
+		{
+			return;
+		}
 
 		j = m_page;
 		m_page++;
@@ -106,7 +109,7 @@ bool Commander::help(
 }
 
 bool Commander::run(const std::string& command,
-                   const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args)
+                    const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args)
 {
 	// Check for built in functions
 	if (command == "help")

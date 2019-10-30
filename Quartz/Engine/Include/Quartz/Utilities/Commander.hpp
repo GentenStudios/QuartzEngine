@@ -73,7 +73,7 @@ namespace qz
 
 			/**
 			 * @brief Gets next open space in book
-			 * 
+			 *
 			 * @return Returns the next open space in arrays as an integer
 			 */
 			int getPage();
@@ -115,22 +115,23 @@ namespace qz
 			 * @brief Calls a command
 			 *
 			 * @param command The keyword for calling the command.
-			 * @return Returns True if the function was called and False if the 
+			 * @return Returns True if the function was called and False if the
 			 * function could not be found
 			 */
-			bool run(const std::string& command,
-			        const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args);
+			bool run(
+			    const std::string&                                    command,
+			    const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args);
 
 			/**
 			 * @brief Returns helpstring for command
 			 *
 			 * @param args array of input, args[0] is the command helpstring is
 			 * returned for, all other array values are not used
-			 * @return Returns True if successful and False if it could not find 
+			 * @return Returns True if successful and False if it could not find
 			 * the innputted command
 			 */
 			bool help(const std::array<std::string,
-			                          qz::utils::MAX_ARGUMENTS_NUMBER>&& args);
+			                           qz::utils::MAX_ARGUMENTS_NUMBER>&& args);
 
 			/**
 			 * @brief Returns string listing available commands
