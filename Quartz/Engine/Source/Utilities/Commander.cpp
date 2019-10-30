@@ -55,8 +55,13 @@ void CommandBook::add(const std::string& command, const std::string& help,
                       const std::string& permission, function f)
 {
 	int j = find(command);
+	// If command does not already exist, enter new command
 	if (j == -1)
-	{ // if command does not already exist, enter new command
+	{
+		// If we hit the max commands, return
+		// TODO: Replace this check with a dynamic array
+		if (m_page == MAX_COMMANDS_NUMBER){return;}
+
 		j = m_page;
 		m_page++;
 	}
@@ -64,44 +69,43 @@ void CommandBook::add(const std::string& command, const std::string& help,
 	m_help[j]       = help;
 	m_permission[j] = permission;
 	m_functions[j]  = std::move(f);
-	return;
 }
 
 int CommandBook::getPage() { return m_page; }
 
-int Commander::help(
+bool Commander::help(
     const std::array<std::string, qz::utils::MAX_ARGUMENTS_NUMBER>&& args)
 {
 	if (args[0] == "")
 	{
 		m_out << "Type /help [command] to learn more about a command \nType "
 		         "/list for a list of available commands\n";
-		return 1;
+		return true;
 	}
 	else if (args[0] == "help")
 	{
 		m_out << "Type /help [command] to learn more about a command \n";
-		return 1;
+		return true;
 	}
 	else if (args[0] == "list")
 	{
 		m_out << "Lists available commands\n";
-		return 1;
+		return true;
 	}
 	int j = m_book.find(args[0]);
-	if (j == -1)
+	if (j == 0)
 	{
 		m_out << "Command \"" + args[0] + "\" not found \n";
-		return -1;
+		return false;
 	}
 	else
 	{
 		m_out << m_book.m_help[j];
-		return 1;
+		return true;
 	}
 }
 
-int Commander::run(const std::string& command,
+bool Commander::run(const std::string& command,
                    const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args)
 {
 	// Check for built in functions
@@ -112,19 +116,20 @@ int Commander::run(const std::string& command,
 	else if (command == "list")
 	{
 		this->list();
-		return 1;
+		return true;
 	}
 	// If no built in functions match, search library
 	int j = m_book.find(command);
 	m_out << "command at: " + std::to_string(j) + "\n";
-	if (j == -1)
+	if (j == 0)
 	{
 		m_out << "Command \"" + command + "\" not found \n";
-		return -1;
+		return false;
 	}
 	else
 	{
-		return m_book.m_functions[j](args);
+		m_book.m_functions[j](args);
+		return true;
 	}
 }
 
@@ -135,7 +140,6 @@ void Commander::list()
 	{
 		m_out << "-" + m_book.m_command[j] + "\n";
 	}
-	return;
 }
 
 void Commander::post()
@@ -161,5 +165,4 @@ void Commander::post()
 		}
 		run(command, std::move(args));
 	}
-	return;
 }
