@@ -4,9 +4,9 @@
 [submodule "Quartz/ThirdParty/sol2"]
 	path = Quartz/ThirdParty/sol2
 	url = https://github.com/ThePhD/sol2.git
-[submodule "Quartz/ThirdParty/bgfx"]
-	path = Quartz/ThirdParty/bgfx
-	url = https://github.com/bkaradzic/bgfx.git
 [submodule "Quartz/ThirdParty/SDL2"]
 	path = Quartz/ThirdParty/SDL2
 	url = https://github.com/spurious/SDL-mirror.git
+[submodule "Quartz/ThirdParty/bgfx"]
+	path = Quartz/ThirdParty/bgfx
+	url = https://github.com/bkaradzic/bgfx.git
