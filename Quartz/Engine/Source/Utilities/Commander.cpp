@@ -123,7 +123,7 @@ bool Commander::run(const std::string& command,
 	}
 	// If no built in functions match, search library
 	const int j = m_book.find(command);
-	if (j == 0)
+	if (j == -1)
 	{
 		m_out << "Command \"" + command + "\" not found \n";
 		return false;
