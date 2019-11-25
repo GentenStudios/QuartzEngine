@@ -32,12 +32,3 @@
 #include <Quartz/Utilities/FileIO.hpp>
 #include <Quartz/Utilities/Logger.hpp>
 #include <Quartz/Utilities/Plugin.hpp>
-
-#include <Quartz/Events/Event.hpp>
-
-#include <Quartz/Graphics/RHI/Context.hpp>
-#include <Quartz/Graphics/RHI/DataTypes.hpp>
-#include <Quartz/Graphics/RHI/InputLayout.hpp>
-
-#include <Quartz/Graphics/Camera.hpp>
-#include <Quartz/Platform/IWindow.hpp>
