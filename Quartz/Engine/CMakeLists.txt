@@ -15,6 +15,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE SDL2-static SDL2main liblua)
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../ThirdParty)
 target_include_directories(${PROJECT_NAME} PUBLIC 
 	${dependencies}/sol2/include
+	${dependencies}/stb_image
 	${CMAKE_CURRENT_LIST_DIR}/Include
 )
 
