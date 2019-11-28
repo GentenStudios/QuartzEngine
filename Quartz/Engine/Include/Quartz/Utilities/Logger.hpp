@@ -28,6 +28,8 @@
 
 #pragma once
 
+#include <Quartz/Core.hpp>
+
 #include <fstream>
 #include <sstream>
 #include <string>
