@@ -13,7 +13,7 @@ set(SDL_SHARED_ENABLED_BY_DEFAULT OFF)
 
 add_subdirectory(SDL2)
 add_subdirectory(sol2)
-add_subdirectory(luajit)
+add_subdirectory(lua)
 
 # stop SDL trying to control our main function.
 add_definitions(-DSDL_MAIN_HANDLED)
