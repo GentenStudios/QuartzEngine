@@ -32,7 +32,7 @@
 
 #define INDEX_2D(x, y) x + (y * 4)
 
-using namespace qz::math;
+using namespace qz::math::detail;
 
 Matrix4x4::Matrix4x4() { setIdentity(); }
 
@@ -117,21 +117,21 @@ Matrix4x4 Matrix4x4::ortho(float left, float right, float top, float bottom,
 	return out;
 }
 
-Matrix4x4 Matrix4x4::lookAt(const Vector3& eyePos, const Vector3& centre,
-                            const Vector3& up)
+Matrix4x4 Matrix4x4::lookAt(const Vector3f& eyePos, const Vector3f& centre,
+                            const Vector3f& up)
 {
-	Vector3 f = centre - eyePos;
+	Vector3f f = centre - eyePos;
 	f.normalize();
 
-	Vector3 s = Vector3::cross(f, up);
+	Vector3f s = Vector3f::cross(f, up);
 	s.normalize();
 
-	const Vector3 u = Vector3::cross(s, f);
+	const Vector3 u = Vector3f::cross(s, f);
 
 	const Matrix4x4 lookAtMatrix(
 	    s.x, u.x, -f.x, 0.f, s.y, u.y, -f.y, 0.f, s.z, u.z, -f.z, 0.f,
-	    -Vector3::dotProduct(s, eyePos), -Vector3::dotProduct(u, eyePos),
-	    Vector3::dotProduct(f, eyePos), 1.f);
+	    -Vector3f::dotProduct(s, eyePos), -Vector3f::dotProduct(u, eyePos),
+	    Vector3f::dotProduct(f, eyePos), 1.f);
 
 	return lookAtMatrix;
 }
@@ -195,7 +195,7 @@ Matrix4x4 Matrix4x4::operator*(const float& other)
 	return matrix;
 }
 
-Vector3 Matrix4x4::operator*(const Vector3& other)
+Vector3<float> Matrix4x4::operator*(const Vector3f& other)
 {
 	const float x = elements[0 + 0 * 4] * other.x +
 	                elements[1 + 0 * 4] * other.y +

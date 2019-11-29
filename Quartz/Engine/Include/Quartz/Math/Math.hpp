@@ -28,26 +28,30 @@
 
 #pragma once
 
+#include <Quartz/Core.hpp>
+
 #include <Quartz/Math/MathUtils.hpp>
-#include <Quartz/Math/Matrix4x4.hpp>
-#include <Quartz/Math/Ray.hpp>
-#include <Quartz/Math/Rect.hpp>
 #include <Quartz/Math/Vector2.hpp>
 #include <Quartz/Math/Vector3.hpp>
+#include <Quartz/Math/Matrix4x4.hpp>
+#include <Quartz/Math/Rect.hpp>
+#include <Quartz/Math/Ray.hpp>
 
 namespace qz
 {
-	typedef math::Matrix4x4 Matrix4x4;
+	namespace math
+	{
+		using vec2  = detail::Vector2<float>;
+		using vec2f = detail::Vector2<float>;
+		using vec2d = detail::Vector2<double>;
+		using vec2i = detail::Vector2<int>;
+		using vec2u = detail::Vector2<uint>;
 
-	typedef math::Vector2              Vector2;
-	typedef math::Vector3              Vector3;
-	typedef math::TemplateVector2<int> Vector2i;
-	typedef math::TemplateVector3<int> Vector3i;
+		using vec3  = detail::Vector3<float>;
+		using vec3f = detail::Vector3<float>;
+		using vec3d = detail::Vector3<double>;
+		using vec3i = detail::Vector3<int>;
+		using vec3u = detail::Vector3<uint>;
 
-	typedef math::RectAABB RectAABB;
-
-	template <typename T>
-	using TVector2 = math::TemplateVector2<T>;
-	template <typename T>
-	using TVector3 = math::TemplateVector3<T>;
+	} // namespace math
 } // namespace qz

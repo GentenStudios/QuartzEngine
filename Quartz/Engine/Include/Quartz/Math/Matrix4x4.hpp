@@ -34,99 +34,109 @@ namespace qz
 {
 	namespace math
 	{
-
-		/**
-		 * @brief Represents a column major 4x4 Matrix of floats.
-		 */
-		struct Matrix4x4
+		namespace detail
 		{
-			/// @brief The 16 float array that stores the matrix's elements
-			/// sequentially.
-			float elements[16];
-
 			/**
-			 * @brief Default constructs the as an identity matrix (the top left
-			 * to bottom right diagonal is 1.0f)
+			 * @brief Represents a column major 4x4 Matrix of floats.
 			 */
-			Matrix4x4();
+			struct Matrix4x4
+			{
+				using Vector3f = Vector3<float>;
+				
+				/// @brief The 16 float array that stores the matrix's elements
+				/// sequentially.
+				float elements[16];
 
-			Matrix4x4(float m00, float m10, float m20, float m30, float m01,
-			          float m11, float m21, float m31, float m02, float m12,
-			          float m22, float m32, float m03, float m13, float m23,
-			          float m33);
+				/**
+				 * @brief Default constructs the as an identity matrix (the top
+				 * left to bottom right diagonal is 1.0f)
+				 */
+				Matrix4x4();
 
-			void setIdentity();
+				Matrix4x4(float m00, float m10, float m20, float m30, float m01,
+				          float m11, float m21, float m31, float m02, float m12,
+				          float m22, float m32, float m03, float m13, float m23,
+				          float m33);
 
-			~Matrix4x4() = default;
+				void setIdentity();
 
-			/**
-			 * @brief Constructs a perspective projection matrix.
-			 * @param aspectRatio The aspect ratio is the ratio of x (width) to
-			 * y (height).
-			 * @param fieldOfView Specifies the field of view angle, in degrees.
-			 * @param farPlane Distance from the viewer to the far clipping
-			 * plane (should always be positive)
-			 * @param nearPlane Distance from the viewer to the near clipping
-			 * plane.
-			 * @return The calculated perspective projection matrix.
-			 */
-			static Matrix4x4 perspective(const float& aspectRatio,
-			                             const float& fieldOfView,
-			                             const float& farPlane,
-			                             const float& nearPlane);
+				~Matrix4x4() = default;
 
-			/**
-			 * @brief Calculates an orthographic matrix,
-			 * @param left The coordinates of the left vertical clipping plane
-			 * @param right The coordinates of the right vertical clipping plane
-			 * @param top The coordinates of the top horizontal clipping plane.
-			 * @param bottom The coordinates of the bottom horizontal clipping
-			 * plane.
-			 * @param farPlane Anything behind this sheet plane is clipped.
-			 * @param nearPlane Anything in front of this sheet plane is
-			 * clipped.
-			 * @return Othographic matrix
-			 */
-			static Matrix4x4 ortho(float left, float right, float top,
-			                       float bottom, float farPlane,
-			                       float nearPlane);
+				/**
+				 * @brief Constructs a perspective projection matrix.
+				 * @param aspectRatio The aspect ratio is the ratio of x (width)
+				 * to y (height).
+				 * @param fieldOfView Specifies the field of view angle, in
+				 * degrees.
+				 * @param farPlane Distance from the viewer to the far clipping
+				 * plane (should always be positive)
+				 * @param nearPlane Distance from the viewer to the near
+				 * clipping plane.
+				 * @return The calculated perspective projection matrix.
+				 */
+				static Matrix4x4 perspective(const float& aspectRatio,
+				                             const float& fieldOfView,
+				                             const float& farPlane,
+				                             const float& nearPlane);
 
-			/**
-			 * @brief Calculates a "view" matrix, so where a user is looking,
-			 * mainly designed for the camera to use.
-			 * @param eyePos The position of the eye, e.g. the camera's position
-			 * @param centre The place that is being looked at. The centre of
-			 * the view.
-			 * @param up The up vector, so basically saying "which direction is
-			 * up".
-			 * @return The calculated view matrix.
-			 */
-			static Matrix4x4 lookAt(const Vector3& eyePos,
-			                        const Vector3& centre, const Vector3& up);
+				/**
+				 * @brief Calculates an orthographic matrix,
+				 * @param left The coordinates of the left vertical clipping
+				 * plane
+				 * @param right The coordinates of the right vertical clipping
+				 * plane
+				 * @param top The coordinates of the top horizontal clipping
+				 * plane.
+				 * @param bottom The coordinates of the bottom horizontal
+				 * clipping plane.
+				 * @param farPlane Anything behind this sheet plane is clipped.
+				 * @param nearPlane Anything in front of this sheet plane is
+				 * clipped.
+				 * @return Othographic matrix
+				 */
+				static Matrix4x4 ortho(float left, float right, float top,
+				                       float bottom, float farPlane,
+				                       float nearPlane);
 
-			/// @brief Operator Overload for multiplying an established lvalue
-			/// matrix object with another matrix.
-			void operator*=(const Matrix4x4& other);
+				/**
+				 * @brief Calculates a "view" matrix, so where a user is
+				 * looking, mainly designed for the camera to use.
+				 * @param eyePos The position of the eye, e.g. the camera's
+				 * position
+				 * @param centre The place that is being looked at. The centre
+				 * of the view.
+				 * @param up The up vector, so basically saying "which direction
+				 * is up".
+				 * @return The calculated view matrix.
+				 */
+				static Matrix4x4 lookAt(const Vector3f& eyePos,
+				                        const Vector3f& centre,
+				                        const Vector3f& up);
 
-			/// @brief Operator Overload for multiplying a matrix object
-			/// (lvalue, or rvalue) with another matrix.
-			Matrix4x4 operator*(const Matrix4x4& other);
+				/// @brief Operator Overload for multiplying an established
+				/// lvalue matrix object with another matrix.
+				void operator*=(const Matrix4x4& other);
 
-			/// @brief Operator Overload for multiplying an established lvalue
-			/// matrix object with scalar value, a float.
-			void operator*=(const float& other);
+				/// @brief Operator Overload for multiplying a matrix object
+				/// (lvalue, or rvalue) with another matrix.
+				Matrix4x4 operator*(const Matrix4x4& other);
 
-			/// @brief Operator Overload for multiplying a matrix object
-			/// (lvalue, or rvalue) with scalar value, a float.
-			Matrix4x4 operator*(const float& other);
+				/// @brief Operator Overload for multiplying an established
+				/// lvalue matrix object with scalar value, a float.
+				void operator*=(const float& other);
 
-			/**
-			 * @brief Operator Overload for multiplying a matrix object (lvalue
-			 * or rvalue) with a 3 component Vector.
-			 * @return The calculated product, as a Vector3, a 3 component
-			 * vector.
-			 */
-			Vector3 operator*(const Vector3& other);
-		};
-	}; // namespace math
+				/// @brief Operator Overload for multiplying a matrix object
+				/// (lvalue, or rvalue) with scalar value, a float.
+				Matrix4x4 operator*(const float& other);
+
+				/**
+				 * @brief Operator Overload for multiplying a matrix object
+				 * (lvalue or rvalue) with a 3 component Vector.
+				 * @return The calculated product, as a Vector3, a 3 component
+				 * vector.
+				 */
+				Vector3f operator*(const Vector3f& other);
+			};
+		} // namespace detail
+	} // namespace math
 } // namespace qz

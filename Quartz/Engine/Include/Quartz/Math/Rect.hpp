@@ -36,15 +36,18 @@ namespace qz
 	{
 		struct RectAABB
 		{
-			Vector2 topLeft, topRight;
-			Vector2 bottomLeft, bottomRight;
+			detail::Vector2<float> topLeft, topRight;
+			detail::Vector2<float> bottomLeft, bottomRight;
 
-			RectAABB(Vector2 tl, Vector2 tr, Vector2 bl, Vector2 br)
+			RectAABB(detail::Vector2<float> tl, 
+					 detail::Vector2<float> tr,
+			         detail::Vector2<float> bl,
+			         detail::Vector2<float> br)
 			    : topLeft(tl), topRight(tr), bottomLeft(bl), bottomRight(br)
 			{
 			}
 
-			RectAABB() {}
+			RectAABB() = default;
 		};
 	} // namespace math
 } // namespace qz

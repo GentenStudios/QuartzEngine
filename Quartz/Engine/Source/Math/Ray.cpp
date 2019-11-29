@@ -31,13 +31,14 @@
 
 using namespace qz::math;
 
-Ray::Ray(const Vector3& start, const Vector3& direction)
+Ray::Ray(const detail::Vector3<float>& start,
+         const detail::Vector3<float>& direction)
     : m_start(start), m_direction(direction), m_currentPosition(start),
       m_length(0.f)
 {
 }
 
-Vector3 Ray::advance(float scale)
+detail::Vector3<float> Ray::advance(float scale)
 {
 	m_currentPosition += m_direction * scale;
 	m_length += scale;
@@ -45,7 +46,7 @@ Vector3 Ray::advance(float scale)
 	return m_currentPosition;
 }
 
-Vector3 Ray::backtrace(float scale)
+detail::Vector3<float> Ray::backtrace(float scale)
 {
 	m_currentPosition -= m_direction * scale;
 	m_length -= scale;
@@ -55,4 +56,7 @@ Vector3 Ray::backtrace(float scale)
 
 float Ray::getLength() const { return m_length; }
 
-Vector3 Ray::getCurrentPosition() const { return m_currentPosition; }
+detail::Vector3<float> Ray::getCurrentPosition() const
+{
+	return m_currentPosition;
+}
