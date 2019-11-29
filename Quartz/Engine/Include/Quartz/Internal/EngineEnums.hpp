@@ -83,7 +83,7 @@ Enum & operator ^=(Enum & lhs, Enum rhs)
 	return lhs;
 }
 
-namespace engine
+namespace qz
 {
 	template<typename Enum, typename = typename std::enable_if<EnableBitWiseOperators<Enum>::value>::type>
 	bool ENUMhasFlag(Enum flags, Enum lookFor)

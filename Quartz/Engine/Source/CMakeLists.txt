@@ -8,6 +8,7 @@ set(engineSources
 	${mathSources}
 	${utilitySources}
 
+	${currentDir}/Engine.cpp
 	${currentDir}/QuartzPCH.cpp
 
 	PARENT_SCOPE

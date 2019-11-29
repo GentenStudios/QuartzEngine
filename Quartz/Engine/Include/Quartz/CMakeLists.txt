@@ -14,6 +14,7 @@ set(engineHeaders
 	${eventHeaders}
 
 	${currentDir}/Core.hpp
+	${currentDir}/Engine.hpp
 	${currentDir}/QuartzPCH.hpp
 	${currentDir}/UniversalDoxygenComments.hpp
 
