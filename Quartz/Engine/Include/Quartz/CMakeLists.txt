@@ -1,9 +1,12 @@
+add_subdirectory(Internal)
 add_subdirectory(Voxels)
 add_subdirectory(Math)
 add_subdirectory(Utilities)
 
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 set(engineHeaders
+	${internalHeaders}
+
 	${voxelHeaders}
 
 	${mathHeaders}

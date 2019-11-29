@@ -29,6 +29,7 @@
 #include <Quartz/Voxels/Terrain.hpp>
 
 using namespace qz::voxels;
+using namespace qz;
 
 void Chunk::fill(const std::size_t                             chunkSize,
                  const std::function<BlockType*(std::size_t, std::size_t,
@@ -55,4 +56,4 @@ Terrain::Terrain(std::size_t                     chunkSize,
 {
 }
 
-void Terrain::tick(qz::Vector3 streamCenter) {}
+void Terrain::tick(qz::math::vec3 streamCenter) {}

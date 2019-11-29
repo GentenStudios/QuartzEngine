@@ -28,18 +28,8 @@
 
 #pragma once
 
-#if defined(_DEBUG)
-#	define QZ_DEBUG
-#endif
+#include <Quartz/Internal/EngineDefines.hpp>
+#include <Quartz/Internal/EngineIntrinsics.hpp>
+#include <Quartz/Internal/EngineTypes.hpp>
+#include <Quartz/Internal/EngineEnums.hpp>
 
-#if defined(_WIN32) || defined(_WIN64)
-#	define QZ_PLATFORM_WINDOWS
-#endif
-
-#if defined(__linux__)
-#	define QZ_PLATFORM_LINUX
-#endif
-
-#if defined(__APPLE__)
-#	define QZ_PLATFORM_APPLE
-#endif

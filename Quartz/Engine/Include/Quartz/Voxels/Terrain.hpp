@@ -65,7 +65,7 @@ namespace qz
 			Terrain(std::size_t                     chunkSize,
 			        const Chunk::GeneratorFunction& generator);
 
-			void tick(Vector3 streamCenter);
+			void tick(math::vec3 streamCenter);
 		};
 
 	} // namespace voxels

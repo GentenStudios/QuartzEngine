@@ -37,6 +37,7 @@
 #include <stb_image.hpp>
 
 using namespace qz::voxels;
+using namespace qz;
 
 const BlockTextureAtlas::SpriteID BlockTextureAtlas::INVALID_SPRITE;
 
@@ -55,7 +56,7 @@ void BlockTextureAtlas::setSpriteHeight(std::size_t h) { m_spriteHeight = h; }
 void BlockTextureAtlas::addTextureFile(const char* texturefilepath)
 {
 	m_textureIDMap.insert(std::make_pair(std::string(texturefilepath),
-	                                     BlockTextureAtlas::INVALID_SPRITE));
+	                                     INVALID_SPRITE));
 }
 
 BlockTextureAtlas::SpriteID BlockTextureAtlas::getSpriteIDFromFilepath(
@@ -68,15 +69,15 @@ BlockTextureAtlas::SpriteID BlockTextureAtlas::getSpriteIDFromFilepath(
 
 	if (std::find_if(m_textureIDMap.begin(), m_textureIDMap.end(),
 	                 equalsTest) == m_textureIDMap.end())
-		return BlockTextureAtlas::INVALID_SPRITE;
+		return INVALID_SPRITE;
 
 	return m_textureIDMap.at(filepath);
 }
 
-qz::RectAABB BlockTextureAtlas::getSpriteFromID(
-    BlockTextureAtlas::SpriteID spriteID) const
+math::RectAABB BlockTextureAtlas::getSpriteFromID(
+    SpriteID spriteID) const
 {
-	qz::RectAABB uv;
+	math::RectAABB uv;
 
 	const float yPx =
 	    static_cast<float>(spriteID) * static_cast<float>(m_spriteHeight);

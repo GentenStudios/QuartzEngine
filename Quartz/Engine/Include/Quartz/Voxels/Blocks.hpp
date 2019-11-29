@@ -74,7 +74,7 @@ namespace qz
 				return m_patchedTextureData;
 			}
 
-			RectAABB getSpriteFromID(SpriteID spriteId) const;
+			math::RectAABB getSpriteFromID(SpriteID spriteId) const;
 
 		private:
 			std::unordered_map<std::string, SpriteID> m_textureIDMap;
