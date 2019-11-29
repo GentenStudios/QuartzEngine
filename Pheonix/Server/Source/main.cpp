@@ -7,7 +7,7 @@
 
 using namespace pheonix;
 
-void main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
     // ===== Launch core =====
@@ -37,5 +37,5 @@ void main(int argc, char* argv[])
 	// Send signal for listener to terminate
 	// Confirm map has saved
 
-	return;
+	return 1;
 };

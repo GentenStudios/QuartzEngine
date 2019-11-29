@@ -7,7 +7,7 @@
 
 using namespace pheonix;
 
-void main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 
     // ===== Launch core =====
@@ -28,6 +28,6 @@ void main(int argc, char* argv[])
 	// TODO: Replace these manual calls to register blocks with a call to run lua files based on what modules need loaded
 
     // ===== Launch renderer outputting to main window =====
-    
-	return;
+
+	return 1;
 };
