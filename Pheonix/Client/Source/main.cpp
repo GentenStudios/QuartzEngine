@@ -7,20 +7,27 @@
 
 using namespace pheonix;
 
-int main()
+void main(int argc, char* argv[])
 {
-	voxels::BlockRegistry registry = voxels::BlockRegistry();
+
+    // ===== Launch core =====
+    // Likely a single command from Quartz that launches the logger + any other critical tools
+
+    // ===== Create main window + Display splash or terminal output =====
+
+	// ===== Launch connection thread pointed at server =====
+    // std::thread connection (Network::connection);
+
+    // ===== Compare server mods.txt and local mods.txt, update if needed =====
+
+    // ===== Load lua =====
+    voxels::BlockRegistry registry = voxels::BlockRegistry();
 	registry.registerBlock("core:dirt", "Dirt");
 	registry.registerBlock("core:cobble", "CobbleStone");
 	registry.registerBlock("core:stone", "Stone");
+	// TODO: Replace these manual calls to register blocks with a call to run lua files based on what modules need loaded
 
-	std::cout << registry.getDisplayName(1) << "\n";
-	std::cout << registry.getDisplayName(2) << "\n";
-	std::cout << registry.getDisplayName(3) << "\n";
-
-	std::cout << registry.getBlockId("core:stone") << "\n";
-	std::cout << registry.getBlockId("asdfadsf") << "\n";
-	std::cout << registry.getBlockId("core:dirt") << "\n";
-
-	return 0;
+    // ===== Launch renderer outputting to main window =====
+    
+	return;
 };
