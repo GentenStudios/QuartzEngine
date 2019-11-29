@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.0)
+
+project(Sandbox)
+
+add_subdirectory(Source)
+
+add_executable(${PROJECT_NAME} ${sandboxSources})
+target_link_libraries(${PROJECT_NAME} PRIVATE QuartzEngine)
+
+set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../Quartz/ThirdParty)
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    ${dependencies}/../Quartz/Engine/Include 
+    ${dependencies}/lua/
+    ${dependencies}/sol2/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Include)

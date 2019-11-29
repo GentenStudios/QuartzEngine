@@ -4,6 +4,7 @@ set(currentDir ${CMAKE_CURRENT_LIST_DIR})
 set(utilityHeaders
 	${threadingHeaders}
 
+	${currentDir}/ContentLoader.hpp
 	${currentDir}/Logger.hpp
 	${currentDir}/FileIO.hpp
 	${currentDir}/HandleAllocator.hpp
