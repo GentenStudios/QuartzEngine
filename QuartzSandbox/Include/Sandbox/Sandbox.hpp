@@ -30,8 +30,6 @@
 
 #include <Quartz.hpp>
 
-#include <Sandbox/DebugOverlay.hpp>
-
 namespace sandbox
 {
 	class Sandbox
