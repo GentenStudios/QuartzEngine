@@ -53,5 +53,6 @@ namespace qz
 		using vec3i = detail::Vector3<int>;
 		using vec3u = detail::Vector3<uint>;
 
+		using mat4 = detail::Matrix4x4;
 	} // namespace math
 } // namespace qz
