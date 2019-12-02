@@ -58,13 +58,6 @@ void CommandBook::add(const std::string& command, const std::string& help,
 	// If command does not already exist, enter new command
 	if (j == -1)
 	{
-		// If we hit the max commands, return
-		// TODO: Replace this check with a dynamic array
-		if (m_page == MAX_COMMANDS_NUMBER)
-		{
-			return;
-		}
-
 		j = m_page;
 		m_page++;
 	}
@@ -76,8 +69,7 @@ void CommandBook::add(const std::string& command, const std::string& help,
 
 int CommandBook::getPage() { return m_page; }
 
-bool Commander::help(
-    const std::array<std::string, qz::utils::MAX_ARGUMENTS_NUMBER>&& args)
+bool Commander::help(const std::vector<std::string>&& args)
 {
 	if (args[0] == "")
 	{
@@ -109,7 +101,7 @@ bool Commander::help(
 }
 
 bool Commander::run(const std::string& command,
-                    const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args)
+                    const std::vector<std::string>&& args)
 {
 	// Check for built in functions
 	if (command == "help")
@@ -151,14 +143,14 @@ void Commander::post()
 	{
 		m_out << "\n->";
 		int                                           i = 0;
-		std::array<std::string, MAX_ARGUMENTS_NUMBER> args;
+		std::vector<std::string> 					  args;
 		std::string                                   command = "";
 		std::string                                   buffer;
 		m_in >> command;
-		while (m_in.peek() != '\n' && i <= MAX_ARGUMENTS_NUMBER)
+		while (m_in.peek() != '\n')
 		{
 			m_in >> buffer;
-			args[i] = buffer;
+			args.push_back(buffer);
 			i++;
 		}
 		if (command == "exit")

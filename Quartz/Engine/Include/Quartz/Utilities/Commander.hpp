@@ -28,7 +28,7 @@
 
 #pragma once
 
-#include <array>
+#include <vector>
 #include <functional>
 #include <string>
 
@@ -36,10 +36,8 @@ namespace qz
 {
 	namespace utils
 	{
-		constexpr std::size_t MAX_COMMANDS_NUMBER  = 100;
-		constexpr std::size_t MAX_ARGUMENTS_NUMBER = 10;
 		typedef std::function<void(
-		    std::array<std::string, MAX_ARGUMENTS_NUMBER> args)>
+		    std::vector<std::string> args)>
 		    function;
 
 		/**
@@ -49,10 +47,10 @@ namespace qz
 
 		struct CommandBook
 		{
-			std::array<std::string, MAX_COMMANDS_NUMBER> m_command;
-			std::array<std::string, MAX_COMMANDS_NUMBER> m_help;
-			std::array<std::string, MAX_COMMANDS_NUMBER> m_permission;
-			std::array<function, MAX_COMMANDS_NUMBER>    m_functions;
+			std::vector<std::string> m_command;
+			std::vector<std::string> m_help;
+			std::vector<std::string> m_permission;
+			std::vector<function>    m_functions;
 
 			/**
 			 * @brief Registers a command in the command registry
@@ -120,7 +118,7 @@ namespace qz
 			 */
 			bool run(
 			    const std::string&                                    command,
-			    const std::array<std::string, MAX_ARGUMENTS_NUMBER>&& args);
+			    const std::vector<std::string>&& args);
 
 			/**
 			 * @brief Returns helpstring for command
@@ -130,8 +128,7 @@ namespace qz
 			 * @return Returns True if successful and False if it could not find
 			 * the innputted command
 			 */
-			bool help(const std::array<std::string,
-			                           qz::utils::MAX_ARGUMENTS_NUMBER>&& args);
+			bool help(const std::vector<std::string>&& args);
 
 			/**
 			 * @brief Returns string listing available commands
