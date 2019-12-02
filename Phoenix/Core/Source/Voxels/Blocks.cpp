@@ -42,11 +42,11 @@ BlockRegistry::BlockRegistry() : i(0) {};
 
 BlockRegistry::~BlockRegistry() {};
 
-int BlockRegistry::registerBlock(const std::string& UniqueName,
-                                 const std::string& DisplayName)
+int BlockRegistry::registerBlock(const std::string& uniqueName,
+                                 const std::string& displayName)
 {
 	i++;
-	Blocks[i] = RegisteredBlock(UniqueName, i, DisplayName);
+	Blocks[i] = RegisteredBlock(uniqueName, i, displayName);
 	return i;
 };
 
@@ -55,11 +55,11 @@ const std::string& BlockRegistry::getDisplayName(int blockId)
 	return Blocks[blockId].displayName;
 };
 
-int BlockRegistry::getBlockId(const std::string& UniqueName)
+int BlockRegistry::getBlockId(const std::string& uniqueName)
 {
 	for (i = 0; i < 100; i++)
 	{
-		if (Blocks[i].uniqueName == UniqueName)
+		if (Blocks[i].uniqueName == uniqueName)
 		{
 			return i;
 		};

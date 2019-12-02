@@ -65,10 +65,10 @@ namespace phoenix
 			~BlockRegistry();
 
 			/// @brief Registers a block in the registry
-			int                registerBlock(const std::string& UniqueName,
-			                                 const std::string& DisplayName);
+			int                registerBlock(const std::string& uniqueName,
+			                                 const std::string& displayName);
 			const std::string& getDisplayName(int blockId);
-			int                getBlockId(const std::string& UniqueName);
+			int                getBlockId(const std::string& uniqueName);
 		};
 
 		/// @breif Metadata for a block, this is only created if a block needs
@@ -77,8 +77,8 @@ namespace phoenix
 		class Block
 		{
 		public:
-			Block(const std::string& UniqueName, int BlockId,
-			      const std::string& DisplayName);
+			Block(const std::string& uniqueName, int blockId,
+			      const std::string& displayName);
 			~Block();
 		};
 
