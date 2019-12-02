@@ -31,7 +31,7 @@
 #include <string>
 #include <vector>
 
-namespace pheonix
+namespace phoenix
 {
 	namespace voxels
 	{
@@ -81,4 +81,4 @@ namespace pheonix
 
 	} // namespace voxels
 
-} // namespace pheonix
+} // namespace phoenix

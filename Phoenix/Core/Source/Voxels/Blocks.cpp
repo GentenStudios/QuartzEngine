@@ -30,7 +30,7 @@
 
 #include <string>
 
-using namespace pheonix::voxels;
+using namespace phoenix::voxels;
 
 RegisteredBlock::RegisteredBlock(const std::string& unique, int id, const std::string& display) :
 	uniqueName(unique),

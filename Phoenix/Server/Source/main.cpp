@@ -5,7 +5,7 @@
 
 #undef main
 
-using namespace pheonix;
+using namespace phoenix;
 
 int main(int argc, char* argv[])
 {
