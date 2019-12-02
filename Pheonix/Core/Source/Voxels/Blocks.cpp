@@ -32,7 +32,7 @@
 
 using namespace pheonix::voxels;
 
-RegisteredBlock::RegisteredBlock(std::string unique, int id, std::string display) :
+RegisteredBlock::RegisteredBlock(const std::string& unique, int id, const std::string& display) :
 	uniqueName(unique),
 	blockId(id),
 	displayName(display)

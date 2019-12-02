@@ -47,7 +47,7 @@ namespace pheonix
 			/// @brief Stores human readable name for output to player ex "dirt"
 			std::string displayName;
 
-			RegisteredBlock(std::string unique, int id, std::string display);
+			RegisteredBlock(const std::string& unique, int id, const std::string& display);
 
 			~RegisteredBlock();
 		};
