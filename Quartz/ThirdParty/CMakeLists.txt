@@ -14,8 +14,11 @@ set(SDL_SHARED_ENABLED_BY_DEFAULT OFF)
 add_subdirectory(SDL2)
 add_subdirectory(sol2)
 add_subdirectory(lua)
+add_subdirectory(bgfx.cmake)
 
 # stop SDL trying to control our main function.
 add_definitions(-DSDL_MAIN_HANDLED)
 
 set_target_properties(SDL2main SDL2-static uninstall PROPERTIES FOLDER QuartzDependencies/sdl2)
+set_target_properties(liblua lua PROPERTIES FOLDER QuartzDependencies/lua)
+set_target_properties(bgfx/ PROPERTIES FOLDER QuartzDependencies/bgfx)
