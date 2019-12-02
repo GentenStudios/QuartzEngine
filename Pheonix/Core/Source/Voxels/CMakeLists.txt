@@ -1,5 +1,5 @@
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
-set(coreVoxelSources
+set(voxelSources
 	${currentDir}/Blocks.cpp
 
 	PARENT_SCOPE

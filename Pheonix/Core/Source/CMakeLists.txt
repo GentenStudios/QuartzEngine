@@ -1,7 +1,7 @@
 add_subdirectory(Voxels)
 
-set(voxelSources
-	${coreVoxelSources}
+set(phoenixSources
+	${voxelSources}
 
 	PARENT_SCOPE
 )
