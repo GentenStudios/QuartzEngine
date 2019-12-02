@@ -1,7 +1,7 @@
 add_subdirectory(Core)
 
-set(voxelHeaders
-	${coreVoxelHeaders}
+set(phoenixHeaders
+	${coreHeaders}
 
 	PARENT_SCOPE
 )
