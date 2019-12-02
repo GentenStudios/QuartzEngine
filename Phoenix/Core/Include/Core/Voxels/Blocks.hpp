@@ -47,7 +47,8 @@ namespace phoenix
 			/// @brief Stores human readable name for output to player ex "dirt"
 			std::string displayName;
 
-			RegisteredBlock(const std::string& unique, int id, const std::string& display);
+			RegisteredBlock(const std::string& unique, int id,
+			                const std::string& display);
 
 			~RegisteredBlock();
 		};
@@ -57,16 +58,17 @@ namespace phoenix
 		{
 		private:
 			std::vector<RegisteredBlock> Blocks;
-			int i;
+			int                          i;
 
 		public:
 			BlockRegistry();
 			~BlockRegistry();
 
 			/// @brief Registers a block in the registry
-			int registerBlock(const std::string& UniqueName, const std::string& DisplayName);
+			int                registerBlock(const std::string& UniqueName,
+			                                 const std::string& DisplayName);
 			const std::string& getDisplayName(int blockId);
-			int         getBlockId(const std::string& UniqueName);
+			int                getBlockId(const std::string& UniqueName);
 		};
 
 		/// @breif Metadata for a block, this is only created if a block needs
@@ -75,7 +77,8 @@ namespace phoenix
 		class Block
 		{
 		public:
-			Block(const std::string& UniqueName, int BlockId, const std::string& DisplayName);
+			Block(const std::string& UniqueName, int BlockId,
+			      const std::string& DisplayName);
 			~Block();
 		};
 

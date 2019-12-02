@@ -32,17 +32,13 @@
 
 using namespace phoenix::voxels;
 
-RegisteredBlock::RegisteredBlock(const std::string& unique, int id, const std::string& display) :
-	uniqueName(unique),
-	blockId(id),
-	displayName(display)
-	{};
+RegisteredBlock::RegisteredBlock(const std::string& unique, int id,
+                                 const std::string& display)
+    : uniqueName(unique), blockId(id), displayName(display) {};
 
 RegisteredBlock::~RegisteredBlock() = default;
 
-BlockRegistry::BlockRegistry() :
-	i(0)
-	{};
+BlockRegistry::BlockRegistry() : i(0) {};
 
 BlockRegistry::~BlockRegistry() {};
 
