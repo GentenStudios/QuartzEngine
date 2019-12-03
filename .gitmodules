@@ -6,4 +6,4 @@
 	url = https://github.com/ThePhD/sol2.git
 [submodule "Quartz/ThirdParty/bgfx.cmake"]
 	path = Quartz/ThirdParty/bgfx.cmake
-	url = https://github.com/GentenStudios/bgfx.cmake
+url = https://github.com/GentenStudios/bgfx.cmake.git

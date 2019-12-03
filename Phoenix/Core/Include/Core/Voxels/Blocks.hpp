@@ -29,8 +29,9 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
-namespace pheonix
+namespace phoenix
 {
 	namespace voxels
 	{
@@ -46,8 +47,9 @@ namespace pheonix
 			/// @brief Stores human readable name for output to player ex "dirt"
 			std::string displayName;
 
-			RegisteredBlock();
-			RegisteredBlock(std::string Unique, int ID, std::string Display);
+			RegisteredBlock(const std::string& unique, int id,
+			                const std::string& display);
+
 			~RegisteredBlock();
 		};
 
@@ -55,18 +57,18 @@ namespace pheonix
 		class BlockRegistry
 		{
 		private:
-			RegisteredBlock Blocks[100]; // This needs to be a dynamic array as
-			                             // we wont know size until load
-			int i;
+			std::vector<RegisteredBlock> Blocks;
+			int                          i;
 
 		public:
 			BlockRegistry();
 			~BlockRegistry();
 
 			/// @brief Registers a block in the registry
-			int registerBlock(std::string UniqueName, std::string DisplayName);
-			std::string getDisplayName(int blockId);
-			int         getBlockId(std::string UniqueName);
+			int                registerBlock(const std::string& uniqueName,
+			                                 const std::string& displayName);
+			const std::string& getDisplayName(int blockId);
+			int                getBlockId(const std::string& uniqueName);
 		};
 
 		/// @breif Metadata for a block, this is only created if a block needs
@@ -75,10 +77,11 @@ namespace pheonix
 		class Block
 		{
 		public:
-			Block(std::string UniqueName, int BlockId, std::string DisplayName);
+			Block(const std::string& uniqueName, int blockId,
+			      const std::string& displayName);
 			~Block();
 		};
 
 	} // namespace voxels
 
-} // namespace pheonix
+} // namespace phoenix

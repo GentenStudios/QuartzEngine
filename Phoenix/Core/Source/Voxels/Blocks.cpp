@@ -28,40 +28,38 @@
 
 #include <Core/Voxels/Blocks.hpp>
 
-using namespace pheonix::voxels;
+#include <string>
 
-RegisteredBlock::RegisteredBlock() {};
-RegisteredBlock::RegisteredBlock(std::string Unique, int ID,
-                                 std::string Display)
-{
-	blockId     = ID;
-	uniqueName  = Unique;
-	displayName = Display;
-};
-RegisteredBlock::~RegisteredBlock() {};
+using namespace phoenix::voxels;
 
-BlockRegistry::BlockRegistry() { i = 0; };
+RegisteredBlock::RegisteredBlock(const std::string& unique, int id,
+                                 const std::string& display)
+    : uniqueName(unique), blockId(id), displayName(display) {};
+
+RegisteredBlock::~RegisteredBlock() = default;
+
+BlockRegistry::BlockRegistry() : i(0) {};
 
 BlockRegistry::~BlockRegistry() {};
 
-int BlockRegistry::registerBlock(std::string UniqueName,
-                                 std::string DisplayName)
+int BlockRegistry::registerBlock(const std::string& uniqueName,
+                                 const std::string& displayName)
 {
 	i++;
-	Blocks[i] = RegisteredBlock(UniqueName, i, DisplayName);
+	Blocks[i] = RegisteredBlock(uniqueName, i, displayName);
 	return i;
 };
 
-std::string BlockRegistry::getDisplayName(int blockId)
+const std::string& BlockRegistry::getDisplayName(int blockId)
 {
 	return Blocks[blockId].displayName;
 };
 
-int BlockRegistry::getBlockId(std::string UniqueName)
+int BlockRegistry::getBlockId(const std::string& uniqueName)
 {
 	for (i = 0; i < 100; i++)
 	{
-		if (Blocks[i].uniqueName == UniqueName)
+		if (Blocks[i].uniqueName == uniqueName)
 		{
 			return i;
 		};
