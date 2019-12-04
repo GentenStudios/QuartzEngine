@@ -14,10 +14,12 @@ int main(int argc, char* argv[])
     // Likely a single command from Quartz that launches the logger + any other critical tools
 
 	// ===== Load Voxel data / Load lua =====
-	voxels::BlockRegistry registry = voxels::BlockRegistry();
-	registry.registerBlock("core:dirt", "Dirt");
-	registry.registerBlock("core:cobble", "CobbleStone");
-	registry.registerBlock("core:stone", "Stone");
+	std::cout << "Program started";
+	voxels::BlockRegistry *registry = registry->getInstance();
+	std::cout << "register dirt";
+	registry->registerBlock("core:dirt", "Dirt");
+	registry->registerBlock("core:cobble", "CobbleStone");
+	registry->registerBlock("core:stone", "Stone");
 	// TODO: Replace these manual calls to register blocks with a call to run lua files
 
 	// ===== Load save data =====

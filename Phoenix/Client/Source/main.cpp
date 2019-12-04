@@ -21,10 +21,10 @@ int main(int argc, char* argv[])
     // ===== Compare server mods.txt and local mods.txt, update if needed =====
 
     // ===== Load lua =====
-    voxels::BlockRegistry registry = voxels::BlockRegistry();
-	registry.registerBlock("core:dirt", "Dirt");
-	registry.registerBlock("core:cobble", "CobbleStone");
-	registry.registerBlock("core:stone", "Stone");
+	voxels::BlockRegistry *registry = registry->getInstance();
+	registry->registerBlock("core:dirt", "Dirt");
+	registry->registerBlock("core:cobble", "CobbleStone");
+	registry->registerBlock("core:stone", "Stone");
 	// TODO: Replace these manual calls to register blocks with a call to run lua files based on what modules need loaded
 
     // ===== Launch renderer outputting to main window =====
