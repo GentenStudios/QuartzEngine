@@ -4,6 +4,6 @@
 [submodule "Quartz/ThirdParty/sol2"]
 	path = Quartz/ThirdParty/sol2
 	url = https://github.com/ThePhD/sol2.git
-[submodule "Quartz/ThirdParty/bgfx.cmake"]
-	path = Quartz/ThirdParty/bgfx.cmake
-url = https://github.com/GentenStudios/bgfx.cmake.git
+[submodule "Quartz/ThirdParty/LLGL"]
+	path = Quartz/ThirdParty/LLGL
+	url = git@github.com:LukasBanana/LLGL.git

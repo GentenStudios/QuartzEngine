@@ -32,3 +32,5 @@
 #include <Quartz/Utilities/FileIO.hpp>
 #include <Quartz/Utilities/Logger.hpp>
 #include <Quartz/Utilities/Plugin.hpp>
+
+#include <Quartz/Math/Math.hpp>
