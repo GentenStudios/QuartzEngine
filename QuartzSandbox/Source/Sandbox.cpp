@@ -77,7 +77,7 @@ void Sandbox::run()
 	window.SetTitle(L"heehaw hilarious");
 	window.Show();
 
-	float  s          = 1.5;
+	float  s          = 0.5;
 	Vertex vertices[] = {
 	    {{0, s}, {255, 0, 0, 255}},   // 1st vertex: center-top, red
 	    {{s, -s}, {0, 255, 0, 255}},  // 2nd vertex: right-bottom, green
