@@ -55,6 +55,12 @@ void Sandbox::run()
 	std::cout << "Yo waddup" << std::endl;
 	LINFO("YO WADDUP!");
 
+	/**
+	 * std::unique_ptr<qz::Renderer> renderer = qz::Renderer::create(qz::gfx::RenderingAPI::OpenGL);
+	 *
+	 * 
+	 */
+	
 	std::unique_ptr<LLGL::RenderSystem> renderer =
 	    LLGL::RenderSystem::Load("OpenGL");
 

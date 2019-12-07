@@ -28,6 +28,8 @@
 
 #include <Quartz/Engine.hpp>
 
+#include <SDL.h>
+
 using namespace qz;
 
 Engine::Engine()  = default;
@@ -41,6 +43,9 @@ Engine* Engine::instance()
 
 void Engine::init(EngineFlags flags, EngineInitData initData)
 {
+	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_SetMainReady();
+	
 	m_appName = std::move(initData.appName);
 	m_dataDir = std::move(initData.dataDir);
 

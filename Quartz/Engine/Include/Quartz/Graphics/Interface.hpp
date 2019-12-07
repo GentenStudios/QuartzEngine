@@ -28,50 +28,41 @@
 
 #pragma once
 
-#include <Quartz/Events/Event.hpp>
-#include <Quartz/Math/Math.hpp>
-#include <Quartz/Graphics/IWindow.hpp>
+#include <Quartz/Core.hpp>
+#include <Quartz/NonCopyable.hpp>
 
-#include <SDL.h>
+#define QZ_SETUP_INTERFACE(ID)                         \
+	inline static uint getInterfaceID() { return ID; } \
+	bool               isInstanceOf(uint id) const override
+
+#define QZ_ALLOW_INTERFACE_CHECK(NAME, PARENT)                             \
+	bool NAME::isInstanceOf(uint id) const                                 \
+	{                                                                      \
+		return (id == NAME::getInterfaceID() || PARENT::isInstanceOf(id)); \
+	}
 
 namespace qz
 {
 	namespace gfx
 	{
-		namespace rhi
+		struct InterfaceID
 		{
-			namespace gl
+			enum : uint
 			{
-				/**
-				 * @brief Derived Class from IWindow, for producing a window
-				 * with an OpenGL context.
-				 *
-				 * This is used when a window with an OpenGL context is
-				 * required. For further documentation, refer to the docs
-				 * provided with the IWindow class, as GLWindow is only an
-				 * implementation based on the public API as defined in IWindow.
-				 */
-				class GLWindow : public gfx::IWindow
-				{
-				public:
-					GLWindow(const std::string& title, int width, int height);
-					~GLWindow();
+				SURFACE,
+				WINDOW,
 
-				private:
-					SDL_Window*   m_window;
-					SDL_GLContext m_context;
+				CUSTOM // @todo DOCUMENT THIS.
+			};
+		};
 
-					bool m_running;
-
-					bool m_vsync;
-					bool m_fullscreen;
-
-					math::vec2 m_cachedScreenSize;
-
-				private:
-					void dispatchToListeners(events::Event& event);
-				};
-			} // namespace gl
-		}     // namespace rhi
-	}         // namespace gfx
+		/**
+		 * @brief Alternative, more efficient RTTI than the default C++ method.
+		 */
+		class Interface : public NonCopyable
+		{
+		public:
+			virtual bool isInstanceOf(uint id) const;
+		};
+	} // namespace gfx
 } // namespace qz

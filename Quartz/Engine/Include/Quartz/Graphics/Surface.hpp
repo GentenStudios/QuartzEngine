@@ -28,9 +28,10 @@
 
 #pragma once
 
-#include <Quartz/Events/Event.hpp>
 #include <Quartz/Math/Math.hpp>
-#include <Quartz/Graphics/IWindow.hpp>
+
+#include <Quartz/Graphics/Interface.hpp>
+#include <Quartz/Graphics/RHI/Context.hpp>
 
 #include <SDL.h>
 
@@ -38,40 +39,14 @@ namespace qz
 {
 	namespace gfx
 	{
-		namespace rhi
+		class Surface : public Interface
 		{
-			namespace gl
-			{
-				/**
-				 * @brief Derived Class from IWindow, for producing a window
-				 * with an OpenGL context.
-				 *
-				 * This is used when a window with an OpenGL context is
-				 * required. For further documentation, refer to the docs
-				 * provided with the IWindow class, as GLWindow is only an
-				 * implementation based on the public API as defined in IWindow.
-				 */
-				class GLWindow : public gfx::IWindow
-				{
-				public:
-					GLWindow(const std::string& title, int width, int height);
-					~GLWindow();
+		public:
+			QZ_SETUP_INTERFACE(InterfaceID::SURFACE);
 
-				private:
-					SDL_Window*   m_window;
-					SDL_GLContext m_context;
-
-					bool m_running;
-
-					bool m_vsync;
-					bool m_fullscreen;
-
-					math::vec2 m_cachedScreenSize;
-
-				private:
-					void dispatchToListeners(events::Event& event);
-				};
-			} // namespace gl
-		}     // namespace rhi
-	}         // namespace gfx
+			virtual RenderingAPI getRenderingAPI();
+			virtual math::vec2   getDrawableSize();
+			virtual void         pollEvents();
+		};
+	} // namespace gfx
 } // namespace qz

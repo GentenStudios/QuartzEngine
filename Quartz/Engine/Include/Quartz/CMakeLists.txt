@@ -18,6 +18,7 @@ set(engineHeaders
 
 	${currentDir}/Core.hpp
 	${currentDir}/Engine.hpp
+	${currentDir}/NonCopyable.hpp
 	${currentDir}/QuartzPCH.hpp
 	${currentDir}/UniversalDoxygenComments.hpp
 

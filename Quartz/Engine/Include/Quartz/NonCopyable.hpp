@@ -28,50 +28,17 @@
 
 #pragma once
 
-#include <Quartz/Events/Event.hpp>
-#include <Quartz/Math/Math.hpp>
-#include <Quartz/Graphics/IWindow.hpp>
-
-#include <SDL.h>
-
 namespace qz
 {
-	namespace gfx
+	class NonCopyable
 	{
-		namespace rhi
-		{
-			namespace gl
-			{
-				/**
-				 * @brief Derived Class from IWindow, for producing a window
-				 * with an OpenGL context.
-				 *
-				 * This is used when a window with an OpenGL context is
-				 * required. For further documentation, refer to the docs
-				 * provided with the IWindow class, as GLWindow is only an
-				 * implementation based on the public API as defined in IWindow.
-				 */
-				class GLWindow : public gfx::IWindow
-				{
-				public:
-					GLWindow(const std::string& title, int width, int height);
-					~GLWindow();
 
-				private:
-					SDL_Window*   m_window;
-					SDL_GLContext m_context;
+	public:
+		NonCopyable(const NonCopyable&) = delete;
+		NonCopyable& operator=(const NonCopyable&) = delete;
+		virtual ~NonCopyable() = default;
 
-					bool m_running;
-
-					bool m_vsync;
-					bool m_fullscreen;
-
-					math::vec2 m_cachedScreenSize;
-
-				private:
-					void dispatchToListeners(events::Event& event);
-				};
-			} // namespace gl
-		}     // namespace rhi
-	}         // namespace gfx
+	protected:
+		NonCopyable() = default;
+	};
 } // namespace qz
