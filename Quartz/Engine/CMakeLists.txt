@@ -29,6 +29,7 @@ if(UNIX AND NOT APPLE)
 	target_link_libraries(${PROJECT_NAME} PRIVATE ${X11_LIBRARIES} GL)
 endif()
 
+
 foreach(FILE ${engineSources}) 
     get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
     string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "" GROUP "${PARENT_DIR}")
