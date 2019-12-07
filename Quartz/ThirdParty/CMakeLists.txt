@@ -15,6 +15,7 @@ add_subdirectory(SDL2)
 add_subdirectory(sol2)
 add_subdirectory(lua)
 add_subdirectory(LLGL)
+add_subdirectory(glad)
 
 # stop SDL trying to control our main function.
 add_definitions(-DSDL_MAIN_HANDLED)
@@ -22,3 +23,4 @@ add_definitions(-DSDL_MAIN_HANDLED)
 set_target_properties(SDL2main SDL2-static uninstall PROPERTIES FOLDER QuartzDependencies/sdl2)
 set_target_properties(liblua lua PROPERTIES FOLDER QuartzDependencies/lua)
 set_target_properties(LLGL LLGL_Direct3D11 LLGL_OpenGL PROPERTIES FOLDER QuartzDependencies/LLGL)
+set_target_properties(glad PROPERTIES FOLDER QuartzDependencies)

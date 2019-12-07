@@ -28,3 +28,84 @@
 
 #pragma once
 
+#include <Quartz/Events/Event.hpp>
+#include <Quartz/Math/Math.hpp>
+#include <Quartz/Graphics/IWindow.hpp>
+
+#include <SDL.h>
+
+namespace qz
+{
+	namespace gfx
+	{
+		namespace rhi
+		{
+			namespace gl
+			{
+				/**
+				 * @brief Derived Class from IWindow, for producing a window
+				 * with an OpenGL context.
+				 *
+				 * This is used when a window with an OpenGL context is
+				 * required. For further documentation, refer to the docs
+				 * provided with the IWindow class, as GLWindow is only an
+				 * implementation based on the public API as defined in IWindow.
+				 */
+				class GLWindow : public gfx::IWindow
+				{
+				public:
+					GLWindow(const std::string& title, int width, int height);
+					~GLWindow();
+
+					void pollEvents() override;
+					void swapBuffers() const override;
+
+					void registerEventListener(
+					    events::IEventListener* listener) override;
+
+					void show() const override;
+					void hide() const override;
+					void maximize() const override;
+					void minimize() const override;
+					void focus() const override;
+					void close() override;
+					bool isRunning() const override;
+
+					void    resize(math::vec2 size) override;
+					math::vec2 getSize() const override;
+					void    setResizable(bool enabled) override;
+
+					void setVSync(bool enabled) override;
+					bool isVSync() const override;
+
+					void setTitle(const std::string& title) const override;
+
+					void setFullscreen(bool enabled) override;
+					bool isFullscreen() const override;
+
+					void    setCursorState(gfx::CursorState state) override;
+					void    setCursorPosition(math::vec2 pos) override;
+					math::vec2 getCursorPosition() const override;
+					bool    isKeyDown(events::Keys key) const override;
+
+					void startFrame() override;
+					void endFrame() override;
+
+				private:
+					SDL_Window*   m_window;
+					SDL_GLContext m_context;
+
+					bool m_running;
+
+					bool m_vsync;
+					bool m_fullscreen;
+
+					math::vec2 m_cachedScreenSize;
+
+				private:
+					void dispatchToListeners(events::Event& event);
+				};
+			} // namespace gl
+		}     // namespace rhi
+	}         // namespace gfx
+} // namespace qz

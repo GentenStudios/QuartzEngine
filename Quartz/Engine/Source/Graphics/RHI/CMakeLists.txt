@@ -1,11 +1,10 @@
 add_subdirectory(OpenGL)
 
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
-set(rhiHeaders
-	${glHeaders}
+set(rhiSources
+	${glSources}
 
-	${currentDir}/DataTypes.hpp
-	${currentDir}/Context.hpp
+	${currentDir}/Context.cpp
 
 	PARENT_SCOPE
 )
