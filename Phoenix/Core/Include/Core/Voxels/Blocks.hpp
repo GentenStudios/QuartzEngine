@@ -28,6 +28,8 @@
 
 #pragma once
 
+#include <Quartz/Utilities/Singleton.hpp>
+
 #include <string>
 #include <vector>
 
@@ -54,20 +56,22 @@ namespace phoenix
 		};
 
 		/// @brief Stores universal block definitions
-		class BlockRegistry
+		class BlockRegistry : public qz::utils::Singleton<BlockRegistry>
 		{
 		private:
 			std::vector<RegisteredBlock> Blocks;
 			int                          i;
 
 		public:
+
 			BlockRegistry();
-			~BlockRegistry();
 
 			/// @brief Registers a block in the registry
-			int                registerBlock(const std::string& uniqueName,
+			int            registerBlock(const std::string& uniqueName,
 			                                 const std::string& displayName);
+			/// @brief Get the Display name for a block in the registry
 			const std::string& getDisplayName(int blockId);
+			/// @brief Get the ID for a block in the registry
 			int                getBlockId(const std::string& uniqueName);
 		};
 
