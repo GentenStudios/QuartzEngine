@@ -36,26 +36,26 @@ RegisteredBlock::RegisteredBlock(const std::string& unique, int id,
 
 RegisteredBlock::~RegisteredBlock() = default;
 
-BlockRegistry::BlockRegistry() : i(0) {};
+BlockRegistry::BlockRegistry() : m_BlockIdCounter(0) {};
 
 int BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)
 {
-	i++;
-	Blocks.push_back(RegisteredBlock(uniqueName, i, displayName));
-	return i;
+	m_BlockIdCounter++;
+	m_Blocks.push_back(RegisteredBlock(uniqueName, m_BlockIdCounter, displayName));
+	return m_BlockIdCounter;
 };
 
 const std::string& BlockRegistry::getDisplayName(int blockId)
 {
-	return Blocks[blockId].displayName;
+	return m_Blocks[blockId].displayName;
 };
 
 int BlockRegistry::getBlockId(const std::string& uniqueName)
 {
-	for (i = 0; i < 100; i++)
+	for (int i = 0; i < 100; i++)
 	{
-		if (Blocks[i].uniqueName == uniqueName)
+		if (m_Blocks[i].uniqueName == uniqueName)
 		{
 			return i;
 		};

@@ -59,18 +59,25 @@ namespace phoenix
 		class BlockRegistry : public qz::utils::Singleton<BlockRegistry>
 		{
 		private:
-			std::vector<RegisteredBlock> Blocks;
-			int                          i;
+			std::vector<RegisteredBlock> m_Blocks;
+			int                          m_BlockIdCounter;
 
 		public:
 			BlockRegistry();
 
 			/// @brief Registers a block in the registry
+			/// @param uniqueName The blocks unique name, this is unique to the block and used on saves and loading lua
+			/// @param displayName The human friendly name for the block seen ingame
+			///	@return On success, returns the blocks ID in the registry, on failure a -1
 			int registerBlock(const std::string& uniqueName,
 			                  const std::string& displayName);
 			/// @brief Get the Display name for a block in the registry
+			/// @param blockId the unique numberical block ID for the block you need
+			/// @return Returns display name of the block as a string
 			const std::string& getDisplayName(int blockId);
 			/// @brief Get the ID for a block in the registry
+			/// @param uniqueName The blocks unique name used during saves and lua loading
+			/// @return Returns ID number as an int
 			int getBlockId(const std::string& uniqueName);
 		};
 
