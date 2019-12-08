@@ -28,8 +28,6 @@
 
 #include <Core/Voxels/Blocks.hpp>
 
-#include <string>
-
 using namespace phoenix::voxels;
 
 RegisteredBlock::RegisteredBlock(const std::string& unique, int id,
@@ -40,13 +38,11 @@ RegisteredBlock::~RegisteredBlock() = default;
 
 BlockRegistry::BlockRegistry() : i(0) {};
 
-BlockRegistry::~BlockRegistry() {};
-
 int BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)
 {
 	i++;
-	Blocks[i] = RegisteredBlock(uniqueName, i, displayName);
+	Blocks.push_back(RegisteredBlock(uniqueName, i, displayName));
 	return i;
 };
 
