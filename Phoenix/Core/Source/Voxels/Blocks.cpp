@@ -27,7 +27,6 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include <Core/Voxels/Blocks.hpp>
-#include <iostream>
 
 using namespace phoenix::voxels;
 
@@ -35,9 +34,9 @@ RegisteredBlock::RegisteredBlock(const std::string& unique, int id,
                                  const std::string& display)
     : uniqueName(unique), blockId(id), displayName(display) {};
 
-RegisteredBlock::~RegisteredBlock() = default;
+BlockRegistry::BlockRegistry() : i(0) {};
 
-BlockRegistry::BlockRegistry(){i = 0;};
+RegisteredBlock::~RegisteredBlock() = default;
 
 int BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)
