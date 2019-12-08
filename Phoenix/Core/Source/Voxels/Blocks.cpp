@@ -41,12 +41,12 @@ BlockRegistry::BlockRegistry(){
 	i = 0;
 };
 
-BlockRegistry *BlockRegistry::instance = 0;
+//BlockRegistry *BlockRegistry::instance = 0;
 
-BlockRegistry *BlockRegistry::getInstance(){
+/*BlockRegistry *BlockRegistry::getInstance(){
 	if (!instance){instance = new BlockRegistry;}
     return instance;
-};
+};*/
 
 int BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)

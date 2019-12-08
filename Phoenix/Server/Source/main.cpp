@@ -15,12 +15,15 @@ int main(int argc, char* argv[])
 
 	// ===== Load Voxel data / Load lua =====
 	std::cout << "Program started \n";
-	voxels::BlockRegistry *registry = registry->getInstance();
+	//voxels::BlockRegistry *registry = registry->get();
 	std::cout << "register dirt \n";
-	registry->registerBlock("core:dirt", "Dirt");
-	registry->registerBlock("core:cobble", "CobbleStone");
-	registry->registerBlock("core:stone", "Stone");
+	voxels::BlockRegistry::get()->registerBlock("core:dirt", "Dirt");
+	voxels::BlockRegistry::get()->registerBlock("core:cobble", "CobbleStone");
+	voxels::BlockRegistry::get()->registerBlock("core:stone", "Stone");
 	// TODO: Replace these manual calls to register blocks with a call to run lua files
+
+	std::cout << voxels::BlockRegistry::get()->getDisplayName(1);
+	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core::dirt"));
 
 	// ===== Load save data =====
 	// Save::Load(argv[0]) //This will detect internally if a new map needs generated based on if save exists

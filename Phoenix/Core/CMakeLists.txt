@@ -8,8 +8,8 @@ add_subdirectory(Source)
 add_library(${PROJECT_NAME} STATIC ${phoenixSources} ${phoenixHeaders})
 target_link_libraries(${PROJECT_NAME} PRIVATE QuartzEngine)
 
-set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../Quartz/ThirdParty)
-target_include_directories(${PROJECT_NAME} PRIVATE ${dependencies}/../Quartz/Engine/Include)
+set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../../Quartz/ThirdParty)
+target_include_directories(${PROJECT_NAME} PRIVATE ${dependencies}/../Engine/Include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/Include)
 
 foreach(FILE ${phoenixSources}) 
