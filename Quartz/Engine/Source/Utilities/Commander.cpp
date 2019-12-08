@@ -100,7 +100,7 @@ bool Commander::help(const std::vector<std::string>&& args)
 	}
 }
 
-bool Commander::run(const std::string& command,
+bool Commander::run(const std::string&               command,
                     const std::vector<std::string>&& args)
 {
 	// Check for built in functions
@@ -142,10 +142,10 @@ void Commander::post()
 	while (true)
 	{
 		m_out << "\n->";
-		int                                           i = 0;
-		std::vector<std::string> 					  args;
-		std::string                                   command = "";
-		std::string                                   buffer;
+		int                      i = 0;
+		std::vector<std::string> args;
+		std::string              command = "";
+		std::string              buffer;
 		m_in >> command;
 		while (m_in.peek() != '\n')
 		{

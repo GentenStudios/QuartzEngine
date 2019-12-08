@@ -30,17 +30,15 @@
 
 #include <Quartz/Utilities/Singleton.hpp>
 
-#include <vector>
 #include <functional>
 #include <string>
+#include <vector>
 
 namespace qz
 {
 	namespace utils
 	{
-		typedef std::function<void(
-		    std::vector<std::string> args)>
-		    function;
+		typedef std::function<void(std::vector<std::string> args)> function;
 
 		/**
 		 * @brief The command book stores commands and information on them to be
@@ -95,7 +93,7 @@ namespace qz
 		class Commander
 		{
 		private:
-			CommandBook   *m_book;
+			CommandBook*  m_book;
 			std::ostream& m_out;
 			std::istream& m_in;
 
@@ -118,9 +116,8 @@ namespace qz
 			 * @return Returns True if the function was called and False if the
 			 * function could not be found
 			 */
-			bool run(
-			    const std::string&                                    command,
-			    const std::vector<std::string>&& args);
+			bool run(const std::string&               command,
+			         const std::vector<std::string>&& args);
 
 			/**
 			 * @brief Returns helpstring for command
