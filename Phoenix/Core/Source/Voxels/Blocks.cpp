@@ -34,9 +34,9 @@ RegisteredBlock::RegisteredBlock(const std::string& unique, int id,
                                  const std::string& display)
     : uniqueName(unique), blockId(id), displayName(display) {};
 
-BlockRegistry::BlockRegistry() : i(0) {};
-
 RegisteredBlock::~RegisteredBlock() = default;
+
+BlockRegistry::BlockRegistry() : i(0) {};
 
 int BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)
