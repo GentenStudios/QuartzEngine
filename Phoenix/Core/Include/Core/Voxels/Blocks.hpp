@@ -37,6 +37,8 @@ namespace phoenix
 {
 	namespace voxels
 	{
+		typedef std::size_t BlockID;
+
 		/// @brief Stores universal definition of a block
 		struct RegisteredBlock
 		{
@@ -44,7 +46,7 @@ namespace phoenix
 			 * @brief Stores unique ID to identify block for use in memory,
 			 * should match location in registry
 			 */
-			std::size_t blockId;
+			BlockID blockId;
 			/** 
 			 * @brief Stores Unique name for use duing saving, should be in
 			 * format mod:name eg "core:dirt"
@@ -53,7 +55,7 @@ namespace phoenix
 			/// @brief Stores human readable name for output to player ex "dirt"
 			std::string displayName;
 
-			RegisteredBlock(const std::string& unique, std::size_t id,
+			RegisteredBlock(const std::string& unique, BlockID id,
 			                const std::string& display);
 
 			~RegisteredBlock();
@@ -64,7 +66,6 @@ namespace phoenix
 		{
 		private:
 			std::vector<RegisteredBlock> m_blocks;
-			std::size_t                  m_blockIdCounter;
 
 		public:
 			BlockRegistry();
@@ -74,10 +75,10 @@ namespace phoenix
 			 * 
 			 * @param uniqueName The blocks unique name, this is unique to the block and used on saves and loading lua
 			 * @param displayName The human friendly name for the block seen ingame
-			 *	@return On success, returns the blocks ID in the registry, on failure a -1
+			 * @return On success, returns the blocks ID in the registry, on failure a -1
 			 */
-			std::size_t registerBlock(const std::string& uniqueName,
-			                  const std::string& displayName);
+			BlockID registerBlock(const std::string& uniqueName,
+			                      const std::string& displayName);
 			/** 
 			 * @brief Get the Display name for a block in the registry
 			 * 
@@ -91,22 +92,8 @@ namespace phoenix
 			 * @param uniqueName The blocks unique name used during saves and lua loading
 			 * @return Returns ID number as an int
 			 */
-			std::size_t getBlockId(const std::string& uniqueName);
+			BlockID getBlockId(const std::string& uniqueName);
 		};
-
-		/** 
-		 * @brief Metadata for a block, this is only created if a block needs
-		 * to store more data than what is universal (eg: we wont create this
-		 * for each dirt block)
-		 */
-		class Block
-		{
-		public:
-			Block(const std::string& uniqueName, int blockId,
-			      const std::string& displayName);
-			~Block();
-		};
-
 	} // namespace voxels
 
 } // namespace phoenix

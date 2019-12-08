@@ -27,37 +27,37 @@
 // POSSIBILITY OF SUCH DAMAGE.
 
 #include <Core/Voxels/Blocks.hpp>
-#include <iostream>
-#include <stdio.h>
 
 using namespace phoenix::voxels;
 
-RegisteredBlock::RegisteredBlock(const std::string& unique, std::size_t id,
+RegisteredBlock::RegisteredBlock(const std::string& unique, BlockID id,
                                  const std::string& display)
     : uniqueName(unique), blockId(id), displayName(display) {};
 
 RegisteredBlock::~RegisteredBlock() = default;
 
-BlockRegistry::BlockRegistry() : m_blockIdCounter(-1) {};
+BlockRegistry::BlockRegistry(){};
 
-std::size_t BlockRegistry::registerBlock(const std::string& uniqueName,
+BlockID BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)
 {
-	m_blockIdCounter++;
-	m_blocks.push_back(RegisteredBlock(uniqueName, m_blockIdCounter, displayName));
-	return m_blockIdCounter;
+	m_blocks.push_back(RegisteredBlock(uniqueName, m_blocks.size(), displayName));
+	return m_blocks.size() - 1;
 };
 
-const std::string& BlockRegistry::getDisplayName(std::size_t blockId)
+const std::string& BlockRegistry::getDisplayName(BlockID blockId)
 {
-	
-	
-	return m_blocks[blockId].displayName;
+	if (blockId < m_blocks.size()){
+		return m_blocks[blockId].displayName;
+	}else{
+		static const std::string error {"ERROR"};
+		return error;
+	}
 };
 
-std::size_t BlockRegistry::getBlockId(const std::string& uniqueName)
+BlockID BlockRegistry::getBlockId(const std::string& uniqueName)
 {
-	for (std::size_t i = 0; i < m_blocks.size(); i++)
+	for (BlockID i = 0; i < m_blocks.size(); i++)
 	{
 		if (m_blocks[i].uniqueName == uniqueName)
 		{

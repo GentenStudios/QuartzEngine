@@ -22,10 +22,11 @@ int main(int argc, char* argv[])
 	// TODO: Replace these manual calls to register blocks with a call to run lua files
 
 	std::cout << voxels::BlockRegistry::get()->getDisplayName(1);
+	std::cout << voxels::BlockRegistry::get()->getDisplayName(50);
 	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core::dirt"));
 	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core:dirt"));
 	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core:stone"));
-	std::cout << "\nCobbleStone1844674407370955161502\n";
+	std::cout << "\nCobbleStoneERROR1844674407370955161502\n";
 	// TODO: Replace these calls with unit tests
 
 	// ===== Load save data =====
