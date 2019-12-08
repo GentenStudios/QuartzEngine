@@ -28,9 +28,9 @@ int main(int argc, char* argv[])
 	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core::dirt"));
 
 	// TODO: Replace these example functions with other, permanent, systems.
-	qz::utils::CommandBook commandBook = qz::utils::CommandBook();
+	//qz::utils::CommandBook commandBook = qz::utils::CommandBook();
 
-	commandBook.add("getBlockName", 
+	qz::utils::CommandBook::get()->add("getBlockName", 
 					"Gets the name of a block based on provided ID number",
 					"all",
 					[](std::vector<std::string>&& args){
@@ -44,8 +44,7 @@ int main(int argc, char* argv[])
 	// std::thread listener (Network::Listener);
 	
 // ===== Enter main loop watching for CLI input =====
-	qz::utils::Commander kirk = qz::utils::Commander(commandBook, std::cout, std::cin);
-
+	qz::utils::Commander kirk = qz::utils::Commander(std::cout, std::cin);
 	kirk.post();
 
 	// ===== Begin shutdown =====

@@ -28,6 +28,8 @@
 
 #pragma once
 
+#include <Quartz/Utilities/Singleton.hpp>
+
 #include <vector>
 #include <functional>
 #include <string>
@@ -45,7 +47,7 @@ namespace qz
 		 * used by a commander
 		 */
 
-		struct CommandBook
+		struct CommandBook : public Singleton<CommandBook>
 		{
 			std::vector<std::string> m_command;
 			std::vector<std::string> m_help;
@@ -93,7 +95,7 @@ namespace qz
 		class Commander
 		{
 		private:
-			CommandBook   m_book;
+			CommandBook   *m_book;
 			std::ostream& m_out;
 			std::istream& m_in;
 
@@ -106,7 +108,7 @@ namespace qz
 			 * @param out An output stream the commander outputs results to
 			 * @param in An input stream the commander accepts input to
 			 */
-			Commander(CommandBook& book, std::ostream& out, std::istream& in);
+			Commander(std::ostream& out, std::istream& in);
 			~Commander();
 
 			/**

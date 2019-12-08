@@ -32,8 +32,8 @@
 
 using namespace qz::utils;
 
-Commander::Commander(CommandBook& book, std::ostream& out, std::istream& in)
-    : m_book(book), m_out(out), m_in(in)
+Commander::Commander(std::ostream& out, std::istream& in)
+    : m_book(qz::utils::CommandBook::get()), m_out(out), m_in(in)
 {
 }
 
@@ -71,7 +71,7 @@ int CommandBook::getPage() { return m_page; }
 
 bool Commander::help(const std::vector<std::string>&& args)
 {
-	if (args[0] == "")
+	if (args.size() < 1)
 	{
 		m_out << "Type /help [command] to learn more about a command \nType "
 		         "/list for a list of available commands\n";
@@ -87,7 +87,7 @@ bool Commander::help(const std::vector<std::string>&& args)
 		m_out << "Lists available commands\n";
 		return true;
 	}
-	const int j = m_book.find(args[0]);
+	const int j = m_book->find(args[0]);
 	if (j == 0)
 	{
 		m_out << "Command \"" + args[0] + "\" not found \n";
@@ -95,7 +95,7 @@ bool Commander::help(const std::vector<std::string>&& args)
 	}
 	else
 	{
-		m_out << m_book.m_help[j];
+		m_out << m_book->m_help[j];
 		return true;
 	}
 }
@@ -114,7 +114,7 @@ bool Commander::run(const std::string& command,
 		return true;
 	}
 	// If no built in functions match, search library
-	const int j = m_book.find(command);
+	const int j = m_book->find(command);
 	if (j == -1)
 	{
 		m_out << "Command \"" + command + "\" not found \n";
@@ -122,7 +122,7 @@ bool Commander::run(const std::string& command,
 	}
 	else
 	{
-		m_book.m_functions[j](args);
+		m_book->m_functions[j](args);
 		return true;
 	}
 }
@@ -130,9 +130,9 @@ bool Commander::run(const std::string& command,
 void Commander::list()
 {
 	m_out << "Available commands\n";
-	for (int j = 0; j < m_book.getPage(); j++)
+	for (int j = 0; j < m_book->getPage(); j++)
 	{
-		m_out << "-" + m_book.m_command[j] + "\n";
+		m_out << "-" + m_book->m_command[j] + "\n";
 	}
 }
 
