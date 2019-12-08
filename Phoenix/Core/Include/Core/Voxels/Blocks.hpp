@@ -40,16 +40,20 @@ namespace phoenix
 		/// @brief Stores universal definition of a block
 		struct RegisteredBlock
 		{
-			/// @brief Stores unique ID to identify block for use in memory,
-			/// should match location in registry
-			int blockId;
-			/// @brief Stores Unique name for use duing saving, should be in
-			/// format mod:name eg "core:dirt"
+			/** 
+			 * @brief Stores unique ID to identify block for use in memory,
+			 * should match location in registry
+			 */
+			std::size_t blockId;
+			/** 
+			 * @brief Stores Unique name for use duing saving, should be in
+			 * format mod:name eg "core:dirt"
+			 */
 			std::string uniqueName;
 			/// @brief Stores human readable name for output to player ex "dirt"
 			std::string displayName;
 
-			RegisteredBlock(const std::string& unique, int id,
+			RegisteredBlock(const std::string& unique, std::size_t id,
 			                const std::string& display);
 
 			~RegisteredBlock();
@@ -59,31 +63,42 @@ namespace phoenix
 		class BlockRegistry : public qz::utils::Singleton<BlockRegistry>
 		{
 		private:
-			std::vector<RegisteredBlock> m_Blocks;
-			int                          m_BlockIdCounter;
+			std::vector<RegisteredBlock> m_blocks;
+			std::size_t                  m_blockIdCounter;
 
 		public:
 			BlockRegistry();
 
-			/// @brief Registers a block in the registry
-			/// @param uniqueName The blocks unique name, this is unique to the block and used on saves and loading lua
-			/// @param displayName The human friendly name for the block seen ingame
-			///	@return On success, returns the blocks ID in the registry, on failure a -1
-			int registerBlock(const std::string& uniqueName,
+			/** 
+			 * @brief Registers a block in the registry
+			 * 
+			 * @param uniqueName The blocks unique name, this is unique to the block and used on saves and loading lua
+			 * @param displayName The human friendly name for the block seen ingame
+			 *	@return On success, returns the blocks ID in the registry, on failure a -1
+			 */
+			std::size_t registerBlock(const std::string& uniqueName,
 			                  const std::string& displayName);
-			/// @brief Get the Display name for a block in the registry
-			/// @param blockId the unique numberical block ID for the block you need
-			/// @return Returns display name of the block as a string
-			const std::string& getDisplayName(int blockId);
-			/// @brief Get the ID for a block in the registry
-			/// @param uniqueName The blocks unique name used during saves and lua loading
-			/// @return Returns ID number as an int
-			int getBlockId(const std::string& uniqueName);
+			/** 
+			 * @brief Get the Display name for a block in the registry
+			 * 
+			 * @param blockId the unique numberical block ID for the block you need
+			 * @return Returns display name of the block as a string
+			 */
+			const std::string& getDisplayName(std::size_t blockId);
+			/** 
+			 * @brief Get the ID for a block in the registry
+			 * 
+			 * @param uniqueName The blocks unique name used during saves and lua loading
+			 * @return Returns ID number as an int
+			 */
+			std::size_t getBlockId(const std::string& uniqueName);
 		};
 
-		/// @breif Metadata for a block, this is only created if a block needs
-		/// to store more data than what is universal (eg: we wont create this
-		/// for each dirt block)
+		/** 
+		 * @brief Metadata for a block, this is only created if a block needs
+		 * to store more data than what is universal (eg: we wont create this
+		 * for each dirt block)
+		 */
 		class Block
 		{
 		public:
