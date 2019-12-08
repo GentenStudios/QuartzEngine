@@ -61,10 +61,10 @@ void CommandBook::add(const std::string& command, const std::string& help,
 		j = m_page;
 		m_page++;
 	}
-	m_command[j]    = command;
-	m_help[j]       = help;
-	m_permission[j] = permission;
-	m_functions[j]  = std::move(f);
+	m_command.push_back(command);
+	m_help.push_back(help);
+	m_permission.push_back(permission);
+	m_functions.push_back(std::move(f));
 }
 
 int CommandBook::getPage() { return m_page; }
