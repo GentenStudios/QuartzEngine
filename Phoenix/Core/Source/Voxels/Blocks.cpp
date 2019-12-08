@@ -40,9 +40,17 @@ BlockRegistry::BlockRegistry(){};
 
 BlockID BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)
-{
-	m_blocks.push_back(RegisteredBlock(uniqueName, m_blocks.size(), displayName));
-	return m_blocks.size() - 1;
+{	
+	BlockID exists = getBlockId(uniqueName);
+	if (exists == -1){
+		m_blocks.push_back(RegisteredBlock(uniqueName, m_blocks.size(), displayName));
+		return m_blocks.size() - 1;
+	} else {
+		m_blocks[exists].displayName = displayName;
+		m_blocks[exists].uniqueName = uniqueName;
+		return exists;
+	}
+
 };
 
 const std::string& BlockRegistry::getDisplayName(BlockID blockId)

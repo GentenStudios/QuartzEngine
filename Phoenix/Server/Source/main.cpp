@@ -27,6 +27,11 @@ int main(int argc, char* argv[])
 	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core:dirt"));
 	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core:stone"));
 	std::cout << "\nCobbleStoneERROR1844674407370955161502\n";
+
+	voxels::BlockRegistry::get()->registerBlock("core:dirt", "Dirt Block");
+	std::cout << voxels::BlockRegistry::get()->getDisplayName(0);
+	std::cout << "\nDirt Block\n";
+
 	// TODO: Replace these calls with unit tests
 
 	// ===== Load save data =====
