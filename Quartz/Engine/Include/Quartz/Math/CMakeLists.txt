@@ -1,5 +1,4 @@
 set(currentDir ${CMAKE_CURRENT_LIST_DIR})
-
 set(mathHeaders
 	${currentDir}/MathUtils.hpp
 	${currentDir}/Vector3.hpp
