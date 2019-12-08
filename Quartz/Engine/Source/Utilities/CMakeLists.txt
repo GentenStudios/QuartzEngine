@@ -7,6 +7,7 @@ set(utilitySources
 	${currentDir}/Logger.cpp
 	${currentDir}/FileIO.cpp
 	${currentDir}/Plugin.cpp
+	${currentDir}/ContentLoader.cpp
 
 	PARENT_SCOPE
 )

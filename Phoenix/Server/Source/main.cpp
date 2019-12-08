@@ -1,5 +1,8 @@
 #include <Core/Voxels/Blocks.hpp>
 #include <Server/Main.hpp>
+
+#include <Quartz/Utilities/ContentLoader.hpp>
+
 #include <iostream>
 #include <stdio.h>
 
@@ -15,6 +18,8 @@ int main(int argc, char* argv[])
 	std::cout << "Program started \n";
 
 	// ===== Load Voxel data / Load lua =====
+
+	qz::utils::loadModules();
 
 	voxels::BlockRegistry::get()->registerBlock("core:dirt", "Dirt");
 	voxels::BlockRegistry::get()->registerBlock("core:cobble", "CobbleStone");
