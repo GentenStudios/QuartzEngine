@@ -46,7 +46,7 @@ int BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)
 {
 	i++;
-	Blocks[i] = RegisteredBlock(uniqueName, i, displayName);
+	Blocks.push_back(RegisteredBlock(uniqueName, i, displayName));
 	return i;
 };
 
