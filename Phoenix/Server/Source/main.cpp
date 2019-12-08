@@ -14,9 +14,9 @@ int main(int argc, char* argv[])
     // Likely a single command from Quartz that launches the logger + any other critical tools
 
 	// ===== Load Voxel data / Load lua =====
-	std::cout << "Program started";
+	std::cout << "Program started \n";
 	voxels::BlockRegistry *registry = registry->getInstance();
-	std::cout << "register dirt";
+	std::cout << "register dirt \n";
 	registry->registerBlock("core:dirt", "Dirt");
 	registry->registerBlock("core:cobble", "CobbleStone");
 	registry->registerBlock("core:stone", "Stone");
@@ -35,6 +35,7 @@ int main(int argc, char* argv[])
 	}*/
 
 	// ===== Begin shutdown =====
+	std::cout << "Begin Shutdown \n \n";
 
 	// Send signal for listener to terminate
 	// Confirm map has saved

@@ -37,7 +37,9 @@ RegisteredBlock::RegisteredBlock(const std::string& unique, int id,
 
 RegisteredBlock::~RegisteredBlock() = default;
 
-BlockRegistry::BlockRegistry(){ i = 0;};
+BlockRegistry::BlockRegistry(){
+	i = 0;
+};
 
 BlockRegistry *BlockRegistry::instance = 0;
 
@@ -49,8 +51,10 @@ BlockRegistry *BlockRegistry::getInstance(){
 int BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)
 {
+	std::cout << std::to_string(i) + "\n";
 	i++;
-	Blocks[i] = RegisteredBlock(uniqueName, i, displayName);
+	RegisteredBlock temp = RegisteredBlock(uniqueName, i, displayName);
+	Blocks.push_back(temp);
 	return i;
 };
 
