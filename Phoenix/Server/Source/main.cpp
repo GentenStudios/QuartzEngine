@@ -18,8 +18,16 @@ int main(int argc, char* argv[])
 	std::cout << "Program started \n";
 
 	// ===== Load Voxel data / Load lua =====
+	bool luaModules = qz::utils::modules::loadModules("save1");
 
-	qz::utils::loadModules();
+    std::cout << "\n\n";
+	if(luaModules){
+		std::cout << "Win";
+	}else{
+		std::cout << "Loss";
+	}
+
+    std::cout << "\n\n";
 
 	voxels::BlockRegistry::get()->registerBlock("core:dirt", "Dirt");
 	voxels::BlockRegistry::get()->registerBlock("core:cobble", "CobbleStone");

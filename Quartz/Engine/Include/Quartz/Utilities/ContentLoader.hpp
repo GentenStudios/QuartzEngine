@@ -29,12 +29,34 @@
 #pragma once
 
 #include <string>
+#include <array>
+#include <fstream>
+#include <queue>
+#include <filesystem>
+//#include <sol/sol.hpp>
+#include <iostream>
 
 namespace qz
 {
     namespace utils
-    {        
-        bool loadModules();
+    {
+        struct Mod{
+            std::string m_name;
+            std::string m_version;
+            std::vector<std::string> m_dependencies;
+            Mod(std::string name);
+            ~Mod();
+            bool exists();
+        };
+
+        // clang-format off
+        // modules needs to stay lowercase as it's just to namespace.
+        // apparently we can't have a namespaced function prototype in a header
+        // (beep + sonos 08/12/2019)
+        struct modules
+        // clang-format on
+        {
+            static bool loadModules(std::string save);
+        };
     };
-    
-}
+};

@@ -26,11 +26,93 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-
 #include <Quartz/Utilities/ContentLoader.hpp>
 
 using namespace qz::utils;
 
-bool loadModules(){
+Mod::Mod(std::string name)
+    : m_name(name)
+{
+    std::cout << "Loading" + name;
+    std::fstream fileStream;
+    fileStream.open("Mods/" + name + "/dependencies.txt");
+    while (fileStream.peek() != EOF){
+        std::string input;
+        std::getline(fileStream, input);
+        m_dependencies.push_back(input);
+    }
+    fileStream.close();
+};
+Mod::~Mod(){};
+
+bool Mod::exists(){
+    return true; //TODO make this actually check for mod
+}
+
+bool modules::loadModules(std::string save)
+{
+    // sol::state lua;
+    std::cout << "Function called?\n";
+    std::fstream fileStream;
+    std::queue<Mod> toLoad; //A queue of mods that need loaded
+
+    std::cout << "Opening" + save + "\n";
+    fileStream.open("Save/" + save + "/mods.txt");
+    int i = 0;
+    while (fileStream.peek() != EOF){
+        std::string input;
+        std::getline(fileStream, input);
+        std::cout << input + "\n";
+        Mod mod = Mod(input);
+        //if(!mod.exists()){std::cout << "Mod does not exist" + mod.m_name; return false;}; //Should never happen if launcher does all the work but lets check anyways
+        toLoad.push(mod);
+        if (i > 10)break;
+        i++;
+    }
+    fileStream.close();
+
+    //Sort and load the mods
+    std::vector<std::string> loadedMods;
+    while(toLoad.size() > 0){
+        int lastPass = toLoad.size();
+        std::cout << "\n\nMaking pass, " + std::to_string(lastPass) + " left to load\n";
+        //For each mod that needs loaded
+        for (int i = 0; i < toLoad.size(); i++){ 
+            Mod mod = toLoad.front();
+            bool satisfied = true;
+            //For each dependency the mod has
+            for (int j = 0; j < mod.m_dependencies.size(); j++){ 
+                //If dependency is not satisfied, mark satisfied as false.
+                if (std::find(loadedMods.begin(), loadedMods.end(), mod.m_dependencies[j]) == loadedMods.end()){
+                    satisfied = false;
+                }
+            }
+            //If all dependencies were met, run lua and add mod to satisfied list
+            //Otherwise, move mod to back of load queue
+            if(satisfied){
+                //lua.script_file("modules/" + mod.m_name + "/init.lua");
+                std::cout << "loaded" + mod.m_name;
+                loadedMods.push_back(mod.m_name);
+            }else{
+                toLoad.push(toLoad.front());
+            }
+            toLoad.pop();
+        }
+        //If we haven't loaded any new mods, throw error
+        if (lastPass == toLoad.size()){
+            std::cout << "One or more mods are missing required dependencies \n";
+            std::cout << "Failed Mods:\n";
+            for (int i = 0; i < toLoad.size(); i++){
+                std::cout << "- " +toLoad.front().m_name + "\n";
+                toLoad.pop();
+            }
+            std::cout << "Loaded Mods:\n";
+            for (int i = 0; i < loadedMods.size(); i++){
+                std::cout << "- " + loadedMods[i] + "\n";
+            }
+            return false;
+        }
+    }
+
     return true;
 }
