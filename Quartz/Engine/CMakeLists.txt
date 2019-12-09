@@ -10,7 +10,7 @@ add_subdirectory(Source)
 add_library(${PROJECT_NAME} STATIC ${engineSources} ${engineHeaders})
 add_precompiled_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/Include/Quartz/QuartzPCH.hpp ${CMAKE_CURRENT_LIST_DIR}/Source/QuartzPCH.cpp)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE SDL2-static SDL2main liblua)
+target_link_libraries(${PROJECT_NAME} PRIVATE SDL2-static SDL2main sol2 liblua)
 
 set(dependencies ${CMAKE_CURRENT_LIST_DIR}/../ThirdParty)
 target_include_directories(${PROJECT_NAME} PUBLIC 
