@@ -28,38 +28,46 @@
 
 #include <Core/Voxels/Blocks.hpp>
 
-#include <string>
-
 using namespace phoenix::voxels;
 
-RegisteredBlock::RegisteredBlock(const std::string& unique, int id,
+RegisteredBlock::RegisteredBlock(const std::string& unique, BlockID id,
                                  const std::string& display)
     : uniqueName(unique), blockId(id), displayName(display) {};
 
 RegisteredBlock::~RegisteredBlock() = default;
 
-BlockRegistry::BlockRegistry() : i(0) {};
+BlockRegistry::BlockRegistry(){};
 
-BlockRegistry::~BlockRegistry() {};
-
-int BlockRegistry::registerBlock(const std::string& uniqueName,
+BlockID BlockRegistry::registerBlock(const std::string& uniqueName,
                                  const std::string& displayName)
-{
-	i++;
-	Blocks[i] = RegisteredBlock(uniqueName, i, displayName);
-	return i;
+{	
+	BlockID exists = getBlockId(uniqueName);
+	if (exists == -1){
+		m_blocks.push_back(RegisteredBlock(uniqueName, m_blocks.size(), displayName));
+		return m_blocks.size() - 1;
+	} else {
+		m_blocks[exists].displayName = displayName;
+		m_blocks[exists].uniqueName = uniqueName;
+		return exists;
+	}
+
 };
 
-const std::string& BlockRegistry::getDisplayName(int blockId)
+const std::string& BlockRegistry::getDisplayName(BlockID blockId)
 {
-	return Blocks[blockId].displayName;
+	if (blockId < m_blocks.size()){
+		return m_blocks[blockId].displayName;
+	}else{
+		static const std::string error {"ERROR"};
+		return error;
+	}
 };
 
-int BlockRegistry::getBlockId(const std::string& uniqueName)
+BlockID BlockRegistry::getBlockId(const std::string& uniqueName)
 {
-	for (i = 0; i < 100; i++)
+	for (BlockID i = 0; i < m_blocks.size(); i++)
 	{
-		if (Blocks[i].uniqueName == uniqueName)
+		if (m_blocks[i].uniqueName == uniqueName)
 		{
 			return i;
 		};

@@ -12,13 +12,27 @@ int main(int argc, char* argv[])
 
     // ===== Launch core =====
     // Likely a single command from Quartz that launches the logger + any other critical tools
+	std::cout << "Program started \n";
 
 	// ===== Load Voxel data / Load lua =====
-	voxels::BlockRegistry registry = voxels::BlockRegistry();
-	registry.registerBlock("core:dirt", "Dirt");
-	registry.registerBlock("core:cobble", "CobbleStone");
-	registry.registerBlock("core:stone", "Stone");
+
+	voxels::BlockRegistry::get()->registerBlock("core:dirt", "Dirt");
+	voxels::BlockRegistry::get()->registerBlock("core:cobble", "CobbleStone");
+	voxels::BlockRegistry::get()->registerBlock("core:stone", "Stone");
 	// TODO: Replace these manual calls to register blocks with a call to run lua files
+
+	std::cout << voxels::BlockRegistry::get()->getDisplayName(1);
+	std::cout << voxels::BlockRegistry::get()->getDisplayName(50);
+	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core::dirt"));
+	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core:dirt"));
+	std::cout << std::to_string(voxels::BlockRegistry::get()->getBlockId("core:stone"));
+	std::cout << "\nCobbleStoneERROR1844674407370955161502\n";
+
+	voxels::BlockRegistry::get()->registerBlock("core:dirt", "Dirt Block");
+	std::cout << voxels::BlockRegistry::get()->getDisplayName(0);
+	std::cout << "\nDirt Block\n";
+
+	// TODO: Replace these calls with unit tests
 
 	// ===== Load save data =====
 	// Save::Load(argv[0]) //This will detect internally if a new map needs generated based on if save exists
@@ -33,6 +47,7 @@ int main(int argc, char* argv[])
 	}*/
 
 	// ===== Begin shutdown =====
+	std::cout << "Begin Shutdown \n \n";
 
 	// Send signal for listener to terminate
 	// Confirm map has saved
