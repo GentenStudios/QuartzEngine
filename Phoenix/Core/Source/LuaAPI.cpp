@@ -26,37 +26,16 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE.
 
-#pragma once
+#include <Core/LuaAPI.hpp>
 
-#include <string>
-#include <array>
-#include <fstream>
-#include <queue>
-#include <filesystem>
-#include <sol/sol.hpp>
-#include <iostream>
+using namespace phoenix;
 
-namespace qz
-{
-    namespace utils
-    {
-        struct Mod{
-            std::string m_name;
-            std::string m_version;
-            std::vector<std::string> m_dependencies;
-            Mod(std::string name);
-            ~Mod();
-            bool exists();
-        };
+void luaapi::registerBlock(std::string displayName, std::string uniqueName){
+    voxels::BlockRegistry::get()->registerBlock(displayName, uniqueName);
+}
 
-        // clang-format off
-        // modules needs to stay lowercase as it's just to namespace.
-        // apparently we can't have a namespaced function prototype in a header
-        // (beep + sonos 08/12/2019)
-        struct modules
-        // clang-format on
-        {
-            static bool loadModules(std::string save, sol::state& lua);
-        };
-    };
+void luaapi::loadAPI(sol::state& lua){
+    lua["voxel"] = lua.create_table();
+    lua["voxel"]["block"] = lua.create_table();
+    lua["voxel"]["block"]["register"] = luaapi::registerBlock;
 };

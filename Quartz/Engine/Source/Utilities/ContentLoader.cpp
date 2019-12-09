@@ -48,7 +48,7 @@ bool Mod::exists(){
     return true; //TODO make this actually check for mod
 }
 
-bool modules::loadModules(std::string save)
+bool modules::loadModules(std::string save, sol::state& lua)
 {
     std::fstream fileStream;
     std::queue<Mod> toLoad; //A queue of mods that need loaded
@@ -67,8 +67,6 @@ bool modules::loadModules(std::string save)
     fileStream.close();
 
     //Sort and load the mods
-    sol::state lua;
-	lua.open_libraries(sol::lib::base);
     std::vector<std::string> loadedMods;
     while(toLoad.size() > 0){
         int lastPass = toLoad.size();

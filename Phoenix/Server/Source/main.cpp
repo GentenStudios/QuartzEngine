@@ -1,4 +1,5 @@
 #include <Core/Voxels/Blocks.hpp>
+#include <Core/LuaAPI.hpp>
 #include <Server/Main.hpp>
 
 #include <Quartz/Utilities/ContentLoader.hpp>
@@ -18,21 +19,19 @@ int main(int argc, char* argv[])
 	std::cout << "Program started \n";
 
 	// ===== Load Voxel data / Load lua =====
-	bool luaModules = qz::utils::modules::loadModules("save1");
-
+    sol::state lua;
+	lua.open_libraries(sol::lib::base);
+	luaapi::loadAPI(lua);
+	
+	bool check = qz::utils::modules::loadModules("save1", lua);
     std::cout << "\n\n";
-	if(luaModules){
-		std::cout << "Win";
+	if(check){
+		std::cout << "Lua modules loaded\n";
 	}else{
-		std::cout << "Loss";
+		std::cout << "Lua modules failed to load\n";
 	}
 
-    std::cout << "\n\n";
-
-	voxels::BlockRegistry::get()->registerBlock("core:dirt", "Dirt");
-	voxels::BlockRegistry::get()->registerBlock("core:cobble", "CobbleStone");
-	voxels::BlockRegistry::get()->registerBlock("core:stone", "Stone");
-	// TODO: Replace these manual calls to register blocks with a call to run lua files
+	//===== A couple tests to make sure things worked =====
 
 	std::cout << voxels::BlockRegistry::get()->getDisplayName(1);
 	std::cout << voxels::BlockRegistry::get()->getDisplayName(50);

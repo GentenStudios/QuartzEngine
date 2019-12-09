@@ -28,35 +28,13 @@
 
 #pragma once
 
-#include <string>
-#include <array>
-#include <fstream>
-#include <queue>
-#include <filesystem>
+#include <Core/Voxels/Blocks.hpp>
 #include <sol/sol.hpp>
-#include <iostream>
 
-namespace qz
-{
-    namespace utils
-    {
-        struct Mod{
-            std::string m_name;
-            std::string m_version;
-            std::vector<std::string> m_dependencies;
-            Mod(std::string name);
-            ~Mod();
-            bool exists();
-        };
+namespace phoenix{
+    struct luaapi{
+        static void registerBlock(std::string displayName, std::string uniqueName);
 
-        // clang-format off
-        // modules needs to stay lowercase as it's just to namespace.
-        // apparently we can't have a namespaced function prototype in a header
-        // (beep + sonos 08/12/2019)
-        struct modules
-        // clang-format on
-        {
-            static bool loadModules(std::string save, sol::state& lua);
-        };
+        static void loadAPI(sol::state& lua);
     };
 };
