@@ -49,7 +49,7 @@
 using namespace qz::utils;
 
 // Horizontal namespace shrinking to improve code readability.
-#define FS std::filesystem
+using namespace fs = std::filesystem;
 
 FS::path get_exec_path()
 {
@@ -110,6 +110,3 @@ inline void getAssetStore(const std::string programName)
 	assetStore = getOSDataStore() / programName
 #endif
 };
-
-// Clean up MACRO namespace polution
-#undef FS
