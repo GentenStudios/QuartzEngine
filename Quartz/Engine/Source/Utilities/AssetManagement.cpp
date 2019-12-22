@@ -51,7 +51,7 @@ using namespace qz::utils;
 // Horizontal namespace shrinking to improve code readability.
 using namespace fs = std::filesystem;
 
-FS::path get_exec_path()
+fs::path get_exec_path()
 {
 #ifdef OS_WINDOWS
 	wchar_t path[MAX_PATH] = {0};
@@ -64,28 +64,28 @@ FS::path get_exec_path()
 #endif
 };
 
-FS::path getOSDataStore()
+fs::path getOSDataStore()
 {
-	return FS::weakly_canonical(
+	return fs::weakly_canonical(
 #if defined(OS_WINDOWS)
 	    ( // Nest within make_preffered to make this a true windows path.
-	        FS::path(std::getenv("APPDATA")) / "Local/Share"
+	        fs::path(std::getenv("APPDATA")) / "Local/Share"
 
 	        )
 	        .make_preffered();
 #elif defined(OS_MAC) || defined(OS_DARWIND)
-	    FS::path(std::string(std::getenv("HOME"))) / "Library/Preferences"
+	    fs::path(std::string(std::getenv("HOME"))) / "Library/Preferences"
 #else
 	    // defined(OS_LINUX) || defined(OS_ANDROID) || defined(OS_SUNOS)
 	    // pretty much all other platforms. Although we can append as necessary.
-	    FS::path(std::string(std::getenv("HOME"))) / ".local/share"
+	    fs::path(std::string(std::getenv("HOME"))) / ".local/share"
 #endif
 	);
 };
 
 inline void getAssetStore()
 {
-	FS::path executablePath = FS::get_exec_path();
+	fs::path executablePath = fs::get_exec_path();
 
 #if defined(DEVELOPMENT_BUILD) || defined(PORTABLE_BUILD)
 	// the executable path should already be weakly_canonical
@@ -99,7 +99,7 @@ inline void getAssetStore()
 
 inline void getAssetStore(const std::string programName)
 {
-	FS::path executablePath = FS::get_exec_path();
+	fs::path executablePath = fs::get_exec_path();
 
 #if defined(DEVELOPMENT_BUILD) || defined(PORTABLE_BUILD)
 	// the executable path should already be weakly_canonical
